@@ -28,12 +28,13 @@ class HomeBar extends StatelessWidget with PreferredSizeWidget {
     // width of the screen. If that's not the case, LayoutBuilder should be
     // used instead.
     final screenWidth = MediaQuery.of(context).size.width;
+    final avatar = Avatar.fromUser(user);
     return AppBar(
       title: Text('KFazer'.hardcoded),
       centerTitle: screenWidth >= Breakpoint.tablet,
       leading: IconButton(
-        icon: Avatar.fromUser(user),
-        iconSize: Avatar.kRadius * 2,
+        icon: avatar,
+        iconSize: avatar.diameter,
         onPressed: () => context.goNamed(AppRoute.profile.name),
       ),
       actions: [

@@ -7,10 +7,12 @@ class Workspace {
   final WorkspaceId id;
   final String title;
   final String description;
+  final String? photoUrl;
 
   const Workspace({
     required this.id,
     required this.title,
     required this.description,
+    this.photoUrl,
   });
 }

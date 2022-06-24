@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kfazer3/src/common_widgets/avatar.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:smart_space/smart_space.dart';
 
@@ -20,9 +21,13 @@ class WorkspaceCard extends StatelessWidget {
       child: InkWell(
         onTap: onPressed,
         child: Padding(
-          padding: EdgeInsets.all(kSpace * 2),
-          child: Center(
-            child: Text(workspace.title),
+          padding: EdgeInsets.all(kSpace),
+          child: Row(
+            children: [
+              Avatar.fromWorkspace(workspace),
+              Space(2),
+              Text(workspace.title),
+            ],
           ),
         ),
       ),
