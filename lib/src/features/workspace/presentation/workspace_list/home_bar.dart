@@ -32,22 +32,12 @@ class HomeBar extends StatelessWidget with PreferredSizeWidget {
     return AppBar(
       title: Text('KFazer'.hardcoded),
       centerTitle: screenWidth >= Breakpoint.tablet,
-      leading: IconButton(
-        icon: avatar,
-        iconSize: avatar.diameter,
-        onPressed: () => context.goNamed(AppRoute.profile.name),
-      ),
       actions: [
         const NotificationsIcon(),
-        PopupMenuButton(
-          icon: const Icon(Icons.more_vert),
-          onSelected: (_) => context.goNamed(AppRoute.settings.name),
-          itemBuilder: (_) => [
-            PopupMenuItem(
-              value: HomeMenuOption.settings,
-              child: Text('Settings'.hardcoded),
-            ),
-          ],
+        IconButton(
+          icon: avatar,
+          iconSize: avatar.diameter,
+          onPressed: () => context.goNamed(AppRoute.account.name),
         ),
       ],
     );

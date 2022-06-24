@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kfazer3/src/features/auth/presentation/profile/profile_screen.dart';
+import 'package:kfazer3/src/features/auth/presentation/account/account_screen.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in_flow/sign_in_screen.dart';
 import 'package:kfazer3/src/features/notifications/presentation/notifications_screen.dart';
 import 'package:kfazer3/src/features/settings/presentation/settings_screen.dart';
@@ -24,7 +24,7 @@ enum AppRoute {
   workspacePreferences, //! fullscreenDialog
   workspaceArchive, //! fullscreenDialog
   task, //! fullscreenDialog
-  profile, //! fullscreenDialog
+  account, //! fullscreenDialog
   notifications, //! fullscreenDialog
   settings, //! fullscreenDialog
 }
@@ -57,12 +57,12 @@ final goRouter = GoRouter(
       builder: (_, state) => const WorkspaceListScreen(),
       routes: [
         GoRoute(
-          path: 'profile',
-          name: AppRoute.profile.name,
+          path: 'account',
+          name: AppRoute.account.name,
           pageBuilder: (_, state) => MaterialPage(
             key: state.pageKey,
             fullscreenDialog: true,
-            child: const ProfileScreen(),
+            child: const AccountScreen(),
           ),
         ),
         GoRoute(

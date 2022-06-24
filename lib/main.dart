@@ -21,7 +21,7 @@ void main() async {
     FlutterError.onError = (details) => FlutterError.presentError(details);
     ErrorWidget.builder = (details) => Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.redAccent,
+            backgroundColor: Colors.red,
             title: Text('An error occurred'.hardcoded),
           ),
           body: Center(child: Text(details.toString())),
