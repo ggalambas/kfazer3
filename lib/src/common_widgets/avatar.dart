@@ -45,19 +45,21 @@ class Avatar extends StatelessWidget {
     Color(0xFF3B86FF),
   ];
 
+  bool get _isTextEmpty => text == null || text!.isEmpty;
+
   BorderRadiusGeometry? get borderRadius => shape == BoxShape.rectangle
       ? BorderRadius.circular(diameter * 0.3)
       : null;
 
   Color backgroundColor() {
     if (foregroundImage != null) return Colors.transparent;
-    if (text == null || text!.isEmpty) return _disabledColor;
+    if (_isTextEmpty) return _disabledColor;
     final textCode = text!.codeUnits.sum;
     return _colors[textCode % _colors.length];
   }
 
   String initials() {
-    final notEmptyText = text == null || text!.isEmpty ? '?' : text!;
+    final notEmptyText = _isTextEmpty ? '?' : text!;
     var parts = notEmptyText.trim().split(' ').map((p) => p.substring(0, 1));
     if (parts.length > 2) parts = [parts.first, parts.last];
     return parts.join('').toUpperCase();
@@ -66,36 +68,34 @@ class Avatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Tooltip(
-      message: text,
-      child: Container(
-        height: diameter,
-        width: diameter,
-        decoration: BoxDecoration(
-          shape: shape,
-          borderRadius: borderRadius,
-          color: backgroundColor(),
-        ),
-        foregroundDecoration: foregroundImage == null
-            ? null
-            : BoxDecoration(
-                shape: shape,
-                borderRadius: borderRadius,
-                image: DecorationImage(
-                  image: foregroundImage!,
-                  fit: BoxFit.cover,
-                ),
+    final avatar = Container(
+      height: diameter,
+      width: diameter,
+      decoration: BoxDecoration(
+        shape: shape,
+        borderRadius: borderRadius,
+        color: backgroundColor(),
+      ),
+      foregroundDecoration: foregroundImage == null
+          ? null
+          : BoxDecoration(
+              shape: shape,
+              borderRadius: borderRadius,
+              image: DecorationImage(
+                image: foregroundImage!,
+                fit: BoxFit.cover,
               ),
-        child: Center(
-          child: Text(
-            initials(),
-            style: theme.textTheme.titleMedium!.copyWith(
-              color: Colors.white,
-              fontSize: diameter * 0.45,
             ),
+      child: Center(
+        child: Text(
+          initials(),
+          style: theme.textTheme.titleMedium!.copyWith(
+            color: Colors.white,
+            fontSize: diameter * 0.45,
           ),
         ),
       ),
     );
+    return _isTextEmpty ? avatar : Tooltip(message: text, child: avatar);
   }
 }
