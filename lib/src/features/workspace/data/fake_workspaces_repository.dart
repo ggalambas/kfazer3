@@ -7,7 +7,7 @@ class FakeWorkspacesRepository {
   final List<Workspace> _workspaces = kTestWorkspaces;
 
   Stream<List<Workspace>> watchWorkspaceList() async* {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
     yield _workspaces;
   }
 

@@ -10,7 +10,7 @@ class FakeTasksRepository {
   //! workspaceId
 
   Stream<List<Task>> watchTaskList() async* {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
     yield _tasks;
   }
 
