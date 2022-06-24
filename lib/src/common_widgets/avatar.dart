@@ -7,20 +7,20 @@ class Avatar extends StatelessWidget {
 
   final String name;
   final String? photoUrl;
-  Avatar({super.key, required this.name, this.photoUrl});
+  const Avatar({super.key, required this.name, this.photoUrl});
 
   factory Avatar.fromUser(AppUser user) =>
       Avatar(name: user.name, photoUrl: user.photoUrl);
 
   final _disabledColor = Colors.black26;
-  final List<Color> _colors = [
-    const Color(0xFFFFA93F),
-    const Color(0xFF6FFF52),
-    const Color(0xFFFF4747),
-    const Color(0xFF664AFF),
-    const Color(0xFF37EEFF),
-    const Color(0xFFFF5AFF),
-    const Color(0xFF3B86FF),
+  final List<Color> _colors = const [
+    Color(0xFFFFA93F),
+    Color(0xFF6FFF52),
+    Color(0xFFFF4747),
+    Color(0xFF664AFF),
+    Color(0xFF37EEFF),
+    Color(0xFFFF5AFF),
+    Color(0xFF3B86FF),
   ];
 
   List<String> get nameParts =>
