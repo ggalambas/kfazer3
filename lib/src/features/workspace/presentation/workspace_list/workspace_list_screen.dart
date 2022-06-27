@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
+import 'package:kfazer3/src/common_widgets/empty_placeholder.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/features/workspace/data/fake_workspaces_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
@@ -22,25 +23,30 @@ class WorkspaceListScreen extends ConsumerWidget {
       appBar: const HomeBar(),
       body: AsyncValueWidget<List<Workspace>>(
         value: workspaceListValue,
-        data: (workspaceList) => CustomScrollView(
-          slivers: [
-            ResponsiveSliverCenter(
-              padding: EdgeInsets.all(kSpace),
-              child: Column(
-                children: [
-                  for (final workspace in workspaceList)
-                    WorkspaceCard(
-                      workspace: workspace,
-                      onPressed: () => context.goNamed(
-                        AppRoute.workspace.name,
-                        params: {'workspaceId': workspace.id},
-                      ),
+        data: (workspaceList) => workspaceList.isEmpty
+            ? EmptyPlaceholder(
+                message: 'You have no workspaces'.hardcoded,
+                illustration: UnDrawIllustration.building,
+              )
+            : CustomScrollView(
+                slivers: [
+                  ResponsiveSliverCenter(
+                    padding: EdgeInsets.all(kSpace),
+                    child: Column(
+                      children: [
+                        for (final workspace in workspaceList)
+                          WorkspaceCard(
+                            workspace: workspace,
+                            onPressed: () => context.goNamed(
+                              AppRoute.workspace.name,
+                              params: {'workspaceId': workspace.id},
+                            ),
+                          ),
+                      ],
                     ),
+                  ),
                 ],
               ),
-            ),
-          ],
-        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => showNotImplementedAlertDialog(context: context),

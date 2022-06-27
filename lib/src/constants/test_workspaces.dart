@@ -2,7 +2,7 @@ import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 
 /// Test workspaces to be used until a data source is implemented
 final kTestWorkspaces = List.generate(
-  4,
+  2,
   (i) => Workspace(
     id: '$i',
     title: 'Workspace $i',

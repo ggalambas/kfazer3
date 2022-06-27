@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
-import 'package:kfazer3/src/common_widgets/empty_placeholder_widget.dart';
+import 'package:kfazer3/src/common_widgets/not_found_widget.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/features/tasks/data/fake_tasks_repository.dart';
 import 'package:kfazer3/src/features/tasks/domain/task.dart';
@@ -21,7 +21,7 @@ class TaskScreen extends ConsumerWidget {
       body: AsyncValueWidget<Task?>(
         value: taskValue,
         data: (task) => task == null
-            ? EmptyPlaceholderWidget(message: 'Task not found'.hardcoded)
+            ? NotFoundWidget(message: 'Task not found'.hardcoded)
             : CustomScrollView(
                 slivers: [
                   ResponsiveSliverCenter(

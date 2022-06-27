@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
-import 'package:kfazer3/src/common_widgets/empty_placeholder_widget.dart';
+import 'package:kfazer3/src/common_widgets/not_found_widget.dart';
 import 'package:kfazer3/src/features/dashboard/presentation/dashboard_page.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_list/task_list_page.dart';
@@ -95,7 +95,7 @@ class _WorkspaceScreenState extends ConsumerState<WorkspaceScreen>
       data: (workspace) {
         if (workspace == null) {
           return Material(
-            child: EmptyPlaceholderWidget(
+            child: NotFoundWidget(
               message: 'You do not have access to this workspace. '
                       'Please contact a member to add you to their team'
                   .hardcoded,
@@ -119,6 +119,8 @@ class _WorkspaceScreenState extends ConsumerState<WorkspaceScreen>
           bottomNavigationBar: NavigationBar(
             onDestinationSelected: goToMenu,
             selectedIndex: widget.menu.index,
+            //? labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+            //? height: kBottomNavigationBarHeight,
             destinations: [
               NavigationDestination(
                 icon: const Icon(Icons.check),
