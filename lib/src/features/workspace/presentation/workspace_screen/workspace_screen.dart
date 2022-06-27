@@ -14,13 +14,7 @@ import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 
 /// The three sub-routes that are presented as part of the workspace screen.
-enum WorkspaceMenu {
-  tasks,
-  team,
-  dashboard;
-
-  static const WorkspaceMenu main = WorkspaceMenu.tasks;
-}
+enum WorkspaceMenu { tasks, team, dashboard }
 
 /// This is the root widget of the workspace screen, which is composed of 3 pages:
 /// 1. Tasks page
@@ -34,13 +28,13 @@ enum WorkspaceMenu {
 /// while UI updates are handled by a [PageController].
 class WorkspaceScreen extends ConsumerStatefulWidget {
   final String workspaceId;
-  final WorkspaceMenu menu;
+  final WorkspaceMenu? menu;
   final TaskState? taskState;
 
   const WorkspaceScreen({
     super.key,
     required this.workspaceId,
-    required this.menu,
+    this.menu,
     this.taskState,
   });
 
@@ -51,7 +45,19 @@ class WorkspaceScreen extends ConsumerStatefulWidget {
 /// Use the [AutomaticKeepAliveClientMixin] to keep the state.
 class _WorkspaceScreenState extends ConsumerState<WorkspaceScreen>
     with AutomaticKeepAliveClientMixin {
-  late final controller = PageController(initialPage: widget.menu.index);
+  late var menu = widget.menu ?? WorkspaceMenu.tasks;
+  late final controller = PageController(initialPage: menu.index);
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(() {
+      final page = controller.page;
+      if (page != null && page == page.toInt()) {
+        goToMenu(page.toInt());
+      }
+    });
+  }
 
   // override `wantKeepAlive` when using `AutomaticKeepAliveClientMixin`
   @override
@@ -67,29 +73,35 @@ class _WorkspaceScreenState extends ConsumerState<WorkspaceScreen>
   void didUpdateWidget(WorkspaceScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
     // perform a nice scroll animation to reveal the next page
-    if (controller.hasClients) {
+    if (widget.menu != null &&
+        controller.hasClients &&
+        controller.position.hasViewportDimension) {
+      menu = widget.menu!;
       controller.animateToPage(
-        widget.menu.index,
+        menu.index,
         duration: kTabScrollDuration,
         curve: Curves.ease,
       );
     }
   }
 
-  void goToMenu(int i) => context.goNamed(
+  void goToMenu(int i) {
+    if (i != menu.index) {
+      context.goNamed(
         AppRoute.workspace.name,
         params: {'workspaceId': widget.workspaceId},
         queryParams: {'menu': WorkspaceMenu.values[i].name},
       );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     // call `super.build` when using `AutomaticKeepAliveClientMixin`
     super.build(context);
-
-    final workspaceValue = ref.watch(workspaceProvider(widget.workspaceId));
     // Return a Scaffold with a PageView containing the 3 pages.
     // This allows for a nice scroll animation when switching between pages.
+    final workspaceValue = ref.watch(workspaceProvider(widget.workspaceId));
     return AsyncValueWidget<Workspace?>(
       value: workspaceValue,
       data: (workspace) {
@@ -106,11 +118,10 @@ class _WorkspaceScreenState extends ConsumerState<WorkspaceScreen>
           appBar: WorkspaceBar(workspace: workspace),
           body: PageView(
             controller: controller,
-            onPageChanged: goToMenu,
             children: [
               TaskListPage(
                 workspaceId: workspace.id,
-                state: widget.taskState,
+                taskState: widget.taskState,
               ),
               const TeamPage(),
               const DashboardPage(),
@@ -118,7 +129,7 @@ class _WorkspaceScreenState extends ConsumerState<WorkspaceScreen>
           ),
           bottomNavigationBar: NavigationBar(
             onDestinationSelected: goToMenu,
-            selectedIndex: widget.menu.index,
+            selectedIndex: menu.index,
             //? labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
             //? height: kBottomNavigationBarHeight,
             destinations: [

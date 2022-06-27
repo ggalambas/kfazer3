@@ -5,7 +5,14 @@ import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 
-enum WorkspaceMenuOption { about, archive, preferences, leave }
+enum WorkspaceMenuOption {
+  about,
+  members,
+  archive,
+  motivationalMessages,
+  preferences,
+  leave,
+}
 
 class WorkspaceMenuButton extends StatelessWidget {
   final Workspace workspace;
@@ -14,7 +21,6 @@ class WorkspaceMenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
-      icon: const Icon(Icons.more_vert),
       onSelected: (option) {
         switch (option) {
           case WorkspaceMenuOption.about:
@@ -24,11 +30,17 @@ class WorkspaceMenuButton extends StatelessWidget {
               content: workspace.description,
             );
             break;
+          case WorkspaceMenuOption.members:
+            showNotImplementedAlertDialog(context: context);
+            break;
           case WorkspaceMenuOption.archive:
             context.goNamed(
               AppRoute.workspaceArchive.name,
               params: {'workspaceId': workspace.id},
             );
+            break;
+          case WorkspaceMenuOption.motivationalMessages:
+            showNotImplementedAlertDialog(context: context);
             break;
           case WorkspaceMenuOption.preferences:
             context.goNamed(
@@ -41,14 +53,22 @@ class WorkspaceMenuButton extends StatelessWidget {
             break;
         }
       },
-      itemBuilder: (_) => [
+      itemBuilder: (context) => [
         PopupMenuItem(
           value: WorkspaceMenuOption.about,
           child: Text('About'.hardcoded),
         ),
         PopupMenuItem(
+          value: WorkspaceMenuOption.members,
+          child: Text('Members'.hardcoded),
+        ),
+        PopupMenuItem(
           value: WorkspaceMenuOption.archive,
           child: Text('Archive'.hardcoded),
+        ),
+        PopupMenuItem(
+          value: WorkspaceMenuOption.motivationalMessages,
+          child: Text('Moticational Messages'.hardcoded),
         ),
         PopupMenuItem(
           value: WorkspaceMenuOption.preferences,

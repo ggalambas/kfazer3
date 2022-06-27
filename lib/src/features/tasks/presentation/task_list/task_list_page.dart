@@ -20,25 +20,33 @@ import 'package:smart_space/smart_space.dart';
 /// while UI updates are handled by a [PageController].
 class TaskListPage extends StatefulWidget {
   final String workspaceId;
-  final TaskState taskState;
+  final TaskState? taskState;
 
   const TaskListPage({
     super.key,
     required this.workspaceId,
-    TaskState? state,
-  }) : taskState = state ?? TaskState.active;
+    this.taskState,
+  });
 
   @override
   State<TaskListPage> createState() => _TaskListPageState();
 }
 
+/// Use the [AutomaticKeepAliveClientMixin] to keep the state.
 class _TaskListPageState extends State<TaskListPage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+  late var taskState = widget.taskState ?? TaskState.active;
   late final controller = TabController(
-    initialIndex: widget.taskState.index,
+    initialIndex: taskState.index,
     length: TaskState.tabs.length,
     vsync: this,
   );
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(() => goToTab(controller.index));
+  }
 
   // override `wantKeepAlive` when using `AutomaticKeepAliveClientMixin`
   @override
@@ -53,10 +61,15 @@ class _TaskListPageState extends State<TaskListPage>
   @override
   void didUpdateWidget(TaskListPage oldWidget) {
     super.didUpdateWidget(oldWidget);
-    controller.animateTo(widget.taskState.index);
+    if (widget.taskState != null) {
+      taskState = widget.taskState!;
+      controller.animateTo(taskState.index);
+    }
   }
 
-  void goToTab(int i) => context.goNamed(
+  void goToTab(int i) {
+    if (i != taskState.index) {
+      context.goNamed(
         AppRoute.workspace.name,
         params: {
           'workspaceId': widget.workspaceId,
@@ -66,15 +79,17 @@ class _TaskListPageState extends State<TaskListPage>
           'state': TaskState.tabs[i].name,
         },
       );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     // call `super.build` when using `AutomaticKeepAliveClientMixin`
     super.build(context);
 
-    final theme = Theme.of(context);
     // Return a Column with a TabBar and a TabBarView containing the tabs.
     // This allows for a nice scroll animation when switching between tabs.
+    final theme = Theme.of(context);
     return Column(
       children: [
         TabBar(
@@ -88,21 +103,24 @@ class _TaskListPageState extends State<TaskListPage>
           ],
         ),
         Expanded(
-          child: TabBarView(
-            controller: controller,
-            children: [
-              for (final taskState in TaskState.tabs)
-                CustomScrollView(
-                  //? restorationId: taskState.name,
-                  slivers: [
-                    ResponsiveSliverCenter(
-                      padding: EdgeInsets.all(kSpace),
-                      child: TaskGrid(taskState: taskState),
-                    ),
-                  ],
-                ),
-              // TaskStateView(taskState: taskState)
-            ],
+          child: NotificationListener(
+            onNotification: (_) => true,
+            child: TabBarView(
+              controller: controller,
+              children: [
+                for (final taskState in TaskState.tabs)
+                  CustomScrollView(
+                    key: PageStorageKey(taskState.name),
+                    slivers: [
+                      ResponsiveSliverCenter(
+                        padding: EdgeInsets.all(kSpace),
+                        child: TaskGrid(taskState: taskState),
+                      ),
+                    ],
+                  ),
+                // TaskStateView(taskState: taskState)
+              ],
+            ),
           ),
         ),
       ],

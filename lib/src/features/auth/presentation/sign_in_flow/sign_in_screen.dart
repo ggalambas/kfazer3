@@ -51,7 +51,7 @@ class _SignInScreenState extends State<SignInScreen> {
   void didUpdateWidget(SignInScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
     // perform a nice scroll animation to reveal the next page
-    if (controller.hasClients) {
+    if (controller.hasClients && controller.position.hasViewportDimension) {
       controller.animateToPage(
         widget.subRoute.index,
         duration: kTabScrollDuration,

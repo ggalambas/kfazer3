@@ -23,7 +23,7 @@ class ProfileCreationPage extends StatelessWidget {
             PrimaryButton(
               onPressed: () => goToHome(context),
               text: 'Create profile'.hardcoded,
-            )
+            ),
           ],
         ),
       ),

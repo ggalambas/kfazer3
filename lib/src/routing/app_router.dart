@@ -99,7 +99,7 @@ final goRouter = GoRouter(
             );
             return WorkspaceScreen(
               workspaceId: workspaceId,
-              menu: menu ?? WorkspaceMenu.main,
+              menu: menu,
               taskState: taskState,
             );
           },
@@ -127,10 +127,11 @@ final goRouter = GoRouter(
               path: 'preferences',
               name: AppRoute.workspacePreferences.name,
               pageBuilder: (_, state) {
+                final workspaceId = state.params['workspaceId']!;
                 return MaterialPage(
                   key: state.pageKey,
                   fullscreenDialog: true,
-                  child: const WorkspacePreferencesScreen(),
+                  child: WorkspacePreferencesScreen(workspaceId: workspaceId),
                 );
               },
             ),
