@@ -5,7 +5,7 @@ import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/empty_placeholder.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
-import 'package:kfazer3/src/features/workspace/data/fake_workspaces_repository.dart';
+import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_list/home_bar.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_list/workspace_card.dart';
