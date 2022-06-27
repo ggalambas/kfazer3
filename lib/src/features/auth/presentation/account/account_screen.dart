@@ -14,7 +14,7 @@ class AccountScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: () => context.goNamed(AppRoute.settings.name),
+            onPressed: () => context.pushNamed(AppRoute.settings.name),
           ),
         ],
       ),

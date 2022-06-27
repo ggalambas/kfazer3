@@ -34,7 +34,7 @@ class WorkspaceMenuButton extends StatelessWidget {
             showNotImplementedAlertDialog(context: context);
             break;
           case WorkspaceMenuOption.archive:
-            context.goNamed(
+            context.pushNamed(
               AppRoute.workspaceArchive.name,
               params: {'workspaceId': workspace.id},
             );
@@ -43,7 +43,7 @@ class WorkspaceMenuButton extends StatelessWidget {
             showNotImplementedAlertDialog(context: context);
             break;
           case WorkspaceMenuOption.preferences:
-            context.goNamed(
+            context.pushNamed(
               AppRoute.workspacePreferences.name,
               params: {'workspaceId': workspace.id},
             );

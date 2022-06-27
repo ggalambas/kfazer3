@@ -37,7 +37,7 @@ class TaskGrid extends ConsumerWidget {
                 return TaskCard(
                   task: task,
                   onPressed: () {
-                    context.goNamed(
+                    context.pushNamed(
                       AppRoute.task.name,
                       params: {
                         'workspaceId': task.workspaceId,

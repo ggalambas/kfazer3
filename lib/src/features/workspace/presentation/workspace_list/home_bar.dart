@@ -37,7 +37,7 @@ class HomeBar extends StatelessWidget with PreferredSizeWidget {
         IconButton(
           icon: avatar,
           iconSize: avatar.diameter,
-          onPressed: () => context.goNamed(AppRoute.account.name),
+          onPressed: () => context.pushNamed(AppRoute.account.name),
         ),
       ],
     );
