@@ -18,7 +18,7 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
   final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
 
-  String get phoneNumber => nameController.text;
+  String get displayName => nameController.text;
 
   // local variable used to apply AutovalidateMode.onUserInteraction and show
   // error hints only when the form has been submitted
@@ -37,7 +37,10 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
         params: {'subRoute': SignInSubRoute.phoneNumber.name},
       );
 
-  void goToHome(BuildContext context) => context.goNamed(AppRoute.home.name);
+  void createProfile(BuildContext context) {
+    FocusScope.of(context).nextFocus();
+    context.goNamed(AppRoute.home.name);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,21 +53,22 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
         formKey: formKey,
         title: 'Set up your profile'.hardcoded,
         description: 'Choose a name that others will recognize you.'.hardcoded,
-        form: [
-          TextField(
-            controller: nameController,
-            decoration: InputDecoration(
-              labelText: 'Display name'.hardcoded,
+        form: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            TextField(
+              controller: nameController,
+              keyboardType: TextInputType.name,
+              textInputAction: TextInputAction.done,
+              decoration: InputDecoration(labelText: 'Display name'.hardcoded),
             ),
-            keyboardType: TextInputType.name,
-            textInputAction: TextInputAction.done,
-          ),
-          Space(3),
-          LoadingElevatedButton(
-            text: 'Next'.hardcoded,
-            onPressed: () => goToHome(context),
-          ),
-        ],
+            Space(3),
+            LoadingElevatedButton(
+              text: 'Next'.hardcoded,
+              onPressed: () => createProfile(context),
+            ),
+          ],
+        ),
       ),
     );
   }

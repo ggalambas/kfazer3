@@ -22,7 +22,7 @@ class _PhoneNumberVerificationPageState
   final formKey = GlobalKey<FormState>();
   final codeController = TextEditingController();
 
-  String get phoneNumber => codeController.text;
+  String get code => codeController.text;
 
   // local variable used to apply AutovalidateMode.onUserInteraction and show
   // error hints only when the form has been submitted
@@ -41,10 +41,13 @@ class _PhoneNumberVerificationPageState
         params: {'subRoute': SignInSubRoute.phoneNumber.name},
       );
 
-  void goToProfileCreation(BuildContext context) => context.goNamed(
-        AppRoute.signInSubRoute.name,
-        params: {'subRoute': SignInSubRoute.profile.name},
-      );
+  void verify(BuildContext context) {
+    FocusScope.of(context).nextFocus();
+    context.goNamed(
+      AppRoute.signInSubRoute.name,
+      params: {'subRoute': SignInSubRoute.profile.name},
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,23 +60,26 @@ class _PhoneNumberVerificationPageState
         formKey: formKey,
         title: 'Verifying your number'.hardcoded,
         description: 'We have sent a code to +351912345678'.hardcoded,
-        form: [
-          TextField(
-            controller: codeController,
-            decoration: InputDecoration(labelText: 'Code'.hardcoded),
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.done,
-          ),
-          Space(3),
-          LoadingOutlinedButton(
-            text: 'Resend SMS (30)'.hardcoded,
-            onPressed: () => showNotImplementedAlertDialog(context: context),
-          ),
-          LoadingElevatedButton(
-            text: 'Sign in'.hardcoded,
-            onPressed: () => goToProfileCreation(context),
-          ),
-        ],
+        form: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            TextField(
+              controller: codeController,
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.done,
+              decoration: InputDecoration(labelText: 'Code'.hardcoded),
+            ),
+            Space(3),
+            LoadingOutlinedButton(
+              text: 'Resend SMS (30)'.hardcoded,
+              onPressed: () => showNotImplementedAlertDialog(context: context),
+            ),
+            LoadingElevatedButton(
+              text: 'Sign in'.hardcoded,
+              onPressed: () => verify(context),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kfazer3/src/common_widgets/tap_to_unfocus.dart';
 
 import 'phone_number_sign_in_page.dart';
 import 'phone_number_verification_page.dart';
@@ -49,16 +50,18 @@ class _SignInScreenState extends State<SignInScreen> {
     // Return a Scaffold with a PageView containing the 3 pages.
     // This allows for a nice scroll animation when switching between pages.
     // Note: only the currently active page will be visible.
-    return Scaffold(
-      body: PageView(
-        // disable swiping between pages
-        physics: const NeverScrollableScrollPhysics(),
-        controller: controller,
-        children: const [
-          PhoneNumberSignInPage(),
-          PhoneNumberVerificationPage(),
-          ProfileCreationPage(),
-        ],
+    return TapToUnfocus(
+      child: Scaffold(
+        body: PageView(
+          // disable swiping between pages
+          physics: const NeverScrollableScrollPhysics(),
+          controller: controller,
+          children: const [
+            PhoneNumberSignInPage(),
+            PhoneNumberVerificationPage(),
+            ProfileCreationPage(),
+          ],
+        ),
       ),
     );
   }

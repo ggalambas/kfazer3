@@ -8,7 +8,7 @@ class SignInLayout extends StatelessWidget {
   final Key? formKey;
   final String title;
   final String description;
-  final List<Widget> form;
+  final Widget form;
 
   const SignInLayout({
     super.key,
@@ -41,10 +41,7 @@ class SignInLayout extends StatelessWidget {
             padding: EdgeInsets.all(kSpace * 2),
             child: Form(
               key: formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: form,
-              ),
+              child: form,
             ),
           ),
         ),
