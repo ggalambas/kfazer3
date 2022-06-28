@@ -6,6 +6,7 @@ import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/features/tasks/data/fake_tasks_repository.dart';
 import 'package:kfazer3/src/features/tasks/domain/task.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
 /// Shows the task page for a given task ID.
@@ -46,13 +47,12 @@ class TaskDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Padding(
       padding: EdgeInsets.all(kSpace),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(task.description, style: theme.textTheme.titleLarge),
+          Text(task.description, style: context.textTheme.titleLarge),
           Space(),
           Text(task.state.name),
         ],

@@ -5,6 +5,7 @@ import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_list/task_grid.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/workspace_screen.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
+import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
 /// This is the root widget of the tasks page,
@@ -89,15 +90,14 @@ class _TaskListPageState extends State<TaskListPage>
 
     // Return a Column with a TabBar and a TabBarView containing the tabs.
     // This allows for a nice scroll animation when switching between tabs.
-    final theme = Theme.of(context);
     return Column(
       children: [
         TabBar(
           controller: controller,
           onTap: goToTab,
           // Indicator and label colors must be defined for the light mode
-          indicatorColor: theme.colorScheme.onBackground,
-          labelColor: theme.colorScheme.onBackground,
+          indicatorColor: context.colorScheme.onBackground,
+          labelColor: context.colorScheme.onBackground,
           tabs: [
             for (final taskState in TaskState.tabs) Tab(text: taskState.name),
           ],

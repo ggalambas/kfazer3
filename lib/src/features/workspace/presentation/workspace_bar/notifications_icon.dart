@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
+import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
 /// Notification icon with notifications count badge
@@ -36,7 +37,6 @@ class NotificationsIconBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return SizedBox(
       width: kSpace * 2,
       height: kSpace * 2,
@@ -52,7 +52,7 @@ class NotificationsIconBadge extends StatelessWidget {
           // textScaleFactor. This is to prevent the text from growing bigger
           // than the available space.
           textScaleFactor: 1.0,
-          style: theme.textTheme.bodySmall!.copyWith(color: Colors.white),
+          style: context.textTheme.bodySmall!.copyWith(color: Colors.white),
         ),
       ),
     );

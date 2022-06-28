@@ -10,6 +10,7 @@ import 'package:kfazer3/src/features/tasks/domain/task.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
+import 'package:kfazer3/src/utils/context_theme.dart';
 
 import 'task_card.dart';
 
@@ -27,7 +28,7 @@ class TaskGrid extends ConsumerWidget {
           ? Center(
               child: Text(
                 'No tasks to show'.hardcoded,
-                style: Theme.of(context).textTheme.headlineLarge,
+                style: context.textTheme.headlineLarge,
               ),
             )
           : TaskLayoutGrid(

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/content_dialog.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/routing/app_router.dart';
 
 class CreateWorkspaceFab extends StatefulWidget {
   const CreateWorkspaceFab({super.key});
@@ -37,6 +39,7 @@ class _CreateWorkspaceFabState extends State<CreateWorkspaceFab> {
           showNotImplementedAlertDialog(context: context);
         }
         textController.clear(); //! weird
+        context.goNamed(AppRoute.signIn.name); //TODO remove this line
       },
       icon: const Icon(Icons.add),
       label: Text('Create new'.hardcoded),

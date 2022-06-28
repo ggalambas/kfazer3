@@ -1,14 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kfazer3/src/common_widgets/primary_button.dart';
+import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
+import 'package:kfazer3/src/common_widgets/loading_button.dart';
+import 'package:kfazer3/src/features/auth/presentation/sign_in_flow/sign_in_layout.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:smart_space/smart_space.dart';
 
 import 'sign_in_screen.dart';
 
-class PhoneNumberVerificationPage extends StatelessWidget {
+class PhoneNumberVerificationPage extends StatefulWidget {
   const PhoneNumberVerificationPage({super.key});
+
+  @override
+  State<PhoneNumberVerificationPage> createState() =>
+      _PhoneNumberVerificationPageState();
+}
+
+class _PhoneNumberVerificationPageState
+    extends State<PhoneNumberVerificationPage> {
+  final formKey = GlobalKey<FormState>();
+  final codeController = TextEditingController();
+
+  String get phoneNumber => codeController.text;
+
+  // local variable used to apply AutovalidateMode.onUserInteraction and show
+  // error hints only when the form has been submitted
+  // For more details on how this is implemented, see:
+  // https://codewithandrea.com/articles/flutter-text-field-form-validation/
+  // var _submitted = false;
+
+  @override
+  void dispose() {
+    codeController.dispose();
+    super.dispose();
+  }
+
+  void goBack(BuildContext context) => context.goNamed(
+        AppRoute.signInSubRoute.name,
+        params: {'subRoute': SignInSubRoute.phoneNumber.name},
+      );
 
   void goToProfileCreation(BuildContext context) => context.goNamed(
         AppRoute.signInSubRoute.name,
@@ -17,20 +48,32 @@ class PhoneNumberVerificationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(kSpace * 2),
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('verification code input'.hardcoded),
-            Space(4),
-            PrimaryButton(
-              onPressed: () => goToProfileCreation(context),
-              text: 'Verify'.hardcoded,
-            )
-          ],
-        ),
+    return WillPopScope(
+      onWillPop: () async {
+        goBack(context);
+        return false;
+      },
+      child: SignInLayout(
+        formKey: formKey,
+        title: 'Verifying your number'.hardcoded,
+        description: 'We have sent a code to +351912345678'.hardcoded,
+        form: [
+          TextField(
+            controller: codeController,
+            decoration: InputDecoration(labelText: 'Code'.hardcoded),
+            keyboardType: TextInputType.number,
+            textInputAction: TextInputAction.done,
+          ),
+          Space(3),
+          LoadingOutlinedButton(
+            text: 'Resend SMS (30)'.hardcoded,
+            onPressed: () => showNotImplementedAlertDialog(context: context),
+          ),
+          LoadingElevatedButton(
+            text: 'Sign in'.hardcoded,
+            onPressed: () => goToProfileCreation(context),
+          ),
+        ],
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
+import 'package:kfazer3/src/utils/context_theme.dart';
 
 class Avatar extends StatelessWidget {
   final double diameter;
@@ -41,15 +42,14 @@ class Avatar extends StatelessWidget {
       : null;
 
   Color backgroundColor(BuildContext context) {
-    final theme = Theme.of(context);
     if (foregroundImage != null || _isTextEmpty) {
-      return theme.colorScheme.primaryContainer;
+      return context.colorScheme.primaryContainer;
     }
     final textCode = text!.codeUnits.sum;
     final colors = Colors.primaries
         .map((color) => ColorScheme.fromSeed(
               seedColor: color,
-              brightness: theme.brightness,
+              brightness: context.theme.brightness,
             ).primaryContainer)
         .toList();
     return colors[textCode % colors.length];
@@ -64,7 +64,6 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final avatar = Container(
       height: diameter,
       width: diameter,
@@ -86,7 +85,7 @@ class Avatar extends StatelessWidget {
       child: Center(
         child: Text(
           initials(),
-          style: theme.textTheme.labelLarge,
+          style: context.textTheme.labelLarge,
         ),
       ),
     );
