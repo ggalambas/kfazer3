@@ -1,7 +1,3 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 
@@ -12,9 +8,8 @@ Future<bool?> showAlertDialog({
   String? content,
   String? cancelActionText,
   String defaultActionText = 'OK',
-}) async {
-  if (kIsWeb || !Platform.isIOS) {
-    return showDialog(
+}) =>
+    showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(title),
@@ -32,26 +27,6 @@ Future<bool?> showAlertDialog({
         ],
       ),
     );
-  }
-  return showCupertinoDialog(
-    context: context,
-    builder: (context) => CupertinoAlertDialog(
-      title: Text(title),
-      content: content != null ? Text(content) : null,
-      actions: [
-        if (cancelActionText != null)
-          CupertinoDialogAction(
-            child: Text(cancelActionText),
-            onPressed: () => Navigator.of(context).pop(false),
-          ),
-        CupertinoDialogAction(
-          child: Text(defaultActionText),
-          onPressed: () => Navigator.of(context).pop(true),
-        ),
-      ],
-    ),
-  );
-}
 
 /// Generic function to show a platform-aware Material or Cupertino error dialog
 Future<void> showExceptionAlertDialog({
