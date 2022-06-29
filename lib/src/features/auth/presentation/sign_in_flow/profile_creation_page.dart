@@ -16,9 +16,10 @@ class ProfileCreationPage extends StatefulWidget {
 
 class _ProfileCreationPageState extends State<ProfileCreationPage> {
   final formKey = GlobalKey<FormState>();
+  final nameNode = FocusNode();
   final nameController = TextEditingController();
 
-  String get displayName => nameController.text;
+  String get name => nameController.text;
 
   // local variable used to apply AutovalidateMode.onUserInteraction and show
   // error hints only when the form has been submitted
@@ -38,8 +39,10 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
       );
 
   void createProfile(BuildContext context) {
-    FocusScope.of(context).nextFocus();
     context.goNamed(AppRoute.home.name);
+    nameNode
+      ..nextFocus()
+      ..unfocus();
   }
 
   @override
@@ -57,6 +60,7 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextField(
+              focusNode: nameNode,
               controller: nameController,
               keyboardType: TextInputType.name,
               textInputAction: TextInputAction.done,
@@ -64,7 +68,7 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
             ),
             Space(3),
             LoadingElevatedButton(
-              text: 'Next'.hardcoded,
+              text: 'Save'.hardcoded,
               onPressed: () => createProfile(context),
             ),
           ],

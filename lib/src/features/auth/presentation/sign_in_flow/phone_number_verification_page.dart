@@ -20,6 +20,7 @@ class PhoneNumberVerificationPage extends StatefulWidget {
 class _PhoneNumberVerificationPageState
     extends State<PhoneNumberVerificationPage> {
   final formKey = GlobalKey<FormState>();
+  final codeNode = FocusNode();
   final codeController = TextEditingController();
 
   String get code => codeController.text;
@@ -42,11 +43,13 @@ class _PhoneNumberVerificationPageState
       );
 
   void verify(BuildContext context) {
-    FocusScope.of(context).nextFocus();
     context.goNamed(
       AppRoute.signInSubRoute.name,
       params: {'subRoute': SignInSubRoute.profile.name},
     );
+    codeNode
+      ..nextFocus()
+      ..unfocus();
   }
 
   @override
@@ -64,6 +67,7 @@ class _PhoneNumberVerificationPageState
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextField(
+              focusNode: codeNode,
               controller: codeController,
               keyboardType: TextInputType.number,
               textInputAction: TextInputAction.done,

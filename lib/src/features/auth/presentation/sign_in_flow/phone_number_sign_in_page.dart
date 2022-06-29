@@ -22,6 +22,7 @@ class PhoneNumberSignInPage extends ConsumerStatefulWidget {
 
 class _PhoneNumberSignInPageState extends ConsumerState<PhoneNumberSignInPage> {
   final formKey = GlobalKey<FormState>();
+  final phoneNumberNode = FocusNode();
   final phoneNumberController = TextEditingController();
 
   String get phoneNumber => phoneNumberController.text;
@@ -39,11 +40,13 @@ class _PhoneNumberSignInPageState extends ConsumerState<PhoneNumberSignInPage> {
   }
 
   void submit(BuildContext context) {
-    FocusScope.of(context).nextFocus();
     context.goNamed(
       AppRoute.signInSubRoute.name,
       params: {'subRoute': SignInSubRoute.verification.name},
     );
+    phoneNumberNode
+      ..nextFocus()
+      ..unfocus();
   }
 
   @override
@@ -66,6 +69,7 @@ class _PhoneNumberSignInPageState extends ConsumerState<PhoneNumberSignInPage> {
                 children: [
                   Expanded(
                     child: TextField(
+                      focusNode: phoneNumberNode,
                       controller: phoneNumberController,
                       keyboardType: TextInputType.phone,
                       textInputAction: TextInputAction.done,
