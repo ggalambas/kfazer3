@@ -59,42 +59,35 @@ class _PhoneNumberSignInPageState extends ConsumerState<PhoneNumberSignInPage> {
               'On pressing "next", you are accepting our Terms of Use '
               'and agreeing with our Privacy Policy.'
           .hardcoded,
-      form: AsyncValueWidget<List<Country>>(
-        value: countryListValue,
-        data: (countryList) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      focusNode: phoneNumberNode,
-                      controller: phoneNumberController,
-                      keyboardType: TextInputType.phone,
-                      textInputAction: TextInputAction.done,
-                      decoration: InputDecoration(
-                        labelText: 'Phone number'.hardcoded,
-                        prefix: Padding(
-                          padding: EdgeInsets.only(right: kSpace),
-                          child: CountryPicker(
-                            countries: countryList,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+      formFields: [
+        AsyncValueWidget<List<Country>>(
+          value: countryListValue,
+          data: (countryList) => TextField(
+            focusNode: phoneNumberNode,
+            controller: phoneNumberController,
+            keyboardType: TextInputType.phone,
+            textInputAction: TextInputAction.done,
+            decoration: InputDecoration(
+              labelText: 'Phone number'.hardcoded,
+              filled: true,
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(kSpace),
               ),
-              Space(3),
-              LoadingElevatedButton(
-                text: 'Next'.hardcoded,
-                onPressed: () => submit(context),
+              prefix: Padding(
+                padding: EdgeInsets.only(right: kSpace),
+                child: CountryPicker(countries: countryList),
               ),
-            ],
-          );
-        },
-      ),
+            ),
+          ),
+        ),
+      ],
+      cta: [
+        LoadingElevatedButton(
+          text: 'Next'.hardcoded,
+          onPressed: () => submit(context),
+        ),
+      ],
     );
   }
 }

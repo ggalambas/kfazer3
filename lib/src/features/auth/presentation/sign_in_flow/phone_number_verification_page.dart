@@ -63,27 +63,32 @@ class _PhoneNumberVerificationPageState
         formKey: formKey,
         title: 'Verifying your number'.hardcoded,
         description: 'We have sent a code to +351912345678'.hardcoded,
-        form: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              focusNode: codeNode,
-              controller: codeController,
-              keyboardType: TextInputType.number,
-              textInputAction: TextInputAction.done,
-              decoration: InputDecoration(labelText: 'Code'.hardcoded),
+        formFields: [
+          TextField(
+            focusNode: codeNode,
+            controller: codeController,
+            keyboardType: TextInputType.number,
+            textInputAction: TextInputAction.done,
+            decoration: InputDecoration(
+              labelText: 'Code'.hardcoded,
+              filled: true,
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(kSpace),
+              ),
             ),
-            Space(3),
-            LoadingOutlinedButton(
-              text: 'Resend SMS (30)'.hardcoded,
-              onPressed: () => showNotImplementedAlertDialog(context: context),
-            ),
-            LoadingElevatedButton(
-              text: 'Sign in'.hardcoded,
-              onPressed: () => verify(context),
-            ),
-          ],
-        ),
+          ),
+        ],
+        cta: [
+          LoadingOutlinedButton(
+            text: 'Resend SMS (30)'.hardcoded,
+            onPressed: () => showNotImplementedAlertDialog(context: context),
+          ),
+          LoadingElevatedButton(
+            text: 'Sign in'.hardcoded,
+            onPressed: () => verify(context),
+          ),
+        ],
       ),
     );
   }

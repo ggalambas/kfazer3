@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
-import 'package:smart_space/smart_space.dart';
 
 /// Loading button based on [ElevatedButton].
 /// Useful for CTAs in the app.
@@ -22,18 +21,12 @@ class LoadingElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: kSpace / 2),
-      child: SizedBox(
-        height: kMinInteractiveDimension,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: context.colorScheme.primaryContainer,
-          ),
-          onPressed: onPressed,
-          child: isLoading ? const CircularProgressIndicator() : Text(text),
-        ),
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        primary: context.colorScheme.primaryContainer,
       ),
+      onPressed: onPressed,
+      child: isLoading ? const CircularProgressIndicator() : Text(text),
     );
   }
 }
@@ -58,15 +51,9 @@ class LoadingOutlinedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: kSpace / 2),
-      child: SizedBox(
-        height: kMinInteractiveDimension,
-        child: OutlinedButton(
-          onPressed: onPressed,
-          child: isLoading ? const CircularProgressIndicator() : Text(text),
-        ),
-      ),
+    return OutlinedButton(
+      onPressed: onPressed,
+      child: isLoading ? const CircularProgressIndicator() : Text(text),
     );
   }
 }

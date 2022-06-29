@@ -56,23 +56,28 @@ class _ProfileCreationPageState extends State<ProfileCreationPage> {
         formKey: formKey,
         title: 'Set up your profile'.hardcoded,
         description: 'Choose a name that others will recognize you.'.hardcoded,
-        form: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              focusNode: nameNode,
-              controller: nameController,
-              keyboardType: TextInputType.name,
-              textInputAction: TextInputAction.done,
-              decoration: InputDecoration(labelText: 'Display name'.hardcoded),
+        formFields: [
+          TextField(
+            focusNode: nameNode,
+            controller: nameController,
+            keyboardType: TextInputType.name,
+            textInputAction: TextInputAction.done,
+            decoration: InputDecoration(
+              labelText: 'Display name'.hardcoded,
+              filled: true,
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(kSpace),
+              ),
             ),
-            Space(3),
-            LoadingElevatedButton(
-              text: 'Save'.hardcoded,
-              onPressed: () => createProfile(context),
-            ),
-          ],
-        ),
+          ),
+        ],
+        cta: [
+          LoadingElevatedButton(
+            text: 'Save'.hardcoded,
+            onPressed: () => createProfile(context),
+          ),
+        ],
       ),
     );
   }
