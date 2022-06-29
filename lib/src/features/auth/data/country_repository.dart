@@ -9,8 +9,13 @@ final countryRepositoryProvider = Provider<CountryRepository>(
   (ref) => HttpCountryRepository(),
 );
 
-final countryListFutureProvider = FutureProvider<List<Country>>(
-  (ref) => ref.watch(countryRepositoryProvider).fetchCountryList(),
+final countryListFutureProvider = FutureProvider.autoDispose<List<Country>>(
+  (ref) async {
+    final countryRepository = ref.watch(countryRepositoryProvider);
+    final countryList = await countryRepository.fetchCountryList();
+    ref.maintainState = true;
+    return countryList;
+  },
 );
 
 abstract class CountryRepository {
@@ -27,7 +32,7 @@ class HttpCountryRepository implements CountryRepository {
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON
-      return compute(decodeCountryList, response.body);
+      return compute(_decodeCountryList, response.body);
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception
@@ -35,7 +40,7 @@ class HttpCountryRepository implements CountryRepository {
     }
   }
 
-  List<Country> decodeCountryList(String responseBody) {
+  List<Country> _decodeCountryList(String responseBody) {
     final parsedJson = jsonDecode(responseBody) as List;
     // Duplicate countries with more than 1 calling code
     return parsedJson.expand((json) {
