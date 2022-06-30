@@ -92,14 +92,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                       AppRoute.signInPage.name,
                       params: {'page': SignInPage.account.name},
                     );
-                  } else {
-                    context.goNamed(AppRoute.home.name);
                   }
                 },
               ),
-              AccountSetupPage(
-                onSuccess: () => context.goNamed(AppRoute.home.name),
-              ),
+              const AccountSetupPage(),
             ],
           ),
         ),

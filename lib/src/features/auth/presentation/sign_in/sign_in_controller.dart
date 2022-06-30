@@ -30,11 +30,10 @@ class SignInController extends StateNotifier<AsyncValue> {
     return !state.hasError;
   }
 
-  Future<bool> submitAccount(String displayName, Image? image) async {
+  Future<void> submitAccount(String displayName, Image? image) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(
       () => authRepository.createAccount(displayName, null),
     );
-    return !state.hasError;
   }
 }

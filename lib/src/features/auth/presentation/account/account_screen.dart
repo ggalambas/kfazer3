@@ -18,10 +18,7 @@ class AccountScreen extends ConsumerWidget {
       defaultActionText: 'Logout'.hardcoded,
     );
     if (logout == true) {
-      final success =
-          await ref.read(accountScreenControllerProvider.notifier).signOut();
-      // ignore: use_build_context_synchronously
-      if (success) context.goNamed(AppRoute.signIn.name);
+      ref.read(accountScreenControllerProvider.notifier).signOut();
     }
   }
 

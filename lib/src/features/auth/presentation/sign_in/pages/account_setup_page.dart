@@ -7,8 +7,7 @@ import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:smart_space/smart_space.dart';
 
 class AccountSetupPage extends ConsumerStatefulWidget {
-  final VoidCallback? onSuccess;
-  const AccountSetupPage({super.key, this.onSuccess});
+  const AccountSetupPage({super.key});
 
   @override
   ConsumerState<AccountSetupPage> createState() => _AccountSetupPageState();
@@ -33,10 +32,8 @@ class _AccountSetupPageState extends ConsumerState<AccountSetupPage> {
     super.dispose();
   }
 
-  void submit(BuildContext context) async {
-    final controller = ref.read(signInControllerProvider.notifier);
-    final success = await controller.submitAccount(name, null);
-    if (success) widget.onSuccess?.call();
+  void submit(BuildContext context) {
+    ref.read(signInControllerProvider.notifier).submitAccount(name, null);
     nameNode
       ..nextFocus()
       ..unfocus();
