@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/account_screen.dart';
-import 'package:kfazer3/src/features/auth/presentation/sign_in_flow/sign_in_screen.dart';
+import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 import 'package:kfazer3/src/features/notifications/presentation/notifications_screen.dart';
 import 'package:kfazer3/src/features/settings/presentation/settings_screen.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
@@ -16,7 +16,7 @@ import 'package:kfazer3/src/routing/not_found_screen.dart';
 enum AppRoute {
   //* sign in flow
   signIn,
-  signInSubRoute,
+  signInPage,
   //* main flow
   home,
   workspace,
@@ -36,19 +36,18 @@ final goRouter = GoRouter(
     GoRoute(
       path: '/signIn',
       name: AppRoute.signIn.name,
-      redirect: (state) =>
-          '${state.location}/${SignInSubRoute.values.first.name}',
+      redirect: (state) => '${state.location}/${SignInPage.values.first.name}',
     ),
     GoRoute(
-      path: '/signIn/:subRoute',
-      name: AppRoute.signInSubRoute.name,
+      path: '/signIn/:page',
+      name: AppRoute.signInPage.name,
       builder: (_, state) {
-        final subRouteName = state.params['subRoute']!;
-        final subRoute = SignInSubRoute.values.firstWhere(
-          (subRoute) => subRoute.name == subRouteName,
-          orElse: () => SignInSubRoute.values.first,
+        final pageName = state.params['page']!;
+        final page = SignInPage.values.firstWhere(
+          (page) => page.name == pageName,
+          orElse: () => SignInPage.values.first,
         );
-        return SignInScreen(subRoute: subRoute);
+        return SignInScreen(page: page);
       },
     ),
     GoRoute(

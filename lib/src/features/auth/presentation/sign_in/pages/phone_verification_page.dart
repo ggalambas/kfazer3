@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
-import 'package:kfazer3/src/features/auth/presentation/sign_in_flow/sign_in_layout.dart';
+import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
+import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
-import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:smart_space/smart_space.dart';
 
-import 'sign_in_screen.dart';
-
-class PhoneVerificationPage extends StatefulWidget {
-  const PhoneVerificationPage({super.key});
+class PhoneVerificationPage extends ConsumerStatefulWidget {
+  final VoidCallback? onSuccess;
+  const PhoneVerificationPage({super.key, this.onSuccess});
 
   @override
-  State<PhoneVerificationPage> createState() => _PhoneVerificationPageState();
+  ConsumerState<PhoneVerificationPage> createState() =>
+      _PhoneVerificationPageState();
 }
 
-class _PhoneVerificationPageState extends State<PhoneVerificationPage> {
-  final formKey = GlobalKey<FormState>();
+class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
+  // final formKey = GlobalKey<FormState>();
   final codeNode = FocusNode();
   final codeController = TextEditingController();
 
@@ -32,14 +32,14 @@ class _PhoneVerificationPageState extends State<PhoneVerificationPage> {
   @override
   void dispose() {
     codeController.dispose();
+    codeNode.dispose();
     super.dispose();
   }
 
-  void verify(BuildContext context) {
-    context.goNamed(
-      AppRoute.signInSubRoute.name,
-      params: {'subRoute': SignInSubRoute.account.name},
-    );
+  void submit(BuildContext context) async {
+    final controller = ref.read(signInControllerProvider.notifier);
+    final success = await controller.submitSmsCode(code);
+    if (success) widget.onSuccess?.call();
     codeNode
       ..nextFocus()
       ..unfocus();
@@ -47,8 +47,9 @@ class _PhoneVerificationPageState extends State<PhoneVerificationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(signInControllerProvider);
     return SignInLayout(
-      formKey: formKey,
+      // formKey: formKey,
       title: 'Verifying your number'.hardcoded,
       description: 'We have sent a code to +351912345678'.hardcoded,
       content: [
@@ -68,13 +69,16 @@ class _PhoneVerificationPageState extends State<PhoneVerificationPage> {
         ),
       ],
       cta: [
-        LoadingOutlinedButton(
-          text: 'Resend SMS (30)'.hardcoded,
-          onPressed: () => showNotImplementedAlertDialog(context: context),
+        OutlinedButton(
+          onPressed: state.isLoading
+              ? null
+              : () => showNotImplementedAlertDialog(context: context),
+          child: Text('Resend SMS (30)'.hardcoded),
         ),
         LoadingElevatedButton(
+          isLoading: state.isLoading,
+          onPressed: () => submit(context),
           text: 'Sign in'.hardcoded,
-          onPressed: () => verify(context),
         ),
       ],
     );

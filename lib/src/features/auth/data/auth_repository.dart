@@ -20,8 +20,9 @@ final authStateChangesProvider = StreamProvider.autoDispose<AppUser?>(
 abstract class AuthRepository {
   Stream<AppUser?> authStateChanges();
   AppUser? get currentUser;
-  Future<void> signInWithPhoneNumber(String phoneNumber);
-  Future<void> verifyPhoneNumber(String smsCode);
+  Future<void> sendSmsCode(String phoneNumber);
+  Future<void> verifySmsCode(String smsCode);
+  Future<void> createAccount(String displayName, String? photoUrl);
   Future<void> signOut();
 }
 
@@ -35,25 +36,53 @@ class FakeAuthRepository implements AuthRepository {
   AppUser? get currentUser => _authState.value;
 
   @override
-  Future<void> signInWithPhoneNumber(String phoneNumber) async {
-    if (currentUser == null) this.phoneNumber = phoneNumber;
+  Future<void> sendSmsCode(String phoneNumber) async {
+    await Future.delayed(const Duration(seconds: 1));
+    // throw Exception();
+    if (currentUser == null) {
+      this.phoneNumber = phoneNumber;
+    } else {
+      throw Exception();
+    }
   }
 
   @override
-  Future<void> verifyPhoneNumber(String smsCode) async {
+  Future<void> verifySmsCode(String smsCode) async {
+    await Future.delayed(const Duration(seconds: 1));
+    // throw Exception();
+    if (currentUser == null && phoneNumber != null) {
+      // await _signInWithPhoneNumber();
+    } else {
+      throw Exception();
+    }
+  }
+
+  @override
+  Future<void> createAccount(String displayName, String? photoUrl) async {
+    await Future.delayed(const Duration(seconds: 1));
+    // throw Exception();
+    if (currentUser == null && phoneNumber != null) {
+      await _signInWithPhoneNumber();
+    } else {
+      throw Exception();
+    }
+  }
+
+  Future<void> _signInWithPhoneNumber() async {
     if (currentUser == null && phoneNumber != null) {
       _authState.value = AppUser(
         id: phoneNumber!.split('').reversed.join(),
         name: 'Tareco Buíto',
         phoneNumber: phoneNumber!,
       );
+      phoneNumber = null;
     }
   }
 
   @override
   Future<void> signOut() async {
-    await Future.delayed(const Duration(seconds: 2));
-    throw Exception();
+    await Future.delayed(const Duration(seconds: 1));
+    // throw Exception();
     _authState.value = null;
   }
 

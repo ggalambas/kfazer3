@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 
-/// Generic function to show a platform-aware Material or Cupertino dialog
+/// Generic function to show a Material dialog
 Future<bool?> showAlertDialog({
   required BuildContext context,
   required String title,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 
 /// Loading button based on [ElevatedButton].
@@ -25,8 +26,13 @@ class LoadingElevatedButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         primary: context.colorScheme.primaryContainer,
       ),
-      onPressed: onPressed,
-      child: isLoading ? const CircularProgressIndicator() : Text(text),
+      onPressed: isLoading ? null : onPressed,
+      child: isLoading
+          ? const SizedBox.square(
+              dimension: kSmallIconSize,
+              child: CircularProgressIndicator(strokeWidth: 3),
+            )
+          : Text(text),
     );
   }
 }
@@ -52,8 +58,13 @@ class LoadingOutlinedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
-      onPressed: onPressed,
-      child: isLoading ? const CircularProgressIndicator() : Text(text),
+      onPressed: isLoading ? null : onPressed,
+      child: isLoading
+          ? const SizedBox.square(
+              dimension: kSmallIconSize,
+              child: CircularProgressIndicator(strokeWidth: 3),
+            )
+          : Text(text),
     );
   }
 }

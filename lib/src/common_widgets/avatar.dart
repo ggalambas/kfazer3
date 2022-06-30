@@ -18,11 +18,11 @@ class Avatar extends StatelessWidget {
     this.text,
   }) : diameter = radius * 2;
 
-  factory Avatar.fromUser(AppUser user, {double radius = 16}) => Avatar(
-        text: user.name,
+  factory Avatar.fromUser(AppUser? user, {double radius = 16}) => Avatar(
+        text: user?.name,
         radius: radius,
         foregroundImage:
-            user.photoUrl == null ? null : NetworkImage(user.photoUrl!),
+            user?.photoUrl == null ? null : NetworkImage(user!.photoUrl!),
       );
 
   factory Avatar.fromWorkspace(Workspace workspace, {double radius = 20}) =>

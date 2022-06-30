@@ -6,12 +6,13 @@ import 'package:kfazer3/src/common_widgets/empty_placeholder.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_list/create_workspace_fab.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_list/home_bar.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_list/workspace_card.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:smart_space/smart_space.dart';
+
+import 'home_bar.dart';
+import 'new_workspace_dialog.dart';
+import 'workspace_card.dart';
 
 class WorkspaceListScreen extends ConsumerWidget {
   const WorkspaceListScreen({super.key});
@@ -48,7 +49,14 @@ class WorkspaceListScreen extends ConsumerWidget {
                 ],
               ),
       ),
-      floatingActionButton: const CreateWorkspaceFab(),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => showDialog(
+          context: context,
+          builder: (_) => const NewWorkspaceDialog(),
+        ),
+        icon: const Icon(Icons.add),
+        label: Text('Create new'.hardcoded),
+      ),
     );
   }
 }

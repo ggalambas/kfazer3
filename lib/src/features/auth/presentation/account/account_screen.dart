@@ -5,6 +5,7 @@ import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/account_screen_controller.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
+import 'package:kfazer3/src/utils/async_value_ui.dart';
 
 class AccountScreen extends ConsumerWidget {
   const AccountScreen({super.key});
@@ -17,24 +18,19 @@ class AccountScreen extends ConsumerWidget {
       defaultActionText: 'Logout'.hardcoded,
     );
     if (logout == true) {
-      ref.read(accountScreenControllerProvider.notifier).signOut();
-      //TODO: only pop on success
-      // context.goNamed(AppRoute.signIn.name);
+      final success =
+          await ref.read(accountScreenControllerProvider.notifier).signOut();
+      // ignore: use_build_context_synchronously
+      if (success) context.goNamed(AppRoute.signIn.name);
     }
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen<AsyncValue<void>>(accountScreenControllerProvider,
-        (previousState, state) {
-      if (!state.isRefreshing && state.hasError) {
-        showExceptionAlertDialog(
-          context: context,
-          title: 'Error'.hardcoded,
-          exception: state.error,
-        );
-      }
-    });
+    ref.listen<AsyncValue>(
+      accountScreenControllerProvider,
+      (_, state) => state.showAlertDialogOnError(context),
+    );
     final state = ref.watch(accountScreenControllerProvider);
     return Scaffold(
       appBar: AppBar(
@@ -49,7 +45,9 @@ class AccountScreen extends ConsumerWidget {
       body: Center(
         child: TextButton(
           onPressed: state.isLoading ? null : () => signOut(context, ref),
-          child: Text('Sign out'.hardcoded),
+          child: state.isLoading
+              ? const CircularProgressIndicator()
+              : Text('Sign out'.hardcoded),
         ),
       ),
     );

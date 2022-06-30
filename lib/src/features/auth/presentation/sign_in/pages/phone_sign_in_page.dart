@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/features/auth/data/country_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/country.dart';
 import 'package:kfazer3/src/features/auth/presentation/country_picker/country_picker.dart';
-import 'package:kfazer3/src/features/auth/presentation/sign_in_flow/sign_in_layout.dart';
-import 'package:kfazer3/src/features/auth/presentation/sign_in_flow/sign_in_screen.dart';
+import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
+import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
-import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:smart_space/smart_space.dart';
 
 class PhoneSignInPage extends ConsumerStatefulWidget {
-  const PhoneSignInPage({super.key});
+  final VoidCallback? onSuccess;
+  const PhoneSignInPage({super.key, this.onSuccess});
 
   @override
   ConsumerState<PhoneSignInPage> createState() => _PhoneSignInPageState();
 }
 
 class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
-  final formKey = GlobalKey<FormState>();
+  // final formKey = GlobalKey<FormState>();
   final phoneNumberNode = FocusNode();
   final phoneNumberController = TextEditingController();
 
@@ -30,19 +29,19 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
   // error hints only when the form has been submitted
   // For more details on how this is implemented, see:
   // https://codewithandrea.com/articles/flutter-text-field-form-validation/
-  // var _submitted = false;
+  // final submitted = false;
 
   @override
   void dispose() {
     phoneNumberController.dispose();
+    phoneNumberNode.dispose();
     super.dispose();
   }
 
-  void submit(BuildContext context) {
-    context.goNamed(
-      AppRoute.signInSubRoute.name,
-      params: {'subRoute': SignInSubRoute.verification.name},
-    );
+  void submit(BuildContext context) async {
+    final controller = ref.read(signInControllerProvider.notifier);
+    final success = await controller.submitPhoneNumber(phoneNumber);
+    if (success) widget.onSuccess?.call();
     phoneNumberNode
       ..nextFocus()
       ..unfocus();
@@ -50,9 +49,10 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(signInControllerProvider);
     final countryListValue = ref.watch(countryListFutureProvider);
     return SignInLayout(
-      formKey: formKey,
+      // formKey: formKey,
       title: 'Welcome to KFazer'.hardcoded,
       description: 'We will need to verify your phone number.\n'
               'On pressing "next", you are accepting our Terms of Use '
@@ -78,13 +78,16 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
                 child: CountryPicker(countries: countryList),
               ),
             ),
+            // autovalidateMode: AutovalidateMode.onUserInteraction,
+            // validator: (phoneNumber) => !submitted ? null : state,
           ),
         ),
       ],
       cta: [
         LoadingElevatedButton(
-          text: 'Next'.hardcoded,
+          isLoading: state.isLoading,
           onPressed: () => submit(context),
+          text: 'Next'.hardcoded,
         ),
       ],
     );
