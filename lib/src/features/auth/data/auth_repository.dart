@@ -22,7 +22,7 @@ abstract class AuthRepository {
   AppUser? get currentUser;
   Future<void> sendSmsCode(String phoneNumber);
   Future<void> verifySmsCode(String smsCode);
-  Future<void> createAccount(String displayName, String? photoUrl);
+  Future<void> createAccount(String displayName);
   Future<void> signOut();
 }
 
@@ -58,7 +58,7 @@ class FakeAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<void> createAccount(String displayName, String? photoUrl) async {
+  Future<void> createAccount(String displayName) async {
     await Future.delayed(const Duration(seconds: 1));
     // throw Exception();
     if (currentUser == null && phoneNumber != null) {

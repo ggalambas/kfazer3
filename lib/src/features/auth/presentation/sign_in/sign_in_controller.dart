@@ -1,6 +1,7 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
+
+import 'sign_in_screen.dart';
 
 final signInControllerProvider =
     StateNotifierProvider.autoDispose<SignInController, AsyncValue>((ref) {
@@ -16,24 +17,18 @@ class SignInController extends StateNotifier<AsyncValue> {
   SignInController({required this.authRepository})
       : super(const AsyncValue.data(null));
 
-  Future<bool> submitPhoneNumber(String phoneNumber) async {
+  Future<bool> submit(SignInPage page, String value) async {
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(
-      () => authRepository.sendSmsCode(phoneNumber),
-    );
+    state = await AsyncValue.guard(() {
+      switch (page) {
+        case SignInPage.phone:
+          return authRepository.sendSmsCode(value);
+        case SignInPage.verification:
+          return authRepository.verifySmsCode(value);
+        case SignInPage.account:
+          return authRepository.createAccount(value);
+      }
+    });
     return !state.hasError;
-  }
-
-  Future<bool> submitSmsCode(String smsCode) async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() => authRepository.verifySmsCode(smsCode));
-    return !state.hasError;
-  }
-
-  Future<void> submitAccount(String displayName, Image? image) async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(
-      () => authRepository.createAccount(displayName, null),
-    );
   }
 }

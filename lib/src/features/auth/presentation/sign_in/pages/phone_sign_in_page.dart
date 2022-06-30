@@ -7,6 +7,7 @@ import 'package:kfazer3/src/features/auth/domain/country.dart';
 import 'package:kfazer3/src/features/auth/presentation/country_picker/country_picker.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.dart';
+import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:smart_space/smart_space.dart';
 
@@ -39,12 +40,12 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
   }
 
   void submit(BuildContext context) async {
-    final controller = ref.read(signInControllerProvider.notifier);
-    final success = await controller.submitPhoneNumber(phoneNumber);
-    if (success) widget.onSuccess?.call();
     phoneNumberNode
       ..nextFocus()
       ..unfocus();
+    final controller = ref.read(signInControllerProvider.notifier);
+    final success = await controller.submit(SignInPage.phone, phoneNumber);
+    if (success) widget.onSuccess?.call();
   }
 
   @override

@@ -4,6 +4,7 @@ import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.dart';
+import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:smart_space/smart_space.dart';
 
@@ -37,12 +38,12 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
   }
 
   void submit(BuildContext context) async {
-    final controller = ref.read(signInControllerProvider.notifier);
-    final success = await controller.submitSmsCode(code);
-    if (success) widget.onSuccess?.call();
     codeNode
       ..nextFocus()
       ..unfocus();
+    final controller = ref.read(signInControllerProvider.notifier);
+    final success = await controller.submit(SignInPage.verification, code);
+    if (success) widget.onSuccess?.call();
   }
 
   @override

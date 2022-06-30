@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.dart';
+import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:smart_space/smart_space.dart';
 
@@ -33,10 +34,11 @@ class _AccountSetupPageState extends ConsumerState<AccountSetupPage> {
   }
 
   void submit(BuildContext context) {
-    ref.read(signInControllerProvider.notifier).submitAccount(name, null);
     nameNode
       ..nextFocus()
       ..unfocus();
+    final controller = ref.read(signInControllerProvider.notifier);
+    controller.submit(SignInPage.account, name);
   }
 
   @override

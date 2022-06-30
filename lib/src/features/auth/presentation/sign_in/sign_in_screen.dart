@@ -12,7 +12,7 @@ import 'pages/phone_sign_in_page.dart';
 import 'pages/phone_verification_page.dart';
 
 /// The three sub-routes that are presented as part of the sign in flow.
-enum SignInPage { phoneNumber, verification, account }
+enum SignInPage { phone, verification, account }
 
 /// This is the root widget of the sign in flow, which is composed of 3 pages:
 /// 1. Phone number sign in page
@@ -63,7 +63,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     return WillPopScope(
       onWillPop: () async {
         switch (widget.page) {
-          case SignInPage.phoneNumber:
+          case SignInPage.phone:
             return true;
           case SignInPage.verification:
           case SignInPage.account:
