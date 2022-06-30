@@ -13,7 +13,7 @@ final countryListFutureProvider = FutureProvider.autoDispose<List<Country>>(
   (ref) async {
     final countryRepository = ref.watch(countryRepositoryProvider);
     final countryList = await countryRepository.fetchCountryList();
-    ref.maintainState = true;
+    ref.keepAlive();
     return countryList;
   },
 );
@@ -25,9 +25,21 @@ abstract class CountryRepository {
 class HttpCountryRepository implements CountryRepository {
   @override
   Future<List<Country>> fetchCountryList() async {
-    final response = await http.get(Uri.parse(
-      'https://restcountries.com/v2/all?fields=name,alpha2Code,callingCodes,flags',
-    ));
+    //!
+    return [
+      const Country(
+        code: 'PT',
+        name: 'Portugal',
+        phoneCode: 351,
+        flagUrl: 'https://flagcdn.com/w320/pt.png',
+      )
+    ];
+    //TODO check for certificate
+    final response = await http.get(
+      Uri.parse(
+        'https://restcountries.com/v2/all?fields=name,alpha2Code,callingCodes,flags',
+      ),
+    );
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,

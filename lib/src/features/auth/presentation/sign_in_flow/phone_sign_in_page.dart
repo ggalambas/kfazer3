@@ -12,15 +12,14 @@ import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:smart_space/smart_space.dart';
 
-class PhoneNumberSignInPage extends ConsumerStatefulWidget {
-  const PhoneNumberSignInPage({super.key});
+class PhoneSignInPage extends ConsumerStatefulWidget {
+  const PhoneSignInPage({super.key});
 
   @override
-  ConsumerState<PhoneNumberSignInPage> createState() =>
-      _PhoneNumberSignInPageState();
+  ConsumerState<PhoneSignInPage> createState() => _PhoneSignInPageState();
 }
 
-class _PhoneNumberSignInPageState extends ConsumerState<PhoneNumberSignInPage> {
+class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
   final formKey = GlobalKey<FormState>();
   final phoneNumberNode = FocusNode();
   final phoneNumberController = TextEditingController();
@@ -59,7 +58,7 @@ class _PhoneNumberSignInPageState extends ConsumerState<PhoneNumberSignInPage> {
               'On pressing "next", you are accepting our Terms of Use '
               'and agreeing with our Privacy Policy.'
           .hardcoded,
-      formFields: [
+      content: [
         AsyncValueWidget<List<Country>>(
           value: countryListValue,
           data: (countryList) => TextField(

@@ -2,17 +2,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 import 'package:kfazer3/src/utils/in_memory_store.dart';
 
-import 'firebase_auth_repository.dart';
-
 //* to use this, run the app with --dart-define=useFakeRepos=true
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  const isFake = String.fromEnvironment('useFakeRepos') == 'true';
-  if (isFake) {
-    final repository = FakeAuthRepository();
-    ref.onDispose(() => repository.dispose());
-    return repository;
-  }
-  return FirebaseAuthRepository();
+  // const isFake = String.fromEnvironment('useFakeRepos') == 'true';
+  // if (isFake) {
+  final repository = FakeAuthRepository();
+  ref.onDispose(() => repository.dispose());
+  return repository;
+  // }
+  // return FirebaseAuthRepository();
 });
 
 final authStateChangesProvider = StreamProvider.autoDispose<AppUser?>(
@@ -54,6 +52,8 @@ class FakeAuthRepository implements AuthRepository {
 
   @override
   Future<void> signOut() async {
+    await Future.delayed(const Duration(seconds: 2));
+    throw Exception();
     _authState.value = null;
   }
 

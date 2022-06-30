@@ -16,6 +16,7 @@ class CountryPicker extends StatefulWidget {
 class _CountryDropdownButtonState extends State<CountryPicker> {
   late var selected = widget.countries.firstWhere(
     (country) => country.code == Localizations.localeOf(context).countryCode,
+    orElse: () => widget.countries.first,
   );
 
   Future<Country?> showCountryDialog() => showDialog<Country>(

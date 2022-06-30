@@ -8,7 +8,7 @@ class SignInLayout extends StatelessWidget {
   final Key? formKey;
   final String title;
   final String description;
-  final List<Widget> formFields;
+  final List<Widget> content;
   final List<Widget> cta;
 
   const SignInLayout({
@@ -16,7 +16,7 @@ class SignInLayout extends StatelessWidget {
     this.formKey,
     required this.title,
     required this.description,
-    required this.formFields,
+    required this.content,
     required this.cta,
   });
 
@@ -46,7 +46,7 @@ class SignInLayout extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  ...formFields,
+                  ...content,
                   Space(3),
                   ...cta,
                 ],
