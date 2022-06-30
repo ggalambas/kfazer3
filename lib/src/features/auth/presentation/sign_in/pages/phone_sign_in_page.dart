@@ -20,7 +20,7 @@ class PhoneSignInPage extends ConsumerStatefulWidget {
 }
 
 class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
-  // final formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   final phoneNumberNode = FocusNode();
   final phoneNumberController = TextEditingController();
 
@@ -30,7 +30,7 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
   // error hints only when the form has been submitted
   // For more details on how this is implemented, see:
   // https://codewithandrea.com/articles/flutter-text-field-form-validation/
-  // final submitted = false;
+  var submitted = false;
 
   @override
   void dispose() {
@@ -39,10 +39,15 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
     super.dispose();
   }
 
+  //TODO add country code to phoneNumber
   void submit(BuildContext context) async {
     phoneNumberNode
       ..nextFocus()
       ..unfocus();
+
+    setState(() => submitted = true);
+    if (!formKey.currentState!.validate()) return;
+
     final controller = ref.read(signInControllerProvider.notifier);
     final success = await controller.submit(SignInPage.phone, phoneNumber);
     if (success) widget.onSuccess?.call();
@@ -53,7 +58,7 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
     final state = ref.watch(signInControllerProvider);
     final countryListValue = ref.watch(countryListFutureProvider);
     return SignInLayout(
-      // formKey: formKey,
+      formKey: formKey,
       title: 'Welcome to KFazer'.hardcoded,
       description: 'We will need to verify your phone number.\n'
               'On pressing "next", you are accepting our Terms of Use '
@@ -62,7 +67,7 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
       content: [
         AsyncValueWidget<List<Country>>(
           value: countryListValue,
-          data: (countryList) => TextField(
+          data: (countryList) => TextFormField(
             focusNode: phoneNumberNode,
             controller: phoneNumberController,
             keyboardType: TextInputType.phone,
@@ -79,12 +84,18 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
                 child: CountryPicker(countries: countryList),
               ),
             ),
-            // autovalidateMode: AutovalidateMode.onUserInteraction,
-            // validator: (phoneNumber) => !submitted ? null : state,
+            onEditingComplete: () => submit(context),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (phoneNumber) {
+              if (!submitted) return null;
+              final controller = ref.read(signInControllerProvider.notifier);
+              return controller.phoneNumberErrorText(phoneNumber ?? '');
+            },
           ),
         ),
       ],
       cta: [
+        //TODO merge content and cta so this can load
         LoadingElevatedButton(
           isLoading: state.isLoading,
           onPressed: () => submit(context),

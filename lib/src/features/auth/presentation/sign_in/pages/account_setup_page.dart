@@ -15,7 +15,7 @@ class AccountSetupPage extends ConsumerStatefulWidget {
 }
 
 class _AccountSetupPageState extends ConsumerState<AccountSetupPage> {
-  // final formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   final nameNode = FocusNode();
   final nameController = TextEditingController();
 
@@ -25,7 +25,7 @@ class _AccountSetupPageState extends ConsumerState<AccountSetupPage> {
   // error hints only when the form has been submitted
   // For more details on how this is implemented, see:
   // https://codewithandrea.com/articles/flutter-text-field-form-validation/
-  // var _submitted = false;
+  var submitted = false;
 
   @override
   void dispose() {
@@ -37,6 +37,10 @@ class _AccountSetupPageState extends ConsumerState<AccountSetupPage> {
     nameNode
       ..nextFocus()
       ..unfocus();
+
+    setState(() => submitted = true);
+    if (!formKey.currentState!.validate()) return;
+
     final controller = ref.read(signInControllerProvider.notifier);
     controller.submit(SignInPage.account, name);
   }
@@ -45,11 +49,11 @@ class _AccountSetupPageState extends ConsumerState<AccountSetupPage> {
   Widget build(BuildContext context) {
     final state = ref.watch(signInControllerProvider);
     return SignInLayout(
-      // formKey: formKey,
+      formKey: formKey,
       title: 'Set up your profile'.hardcoded,
       description: 'Choose a name that others will recognize you.'.hardcoded,
       content: [
-        TextField(
+        TextFormField(
           focusNode: nameNode,
           controller: nameController,
           keyboardType: TextInputType.name,
@@ -62,6 +66,13 @@ class _AccountSetupPageState extends ConsumerState<AccountSetupPage> {
               borderRadius: BorderRadius.circular(kSpace),
             ),
           ),
+          onEditingComplete: () => submit(context),
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: (name) {
+            if (!submitted) return null;
+            final controller = ref.read(signInControllerProvider.notifier);
+            return controller.nameErrorText(name ?? '');
+          },
         ),
       ],
       cta: [

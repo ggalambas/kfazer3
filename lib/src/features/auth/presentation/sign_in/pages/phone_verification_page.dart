@@ -18,7 +18,7 @@ class PhoneVerificationPage extends ConsumerStatefulWidget {
 }
 
 class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
-  // final formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   final codeNode = FocusNode();
   final codeController = TextEditingController();
 
@@ -28,7 +28,7 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
   // error hints only when the form has been submitted
   // For more details on how this is implemented, see:
   // https://codewithandrea.com/articles/flutter-text-field-form-validation/
-  // var _submitted = false;
+  var submitted = false;
 
   @override
   void dispose() {
@@ -41,6 +41,10 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
     codeNode
       ..nextFocus()
       ..unfocus();
+
+    setState(() => submitted = true);
+    if (!formKey.currentState!.validate()) return;
+
     final controller = ref.read(signInControllerProvider.notifier);
     final success = await controller.submit(SignInPage.verification, code);
     if (success) widget.onSuccess?.call();
@@ -50,11 +54,13 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
   Widget build(BuildContext context) {
     final state = ref.watch(signInControllerProvider);
     return SignInLayout(
-      // formKey: formKey,
+      formKey: formKey,
       title: 'Verifying your number'.hardcoded,
+      //TODO get phoneNumber
       description: 'We have sent a code to +351912345678'.hardcoded,
       content: [
-        TextField(
+        //TODO add pinput package
+        TextFormField(
           focusNode: codeNode,
           controller: codeController,
           keyboardType: TextInputType.number,
@@ -67,9 +73,17 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
               borderRadius: BorderRadius.circular(kSpace),
             ),
           ),
+          onEditingComplete: () => submit(context),
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: (code) {
+            if (!submitted) return null;
+            final controller = ref.read(signInControllerProvider.notifier);
+            return controller.codeErrorText(code ?? '');
+          },
         ),
       ],
       cta: [
+        //TODO resend sms code and timer
         OutlinedButton(
           onPressed: state.isLoading
               ? null

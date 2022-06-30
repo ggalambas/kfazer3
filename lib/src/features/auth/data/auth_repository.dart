@@ -62,17 +62,17 @@ class FakeAuthRepository implements AuthRepository {
     await Future.delayed(const Duration(seconds: 1));
     // throw Exception();
     if (currentUser == null && phoneNumber != null) {
-      await _signInWithPhoneNumber();
+      await _signInWithPhoneNumber(name: displayName);
     } else {
       throw Exception();
     }
   }
 
-  Future<void> _signInWithPhoneNumber() async {
+  Future<void> _signInWithPhoneNumber({String? name}) async {
     if (currentUser == null && phoneNumber != null) {
       _authState.value = AppUser(
         id: phoneNumber!.split('').reversed.join(),
-        name: 'Tareco Buíto',
+        name: name ?? 'Tareco Buíto',
         phoneNumber: phoneNumber!,
       );
       phoneNumber = null;
