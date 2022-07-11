@@ -24,6 +24,7 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
   final phoneNumberNode = FocusNode();
   final phoneNumberController = TextEditingController();
 
+  late String phoneCode;
   String get phoneNumber => phoneNumberController.text;
 
   // local variable used to apply AutovalidateMode.onUserInteraction and show
@@ -39,7 +40,6 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
     super.dispose();
   }
 
-  //TODO add country code to phoneNumber
   void submit(BuildContext context) async {
     phoneNumberNode
       ..nextFocus()
@@ -49,7 +49,8 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
     if (!formKey.currentState!.validate()) return;
 
     final controller = ref.read(signInControllerProvider.notifier);
-    final success = await controller.submit(SignInPage.phone, phoneNumber);
+    final success =
+        await controller.submit(SignInPage.phone, '$phoneCode$phoneNumber');
     if (success) widget.onSuccess?.call();
   }
 
@@ -81,7 +82,10 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
               ),
               prefix: Padding(
                 padding: EdgeInsets.only(right: kSpace),
-                child: CountryPicker(countries: countryList),
+                child: CountryPicker(
+                  countries: countryList,
+                  onChanged: (country) => phoneCode = country.phoneCode,
+                ),
               ),
             ),
             onEditingComplete: () => submit(context),

@@ -7,22 +7,42 @@ import 'package:smart_space/smart_space.dart';
 
 class CountryPicker extends StatefulWidget {
   final List<Country> countries;
-  const CountryPicker({super.key, required this.countries});
+  final ValueChanged<Country> onChanged;
+
+  const CountryPicker({
+    super.key,
+    required this.countries,
+    required this.onChanged,
+  });
 
   @override
-  State<CountryPicker> createState() => _CountryDropdownButtonState();
+  State<CountryPicker> createState() => CountryPickerState();
 }
 
-class _CountryDropdownButtonState extends State<CountryPicker> {
-  late var selected = widget.countries.firstWhere(
-    (country) => country.code == Localizations.localeOf(context).countryCode,
-    orElse: () => widget.countries.first,
-  );
+class CountryPickerState extends State<CountryPicker> {
+  late Country selected;
+
+  @override
+  void initState() {
+    super.initState();
+    selected = widget.countries.firstWhere(
+      (country) => country.code == Localizations.localeOf(context).countryCode,
+      orElse: () => widget.countries.first,
+    );
+    widget.onChanged(selected);
+  }
 
   Future<Country?> showCountryDialog() => showDialog<Country>(
         context: context,
         builder: (context) => CountryPickerDialog(countries: widget.countries),
       );
+
+  void changeSelectedCountry(Country country) {
+    if (country != selected) {
+      setState(() => selected = country);
+      widget.onChanged(selected);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +50,7 @@ class _CountryDropdownButtonState extends State<CountryPicker> {
       customBorder: const StadiumBorder(),
       onTap: () async {
         final country = await showCountryDialog();
-        if (country != null) {
-          setState(() => selected = country);
-        }
+        if (country != null) changeSelectedCountry(country);
       },
       child: Padding(
         padding: EdgeInsets.only(right: kSpace / 2),

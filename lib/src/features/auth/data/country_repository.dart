@@ -25,19 +25,11 @@ abstract class CountryRepository {
 class HttpCountryRepository implements CountryRepository {
   @override
   Future<List<Country>> fetchCountryList() async {
-    //!
-    return [
-      const Country(
-        code: 'PT',
-        name: 'Portugal',
-        phoneCode: 351,
-        flagUrl: 'https://flagcdn.com/w320/pt.png',
-      )
-    ];
-    //TODO check for certificate
+    // TODO: handle empty list of countries
     final response = await http.get(
       Uri.parse(
-        'https://restcountries.com/v2/all?fields=name,alpha2Code,callingCodes,flags',
+        'https://restcountries.com/v2/'
+        'all?fields=name,alpha2Code,callingCodes,flags',
       ),
     );
 
