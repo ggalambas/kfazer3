@@ -119,12 +119,12 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
         ),
       ],
       cta: [
-        //TODO merge content and cta so this can load
-        LoadingElevatedButton(
-          isLoading: state.isLoading,
-          onPressed: () => submit(context),
-          text: 'Next'.hardcoded,
-        ),
+        if (countryListValue.hasValue)
+          LoadingElevatedButton(
+            isLoading: state.isLoading,
+            onPressed: () => submit(context),
+            text: 'Next'.hardcoded,
+          ),
       ],
     );
   }
