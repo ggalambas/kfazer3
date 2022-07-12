@@ -60,6 +60,15 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
       description: 'We have sent a code to +351912345678'.hardcoded,
       content: [
         //TODO add pinput package
+        // Pinput(
+        //   focusNode: codeNode,
+        //   controller: codeController,
+        //   length: 6,
+        //   androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsRetrieverApi,
+        //   listenForMultipleSmsOnAndroid: true,
+        //   defaultPinTheme: const PinTheme(),
+        //   pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+        // ),
         TextFormField(
           focusNode: codeNode,
           controller: codeController,
