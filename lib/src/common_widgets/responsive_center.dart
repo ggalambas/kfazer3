@@ -7,15 +7,16 @@ import 'package:kfazer3/src/constants/breakpoints.dart';
 /// If available width is smaller than the maximum width, the child use all the
 /// available width.
 class ResponsiveCenter extends StatelessWidget {
-  const ResponsiveCenter({
-    Key? key,
-    this.maxContentWidth = Breakpoint.desktop,
-    this.padding = EdgeInsets.zero,
-    required this.child,
-  }) : super(key: key);
   final double maxContentWidth;
   final EdgeInsetsGeometry padding;
   final Widget child;
+
+  const ResponsiveCenter({
+    super.key,
+    this.maxContentWidth = Breakpoint.desktop,
+    this.padding = EdgeInsets.zero,
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +38,17 @@ class ResponsiveCenter extends StatelessWidget {
 
 /// Sliver-equivalent of [ResponsiveCenter].
 class ResponsiveSliverCenter extends StatelessWidget {
-  const ResponsiveSliverCenter({
-    Key? key,
-    this.maxContentWidth = Breakpoint.desktop,
-    this.padding = EdgeInsets.zero,
-    required this.child,
-  }) : super(key: key);
   final double maxContentWidth;
   final EdgeInsetsGeometry padding;
   final Widget child;
+
+  const ResponsiveSliverCenter({
+    super.key,
+    this.maxContentWidth = Breakpoint.desktop,
+    this.padding = EdgeInsets.zero,
+    required this.child,
+  });
+
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
