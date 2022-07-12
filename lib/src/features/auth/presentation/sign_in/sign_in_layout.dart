@@ -27,7 +27,7 @@ class SignInLayout extends StatelessWidget {
         padding: EdgeInsets.all(kSpace * 2),
         child: ResponsiveTwoColumnLayout(
           spacing: kSpace * 2,
-          rowCrossAxisAlignment: CrossAxisAlignment.end,
+          rowCrossAxisAlignment: CrossAxisAlignment.center,
           startContent: Padding(
             padding: EdgeInsets.all(kSpace * 2),
             child: Column(
@@ -47,7 +47,7 @@ class SignInLayout extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   ...content,
-                  Space(3),
+                  if (content.isNotEmpty && cta.isNotEmpty) Space(3),
                   ...cta,
                 ],
               ),

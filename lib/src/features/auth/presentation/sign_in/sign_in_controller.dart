@@ -1,8 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
-import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_validators.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/utils/string_validator.dart';
 
 import 'sign_in_screen.dart';
 
@@ -14,6 +14,7 @@ final signInControllerProvider =
 
 class SignInController extends StateNotifier<AsyncValue> with SignInValidators {
   final AuthRepository authRepository;
+  String? phoneNumber;
 
   SignInController({required this.authRepository})
       : super(const AsyncValue.data(null));
@@ -25,11 +26,12 @@ class SignInController extends StateNotifier<AsyncValue> with SignInValidators {
         case SignInPage.phone:
           return authRepository.sendSmsCode(value);
         case SignInPage.verification:
-          return authRepository.verifySmsCode(value);
+          return authRepository.verifySmsCode(phoneNumber!, value);
         case SignInPage.account:
-          return authRepository.createAccount(value);
+          return authRepository.createAccount(phoneNumber!, value);
       }
     });
+    if (page == SignInPage.phone && !state.hasError) phoneNumber = value;
     return !state.hasError;
   }
 }

@@ -21,14 +21,13 @@ abstract class AuthRepository {
   Stream<AppUser?> authStateChanges();
   AppUser? get currentUser;
   Future<void> sendSmsCode(String phoneNumber);
-  Future<void> verifySmsCode(String smsCode);
-  Future<void> createAccount(String displayName);
+  Future<void> verifySmsCode(String phoneNumber, String smsCode);
+  Future<void> createAccount(String phoneNumber, String displayName);
   Future<void> signOut();
 }
 
 class FakeAuthRepository implements AuthRepository {
   final _authState = InMemorStore<AppUser?>(null);
-  String? phoneNumber;
 
   @override
   Stream<AppUser?> authStateChanges() => _authState.stream;
@@ -40,42 +39,44 @@ class FakeAuthRepository implements AuthRepository {
     await Future.delayed(const Duration(seconds: 1));
     // throw Exception();
     if (currentUser == null) {
-      this.phoneNumber = phoneNumber;
     } else {
       throw Exception();
     }
   }
 
   @override
-  Future<void> verifySmsCode(String smsCode) async {
+  Future<void> verifySmsCode(String phoneNumber, String smsCode) async {
     await Future.delayed(const Duration(seconds: 1));
     // throw Exception();
-    if (currentUser == null && phoneNumber != null) {
-      // await _signInWithPhoneNumber();
+    if (currentUser == null) {
+      // if user has account
+      // await _signInWithPhoneNumber(phoneNumber);
     } else {
       throw Exception();
     }
   }
 
   @override
-  Future<void> createAccount(String displayName) async {
+  Future<void> createAccount(String phoneNumber, String displayName) async {
     await Future.delayed(const Duration(seconds: 1));
     // throw Exception();
-    if (currentUser == null && phoneNumber != null) {
-      await _signInWithPhoneNumber(name: displayName);
+    if (currentUser == null) {
+      await _signInWithPhoneNumber(phoneNumber, displayName: displayName);
     } else {
       throw Exception();
     }
   }
 
-  Future<void> _signInWithPhoneNumber({String? name}) async {
-    if (currentUser == null && phoneNumber != null) {
+  Future<void> _signInWithPhoneNumber(
+    String phoneNumber, {
+    String? displayName,
+  }) async {
+    if (currentUser == null) {
       _authState.value = AppUser(
-        id: phoneNumber!.split('').reversed.join(),
-        name: name ?? 'Tareco Buíto',
-        phoneNumber: phoneNumber!,
+        id: phoneNumber.split('').reversed.join(),
+        name: displayName ?? 'Tareco Buíto',
+        phoneNumber: phoneNumber,
       );
-      phoneNumber = null;
     }
   }
 

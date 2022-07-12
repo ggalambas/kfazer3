@@ -67,6 +67,7 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    //TODO when coming back, country get late initialization error
     ref.listen<AsyncValue<List<Country>>>(
       countryListFutureProvider,
       (_, countryListValue) => countryListValue.whenData(selectCountry),

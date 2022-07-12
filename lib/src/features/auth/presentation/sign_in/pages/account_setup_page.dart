@@ -7,6 +7,7 @@ import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.da
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:smart_space/smart_space.dart';
 
+//TODO when poping, it should go to phone sign in page
 class AccountSetupPage extends ConsumerStatefulWidget {
   const AccountSetupPage({super.key});
 

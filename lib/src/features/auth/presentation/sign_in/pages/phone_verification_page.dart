@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
+import 'package:kfazer3/src/features/auth/presentation/sign_in/sms_code_controller.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:smart_space/smart_space.dart';
 
@@ -50,14 +50,18 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
     if (success) widget.onSuccess?.call();
   }
 
+  void resendSmsCode(String phoneNumber) =>
+      ref.read(smsCodeControllerProvider(phoneNumber).notifier).resendSmsCode();
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(signInControllerProvider);
+    final phoneNumber =
+        ref.watch(signInControllerProvider.notifier).phoneNumber!;
     return SignInLayout(
       formKey: formKey,
       title: 'Verifying your number'.hardcoded,
-      //TODO get phoneNumber
-      description: 'We have sent a code to +351912345678'.hardcoded,
+      description: 'We have sent a code to $phoneNumber'.hardcoded,
       content: [
         //TODO add pinput package
         // Pinput(
@@ -93,11 +97,19 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
       ],
       cta: [
         //TODO resend sms code and timer
-        OutlinedButton(
-          onPressed: state.isLoading
-              ? null
-              : () => showNotImplementedAlertDialog(context: context),
-          child: Text('Resend SMS (30)'.hardcoded),
+        Consumer(
+          builder: (context, ref, _) {
+            final smsCodeController =
+                ref.watch(smsCodeControllerProvider(phoneNumber));
+            final timer = smsCodeController.value ?? 0;
+            return LoadingOutlinedButton(
+              isLoading: smsCodeController.isLoading,
+              onPressed: state.isLoading || timer > 0
+                  ? null
+                  : () => resendSmsCode(phoneNumber),
+              text: 'Resend SMS${timer > 0 ? ' ($timer)' : ''}'.hardcoded,
+            );
+          },
         ),
         LoadingElevatedButton(
           isLoading: state.isLoading,
