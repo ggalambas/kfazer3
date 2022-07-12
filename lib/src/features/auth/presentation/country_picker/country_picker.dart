@@ -6,52 +6,31 @@ import 'package:smart_space/smart_space.dart';
 
 import 'country_picker_dialog.dart';
 
-class CountryPicker extends StatefulWidget {
+class CountryPicker extends StatelessWidget {
+  final Country selected;
   final List<Country> countries;
   final ValueChanged<Country> onChanged;
 
   const CountryPicker({
     super.key,
+    required this.selected,
     required this.countries,
     required this.onChanged,
   });
 
-  @override
-  State<CountryPicker> createState() => CountryPickerState();
-}
-
-class CountryPickerState extends State<CountryPicker> {
-  late Country selected;
-
-  @override
-  void initState() {
-    super.initState();
-    selected = widget.countries.firstWhere(
-      (country) => country.code == Localizations.localeOf(context).countryCode,
-      orElse: () => widget.countries.first,
-    );
-    widget.onChanged(selected);
-  }
-
-  Future<Country?> showCountryDialog() => showDialog<Country>(
+  Future<Country?> showCountryDialog(BuildContext context) =>
+      showDialog<Country>(
         context: context,
-        builder: (context) => CountryPickerDialog(countries: widget.countries),
+        builder: (context) => CountryPickerDialog(countries: countries),
       );
-
-  void changeSelectedCountry(Country country) {
-    if (country != selected) {
-      setState(() => selected = country);
-      widget.onChanged(selected);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       customBorder: const StadiumBorder(),
       onTap: () async {
-        final country = await showCountryDialog();
-        if (country != null) changeSelectedCountry(country);
+        final country = await showCountryDialog(context);
+        if (country != null) onChanged(selected);
       },
       child: Padding(
         padding: EdgeInsets.only(right: kSpace / 2),
@@ -63,7 +42,7 @@ class CountryPickerState extends State<CountryPicker> {
               size: kSmallIconSize,
             ),
             Text(
-              selected.phoneCodeFormatted,
+              selected.phoneCode,
               // TextField default style
               style: context.textTheme.subtitle1,
             ),

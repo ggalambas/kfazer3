@@ -99,7 +99,7 @@ class CountryListView extends StatelessWidget {
               foregroundImage: NetworkImage(country.flagUrl, scale: 0.2),
             ),
             title: Text(country.name),
-            trailing: Text(country.phoneCodeFormatted),
+            trailing: Text(country.phoneCode),
             onTap: () => Navigator.pop(context, country),
           ),
       ],

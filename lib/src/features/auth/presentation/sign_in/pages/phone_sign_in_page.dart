@@ -20,11 +20,12 @@ class PhoneSignInPage extends ConsumerStatefulWidget {
 }
 
 class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
+  late Country selectedCountry;
   final formKey = GlobalKey<FormState>();
   final phoneNumberNode = FocusNode();
   final phoneNumberController = TextEditingController();
 
-  late String phoneCode;
+  String get phoneCode => selectedCountry.phoneCode;
   String get phoneNumber => phoneNumberController.text;
 
   // local variable used to apply AutovalidateMode.onUserInteraction and show
@@ -32,6 +33,14 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
   // For more details on how this is implemented, see:
   // https://codewithandrea.com/articles/flutter-text-field-form-validation/
   var submitted = false;
+
+  void selectCountry(List<Country> countryList) {
+    final localeCode = Localizations.localeOf(context).countryCode;
+    selectedCountry = countryList.firstWhere(
+      (country) => country.code == localeCode,
+      orElse: () => countryList.first,
+    );
+  }
 
   @override
   void dispose() {
@@ -49,13 +58,19 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
     if (!formKey.currentState!.validate()) return;
 
     final controller = ref.read(signInControllerProvider.notifier);
-    final success =
-        await controller.submit(SignInPage.phone, '$phoneCode$phoneNumber');
+    final success = await controller.submit(
+      SignInPage.phone,
+      '$phoneCode$phoneNumber',
+    );
     if (success) widget.onSuccess?.call();
   }
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<AsyncValue<List<Country>>>(
+      countryListFutureProvider,
+      (_, countryListValue) => countryListValue.whenData(selectCountry),
+    );
     final state = ref.watch(signInControllerProvider);
     final countryListValue = ref.watch(countryListFutureProvider);
     return SignInLayout(
@@ -83,8 +98,13 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
               prefix: Padding(
                 padding: EdgeInsets.only(right: kSpace),
                 child: CountryPicker(
+                  selected: selectedCountry,
                   countries: countryList,
-                  onChanged: (country) => phoneCode = country.phoneCode,
+                  onChanged: (country) {
+                    if (country != selectedCountry) {
+                      setState(() => selectedCountry = country);
+                    }
+                  },
                 ),
               ),
             ),

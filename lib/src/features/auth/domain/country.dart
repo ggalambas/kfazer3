@@ -14,8 +14,6 @@ class Country extends Equatable {
     required this.flagUrl,
   });
 
-  String get phoneCodeFormatted => '+$phoneCode';
-
   factory Country.fromJson(Map<String, dynamic> json) => Country(
         code: json['alpha2Code'] as String,
         name: json['name'] as String,
