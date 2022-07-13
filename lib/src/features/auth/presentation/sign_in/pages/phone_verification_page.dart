@@ -63,22 +63,14 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
       title: 'Verifying your number'.hardcoded,
       description: 'We have sent a code to $phoneNumber'.hardcoded,
       content: [
-        //TODO add pinput package
-        // Pinput(
-        //   focusNode: codeNode,
-        //   controller: codeController,
-        //   length: 6,
-        //   androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsRetrieverApi,
-        //   listenForMultipleSmsOnAndroid: true,
-        //   defaultPinTheme: const PinTheme(),
-        //   pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
-        // ),
         TextFormField(
           focusNode: codeNode,
           controller: codeController,
           keyboardType: TextInputType.number,
           textInputAction: TextInputAction.done,
+          maxLength: 6,
           decoration: InputDecoration(
+            counterText: '',
             labelText: 'Code'.hardcoded,
             filled: true,
             border: OutlineInputBorder(
