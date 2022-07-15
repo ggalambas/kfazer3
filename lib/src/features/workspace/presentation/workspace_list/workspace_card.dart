@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
+import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:smart_space/smart_space.dart';
 
@@ -27,6 +29,13 @@ class WorkspaceCard extends StatelessWidget {
               Avatar.fromWorkspace(workspace),
               Space(2),
               Text(workspace.title),
+              const Spacer(),
+              PopupMenuButton(
+                iconSize: kSmallIconSize,
+                onSelected: (option) =>
+                    showNotImplementedAlertDialog(context: context),
+                itemBuilder: (context) => [],
+              ),
             ],
           ),
         ),

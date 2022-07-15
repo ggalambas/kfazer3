@@ -32,18 +32,20 @@ enum AppRoute {
   settings, //! fullscreenDialog
 }
 
+// TODO back button on workpsace page goig throught all the pages
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authRepository = ref.watch(authRepositoryProvider);
   return GoRouter(
     initialLocation: '/',
     debugLogDiagnostics: false,
     redirect: (state) {
-      final isLoggedIn = authRepository.currentUser != null;
-      if (isLoggedIn) {
-        if (state.location.contains('/signIn')) return '/';
-      } else {
-        if (!state.location.contains('/signIn')) return '/signIn';
-      }
+      //TODO uncomment to make login available
+      // final isLoggedIn = authRepository.currentUser != null;
+      // if (isLoggedIn) {
+      //   if (state.location.contains('/signIn')) return '/';
+      // } else {
+      //   if (!state.location.contains('/signIn')) return '/signIn';
+      // }
       return null;
     },
     refreshListenable: GoRouterRefreshStream(authRepository.authStateChanges()),

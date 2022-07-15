@@ -7,7 +7,7 @@ import 'package:smart_space/smart_space.dart';
 class SignInLayout extends StatelessWidget {
   final Key? formKey;
   final String title;
-  final String description;
+  final InlineSpan description;
   final List<Widget> content;
   final List<Widget> cta;
 
@@ -35,7 +35,7 @@ class SignInLayout extends StatelessWidget {
               children: [
                 Text(title, style: context.textTheme.displayLarge),
                 Space(2),
-                Text(description, style: context.textTheme.bodySmall),
+                Text.rich(description, style: context.textTheme.bodySmall),
               ],
             ),
           ),

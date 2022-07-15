@@ -61,7 +61,9 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
     return SignInLayout(
       formKey: formKey,
       title: 'Verifying your number'.hardcoded,
-      description: 'We have sent a code to $phoneNumber'.hardcoded,
+      description: TextSpan(
+        text: 'We have sent a code to $phoneNumber'.hardcoded,
+      ),
       content: [
         TextFormField(
           focusNode: codeNode,

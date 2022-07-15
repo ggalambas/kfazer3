@@ -52,7 +52,9 @@ class _AccountSetupPageState extends ConsumerState<AccountSetupPage> {
     return SignInLayout(
       formKey: formKey,
       title: 'Set up your profile'.hardcoded,
-      description: 'Choose a name that others will recognize you.'.hardcoded,
+      description: TextSpan(
+        text: 'Choose a name that others will recognize you.'.hardcoded,
+      ),
       content: [
         TextFormField(
           focusNode: nameNode,

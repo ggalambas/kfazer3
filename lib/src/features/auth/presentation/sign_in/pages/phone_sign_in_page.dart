@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
@@ -9,7 +10,10 @@ import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controlle
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/routing/external_uri.dart';
+import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PhoneSignInPage extends ConsumerStatefulWidget {
   final VoidCallback? onSuccess;
@@ -77,10 +81,25 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
     return SignInLayout(
       formKey: formKey,
       title: 'Welcome to KFazer'.hardcoded,
-      description: 'We will need to verify your phone number.\n'
-              'On pressing "next", you are accepting our Terms of Use '
-              'and agreeing with our Privacy Policy.'
-          .hardcoded,
+      description: TextSpan(
+        text: 'We will need to verify your phone number.\n'
+            'On pressing "next", you agree to the ',
+        children: [
+          TextSpan(
+            text: 'Terms of Service',
+            style: TextStyle(color: context.colorScheme.primary),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () => launchUrl(ExternalUri.terms),
+          ),
+          const TextSpan(text: ' and '),
+          TextSpan(
+            text: 'Privacy Policy',
+            style: TextStyle(color: context.colorScheme.primary),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () => launchUrl(ExternalUri.privacy),
+          ),
+        ],
+      ),
       content: [
         AsyncValueWidget<List<Country>>(
           value: countryListValue,
