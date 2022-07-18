@@ -13,6 +13,7 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
   // return FirebaseAuthRepository();
 });
 
+// TODO autodispose?
 final authStateChangesProvider = StreamProvider.autoDispose<AppUser?>(
   (ref) => ref.watch(authRepositoryProvider).authStateChanges(),
 );
@@ -23,11 +24,19 @@ abstract class AuthRepository {
   Future<void> sendSmsCode(String phoneNumber);
   Future<void> verifySmsCode(String phoneNumber, String smsCode);
   Future<void> createAccount(String phoneNumber, String displayName);
+  Future<void> changeUserInfo({String displayName, String phoneNumber});
   Future<void> signOut();
 }
 
 class FakeAuthRepository implements AuthRepository {
-  final _authState = InMemorStore<AppUser?>(null);
+  final _authState = InMemorStore<AppUser?>(
+    // null
+    AppUser(
+      id: '912345678'.split('').reversed.join(),
+      name: 'Tareco Buíto',
+      phoneNumber: '912345678',
+    ),
+  );
 
   @override
   Stream<AppUser?> authStateChanges() => _authState.stream;
@@ -76,6 +85,21 @@ class FakeAuthRepository implements AuthRepository {
         id: phoneNumber.split('').reversed.join(),
         name: displayName ?? 'Tareco Buíto',
         phoneNumber: phoneNumber,
+      );
+    }
+  }
+
+  @override
+  Future<void> changeUserInfo({
+    String? displayName,
+    String? phoneNumber,
+  }) async {
+    await Future.delayed(const Duration(seconds: 1));
+    if (currentUser != null) {
+      _authState.value = AppUser(
+        id: currentUser!.id,
+        name: displayName ?? currentUser!.name,
+        phoneNumber: phoneNumber ?? currentUser!.phoneNumber,
       );
     }
   }

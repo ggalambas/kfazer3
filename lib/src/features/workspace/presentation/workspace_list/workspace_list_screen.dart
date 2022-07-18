@@ -38,7 +38,7 @@ class WorkspaceListScreen extends ConsumerWidget {
                         for (final workspace in workspaceList)
                           WorkspaceCard(
                             workspace: workspace,
-                            onPressed: () => context.pushNamed(
+                            onPressed: () => context.goNamed(
                               AppRoute.workspace.name,
                               params: {'workspaceId': workspace.id},
                             ),

@@ -5,6 +5,7 @@ import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
 import 'package:kfazer3/src/common_widgets/not_found_widget.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
+import 'package:kfazer3/src/common_widgets/single_item_popup_menu_button.dart';
 import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
@@ -39,20 +40,10 @@ class WorkspacePreferencesScreen extends ConsumerWidget {
                       showNotImplementedAlertDialog(context: context),
                   icon: const Icon(Icons.edit),
                 ),
-                PopupMenuButton(
-                  onSelected: (option) {
-                    switch (option) {
-                      case PreferencesMenuOption.delete:
-                        showNotImplementedAlertDialog(context: context);
-                        break;
-                    }
-                  },
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: PreferencesMenuOption.delete,
-                      child: Text('Delete'.hardcoded),
-                    ),
-                  ],
+                SingleItemPopupMenuButton(
+                  onSelected: () =>
+                      showNotImplementedAlertDialog(context: context),
+                  item: Text('Delete'.hardcoded),
                 ),
               ],
             ),

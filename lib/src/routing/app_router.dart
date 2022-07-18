@@ -27,12 +27,12 @@ enum AppRoute {
   workspacePreferences, //! fullscreenDialog
   workspaceArchive, //! fullscreenDialog
   task, //! fullscreenDialog
-  account, //! fullscreenDialog
   notifications, //! fullscreenDialog
   settings, //! fullscreenDialog
+  account,
 }
 
-// TODO back button on workpsace page goig throught all the pages
+// TODO go throught every go and push
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authRepository = ref.watch(authRepositoryProvider);
   return GoRouter(
@@ -83,15 +83,6 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         builder: (_, state) => const WorkspaceListScreen(),
         routes: [
           GoRoute(
-            path: 'account',
-            name: AppRoute.account.name,
-            pageBuilder: (_, state) => MaterialPage(
-              key: state.pageKey,
-              fullscreenDialog: true,
-              child: const AccountScreen(),
-            ),
-          ),
-          GoRoute(
             path: 'notifications',
             name: AppRoute.notifications.name,
             pageBuilder: (_, state) => MaterialPage(
@@ -108,6 +99,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
               fullscreenDialog: true,
               child: const SettingsScreen(),
             ),
+            routes: [
+              GoRoute(
+                path: 'account',
+                name: AppRoute.account.name,
+                builder: (_, state) => const AccountScreen(),
+              ),
+            ],
           ),
           GoRoute(path: 'w', redirect: (state) => '/'),
           GoRoute(

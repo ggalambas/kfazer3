@@ -37,7 +37,7 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
     super.dispose();
   }
 
-  void submit(BuildContext context) async {
+  void submit() async {
     codeNode
       ..nextFocus()
       ..unfocus();
@@ -80,7 +80,7 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
               borderRadius: BorderRadius.circular(kSpace),
             ),
           ),
-          onEditingComplete: () => submit(context),
+          onEditingComplete: submit,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (code) {
             if (!submitted) return null;
@@ -101,14 +101,16 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
               onPressed: state.isLoading || timer > 0
                   ? null
                   : () => resendSmsCode(phoneNumber),
-              text: 'Resend SMS${timer > 0 ? ' ($timer)' : ''}'.hardcoded,
+              child: Text(
+                'Resend SMS${timer > 0 ? ' ($timer)' : ''}'.hardcoded,
+              ),
             );
           },
         ),
         LoadingElevatedButton(
           isLoading: state.isLoading,
-          onPressed: () => submit(context),
-          text: 'Sign in'.hardcoded,
+          onPressed: submit,
+          child: Text('Sign in'.hardcoded),
         ),
       ],
     );

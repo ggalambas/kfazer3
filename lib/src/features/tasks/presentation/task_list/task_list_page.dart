@@ -70,7 +70,7 @@ class _TaskListPageState extends State<TaskListPage>
 
   void goToTab(int i) {
     if (i != taskState.index) {
-      context.pushNamed(
+      context.goNamed(
         AppRoute.workspace.name,
         params: {
           'workspaceId': widget.workspaceId,

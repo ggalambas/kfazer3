@@ -85,7 +85,9 @@ class Avatar extends StatelessWidget {
       child: Center(
         child: Text(
           initials(),
-          style: context.textTheme.labelLarge,
+          style: context.textTheme.labelLarge!.copyWith(
+            fontSize: 0.45 * diameter,
+          ),
         ),
       ),
     );

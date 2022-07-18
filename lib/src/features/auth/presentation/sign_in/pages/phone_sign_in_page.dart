@@ -53,7 +53,7 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
     super.dispose();
   }
 
-  void submit(BuildContext context) async {
+  void submit() async {
     phoneNumberNode
       ..nextFocus()
       ..unfocus();
@@ -128,7 +128,7 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
                 ),
               ),
             ),
-            onEditingComplete: () => submit(context),
+            onEditingComplete: submit,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (phoneNumber) {
               if (!submitted) return null;
@@ -142,8 +142,8 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
         if (countryListValue.hasValue)
           LoadingElevatedButton(
             isLoading: state.isLoading,
-            onPressed: () => submit(context),
-            text: 'Next'.hardcoded,
+            onPressed: submit,
+            child: Text('Next'.hardcoded),
           ),
       ],
     );

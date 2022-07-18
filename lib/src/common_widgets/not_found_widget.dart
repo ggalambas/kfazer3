@@ -27,7 +27,7 @@ class NotFoundWidget extends StatelessWidget {
             Space(4),
             LoadingElevatedButton(
               onPressed: () => context.goNamed(AppRoute.home.name),
-              text: 'Go Home'.hardcoded,
+              child: Text('Go Home'.hardcoded),
             )
           ],
         ),

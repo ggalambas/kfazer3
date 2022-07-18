@@ -34,7 +34,7 @@ class _AccountSetupPageState extends ConsumerState<AccountSetupPage> {
     super.dispose();
   }
 
-  void submit(BuildContext context) {
+  void submit() {
     nameNode
       ..nextFocus()
       ..unfocus();
@@ -69,7 +69,7 @@ class _AccountSetupPageState extends ConsumerState<AccountSetupPage> {
               borderRadius: BorderRadius.circular(kSpace),
             ),
           ),
-          onEditingComplete: () => submit(context),
+          onEditingComplete: submit,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (name) {
             if (!submitted) return null;
@@ -81,8 +81,8 @@ class _AccountSetupPageState extends ConsumerState<AccountSetupPage> {
       cta: [
         LoadingElevatedButton(
           isLoading: state.isLoading,
-          onPressed: () => submit(context),
-          text: 'Save'.hardcoded,
+          onPressed: submit,
+          child: Text('Save'.hardcoded),
         ),
       ],
     );
