@@ -88,26 +88,35 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
       (_, state) => state.showAlertDialogOnError(context),
     );
     final countryListValue = ref.watch(countryListFutureProvider);
-    final state = ref.watch(accountScreenControllerProvider);
+    final editState = ref.watch(accountScreenControllerProvider);
     final signOutState = ref.watch(signOutControllerProvider);
     return Scaffold(
       appBar: AppBar(
+        //TODO canceling is not properly done, cuz we reading the controllers instead of the actual values
+        leading: editState.value
+            ? CloseButton(
+                onPressed:
+                    ref.read(accountScreenControllerProvider.notifier).cancel,
+              )
+            : null,
         title: Text('Account'.hardcoded),
         actions: [
-          state.value
-              ? LoadingTextButton(
-                  isLoading: state.isLoading,
-                  onPressed: save,
-                  child: Text('Save'.hardcoded),
-                )
-              : IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed:
-                      ref.read(accountScreenControllerProvider.notifier).edit),
-          SingleItemPopupMenuButton(
-            onSelected: () => showNotImplementedAlertDialog(context: context),
-            item: Text('Delete account'.hardcoded),
-          ),
+          if (editState.value)
+            LoadingTextButton(
+              isLoading: editState.isLoading,
+              onPressed: save,
+              child: Text('Save'.hardcoded),
+            )
+          else ...[
+            IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed:
+                    ref.read(accountScreenControllerProvider.notifier).edit),
+            SingleItemPopupMenuButton(
+              onSelected: () => showNotImplementedAlertDialog(context: context),
+              item: Text('Delete account'.hardcoded),
+            ),
+          ],
         ],
       ),
       body: AsyncValueWidget<List<Country>>(
@@ -128,7 +137,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                           Space(4),
                           //TODO refact input decoration to the theme?
                           TextFormField(
-                            enabled: state.value,
+                            enabled: editState.value,
                             controller: nameController,
                             keyboardType: TextInputType.name,
                             textInputAction: TextInputAction.next,
@@ -151,7 +160,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                           ),
                           Space(),
                           TextFormField(
-                            enabled: state.value,
+                            enabled: editState.value,
                             controller: phoneNumberController,
                             keyboardType: TextInputType.phone,
                             textInputAction: TextInputAction.done,
@@ -185,12 +194,15 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                                   .phoneNumberErrorText(phoneNumber ?? '');
                             },
                           ),
-                          Space(2),
-                          LoadingElevatedButton(
-                            isLoading: signOutState.isLoading,
-                            onPressed: signOut,
-                            child: Text('Sign out'.hardcoded),
-                          ),
+                          // TODO with the amount of 'if's that this screen has, maybe they sould be two diferent screens
+                          if (!editState.value) ...[
+                            Space(2),
+                            LoadingElevatedButton(
+                              isLoading: signOutState.isLoading,
+                              onPressed: signOut,
+                              child: Text('Sign out'.hardcoded),
+                            ),
+                          ],
                         ],
                       ),
                     ),

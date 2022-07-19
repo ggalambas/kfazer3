@@ -36,6 +36,7 @@ class AccountScreenController extends StateNotifier<AsyncValue> {
       : super(const AsyncValue.data(false));
 
   void edit() => state = const AsyncValue.data(true);
+  void cancel() => state = const AsyncValue.data(false);
 
   Future<bool> save(String name, String phoneNumber) async {
     state = const AsyncValue.loading();
