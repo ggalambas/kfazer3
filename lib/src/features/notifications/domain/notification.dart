@@ -17,4 +17,7 @@ class Notification {
     required this.description,
     required this.deepLink,
   });
+
+  //TODO enable deep linking
+  //* https://docs.flutter.dev/development/ui/navigation/deep-linking
 }
