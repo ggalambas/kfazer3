@@ -5,7 +5,7 @@ import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
-import 'package:kfazer3/src/common_widgets/single_item_popup_menu_button.dart';
+import 'package:kfazer3/src/common_widgets/single_child_popup_menu_button.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/data/country_repository.dart';
@@ -112,9 +112,9 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                 icon: const Icon(Icons.edit),
                 onPressed:
                     ref.read(accountScreenControllerProvider.notifier).edit),
-            SingleItemPopupMenuButton(
+            SingleChildPopupMenuButton(
               onSelected: () => showNotImplementedAlertDialog(context: context),
-              item: Text('Delete account'.hardcoded),
+              child: Text('Delete account'.hardcoded),
             ),
           ],
         ],

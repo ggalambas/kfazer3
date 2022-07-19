@@ -37,6 +37,7 @@ class NotificationsIconBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //TODO use the badge package
     return SizedBox(
       width: kSpace * 2,
       height: kSpace * 2,
