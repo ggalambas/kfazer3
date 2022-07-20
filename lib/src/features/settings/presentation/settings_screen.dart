@@ -7,6 +7,7 @@ import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
+import 'package:kfazer3/src/utils/context_theme.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -27,45 +28,61 @@ class SettingsScreen extends ConsumerWidget {
             ),
             const Divider(),
             ListTile(
-              onTap: () => showNotImplementedAlertDialog(context: context),
+              onTap: () => showDialog(
+                context: context,
+                builder: (context) => SimpleDialog(
+                  title: Text('Density'.hardcoded),
+                  // TODO Settings option dialog onPressed
+                  children: [
+                    SimpleDialogOption(
+                      onPressed: () {},
+                      child: Text('Compact'.hardcoded),
+                    ),
+                    SimpleDialogOption(
+                      onPressed: () {},
+                      child: Text('Confortable'.hardcoded),
+                    ),
+                  ],
+                ),
+              ),
               leading: const Icon(Icons.view_agenda),
               title: Text('Density'.hardcoded),
               subtitle: Text('Task cards density'.hardcoded),
-              // TODO complete the dropdown and design it
-              trailing: DropdownButton(
-                value: 0,
-                onChanged: (value) {},
-                items: [
-                  DropdownMenuItem(
-                    value: 0,
-                    child: Text('Compact'.hardcoded),
-                  ),
-                  DropdownMenuItem(
-                    value: 1,
-                    child: Text('Confortable'.hardcoded),
-                  ),
-                ],
+              trailing: Text(
+                'Compact'.hardcoded,
+                // TODO setting trailling style
+                style: context.textTheme.bodySmall!.copyWith(
+                  color: context.colorScheme.primary,
+                ),
               ),
             ),
             ListTile(
-              onTap: () => showNotImplementedAlertDialog(context: context),
+              onTap: () => showDialog(
+                context: context,
+                builder: (context) => SimpleDialog(
+                  title: Text('Open on start'.hardcoded),
+                  // TODO Settings option dialog onPressed
+                  children: [
+                    SimpleDialogOption(
+                      onPressed: () {},
+                      child: Text('Home'.hardcoded),
+                    ),
+                    SimpleDialogOption(
+                      onPressed: () {},
+                      child: Text('Last workspace'.hardcoded),
+                    ),
+                  ],
+                ),
+              ),
               leading: const Icon(Icons.view_agenda),
               title: Text('Open on start'.hardcoded),
               subtitle: Text('Page to show when oppening the app'.hardcoded),
-              // TODO complete the dropdown and design it
-              trailing: DropdownButton(
-                value: 0,
-                onChanged: (value) {},
-                items: [
-                  DropdownMenuItem(
-                    value: 0,
-                    child: Text('Home'.hardcoded),
-                  ),
-                  DropdownMenuItem(
-                    value: 1,
-                    child: Text('Last workspace'.hardcoded),
-                  ),
-                ],
+              trailing: Text(
+                'Home'.hardcoded,
+                // TODO setting trailling style
+                style: context.textTheme.bodySmall!.copyWith(
+                  color: context.colorScheme.primary,
+                ),
               ),
             ),
             ListTile(
