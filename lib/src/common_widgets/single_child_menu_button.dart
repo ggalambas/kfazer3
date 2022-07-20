@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class SingleChildPopupMenuButton extends StatelessWidget {
+class SingleChildMenuButton extends StatelessWidget {
   final VoidCallback onSelected;
   final Widget child;
 
-  const SingleChildPopupMenuButton({
+  const SingleChildMenuButton({
     super.key,
     required this.onSelected,
     required this.child,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kfazer3/src/common_widgets/single_child_popup_menu_button.dart';
+import 'package:kfazer3/src/common_widgets/single_child_menu_button.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_bar/notifications_icon.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
@@ -27,7 +27,7 @@ class HomeBar extends StatelessWidget with PreferredSizeWidget {
       centerTitle: screenWidth >= Breakpoint.tablet,
       actions: [
         const NotificationsIcon(),
-        SingleChildPopupMenuButton(
+        SingleChildMenuButton(
           onSelected: () => context.goNamed(AppRoute.settings.name),
           child: Text('Settings'.hardcoded),
         ),

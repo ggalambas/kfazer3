@@ -6,7 +6,7 @@ import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/empty_placeholder.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
-import 'package:kfazer3/src/common_widgets/single_child_popup_menu_button.dart';
+import 'package:kfazer3/src/common_widgets/single_child_menu_button.dart';
 import 'package:kfazer3/src/features/notifications/data/notifications_repository.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
@@ -31,7 +31,7 @@ class NotificationsScreen extends ConsumerWidget {
             onPressed: () => showNotImplementedAlertDialog(context: context),
             icon: const Icon(Icons.clear_all),
           ),
-          SingleChildPopupMenuButton(
+          SingleChildMenuButton(
             onSelected: () => showNotImplementedAlertDialog(context: context),
             child: const Text('Settings'),
           ),
