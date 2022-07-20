@@ -92,6 +92,38 @@ class SettingsScreen extends ConsumerWidget {
               subtitle: Text('Open system settings'.hardcoded),
             ),
             ListTile(
+              onTap: () => showDialog(
+                context: context,
+                builder: (context) => SimpleDialog(
+                  title: Text('Language'.hardcoded),
+                  // TODO Settings option dialog onPressed
+                  children: [
+                    SimpleDialogOption(
+                      onPressed: () {},
+                      child: Text('English'.hardcoded),
+                    ),
+                    SimpleDialogOption(
+                      onPressed: () {},
+                      child: Text('Portuguese'.hardcoded),
+                    ),
+                    SimpleDialogOption(
+                      onPressed: () {},
+                      child: Text('Spanish'.hardcoded),
+                    ),
+                  ],
+                ),
+              ),
+              leading: const Icon(Icons.language),
+              title: Text('Language'.hardcoded),
+              trailing: Text(
+                'English'.hardcoded,
+                // TODO setting trailling style
+                style: context.textTheme.bodySmall!.copyWith(
+                  color: context.colorScheme.primary,
+                ),
+              ),
+            ),
+            ListTile(
               onTap: () => showNotImplementedAlertDialog(context: context),
               leading: const Icon(Icons.people),
               title: Text('Contact us'.hardcoded),
