@@ -70,7 +70,7 @@ class NotificationsScreen extends ConsumerWidget {
                       ),
                       NotificationCard(
                         notification: notification,
-                        onPressed: () => context.goNamed(notification.deepLink),
+                        onPressed: () => context.go(notification.deepLink),
                       ),
                     ]
                   ],

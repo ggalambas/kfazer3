@@ -40,7 +40,10 @@ class WorkspaceMenuButton extends StatelessWidget {
             );
             break;
           case WorkspaceMenuOption.motivationalMessages:
-            showNotImplementedAlertDialog(context: context);
+            context.pushNamed(
+              AppRoute.motivationalMessages.name,
+              params: {'workspaceId': workspace.id},
+            );
             break;
           case WorkspaceMenuOption.preferences:
             context.pushNamed(

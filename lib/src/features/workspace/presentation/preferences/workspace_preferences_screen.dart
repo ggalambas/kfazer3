@@ -10,8 +10,6 @@ import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 
-enum PreferencesMenuOption { delete }
-
 class WorkspacePreferencesScreen extends ConsumerWidget {
   final String workspaceId;
   const WorkspacePreferencesScreen({super.key, required this.workspaceId});
@@ -47,6 +45,7 @@ class WorkspacePreferencesScreen extends ConsumerWidget {
                 ),
               ],
             ),
+            // TODO make it similar with settings screen
             body: CustomScrollView(
               slivers: [
                 ResponsiveSliverCenter(

@@ -11,6 +11,7 @@ import 'package:kfazer3/src/features/settings/presentation/settings_screen.dart'
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 import 'package:kfazer3/src/features/tasks/presentation/archive/archived_tasks_screen.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_screen/task_screen.dart';
+import 'package:kfazer3/src/features/workspace/presentation/motivational_messages/motivational_messages_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/preferences/workspace_preferences_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_list/workspace_list_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/workspace_screen.dart';
@@ -24,7 +25,9 @@ enum AppRoute {
   home,
   workspace,
   workspaceMenu,
+  // TODO Rethink fullscreen dialogs
   workspacePreferences, //! fullscreenDialog
+  motivationalMessages, //! fullscreenDialog
   workspaceArchive, //! fullscreenDialog
   task, //! fullscreenDialog
   notifications, //! fullscreenDialog
@@ -156,6 +159,18 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                     key: state.pageKey,
                     fullscreenDialog: true,
                     child: WorkspacePreferencesScreen(workspaceId: workspaceId),
+                  );
+                },
+              ),
+              GoRoute(
+                path: 'motivational-messages',
+                name: AppRoute.motivationalMessages.name,
+                pageBuilder: (_, state) {
+                  final workspaceId = state.params['workspaceId']!;
+                  return MaterialPage(
+                    key: state.pageKey,
+                    fullscreenDialog: true,
+                    child: MotivationalMessagesScreen(workspaceId: workspaceId),
                   );
                 },
               ),
