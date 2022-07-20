@@ -31,13 +31,48 @@ class SettingsScreen extends ConsumerWidget {
               leading: const Icon(Icons.view_agenda),
               title: Text('Density'.hardcoded),
               subtitle: Text('Task cards density'.hardcoded),
-              trailing: Text('Compact'.hardcoded),
+              // TODO complete the dropdown and design it
+              trailing: DropdownButton(
+                value: 0,
+                onChanged: (value) {},
+                items: [
+                  DropdownMenuItem(
+                    value: 0,
+                    child: Text('Compact'.hardcoded),
+                  ),
+                  DropdownMenuItem(
+                    value: 1,
+                    child: Text('Confortable'.hardcoded),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              onTap: () => showNotImplementedAlertDialog(context: context),
+              leading: const Icon(Icons.view_agenda),
+              title: Text('Open on start'.hardcoded),
+              subtitle: Text('Page to show when oppening the app'.hardcoded),
+              // TODO complete the dropdown and design it
+              trailing: DropdownButton(
+                value: 0,
+                onChanged: (value) {},
+                items: [
+                  DropdownMenuItem(
+                    value: 0,
+                    child: Text('Home'.hardcoded),
+                  ),
+                  DropdownMenuItem(
+                    value: 1,
+                    child: Text('Last workspace'.hardcoded),
+                  ),
+                ],
+              ),
             ),
             ListTile(
               onTap: () => showNotImplementedAlertDialog(context: context),
               leading: const Icon(Icons.notifications),
               title: Text('Notifications'.hardcoded),
-              subtitle: Text('A short description, like whatsapp'.hardcoded),
+              subtitle: Text('Open system settings'.hardcoded),
             ),
             ListTile(
               onTap: () => showNotImplementedAlertDialog(context: context),
