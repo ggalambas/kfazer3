@@ -86,10 +86,36 @@ class SettingsScreen extends ConsumerWidget {
               ),
             ),
             ListTile(
-              onTap: () => showNotImplementedAlertDialog(context: context),
-              leading: const Icon(Icons.notifications),
-              title: Text('Notifications'.hardcoded),
-              subtitle: Text('Open system settings'.hardcoded),
+              onTap: () => showDialog(
+                context: context,
+                builder: (context) => SimpleDialog(
+                  title: Text('Theme'.hardcoded),
+                  // TODO Settings option dialog onPressed
+                  children: [
+                    SimpleDialogOption(
+                      onPressed: () {},
+                      child: Text('Light'.hardcoded),
+                    ),
+                    SimpleDialogOption(
+                      onPressed: () {},
+                      child: Text('Dark'.hardcoded),
+                    ),
+                    SimpleDialogOption(
+                      onPressed: () {},
+                      child: Text('System'.hardcoded),
+                    ),
+                  ],
+                ),
+              ),
+              leading: const Icon(Icons.language),
+              title: Text('Theme'.hardcoded),
+              trailing: Text(
+                'System'.hardcoded,
+                // TODO setting trailling style
+                style: context.textTheme.bodySmall!.copyWith(
+                  color: context.colorScheme.primary,
+                ),
+              ),
             ),
             ListTile(
               onTap: () => showDialog(
@@ -122,6 +148,12 @@ class SettingsScreen extends ConsumerWidget {
                   color: context.colorScheme.primary,
                 ),
               ),
+            ),
+            ListTile(
+              onTap: () => showNotImplementedAlertDialog(context: context),
+              leading: const Icon(Icons.notifications),
+              title: Text('Notifications'.hardcoded),
+              subtitle: Text('Open system settings'.hardcoded),
             ),
             ListTile(
               onTap: () => showNotImplementedAlertDialog(context: context),
