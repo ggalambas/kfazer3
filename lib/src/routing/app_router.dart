@@ -11,7 +11,7 @@ import 'package:kfazer3/src/features/settings/presentation/settings_screen.dart'
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 import 'package:kfazer3/src/features/tasks/presentation/archive/archived_tasks_screen.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_screen/task_screen.dart';
-import 'package:kfazer3/src/features/workspace/presentation/motivational_messages/motivational_messages_screen.dart';
+import 'package:kfazer3/src/features/workspace/presentation/preferences/motivational_messages_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/preferences/workspace_preferences_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_list/workspace_list_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/workspace_screen.dart';
@@ -23,6 +23,7 @@ enum AppRoute {
   signInPage,
   //* main flow
   home,
+  workspaceSetup, //! fullscreenDialog
   workspace,
   workspaceMenu,
   // TODO Rethink fullscreen dialogs

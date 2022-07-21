@@ -8,7 +8,7 @@ import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/common_widgets/single_child_menu_button.dart';
 import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
-import 'package:kfazer3/src/features/workspace/presentation/motivational_messages/motivational_messages_controller.dart';
+import 'package:kfazer3/src/features/workspace/presentation/preferences/motivational_messages_controller.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 
 class MotivationalMessagesScreen extends ConsumerWidget {
