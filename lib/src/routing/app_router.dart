@@ -18,8 +18,8 @@ import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/wor
 import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/workspace_setup_screen.dart';
 import 'package:kfazer3/src/routing/not_found_screen.dart';
 
+//TODO Rethink fullscreen dialogs
 enum AppRoute {
-  //TODO Rethink fullscreen dialogs
   signIn,
   signInPage,
 
@@ -30,7 +30,7 @@ enum AppRoute {
   workspace,
   workspaceMenu,
   workspacePreferences, //! fullscreenDialog
-  motivationalMessages, //! fullscreenDialog
+  motivationalMessages,
   workspaceArchive, //! fullscreenDialog
 
   task, //! fullscreenDialog
@@ -204,13 +204,9 @@ final goRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: 'motivational-messages',
                 name: AppRoute.motivationalMessages.name,
-                pageBuilder: (_, state) {
+                builder: (_, state) {
                   final workspaceId = state.params['workspaceId']!;
-                  return MaterialPage(
-                    key: state.pageKey,
-                    fullscreenDialog: true,
-                    child: MotivationalMessagesScreen(workspaceId: workspaceId),
-                  );
+                  return MotivationalMessagesScreen(workspaceId: workspaceId);
                 },
               ),
               GoRoute(
