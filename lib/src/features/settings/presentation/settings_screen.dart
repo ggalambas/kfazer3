@@ -17,157 +17,162 @@ class SettingsScreen extends ConsumerWidget {
     final user = ref.watch(authRepositoryProvider).currentUser!;
     return Scaffold(
       appBar: AppBar(title: Text('Settings'.hardcoded)),
-      body: ResponsiveCenter(
-        child: ListView(
-          children: [
-            ListTile(
-              onTap: () => context.goNamed(AppRoute.account.name),
-              leading: Avatar.fromUser(user),
-              title: Text(user.name),
-              subtitle: Text(user.phoneNumber),
-            ),
-            const Divider(),
-            ListTile(
-              onTap: () => showDialog(
-                context: context,
-                builder: (context) => SimpleDialog(
+      body: CustomScrollView(
+        slivers: [
+          ResponsiveSliverCenter(
+            child: Column(
+              children: [
+                ListTile(
+                  onTap: () => context.goNamed(AppRoute.account.name),
+                  leading: Avatar.fromUser(user),
+                  title: Text(user.name),
+                  subtitle: Text(user.phoneNumber),
+                ),
+                const Divider(),
+                ListTile(
+                  onTap: () => showDialog(
+                    context: context,
+                    builder: (context) => SimpleDialog(
+                      title: Text('Density'.hardcoded),
+                      // TODO Settings option dialog onPressed
+                      children: [
+                        SimpleDialogOption(
+                          onPressed: () {},
+                          child: Text('Compact'.hardcoded),
+                        ),
+                        SimpleDialogOption(
+                          onPressed: () {},
+                          child: Text('Confortable'.hardcoded),
+                        ),
+                      ],
+                    ),
+                  ),
+                  leading: const Icon(Icons.view_agenda),
                   title: Text('Density'.hardcoded),
-                  // TODO Settings option dialog onPressed
-                  children: [
-                    SimpleDialogOption(
-                      onPressed: () {},
-                      child: Text('Compact'.hardcoded),
+                  subtitle: Text('Task cards density'.hardcoded),
+                  trailing: Text(
+                    'Compact'.hardcoded,
+                    // TODO setting trailling style
+                    style: context.textTheme.bodySmall!.copyWith(
+                      color: context.colorScheme.primary,
                     ),
-                    SimpleDialogOption(
-                      onPressed: () {},
-                      child: Text('Confortable'.hardcoded),
+                  ),
+                ),
+                ListTile(
+                  onTap: () => showDialog(
+                    context: context,
+                    builder: (context) => SimpleDialog(
+                      title: Text('Open on start'.hardcoded),
+                      // TODO Settings option dialog onPressed
+                      children: [
+                        SimpleDialogOption(
+                          onPressed: () {},
+                          child: Text('Home'.hardcoded),
+                        ),
+                        SimpleDialogOption(
+                          onPressed: () {},
+                          child: Text('Last workspace'.hardcoded),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              leading: const Icon(Icons.view_agenda),
-              title: Text('Density'.hardcoded),
-              subtitle: Text('Task cards density'.hardcoded),
-              trailing: Text(
-                'Compact'.hardcoded,
-                // TODO setting trailling style
-                style: context.textTheme.bodySmall!.copyWith(
-                  color: context.colorScheme.primary,
-                ),
-              ),
-            ),
-            ListTile(
-              onTap: () => showDialog(
-                context: context,
-                builder: (context) => SimpleDialog(
+                  ),
+                  leading: const Icon(Icons.view_agenda),
                   title: Text('Open on start'.hardcoded),
-                  // TODO Settings option dialog onPressed
-                  children: [
-                    SimpleDialogOption(
-                      onPressed: () {},
-                      child: Text('Home'.hardcoded),
+                  subtitle:
+                      Text('Page to show when oppening the app'.hardcoded),
+                  trailing: Text(
+                    'Home'.hardcoded,
+                    // TODO setting trailling style
+                    style: context.textTheme.bodySmall!.copyWith(
+                      color: context.colorScheme.primary,
                     ),
-                    SimpleDialogOption(
-                      onPressed: () {},
-                      child: Text('Last workspace'.hardcoded),
+                  ),
+                ),
+                ListTile(
+                  onTap: () => showDialog(
+                    context: context,
+                    builder: (context) => SimpleDialog(
+                      title: Text('Theme'.hardcoded),
+                      // TODO Settings option dialog onPressed
+                      children: [
+                        SimpleDialogOption(
+                          onPressed: () {},
+                          child: Text('Light'.hardcoded),
+                        ),
+                        SimpleDialogOption(
+                          onPressed: () {},
+                          child: Text('Dark'.hardcoded),
+                        ),
+                        SimpleDialogOption(
+                          onPressed: () {},
+                          child: Text('System'.hardcoded),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              leading: const Icon(Icons.view_agenda),
-              title: Text('Open on start'.hardcoded),
-              subtitle: Text('Page to show when oppening the app'.hardcoded),
-              trailing: Text(
-                'Home'.hardcoded,
-                // TODO setting trailling style
-                style: context.textTheme.bodySmall!.copyWith(
-                  color: context.colorScheme.primary,
-                ),
-              ),
-            ),
-            ListTile(
-              onTap: () => showDialog(
-                context: context,
-                builder: (context) => SimpleDialog(
+                  ),
+                  leading: const Icon(Icons.language),
                   title: Text('Theme'.hardcoded),
-                  // TODO Settings option dialog onPressed
-                  children: [
-                    SimpleDialogOption(
-                      onPressed: () {},
-                      child: Text('Light'.hardcoded),
+                  trailing: Text(
+                    'System'.hardcoded,
+                    // TODO setting trailling style
+                    style: context.textTheme.bodySmall!.copyWith(
+                      color: context.colorScheme.primary,
                     ),
-                    SimpleDialogOption(
-                      onPressed: () {},
-                      child: Text('Dark'.hardcoded),
-                    ),
-                    SimpleDialogOption(
-                      onPressed: () {},
-                      child: Text('System'.hardcoded),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-              leading: const Icon(Icons.language),
-              title: Text('Theme'.hardcoded),
-              trailing: Text(
-                'System'.hardcoded,
-                // TODO setting trailling style
-                style: context.textTheme.bodySmall!.copyWith(
-                  color: context.colorScheme.primary,
-                ),
-              ),
-            ),
-            ListTile(
-              onTap: () => showDialog(
-                context: context,
-                builder: (context) => SimpleDialog(
+                ListTile(
+                  onTap: () => showDialog(
+                    context: context,
+                    builder: (context) => SimpleDialog(
+                      title: Text('Language'.hardcoded),
+                      // TODO Settings option dialog onPressed
+                      children: [
+                        SimpleDialogOption(
+                          onPressed: () {},
+                          child: Text('English'.hardcoded),
+                        ),
+                        SimpleDialogOption(
+                          onPressed: () {},
+                          child: Text('Portuguese'.hardcoded),
+                        ),
+                        SimpleDialogOption(
+                          onPressed: () {},
+                          child: Text('Spanish'.hardcoded),
+                        ),
+                      ],
+                    ),
+                  ),
+                  leading: const Icon(Icons.language),
                   title: Text('Language'.hardcoded),
-                  // TODO Settings option dialog onPressed
-                  children: [
-                    SimpleDialogOption(
-                      onPressed: () {},
-                      child: Text('English'.hardcoded),
+                  trailing: Text(
+                    'English'.hardcoded,
+                    // TODO setting trailling style
+                    style: context.textTheme.bodySmall!.copyWith(
+                      color: context.colorScheme.primary,
                     ),
-                    SimpleDialogOption(
-                      onPressed: () {},
-                      child: Text('Portuguese'.hardcoded),
-                    ),
-                    SimpleDialogOption(
-                      onPressed: () {},
-                      child: Text('Spanish'.hardcoded),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-              leading: const Icon(Icons.language),
-              title: Text('Language'.hardcoded),
-              trailing: Text(
-                'English'.hardcoded,
-                // TODO setting trailling style
-                style: context.textTheme.bodySmall!.copyWith(
-                  color: context.colorScheme.primary,
+                ListTile(
+                  onTap: () => showNotImplementedAlertDialog(context: context),
+                  leading: const Icon(Icons.notifications),
+                  title: Text('Notifications'.hardcoded),
+                  subtitle: Text('Open system settings'.hardcoded),
                 ),
-              ),
+                ListTile(
+                  onTap: () => showNotImplementedAlertDialog(context: context),
+                  leading: const Icon(Icons.people),
+                  title: Text('Contact us'.hardcoded),
+                  subtitle: Text('Questions? Need help?'.hardcoded),
+                ),
+                ListTile(
+                  onTap: () => showNotImplementedAlertDialog(context: context),
+                  leading: const Icon(Icons.description),
+                  title: Text('Terms and Privacy Policy'.hardcoded),
+                ),
+              ],
             ),
-            ListTile(
-              onTap: () => showNotImplementedAlertDialog(context: context),
-              leading: const Icon(Icons.notifications),
-              title: Text('Notifications'.hardcoded),
-              subtitle: Text('Open system settings'.hardcoded),
-            ),
-            ListTile(
-              onTap: () => showNotImplementedAlertDialog(context: context),
-              leading: const Icon(Icons.people),
-              title: Text('Contact us'.hardcoded),
-              subtitle: Text('Questions? Need help?'.hardcoded),
-            ),
-            ListTile(
-              onTap: () => showNotImplementedAlertDialog(context: context),
-              leading: const Icon(Icons.description),
-              title: Text('Terms and Privacy Policy'.hardcoded),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

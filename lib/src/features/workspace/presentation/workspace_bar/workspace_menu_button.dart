@@ -39,12 +39,6 @@ class WorkspaceMenuButton extends StatelessWidget {
               params: {'workspaceId': workspace.id},
             );
             break;
-          case WorkspaceMenuOption.motivationalMessages:
-            context.pushNamed(
-              AppRoute.motivationalMessages.name,
-              params: {'workspaceId': workspace.id},
-            );
-            break;
           case WorkspaceMenuOption.preferences:
             context.pushNamed(
               AppRoute.workspacePreferences.name,
@@ -68,10 +62,6 @@ class WorkspaceMenuButton extends StatelessWidget {
         PopupMenuItem(
           value: WorkspaceMenuOption.archive,
           child: Text('Archive'.hardcoded),
-        ),
-        PopupMenuItem(
-          value: WorkspaceMenuOption.motivationalMessages,
-          child: Text('Moticational Messages'.hardcoded),
         ),
         PopupMenuItem(
           value: WorkspaceMenuOption.preferences,
