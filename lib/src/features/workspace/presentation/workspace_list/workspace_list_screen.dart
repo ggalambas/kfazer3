@@ -23,7 +23,7 @@ class WorkspaceListScreen extends ConsumerWidget {
       appBar: const HomeBar(),
       body: AsyncValueWidget<List<Workspace>>(
         value: workspaceListValue,
-        data: (workspaceList) => workspaceList.isNotEmpty
+        data: (workspaceList) => workspaceList.isEmpty
             ? ResponsiveCenter(
                 padding: EdgeInsets.all(kSpace * 4),
                 child: Column(
