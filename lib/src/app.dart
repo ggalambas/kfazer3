@@ -8,7 +8,7 @@ import 'routing/app_router.dart';
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
-  // TODO extract theme
+  //TODO extract theme
   ThemeData theme(Brightness brightness) {
     var theme = ThemeData(
       useMaterial3: true,

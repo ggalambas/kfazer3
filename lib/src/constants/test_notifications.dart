@@ -8,7 +8,7 @@ final kTestNotifications = List.generate(
     notifierId: '$i',
     timestamp: DateTime.now().subtract(Duration(days: i)),
     description: 'You\'ve been invited to join workspace 0',
-    // TODO deep link instead of navigation?
+    //TODO deep link instead of navigation?
     deepLink: '/w/0',
   ),
 );

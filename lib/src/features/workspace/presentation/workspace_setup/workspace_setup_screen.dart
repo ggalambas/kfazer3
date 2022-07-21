@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/tap_to_unfocus.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/pages/invites_page.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/pages/motivation_page.dart';
@@ -8,7 +9,22 @@ import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/page
 import 'package:kfazer3/src/routing/app_router.dart';
 
 /// The three sub-routes that are presented as part of the workspace setup flow.
-enum WorkspaceSetupPage { details, motivation, invites }
+enum WorkspaceSetupPage {
+  details,
+  motivation,
+  invites;
+
+  WorkspaceSetupPage? get previous {
+    final pages =
+        WorkspaceSetupPage.values.reversed.skipWhile((page) => this != page);
+    return pages.length < 2 ? null : pages.elementAt(1);
+  }
+
+  WorkspaceSetupPage? get next {
+    final pages = WorkspaceSetupPage.values.skipWhile((page) => this != page);
+    return pages.length < 2 ? null : pages.elementAt(1);
+  }
+}
 
 /// This is the root widget of the workspace setup flow, which is composed of 3 pages:
 /// 1. Workspace details page
@@ -59,25 +75,34 @@ class _WorkspaceSetupScreenState extends ConsumerState<WorkspaceSetupScreen> {
     // Note: only the currently active page will be visible.
     return WillPopScope(
       onWillPop: () async {
-        switch (widget.page) {
-          case WorkspaceSetupPage.details:
-            return true;
-          case WorkspaceSetupPage.motivation:
-            context.goNamed(
-              AppRoute.workspaceSetup.name,
-              params: {'page': WorkspaceSetupPage.details.name},
-            );
-            return false;
-          case WorkspaceSetupPage.invites:
-            context.goNamed(
-              AppRoute.workspaceSetup.name,
-              params: {'page': WorkspaceSetupPage.motivation.name},
-            );
-            return false;
-        }
+        final previous = widget.page.previous;
+        if (previous == null) return true;
+        context.goNamed(
+          AppRoute.workspaceSetupPage.name,
+          params: {'page': previous.name},
+        );
+        return false;
       },
       child: TapToUnfocus(
         child: Scaffold(
+          appBar: AppBar(
+            //TODO check how I dealt with the leading hehehe
+            actions: [
+              //TODO switch for each page
+              //? maybe do it on the enum itself, cuz we have a switch in the WillPopScope widget
+              //! remove the onSuccess callback from the pages
+              //TODO worksapce setup > deal with last page
+              TextButton(
+                onPressed: () => widget.page.next == null
+                    ? showNotImplementedAlertDialog(context: context)
+                    : context.goNamed(
+                        AppRoute.workspaceSetupPage.name,
+                        params: {'page': widget.page.next!.name},
+                      ),
+                child: const Text('Next'),
+              ),
+            ],
+          ),
           body: PageView(
             // disable swiping between pages
             physics: const NeverScrollableScrollPhysics(),
@@ -85,13 +110,13 @@ class _WorkspaceSetupScreenState extends ConsumerState<WorkspaceSetupScreen> {
             children: [
               WorkspaceDetailsPage(
                 onSuccess: () => context.goNamed(
-                  AppRoute.workspaceSetup.name,
+                  AppRoute.workspaceSetupPage.name,
                   params: {'page': WorkspaceSetupPage.motivation.name},
                 ),
               ),
               MotivationalMessagesPage(
                 onSuccess: () => context.goNamed(
-                  AppRoute.workspaceSetup.name,
+                  AppRoute.workspaceSetupPage.name,
                   params: {'page': WorkspaceSetupPage.invites.name},
                 ),
               ),

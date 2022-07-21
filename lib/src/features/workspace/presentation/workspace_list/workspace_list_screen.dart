@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
@@ -65,7 +64,7 @@ class WorkspaceListScreen extends ConsumerWidget {
               ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => showNotImplementedAlertDialog(context: context),
+        onPressed: () => context.goNamed(AppRoute.workspaceSetup.name),
         icon: const Icon(Icons.add),
         label: Text('Create new'.hardcoded),
       ),

@@ -40,7 +40,7 @@ class WorkspacePreferencesScreen extends ConsumerWidget {
                 ResponsiveSliverCenter(
                   child: Column(
                     children: [
-                      // TODO I din't implement this screen yet because it's gonna be VERY similar with the account screen and that has a lot of stuff to decide yet
+                      //TODO I din't implement this screen yet because it's gonna be VERY similar with the account screen and that has a lot of stuff to decide yet
                       ListTile(
                         onTap: () =>
                             showNotImplementedAlertDialog(context: context),
@@ -57,7 +57,7 @@ class WorkspacePreferencesScreen extends ConsumerWidget {
                             'More features and less limitations'.hardcoded),
                         trailing: Text(
                           'Family'.hardcoded,
-                          // TODO setting trailling style
+                          //TODO setting trailling style
                           style: context.textTheme.bodySmall!.copyWith(
                             color: context.colorScheme.primary,
                           ),

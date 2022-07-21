@@ -15,28 +15,32 @@ import 'package:kfazer3/src/features/workspace/presentation/preferences/motivati
 import 'package:kfazer3/src/features/workspace/presentation/preferences/workspace_preferences_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_list/workspace_list_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/workspace_screen.dart';
+import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/workspace_setup_screen.dart';
 import 'package:kfazer3/src/routing/not_found_screen.dart';
 
 enum AppRoute {
-  //* sign in flow
+  //TODO Rethink fullscreen dialogs
   signIn,
   signInPage,
-  //* main flow
+
   home,
   workspaceSetup, //! fullscreenDialog
+  workspaceSetupPage,
+
   workspace,
   workspaceMenu,
-  // TODO Rethink fullscreen dialogs
   workspacePreferences, //! fullscreenDialog
   motivationalMessages, //! fullscreenDialog
   workspaceArchive, //! fullscreenDialog
+
   task, //! fullscreenDialog
+
   notifications, //! fullscreenDialog
   settings, //! fullscreenDialog
   account,
 }
 
-// TODO go throught every go and push
+//TODO go throught every go and push
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authRepository = ref.watch(authRepositoryProvider);
   return GoRouter(
@@ -55,13 +59,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     refreshListenable: GoRouterRefreshStream(authRepository.authStateChanges()),
     routes: [
       GoRoute(
-        path: '/signIn',
+        path: '/sign-in',
         name: AppRoute.signIn.name,
         redirect: (state) =>
             '${state.location}/${SignInPage.values.first.name}',
       ),
       GoRoute(
-        path: '/signIn/:page',
+        path: '/sign-in/:page',
         name: AppRoute.signInPage.name,
         redirect: (state) {
           final pageName = state.params['page']!;
@@ -110,6 +114,40 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 builder: (_, state) => const AccountScreen(),
               ),
             ],
+          ),
+          GoRoute(
+            path: 'setup',
+            name: AppRoute.workspaceSetup.name,
+            redirect: (state) =>
+                '${state.location}/${WorkspaceSetupPage.values.first.name}',
+          ),
+          GoRoute(
+            path: 'setup/:page',
+            name: AppRoute.workspaceSetupPage.name,
+            redirect: (state) {
+              //TODO workspace setup auto reset
+              // final pageName = state.params['page']!;
+              // final workspaceId = ref
+              //     .read(workspaceSetupControllerProvider.notifier)
+              //     .workspaceId;
+              // final resetSetupFlow =
+              //     pageName != WorkspaceSetupPage.details.name &&
+              //         workspaceId == null;
+              // if (resetSetupFlow) return '/setup';
+              return null;
+            },
+            pageBuilder: (_, state) {
+              final pageName = state.params['page']!;
+              final page = WorkspaceSetupPage.values.firstWhere(
+                (page) => page.name == pageName,
+                orElse: () => WorkspaceSetupPage.values.first,
+              );
+              return MaterialPage(
+                key: state.pageKey,
+                fullscreenDialog: page == WorkspaceSetupPage.values.first,
+                child: WorkspaceSetupScreen(page: page),
+              );
+            },
           ),
           GoRoute(path: 'w', redirect: (state) => '/'),
           GoRoute(

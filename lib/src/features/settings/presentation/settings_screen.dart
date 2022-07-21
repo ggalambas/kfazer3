@@ -34,7 +34,7 @@ class SettingsScreen extends ConsumerWidget {
                     context: context,
                     builder: (context) => SimpleDialog(
                       title: Text('Density'.hardcoded),
-                      // TODO Settings option dialog onPressed
+                      //TODO Settings option dialog onPressed
                       children: [
                         SimpleDialogOption(
                           onPressed: () {},
@@ -52,7 +52,7 @@ class SettingsScreen extends ConsumerWidget {
                   subtitle: Text('Task cards density'.hardcoded),
                   trailing: Text(
                     'Compact'.hardcoded,
-                    // TODO setting trailling style
+                    //TODO setting trailling style
                     style: context.textTheme.bodySmall!.copyWith(
                       color: context.colorScheme.primary,
                     ),
@@ -63,7 +63,7 @@ class SettingsScreen extends ConsumerWidget {
                     context: context,
                     builder: (context) => SimpleDialog(
                       title: Text('Open on start'.hardcoded),
-                      // TODO Settings option dialog onPressed
+                      //TODO Settings option dialog onPressed
                       children: [
                         SimpleDialogOption(
                           onPressed: () {},
@@ -82,7 +82,7 @@ class SettingsScreen extends ConsumerWidget {
                       Text('Page to show when oppening the app'.hardcoded),
                   trailing: Text(
                     'Home'.hardcoded,
-                    // TODO setting trailling style
+                    //TODO setting trailling style
                     style: context.textTheme.bodySmall!.copyWith(
                       color: context.colorScheme.primary,
                     ),
@@ -93,7 +93,7 @@ class SettingsScreen extends ConsumerWidget {
                     context: context,
                     builder: (context) => SimpleDialog(
                       title: Text('Theme'.hardcoded),
-                      // TODO Settings option dialog onPressed
+                      //TODO Settings option dialog onPressed
                       children: [
                         SimpleDialogOption(
                           onPressed: () {},
@@ -114,7 +114,7 @@ class SettingsScreen extends ConsumerWidget {
                   title: Text('Theme'.hardcoded),
                   trailing: Text(
                     'System'.hardcoded,
-                    // TODO setting trailling style
+                    //TODO setting trailling style
                     style: context.textTheme.bodySmall!.copyWith(
                       color: context.colorScheme.primary,
                     ),
@@ -125,7 +125,7 @@ class SettingsScreen extends ConsumerWidget {
                     context: context,
                     builder: (context) => SimpleDialog(
                       title: Text('Language'.hardcoded),
-                      // TODO Settings option dialog onPressed
+                      //TODO Settings option dialog onPressed
                       children: [
                         SimpleDialogOption(
                           onPressed: () {},
@@ -146,7 +146,7 @@ class SettingsScreen extends ConsumerWidget {
                   title: Text('Language'.hardcoded),
                   trailing: Text(
                     'English'.hardcoded,
-                    // TODO setting trailling style
+                    //TODO setting trailling style
                     style: context.textTheme.bodySmall!.copyWith(
                       color: context.colorScheme.primary,
                     ),

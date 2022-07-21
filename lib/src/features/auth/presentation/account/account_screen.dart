@@ -194,7 +194,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                                   .phoneNumberErrorText(phoneNumber ?? '');
                             },
                           ),
-                          // TODO with the amount of 'if's that this screen has, maybe they sould be two diferent screens
+                          //TODO with the amount of 'if's that this screen has, maybe they sould be two diferent screens
                           if (!editState.value) ...[
                             Space(2),
                             LoadingElevatedButton(

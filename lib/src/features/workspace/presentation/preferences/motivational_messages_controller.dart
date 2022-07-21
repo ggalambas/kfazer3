@@ -17,7 +17,7 @@ class MotivationalMessagesController extends StateNotifier<AsyncValue> {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(
       () async {
-        // TODO save messages
+        //TODO save messages
         return false;
       },
     );

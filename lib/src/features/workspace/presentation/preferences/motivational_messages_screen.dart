@@ -63,7 +63,7 @@ class MotivationalMessagesScreen extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      // TODO add a widget with an explanation
+                      //TODO add a widget with an explanation
                       //? maybe use the same 'two columns' ui from the sign in
                       for (final message in workspace.motivationalMessages)
                         ListTile(

@@ -13,7 +13,7 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
   // return FirebaseAuthRepository();
 });
 
-// TODO autodispose?
+//TODO autodispose?
 final authStateChangesProvider = StreamProvider.autoDispose<AppUser?>(
   (ref) => ref.watch(authRepositoryProvider).authStateChanges(),
 );
