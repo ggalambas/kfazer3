@@ -109,9 +109,11 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
             )
           else ...[
             IconButton(
-                icon: const Icon(Icons.edit),
-                onPressed:
-                    ref.read(accountScreenControllerProvider.notifier).edit),
+              tooltip: 'Edit'.hardcoded,
+              onPressed:
+                  ref.read(accountScreenControllerProvider.notifier).edit,
+              icon: const Icon(Icons.edit),
+            ),
             SingleChildMenuButton(
               onSelected: () => showNotImplementedAlertDialog(context: context),
               child: Text('Delete account'.hardcoded),

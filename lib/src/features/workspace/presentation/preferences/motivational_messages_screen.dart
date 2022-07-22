@@ -44,6 +44,7 @@ class MotivationalMessagesScreen extends ConsumerWidget {
                   )
                 else ...[
                   IconButton(
+                    tooltip: 'Edit'.hardcoded,
                     onPressed: ref
                         .read(motivationalMessagesControllerProvider.notifier)
                         .edit,
@@ -70,6 +71,7 @@ class MotivationalMessagesScreen extends ConsumerWidget {
                           title: Text(message),
                           trailing: editState.value
                               ? IconButton(
+                                  tooltip: 'Remove'.hardcoded,
                                   onPressed: () =>
                                       showNotImplementedAlertDialog(
                                           context: context),

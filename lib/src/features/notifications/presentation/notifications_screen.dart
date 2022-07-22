@@ -28,8 +28,9 @@ class NotificationsScreen extends ConsumerWidget {
         title: Text('Notifications'.hardcoded),
         actions: [
           IconButton(
+            tooltip: 'Mark all as seen'.hardcoded,
             onPressed: () => showNotImplementedAlertDialog(context: context),
-            icon: const Icon(Icons.clear_all),
+            icon: const Icon(Icons.playlist_add_check),
           ),
           SingleChildMenuButton(
             onSelected: () => showNotImplementedAlertDialog(context: context),

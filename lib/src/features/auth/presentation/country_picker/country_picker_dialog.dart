@@ -69,6 +69,7 @@ class CountrySearchField extends StatelessWidget {
                     icon: Icon(Icons.search_outlined),
                   )
                 : IconButton(
+                    tooltip: 'Clear'.hardcoded,
                     iconSize: kSmallIconSize,
                     onPressed: () => controller.text = '',
                     icon: const Icon(Icons.clear_outlined),

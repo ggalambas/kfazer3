@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
@@ -15,6 +16,7 @@ class NotificationsIcon extends StatelessWidget {
       children: [
         Center(
           child: IconButton(
+            tooltip: 'Notifications'.hardcoded,
             icon: const Icon(Icons.notifications),
             onPressed: () => context.pushNamed(AppRoute.notifications.name),
           ),
