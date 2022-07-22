@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
+import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/auth/domain/country.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
@@ -42,7 +43,10 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
             titlePadding: EdgeInsets.only(top: kSpace * 2),
             contentPadding: EdgeInsets.zero,
             title: CountrySearchField(controller: searchController),
-            content: CountryListView(countries: filterCountries()),
+            content: SizedBox(
+              width: Breakpoint.tablet,
+              child: CountryListView(countries: filterCountries()),
+            ),
           );
         });
   }
@@ -81,7 +85,6 @@ class CountrySearchField extends StatelessWidget {
   }
 }
 
-//TODO Throwing a constraints error in the web
 class CountryListView extends StatelessWidget {
   final List<Country> countries;
   const CountryListView({super.key, required this.countries});
