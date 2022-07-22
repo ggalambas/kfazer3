@@ -6,7 +6,6 @@ import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.da
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sms_code_controller.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
-import 'package:smart_space/smart_space.dart';
 
 class PhoneVerificationPage extends ConsumerStatefulWidget {
   final VoidCallback? onSuccess;
@@ -74,11 +73,6 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
           decoration: InputDecoration(
             counterText: '',
             labelText: 'Code'.hardcoded,
-            filled: true,
-            border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(kSpace),
-            ),
           ),
           onEditingComplete: submit,
           autovalidateMode: AutovalidateMode.onUserInteraction,

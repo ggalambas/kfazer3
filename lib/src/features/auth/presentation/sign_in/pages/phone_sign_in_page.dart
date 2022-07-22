@@ -12,7 +12,6 @@ import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.da
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/external_uri.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
-import 'package:smart_space/smart_space.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PhoneSignInPage extends ConsumerStatefulWidget {
@@ -110,22 +109,14 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
             textInputAction: TextInputAction.done,
             decoration: InputDecoration(
               labelText: 'Phone number'.hardcoded,
-              filled: true,
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(kSpace),
-              ),
-              prefix: Padding(
-                padding: EdgeInsets.only(right: kSpace),
-                child: CountryPicker(
-                  selected: selectedCountry,
-                  countries: countryList,
-                  onChanged: (country) {
-                    if (country != selectedCountry) {
-                      setState(() => selectedCountry = country);
-                    }
-                  },
-                ),
+              prefix: CountryPickerPrefix(
+                selected: selectedCountry,
+                countries: countryList,
+                onChanged: (country) {
+                  if (country != selectedCountry) {
+                    setState(() => selectedCountry = country);
+                  }
+                },
               ),
             ),
             onEditingComplete: submit,

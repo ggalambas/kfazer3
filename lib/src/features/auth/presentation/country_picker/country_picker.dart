@@ -6,6 +6,32 @@ import 'package:smart_space/smart_space.dart';
 
 import 'country_picker_dialog.dart';
 
+/// Text field prefix equivalent of [CountryPicker]
+class CountryPickerPrefix extends StatelessWidget {
+  final Country selected;
+  final List<Country> countries;
+  final ValueChanged<Country> onChanged;
+
+  const CountryPickerPrefix({
+    super.key,
+    required this.selected,
+    required this.countries,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(right: kSpace),
+      child: CountryPicker(
+        selected: selected,
+        countries: countries,
+        onChanged: onChanged,
+      ),
+    );
+  }
+}
+
 class CountryPicker extends StatelessWidget {
   final Country selected;
   final List<Country> countries;

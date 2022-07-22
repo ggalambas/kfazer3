@@ -5,7 +5,6 @@ import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controlle
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
-import 'package:smart_space/smart_space.dart';
 
 //TODO when poping, it should go to phone sign in page
 class AccountSetupPage extends ConsumerStatefulWidget {
@@ -63,11 +62,6 @@ class _AccountSetupPageState extends ConsumerState<AccountSetupPage> {
           textInputAction: TextInputAction.done,
           decoration: InputDecoration(
             labelText: 'Display name'.hardcoded,
-            filled: true,
-            border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(kSpace),
-            ),
           ),
           onEditingComplete: submit,
           autovalidateMode: AutovalidateMode.onUserInteraction,

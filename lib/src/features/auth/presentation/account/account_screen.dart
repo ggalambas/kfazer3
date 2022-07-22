@@ -145,11 +145,6 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                             textInputAction: TextInputAction.next,
                             decoration: InputDecoration(
                               labelText: 'Display name'.hardcoded,
-                              filled: true,
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(kSpace),
-                              ),
                             ),
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -168,22 +163,14 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                             textInputAction: TextInputAction.done,
                             decoration: InputDecoration(
                               labelText: 'Phone number'.hardcoded,
-                              filled: true,
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(kSpace),
-                              ),
-                              prefix: Padding(
-                                padding: EdgeInsets.only(right: kSpace),
-                                child: CountryPicker(
-                                  selected: selectedCountry,
-                                  countries: countryList,
-                                  onChanged: (country) {
-                                    if (country != selectedCountry) {
-                                      setState(() => selectedCountry = country);
-                                    }
-                                  },
-                                ),
+                              prefix: CountryPickerPrefix(
+                                selected: selectedCountry,
+                                countries: countryList,
+                                onChanged: (country) {
+                                  if (country != selectedCountry) {
+                                    setState(() => selectedCountry = country);
+                                  }
+                                },
                               ),
                             ),
                             autovalidateMode:

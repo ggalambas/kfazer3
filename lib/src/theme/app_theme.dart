@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smart_space/smart_space.dart';
 
 final themeProvider = Provider.family<ThemeData, Brightness>((ref, brightness) {
   final theme = ThemeData(
@@ -24,6 +25,13 @@ final themeProvider = Provider.family<ThemeData, Brightness>((ref, brightness) {
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         tapTargetSize: MaterialTapTargetSize.padded,
+      ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      border: OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.circular(kSpace),
       ),
     ),
   );
