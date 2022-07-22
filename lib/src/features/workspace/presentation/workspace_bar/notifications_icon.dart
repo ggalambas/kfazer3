@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
@@ -11,53 +12,24 @@ class NotificationsIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const notificationsCount = 3;
-    return Stack(
-      children: [
-        Center(
-          child: IconButton(
-            tooltip: 'Notifications'.hardcoded,
-            icon: const Icon(Icons.notifications),
-            onPressed: () => context.pushNamed(AppRoute.notifications.name),
+    const notificationsCount = 10;
+    return IconButton(
+      tooltip: 'Notifications'.hardcoded,
+      icon: Badge(
+        padding: EdgeInsets.symmetric(horizontal: kSpace / 2),
+        animationType: BadgeAnimationType.scale,
+        borderRadius: BorderRadius.circular(kSpace),
+        showBadge: notificationsCount > 0,
+        shape: notificationsCount > 9 ? BadgeShape.square : BadgeShape.circle,
+        badgeContent: Text(
+          notificationsCount > 99 ? '99+' : '$notificationsCount',
+          style: context.textTheme.labelSmall!.copyWith(
+            color: Colors.white,
           ),
         ),
-        if (notificationsCount > 0)
-          Positioned(
-            top: kSpace / 2,
-            right: kSpace / 2,
-            child: const NotificationsIconBadge(itemsCount: notificationsCount),
-          ),
-      ],
-    );
-  }
-}
-
-/// Icon badge showing the items count
-class NotificationsIconBadge extends StatelessWidget {
-  final int itemsCount;
-  const NotificationsIconBadge({super.key, required this.itemsCount});
-
-  @override
-  Widget build(BuildContext context) {
-    //TODO use the badge package
-    return SizedBox(
-      width: kSpace * 2,
-      height: kSpace * 2,
-      child: DecoratedBox(
-        decoration: const BoxDecoration(
-          color: Colors.redAccent,
-          shape: BoxShape.circle,
-        ),
-        child: Text(
-          '$itemsCount',
-          textAlign: TextAlign.center,
-          // Force textScaleFactor to 1.0 irrespective of the device's
-          // textScaleFactor. This is to prevent the text from growing bigger
-          // than the available space.
-          textScaleFactor: 1.0,
-          style: context.textTheme.bodySmall!.copyWith(color: Colors.white),
-        ),
+        child: const Icon(Icons.notifications),
       ),
+      onPressed: () => context.pushNamed(AppRoute.notifications.name),
     );
   }
 }

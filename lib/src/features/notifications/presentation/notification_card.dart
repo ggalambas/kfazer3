@@ -26,6 +26,7 @@ class NotificationCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //TODO skeleton loader
+    // https://pub.dev/packages/skeletons
     final userValue = ref.watch(userFutureProvider(notification.notifierId));
     return AsyncValueWidget<AppUser?>(
         value: userValue,
@@ -33,9 +34,7 @@ class NotificationCard extends ConsumerWidget {
           return InkWell(
             onTap: onPressed,
             child: Material(
-              color: notification.seen
-                  ? null
-                  : context.colorScheme.primaryContainer,
+              color: notification.seen ? null : Colors.red.withOpacity(0.12),
               child: Padding(
                 padding: EdgeInsets.symmetric(
                   vertical: kSpace,
@@ -81,8 +80,8 @@ class NotificationDot extends StatelessWidget {
         top: kSpace / 2,
         right: kSpace / 2,
       ),
-      decoration: BoxDecoration(
-        color: context.colorScheme.primary,
+      decoration: const BoxDecoration(
+        color: Colors.red,
         shape: BoxShape.circle,
       ),
     );
