@@ -47,13 +47,12 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     initialLocation: '/',
     debugLogDiagnostics: false,
     redirect: (state) {
-      //TODO uncomment to make login available
-      // final isLoggedIn = authRepository.currentUser != null;
-      // if (isLoggedIn) {
-      //   if (state.location.contains('/signIn')) return '/';
-      // } else {
-      //   if (!state.location.contains('/signIn')) return '/signIn';
-      // }
+      final isLoggedIn = authRepository.currentUser != null;
+      if (isLoggedIn) {
+        if (state.location.contains('/sign-in')) return '/';
+      } else {
+        if (!state.location.contains('/sign-in')) return '/sign-in';
+      }
       return null;
     },
     refreshListenable: GoRouterRefreshStream(authRepository.authStateChanges()),

@@ -25,17 +25,18 @@ class AccountScreen extends ConsumerStatefulWidget {
 }
 
 class _AccountScreenState extends ConsumerState<AccountScreen> {
-  late final user = ref.watch(authRepositoryProvider).currentUser!;
+  late final user = ref.read(authRepositoryProvider).currentUser!;
 
-  late Country selectedCountry;
   final formKey = GlobalKey<FormState>();
   late final nameController = TextEditingController(text: user.name);
   late final phoneNumberController = TextEditingController(
     text: user.phoneNumber,
   );
+  final countryController = CountryController();
 
   String get name => nameController.text;
   String get phoneNumber => phoneNumberController.text;
+  String get phoneCode => countryController.value.phoneCode;
 
   // local variable used to apply AutovalidateMode.onUserInteraction and show
   // error hints only when the form has been submitted
@@ -48,14 +49,6 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
     nameController.dispose();
     phoneNumberController.dispose();
     super.dispose();
-  }
-
-  void selectCountry(List<Country> countryList) {
-    final localeCode = Localizations.localeOf(context).countryCode;
-    selectedCountry = countryList.firstWhere(
-      (country) => country.code == localeCode,
-      orElse: () => countryList.first,
-    );
   }
 
   void save() async {
@@ -78,11 +71,6 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //TODO when coming back, country get late initialization error
-    ref.listen<AsyncValue<List<Country>>>(
-      countryListFutureProvider,
-      (_, countryListValue) => countryListValue.whenData(selectCountry),
-    );
     ref.listen<AsyncValue>(
       signOutControllerProvider,
       (_, state) => state.showAlertDialogOnError(context),
@@ -164,13 +152,8 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                             decoration: InputDecoration(
                               labelText: 'Phone number'.hardcoded,
                               prefix: CountryPickerPrefix(
-                                selected: selectedCountry,
+                                controller: countryController,
                                 countries: countryList,
-                                onChanged: (country) {
-                                  if (country != selectedCountry) {
-                                    setState(() => selectedCountry = country);
-                                  }
-                                },
                               ),
                             ),
                             autovalidateMode:

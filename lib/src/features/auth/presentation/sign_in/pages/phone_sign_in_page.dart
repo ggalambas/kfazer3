@@ -23,27 +23,19 @@ class PhoneSignInPage extends ConsumerStatefulWidget {
 }
 
 class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
-  late Country selectedCountry;
   final formKey = GlobalKey<FormState>();
   final phoneNumberNode = FocusNode();
   final phoneNumberController = TextEditingController();
+  final countryController = CountryController();
 
-  String get phoneCode => selectedCountry.phoneCode;
   String get phoneNumber => phoneNumberController.text;
+  String get phoneCode => countryController.value.phoneCode;
 
   // local variable used to apply AutovalidateMode.onUserInteraction and show
   // error hints only when the form has been submitted
   // For more details on how this is implemented, see:
   // https://codewithandrea.com/articles/flutter-text-field-form-validation/
   var submitted = false;
-
-  void selectCountry(List<Country> countryList) {
-    final localeCode = Localizations.localeOf(context).countryCode;
-    selectedCountry = countryList.firstWhere(
-      (country) => country.code == localeCode,
-      orElse: () => countryList.first,
-    );
-  }
 
   @override
   void dispose() {
@@ -70,11 +62,6 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
 
   @override
   Widget build(BuildContext context) {
-    //TODO when coming back, country get late initialization error
-    ref.listen<AsyncValue<List<Country>>>(
-      countryListFutureProvider,
-      (_, countryListValue) => countryListValue.whenData(selectCountry),
-    );
     final state = ref.watch(signInControllerProvider);
     final countryListValue = ref.watch(countryListFutureProvider);
     return SignInLayout(
@@ -110,13 +97,8 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
             decoration: InputDecoration(
               labelText: 'Phone number'.hardcoded,
               prefix: CountryPickerPrefix(
-                selected: selectedCountry,
+                controller: countryController,
                 countries: countryList,
-                onChanged: (country) {
-                  if (country != selectedCountry) {
-                    setState(() => selectedCountry = country);
-                  }
-                },
               ),
             ),
             onEditingComplete: submit,

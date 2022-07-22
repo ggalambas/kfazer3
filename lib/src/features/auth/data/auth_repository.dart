@@ -29,14 +29,13 @@ abstract class AuthRepository {
 }
 
 class FakeAuthRepository implements AuthRepository {
-  final _authState = InMemorStore<AppUser?>(
-    // null
-    AppUser(
-      id: '912345678'.split('').reversed.join(),
-      name: 'Tareco Buíto',
-      phoneNumber: '912345678',
-    ),
-  );
+  final _authState = InMemorStore<AppUser?>(null
+      // AppUser(
+      //   id: '912345678'.split('').reversed.join(),
+      //   name: 'Tareco Buíto',
+      //   phoneNumber: '912345678',
+      // ),
+      );
 
   @override
   Stream<AppUser?> authStateChanges() => _authState.stream;
