@@ -78,7 +78,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             physics: const NeverScrollableScrollPhysics(),
             controller: controller,
             children: [
-              //TODO form validations
               PhoneSignInPage(
                 onSuccess: () => context.goNamed(
                   AppRoute.signInPage.name,
