@@ -15,5 +15,6 @@ final kTestNotifications = List.generate(
     )),
     description: 'You\'ve been invited to join workspace 0',
     path: '/w/0',
+    seen: Random().nextBool(),
   ),
 );

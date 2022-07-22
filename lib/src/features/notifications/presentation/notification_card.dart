@@ -32,27 +32,59 @@ class NotificationCard extends ConsumerWidget {
         data: (user) {
           return InkWell(
             onTap: onPressed,
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: kSpace,
-                horizontal: kSpace * 2,
-              ),
-              child: Row(
-                children: [
-                  Avatar.fromUser(user),
-                  Space(2),
-                  Expanded(child: Text(notification.description)),
-                  Space(2),
-                  Text(
-                    formatTime(notification.timestamp),
-                    style: context.textTheme.labelMedium!.copyWith(
-                      color: context.colorScheme.onSurfaceVariant,
+            child: Material(
+              color: notification.seen
+                  ? null
+                  : context.colorScheme.primaryContainer,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: kSpace,
+                  horizontal: kSpace * 2,
+                ),
+                child: Row(
+                  children: [
+                    Avatar.fromUser(user),
+                    Space(2),
+                    Expanded(child: Text(notification.description)),
+                    Space(2),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          formatTime(notification.timestamp),
+                          style: context.textTheme.labelMedium!.copyWith(
+                            color: context.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                        if (!notification.seen) const NotificationDot(),
+                      ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
         });
+  }
+}
+
+class NotificationDot extends StatelessWidget {
+  const NotificationDot({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: kSpace * 0.75,
+      height: kSpace * 0.75,
+      margin: EdgeInsets.only(
+        top: kSpace / 2,
+        right: kSpace / 2,
+      ),
+      decoration: BoxDecoration(
+        color: context.colorScheme.primary,
+        shape: BoxShape.circle,
+      ),
+    );
   }
 }
