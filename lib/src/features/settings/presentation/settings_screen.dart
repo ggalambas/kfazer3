@@ -33,35 +33,6 @@ class SettingsScreen extends ConsumerWidget {
                   onTap: () => showDialog(
                     context: context,
                     builder: (context) => SimpleDialog(
-                      title: Text('Density'.hardcoded),
-                      //TODO Settings option dialog onPressed
-                      children: [
-                        SimpleDialogOption(
-                          onPressed: () {},
-                          child: Text('Compact'.hardcoded),
-                        ),
-                        SimpleDialogOption(
-                          onPressed: () {},
-                          child: Text('Confortable'.hardcoded),
-                        ),
-                      ],
-                    ),
-                  ),
-                  leading: const Icon(Icons.view_agenda),
-                  title: Text('Density'.hardcoded),
-                  subtitle: Text('Task cards density'.hardcoded),
-                  trailing: Text(
-                    'Compact'.hardcoded,
-                    //TODO setting trailling style
-                    style: context.textTheme.bodySmall!.copyWith(
-                      color: context.colorScheme.primary,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  onTap: () => showDialog(
-                    context: context,
-                    builder: (context) => SimpleDialog(
                       title: Text('Open on start'.hardcoded),
                       //TODO Settings option dialog onPressed
                       children: [
