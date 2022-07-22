@@ -9,12 +9,14 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //TODO check if new gorouter version no longer has bugs
+    //TODO check if new goRouter version no longer has bugs
     final goRouter = ref.watch(goRouterProvider);
     final lightTheme = ref.watch(themeProvider(Brightness.light));
     final darkTheme = ref.watch(themeProvider(Brightness.dark));
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
+      // localizationsDelegates: AppLocalizations.localizationsDelegates,
+      // supportedLocales: AppLocalizations.supportedLocales,
       routerDelegate: goRouter.routerDelegate,
       routeInformationParser: goRouter.routeInformationParser,
       restorationScopeId: 'app',
