@@ -13,7 +13,11 @@ class FakeWorkspacesRepository extends WorkspacesRepository {
   }
 
   @override
-  Stream<Workspace?> watchWorkspace(WorkspaceId id) =>
-      watchWorkspaceList().map((workspaces) =>
-          workspaces.firstWhereOrNull((workspace) => workspace.id == id));
+  Stream<Workspace?> watchWorkspace(WorkspaceId id) {
+    return watchWorkspaceList().map(
+      (workspaces) => workspaces.firstWhereOrNull(
+        (workspace) => workspace.id == id,
+      ),
+    );
+  }
 }

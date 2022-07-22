@@ -18,7 +18,7 @@ class WorkspacePreferencesScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final workspaceValue = ref.watch(workspaceProvider(workspaceId));
+    final workspaceValue = ref.watch(workspaceStreamProvider(workspaceId));
 
     return AsyncValueWidget<Workspace?>(
         value: workspaceValue,

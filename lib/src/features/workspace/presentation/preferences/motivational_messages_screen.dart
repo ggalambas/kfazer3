@@ -17,7 +17,7 @@ class MotivationalMessagesScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final workspaceValue = ref.watch(workspaceProvider(workspaceId));
+    final workspaceValue = ref.watch(workspaceStreamProvider(workspaceId));
     final editState = ref.watch(motivationalMessagesControllerProvider);
     return AsyncValueWidget<Workspace?>(
         value: workspaceValue,

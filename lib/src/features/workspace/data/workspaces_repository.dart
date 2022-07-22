@@ -20,7 +20,7 @@ final workspaceListStreamProvider = StreamProvider.autoDispose<List<Workspace>>(
   },
 );
 
-final workspaceProvider =
+final workspaceStreamProvider =
     StreamProvider.autoDispose.family<Workspace?, WorkspaceId>(
   (ref, id) {
     final workspacesRepository = ref.watch(workspacesRepositoryProvider);

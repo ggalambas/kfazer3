@@ -10,6 +10,8 @@ class Avatar extends StatelessWidget {
   final ImageProvider? foregroundImage;
   final String? text;
 
+  //TODO tooltip
+  //TODO default image for nulls
   const Avatar({
     super.key,
     double radius = 16,

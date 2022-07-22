@@ -8,6 +8,6 @@ class FakeNotificationsRepository extends NotificationsRepository {
   @override
   Stream<List<Notification>> watchNotificationList() async* {
     await Future.delayed(const Duration(seconds: 1));
-    yield _notifications;
+    yield _notifications..sort((a, b) => b.timestamp.compareTo(a.timestamp));
   }
 }
