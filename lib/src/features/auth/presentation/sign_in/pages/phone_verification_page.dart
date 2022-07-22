@@ -84,7 +84,6 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
         ),
       ],
       cta: [
-        //TODO resend sms code and timer
         Consumer(
           builder: (context, ref, _) {
             final smsCodeController =

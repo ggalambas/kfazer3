@@ -1,30 +1,31 @@
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
+import 'package:kfazer3/src/features/auth/presentation/sign_in/sms_code_controller.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/utils/string_validator.dart';
 
 import 'sign_in_screen.dart';
 
 final signInControllerProvider =
-    StateNotifierProvider.autoDispose<SignInController, AsyncValue>((ref) {
-  final authRepository = ref.watch(authRepositoryProvider);
-  return SignInController(authRepository: authRepository);
-});
+    StateNotifierProvider.autoDispose<SignInController, AsyncValue>(
+  (ref) => SignInController(read: ref.read),
+);
 
 class SignInController extends StateNotifier<AsyncValue> with SignInValidators {
-  final AuthRepository authRepository;
+  final Reader read;
   String? phoneNumber;
 
-  SignInController({required this.authRepository})
-      : super(const AsyncValue.data(null));
+  SignInController({required this.read}) : super(const AsyncValue.data(null));
+
+  AuthRepository get authRepository => read(authRepositoryProvider);
 
   Future<bool> submit(SignInPage page, String value) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() {
       switch (page) {
         case SignInPage.phone:
-          return authRepository.sendSmsCode(value);
+          return read(smsCodeControllerProvider(value).notifier).sendSmsCode();
         case SignInPage.verification:
           return authRepository.verifySmsCode(phoneNumber!, value);
         case SignInPage.account:

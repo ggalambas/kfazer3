@@ -3,13 +3,15 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 
-//TODO keep timer but dispose when finished/login/going to displayname
-final smsCodeControllerProvider =
-    StateNotifierProvider.family<SmsCodeController, AsyncValue<int>, String>(
+const _kTimerDuration = Duration(seconds: 30);
+
+final smsCodeControllerProvider = StateNotifierProvider.family
+    .autoDispose<SmsCodeController, AsyncValue<int>, String>(
   (ref, phoneNumber) {
     final authRepository = ref.watch(authRepositoryProvider);
     return SmsCodeController(phoneNumber, authRepository: authRepository);
   },
+  disposeDelay: _kTimerDuration,
 );
 
 class SmsCodeController extends StateNotifier<AsyncValue<int>> {
@@ -18,21 +20,30 @@ class SmsCodeController extends StateNotifier<AsyncValue<int>> {
   late final Timer timer;
 
   SmsCodeController(this.phoneNumber, {required this.authRepository})
-      : super(const AsyncValue.data(30)) {
-    _startTimer();
+      : super(const AsyncValue.data(0)) {
+    _initTimer();
   }
 
-  void _startTimer() {
+  bool get _isTicking => state.value != 0;
+
+  void _initTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (state.value != 0) state = AsyncValue.data(state.value! - 1);
+      if (_isTicking) state = AsyncValue.data(state.value! - 1);
     });
   }
 
+  Future<void> sendSmsCode() async {
+    if (_isTicking) return;
+    await authRepository.sendSmsCode(phoneNumber);
+    state = AsyncValue.data(_kTimerDuration.inSeconds);
+  }
+
   Future<bool> resendSmsCode() async {
+    if (_isTicking) return true;
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await authRepository.sendSmsCode(phoneNumber);
-      return 30;
+      return _kTimerDuration.inSeconds;
     });
     return !state.hasError;
   }
