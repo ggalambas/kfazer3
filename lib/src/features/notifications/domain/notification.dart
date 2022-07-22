@@ -8,16 +8,13 @@ class Notification {
 
   final DateTime timestamp;
   final String description;
-  final String deepLink;
+  final String path;
 
   Notification({
     required this.id,
     required this.notifierId,
     required this.timestamp,
     required this.description,
-    required this.deepLink,
+    required this.path,
   });
-
-  //TODO enable deep linking
-  //* https://docs.flutter.dev/development/ui/navigation/deep-linking
 }
