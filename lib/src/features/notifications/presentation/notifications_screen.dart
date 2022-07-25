@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide Notification;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/empty_placeholder.dart';
@@ -8,12 +9,16 @@ import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/common_widgets/single_child_menu_button.dart';
 import 'package:kfazer3/src/features/notifications/data/notifications_repository.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
-import 'package:kfazer3/src/features/notifications/domain/notification_interval.dart';
 import 'package:kfazer3/src/features/notifications/domain/readable_notification.dart';
+import 'package:kfazer3/src/features/notifications/presentation/notifications_screen_controller.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:smart_space/smart_space.dart';
 
 import 'notification_card.dart';
+
+//! divider
+//! notificaiton cache
+//! user cache
 
 class NotificationsScreen extends ConsumerWidget {
   const NotificationsScreen({super.key});
@@ -32,8 +37,7 @@ class NotificationsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notificationIntervalValue =
-        ref.watch(notificationIntervalFutureProvider);
+    final notificationListValue = ref.watch(notificationListProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text('Notifications'.hardcoded),
@@ -50,10 +54,10 @@ class NotificationsScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: AsyncValueWidget<NotificationInterval?>(
-        value: notificationIntervalValue,
-        data: (notificationInterval) {
-          if (notificationInterval == null) {
+      body: AsyncValueWidget<List<Notification>>(
+        value: notificationListValue,
+        data: (notificationList) {
+          if (notificationList.isEmpty) {
             return EmptyPlaceholder(
               message: 'You have no notifications'.hardcoded,
               illustration: UnDrawIllustration.floating,
@@ -63,21 +67,20 @@ class NotificationsScreen extends ConsumerWidget {
           //     notificationList.groupListsBy((n) => n.timestamp.timeless);
           return ResponsiveCenter(
             padding: EdgeInsets.symmetric(vertical: kSpace),
-            child: ListView(
-              children: [
-                // for (final date in notificationsGroup.keys) ...[
-                // NotificationDivider(date: date),
-                for (final id in notificationInterval.ids) ...[
-                  NotificationCard(
-                    notificationId: id.toString(),
+            child: PagedListView<int, Notification>(
+              pagingController:
+                  ref.read(notificationListProvider.notifier).pagingController,
+              builderDelegate: PagedChildBuilderDelegate(
+                itemBuilder: (context, notification, _) {
+                  return NotificationCard(
+                    notification: notification,
                     onPressed: (notification) {
                       markAsRead(ref, notification);
                       context.go(notification.path);
                     },
-                  ),
-                ],
-                // ],
-              ],
+                  );
+                },
+              ),
             ),
           );
         },

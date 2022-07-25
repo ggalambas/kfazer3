@@ -138,7 +138,14 @@ class SettingsScreen extends ConsumerWidget {
                 ListTile(
                   onTap: () => showNotImplementedAlertDialog(context: context),
                   leading: const Icon(Icons.description),
-                  title: Text('Terms and Privacy Policy'.hardcoded),
+                  title: Text('Documents'.hardcoded),
+                  subtitle: Text('Terms, Privacy, Sheet template'.hardcoded),
+                ),
+                ListTile(
+                  onTap: () => showNotImplementedAlertDialog(context: context),
+                  leading: const Icon(Icons.download),
+                  title: Text('Export'.hardcoded),
+                  subtitle: Text('Export workspace in XXX format'.hardcoded),
                 ),
               ],
             ),

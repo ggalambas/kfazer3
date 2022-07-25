@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
-import 'package:kfazer3/src/features/notifications/domain/notification_interval.dart';
 
 import 'fake_notifications_repository.dart';
 
@@ -11,8 +10,7 @@ final notificationsRepositoryProvider = Provider<NotificationsRepository>(
 
 abstract class NotificationsRepository {
   Stream<int> watchUnreadNotificationCount();
-  Future<NotificationInterval> fetchNotificationInterval();
-  Stream<Notification> watchNotification(String id);
+  Stream<List<Notification>> watchNotificationList(String? lastNotificationId);
   Future<void> setNotification(Notification notification);
 }
 
@@ -21,19 +19,11 @@ abstract class NotificationsRepository {
 
 //* Providers
 
-final notificationIntervalFutureProvider =
-    FutureProvider.autoDispose<NotificationInterval>(
-  (ref) {
+final notificationListStreamProvider =
+    StreamProvider.family.autoDispose<List<Notification>, String?>(
+  (ref, lastNotificationId) {
     final notificationsRepository = ref.watch(notificationsRepositoryProvider);
-    return notificationsRepository.fetchNotificationInterval();
-  },
-);
-
-final notificationStreamProvider =
-    StreamProvider.family.autoDispose<Notification, String>(
-  (ref, id) {
-    final notificationsRepository = ref.watch(notificationsRepositoryProvider);
-    return notificationsRepository.watchNotification(id);
+    return notificationsRepository.watchNotificationList(lastNotificationId);
   },
   cacheTime: const Duration(minutes: 2),
 );

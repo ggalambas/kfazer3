@@ -1,7 +1,6 @@
 import 'package:kfazer3/src/constants/test_notifications.dart';
 import 'package:kfazer3/src/features/notifications/data/notifications_repository.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
-import 'package:kfazer3/src/features/notifications/domain/notification_interval.dart';
 import 'package:kfazer3/src/utils/in_memory_store.dart';
 
 class FakeNotificationsRepository extends NotificationsRepository {
@@ -14,20 +13,21 @@ class FakeNotificationsRepository extends NotificationsRepository {
   }
 
   @override
-  Future<NotificationInterval> fetchNotificationInterval() async {
+  Stream<List<Notification>> watchNotificationList(
+    String? lastNotificationId,
+  ) async* {
     await Future.delayed(const Duration(seconds: 1));
-    final notifications = _notifications.value
-      ..sort((a, b) => b.timestamp.compareTo(a.timestamp));
-    return NotificationInterval.fromString(
-      notifications.last.id,
-      notifications.first.id,
+    yield* _notifications.stream.map(
+      (ns) {
+        ns.sort((a, b) => a.timestamp.compareTo(b.timestamp));
+        ns = lastNotificationId == null
+            ? ns
+            : ns.skipWhile((n) => n.id != lastNotificationId).skip(1).toList();
+        return ns
+            .take(15) //TODO items count hardcoded
+            .toList();
+      },
     );
-  }
-
-  @override
-  Stream<Notification> watchNotification(String id) async* {
-    await Future.delayed(const Duration(seconds: 1));
-    yield* _notifications.stream.map((ns) => ns.firstWhere((n) => n.id == id));
   }
 
   @override
