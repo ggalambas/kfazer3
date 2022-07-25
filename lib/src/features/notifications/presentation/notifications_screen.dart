@@ -10,6 +10,7 @@ import 'package:kfazer3/src/common_widgets/single_child_menu_button.dart';
 import 'package:kfazer3/src/features/notifications/data/notifications_repository.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
 import 'package:kfazer3/src/features/notifications/domain/readable_notification.dart';
+import 'package:kfazer3/src/features/notifications/presentation/notification_list_skeleton.dart';
 import 'package:kfazer3/src/features/notifications/presentation/notifications_screen_controller.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:smart_space/smart_space.dart';
@@ -56,6 +57,7 @@ class NotificationsScreen extends ConsumerWidget {
       ),
       body: AsyncValueWidget<List<Notification>>(
         value: notificationListValue,
+        loading: const NotificationListSkeleton(),
         data: (notificationList) {
           if (notificationList.isEmpty) {
             return EmptyPlaceholder(

@@ -13,7 +13,7 @@ class WorkspaceListSkeleton extends StatelessWidget {
       builder: (context, constraints) {
         // workspace avatar diameter + padding + margin
         const itemHeight = 64; // 40+16+8
-        final itemCount = (constraints.maxHeight / itemHeight).floor();
+        final itemCount = ((constraints.maxHeight - 16) / itemHeight).floor();
         return ResponsiveCenter(
           padding: EdgeInsets.all(kSpace),
           child: Column(
