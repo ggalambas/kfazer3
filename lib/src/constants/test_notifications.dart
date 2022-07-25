@@ -5,7 +5,7 @@ import 'package:kfazer3/src/features/notifications/domain/notification.dart';
 
 /// Test notifications to be used until a data source is implemented
 final kTestNotifications = List.generate(
-  15,
+  100,
   (i) => Notification(
     id: '$i',
     notifierId: Random().nextInt(kTestUsers.length).toString(),

@@ -13,8 +13,8 @@ class FakeUsersRepository extends UsersRepository {
   }
 
   @override
-  Future<AppUser?> fetchUser(String id) async {
+  Stream<AppUser?> watchUser(String id) async* {
     final userList = await fetchUserList();
-    return userList.firstWhereOrNull((user) => user.id == id);
+    yield userList.firstWhereOrNull((user) => user.id == id);
   }
 }

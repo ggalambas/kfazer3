@@ -5,7 +5,7 @@ import 'fake_users_repository.dart';
 
 abstract class UsersRepository {
   Future<List<AppUser>> fetchUserList();
-  Future<AppUser?> fetchUser(String id);
+  Stream<AppUser?> watchUser(String id);
 }
 
 final usersRepositoryProvider = Provider<UsersRepository>(
@@ -20,9 +20,9 @@ final userListFutureProvider = FutureProvider.autoDispose<List<AppUser>>(
   },
 );
 
-final userFutureProvider = FutureProvider.autoDispose.family<AppUser?, String>(
+final userStreamProvider = StreamProvider.family<AppUser?, String>(
   (ref, id) {
     final usersRepository = ref.watch(usersRepositoryProvider);
-    return usersRepository.fetchUser(id);
+    return usersRepository.watchUser(id);
   },
 );

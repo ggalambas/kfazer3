@@ -1,5 +1,7 @@
+import 'package:equatable/equatable.dart';
+
 /// Class representing a notifications.
-class Notification {
+class Notification with EquatableMixin {
   /// Unique notification id
   final String id;
 
@@ -19,4 +21,7 @@ class Notification {
     required this.path,
     required this.read,
   });
+
+  @override
+  List<Object?> get props => [id];
 }

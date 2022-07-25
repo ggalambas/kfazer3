@@ -14,7 +14,8 @@ class NotificationsIcon extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notificationsCountValue = ref.watch(notificationCountStreamProvider);
+    final notificationsCountValue =
+        ref.watch(unreadNotificationCountStreamProvider);
     final notificationsCount = notificationsCountValue.valueOrNull ?? 0;
     return IconButton(
       tooltip: 'Notifications'.hardcoded,
