@@ -34,7 +34,7 @@ class NotificationCard extends ConsumerWidget {
           return InkWell(
             onTap: onPressed,
             child: Material(
-              color: notification.seen ? null : Colors.red.withOpacity(0.12),
+              color: notification.read ? null : Colors.red.withOpacity(0.12),
               child: Padding(
                 padding: EdgeInsets.symmetric(
                   vertical: kSpace,
@@ -56,7 +56,7 @@ class NotificationCard extends ConsumerWidget {
                             color: context.colorScheme.onSurfaceVariant,
                           ),
                         ),
-                        if (!notification.seen) const NotificationDot(),
+                        if (!notification.read) const NotificationDot(),
                       ],
                     ),
                   ],

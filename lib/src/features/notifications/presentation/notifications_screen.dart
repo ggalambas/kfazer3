@@ -9,6 +9,7 @@ import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/common_widgets/single_child_menu_button.dart';
 import 'package:kfazer3/src/features/notifications/data/notifications_repository.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
+import 'package:kfazer3/src/features/notifications/domain/readable_notification.dart';
 import 'package:kfazer3/src/features/notifications/presentation/notification_divider.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/utils/date_timeless.dart';
@@ -19,6 +20,18 @@ import 'notification_card.dart';
 class NotificationsScreen extends ConsumerWidget {
   const NotificationsScreen({super.key});
 
+  void markAsRead(WidgetRef ref, Notification notification) => ref
+      .read(notificationsRepositoryProvider)
+      .setNotification(notification.markAsRead());
+
+  void markAllAsRead(
+    WidgetRef ref,
+    AsyncValue<List<Notification>> notificationListValue,
+  ) async {
+    final notificationList = notificationListValue.valueOrNull;
+    notificationList?.forEach((n) => markAsRead(ref, n));
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final notificationListValue = ref.watch(notificationListStreamProvider);
@@ -27,8 +40,8 @@ class NotificationsScreen extends ConsumerWidget {
         title: Text('Notifications'.hardcoded),
         actions: [
           IconButton(
-            tooltip: 'Mark all as seen'.hardcoded,
-            onPressed: () => showNotImplementedAlertDialog(context: context),
+            tooltip: 'Mark all as read'.hardcoded,
+            onPressed: () => markAllAsRead(ref, notificationListValue),
             icon: const Icon(Icons.playlist_add_check),
           ),
           SingleChildMenuButton(
@@ -61,7 +74,10 @@ class NotificationsScreen extends ConsumerWidget {
                       for (final notification in notificationsGroup[date]!) ...[
                         NotificationCard(
                           notification: notification,
-                          onPressed: () => context.go(notification.path),
+                          onPressed: () {
+                            markAsRead(ref, notification);
+                            context.go(notification.path);
+                          },
                         ),
                       ],
                     ],

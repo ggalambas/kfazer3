@@ -9,7 +9,7 @@ class Notification {
   final DateTime timestamp;
   final String description;
   final String path;
-  final bool seen;
+  final bool read;
 
   Notification({
     required this.id,
@@ -17,6 +17,6 @@ class Notification {
     required this.timestamp,
     required this.description,
     required this.path,
-    required this.seen,
+    required this.read,
   });
 }
