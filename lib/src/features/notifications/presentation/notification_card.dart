@@ -7,6 +7,7 @@ import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
 import 'package:kfazer3/src/features/team/data/users_repository.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
+import 'package:skeletons/skeletons.dart';
 import 'package:smart_space/smart_space.dart';
 
 /// Used to show a single notification inside a card.
@@ -25,11 +26,10 @@ class NotificationCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //TODO skeleton loader
-    // https://pub.dev/packages/skeletons
     final userValue = ref.watch(userFutureProvider(notification.notifierId));
     return AsyncValueWidget<AppUser?>(
         value: userValue,
+        loading: SkeletonListTile(),
         data: (user) {
           return InkWell(
             onTap: onPressed,
