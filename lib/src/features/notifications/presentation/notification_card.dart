@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart' hide Notification;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
-import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
 import 'package:kfazer3/src/features/team/data/users_repository.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
 /// Used to show a single notification inside a card.
-class NotificationCard extends ConsumerWidget {
+class NotificationCard extends StatelessWidget {
   final Notification notification;
   final void Function(Notification notification) onPressed;
 
@@ -24,7 +22,7 @@ class NotificationCard extends ConsumerWidget {
   String formatTime(DateTime timestamp) => DateFormat.jm().format(timestamp);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return InkWell(
       onTap: () => onPressed(notification),
       child: Material(
@@ -36,15 +34,12 @@ class NotificationCard extends ConsumerWidget {
           ),
           child: Row(
             children: [
-              //TODO user loading
               Consumer(
-                builder: (context, ref, child) {
-                  final userValue =
-                      ref.watch(userStreamProvider(notification.notifierId));
-                  return AsyncValueWidget<AppUser?>(
-                    value: userValue,
-                    data: (user) => Avatar.fromUser(user),
-                  );
+                builder: (context, ref, _) {
+                  final user = ref
+                      .watch(userStreamProvider(notification.notifierId))
+                      .valueOrNull;
+                  return Avatar.fromUser(user);
                 },
               ),
               Space(2),

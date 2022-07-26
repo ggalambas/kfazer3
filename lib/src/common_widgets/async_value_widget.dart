@@ -17,13 +17,20 @@ class AsyncValueWidget<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: value.when(
-        data: data,
-        error: (e, _) => Center(child: ErrorMessageWidget(e.toString())),
-        loading: () =>
-            loading ?? const Center(child: CircularProgressIndicator()),
+    return value.when(
+      data: data,
+      error: (e, _) => Material(
+        child: Center(
+          child: ErrorMessageWidget(e.toString()),
+        ),
       ),
+      loading: () =>
+          loading ??
+          const Material(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
     );
   }
 }

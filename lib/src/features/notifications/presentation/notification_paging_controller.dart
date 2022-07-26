@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:kfazer3/src/features/notifications/data/notifications_repository.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
+import 'package:kfazer3/src/features/team/data/users_repository.dart';
 
 final isNotificationPagingLoadingProvider = StateProvider.autoDispose<bool>(
   (ref) =>
@@ -31,18 +32,27 @@ class NotificationPagingController extends PagingController<int, Notification> {
 
   Future<void> _fetchItems(int pageKey) async {
     try {
+      // get last notification from the currently displaying list
       final currentNotificationList = itemList ?? [];
       final lastNotification =
           currentNotificationList.isEmpty ? null : currentNotificationList.last;
 
-      final newNotificationList = await ref
+      // load next notifications
+      final nextNotificationList = await ref
           .read(notificationsRepositoryProvider)
           .fetchNotificationList((lastNotification?.id));
 
-      final noMoreItems = newNotificationList.length < notificationsPerFetch;
+      // pre load users
+      await Future.wait(
+        nextNotificationList.map((notification) =>
+            ref.read(userStreamProvider(notification.notifierId).future)),
+      );
+
+      // append notifications
+      final noMoreItems = nextNotificationList.length < notificationsPerFetch;
       noMoreItems
-          ? appendLastPage(newNotificationList)
-          : appendPage(newNotificationList, ++pageKey);
+          ? appendLastPage(nextNotificationList)
+          : appendPage(nextNotificationList, ++pageKey);
     } catch (e) {
       error = e;
     }
