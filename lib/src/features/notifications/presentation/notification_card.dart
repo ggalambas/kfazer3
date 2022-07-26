@@ -25,43 +25,48 @@ class NotificationCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //TODO only watch user on the avatar
-    final userValue = ref.watch(userStreamProvider(notification.notifierId));
-    return AsyncValueWidget<AppUser?>(
-        value: userValue,
-        data: (user) => InkWell(
-              onTap: () => onPressed(notification),
-              child: Material(
-                color: notification.read ? null : Colors.red.withOpacity(0.12),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: kSpace,
-                    horizontal: kSpace * 2,
-                  ),
-                  child: Row(
-                    children: [
-                      Avatar.fromUser(user),
-                      Space(2),
-                      Expanded(child: Text(notification.description)),
-                      Space(2),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            formatTime(notification.timestamp),
-                            style: context.textTheme.labelMedium!.copyWith(
-                              color: context.colorScheme.onSurfaceVariant,
-                            ),
-                          ),
-                          if (!notification.read) const UnreadNotificationDot(),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+    return InkWell(
+      onTap: () => onPressed(notification),
+      child: Material(
+        color: notification.read ? null : Colors.red.withOpacity(0.12),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: kSpace,
+            horizontal: kSpace * 2,
+          ),
+          child: Row(
+            children: [
+              Consumer(
+                builder: (context, ref, child) {
+                  final userValue =
+                      ref.watch(userStreamProvider(notification.notifierId));
+                  return AsyncValueWidget<AppUser?>(
+                    value: userValue,
+                    data: (user) => Avatar.fromUser(user),
+                  );
+                },
               ),
-            ));
+              Space(2),
+              Expanded(child: Text(notification.description)),
+              Space(2),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    formatTime(notification.timestamp),
+                    style: context.textTheme.labelMedium!.copyWith(
+                      color: context.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  if (!notification.read) const UnreadNotificationDot(),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 

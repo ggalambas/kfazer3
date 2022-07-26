@@ -9,8 +9,9 @@ final notificationsRepositoryProvider = Provider<NotificationsRepository>(
 );
 
 abstract class NotificationsRepository {
+  final notificationsPerFetch = 15; //!
   Stream<int> watchUnreadNotificationCount();
-  Stream<List<Notification>> watchNotificationList(String? lastNotificationId);
+  Future<List<Notification>> fetchNotificationList(String? lastNotificationId);
   Future<void> setNotification(Notification notification);
 }
 
@@ -18,15 +19,6 @@ abstract class NotificationsRepository {
 // delete notifications with more than 2 months
 
 //* Providers
-
-final notificationListStreamProvider =
-    StreamProvider.family.autoDispose<List<Notification>, String?>(
-  (ref, lastNotificationId) {
-    final notificationsRepository = ref.watch(notificationsRepositoryProvider);
-    return notificationsRepository.watchNotificationList(lastNotificationId);
-  },
-  cacheTime: const Duration(minutes: 2),
-);
 
 final unreadNotificationCountStreamProvider = StreamProvider.autoDispose<int>(
   (ref) {

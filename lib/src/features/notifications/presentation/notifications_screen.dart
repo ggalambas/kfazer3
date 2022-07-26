@@ -3,14 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
-import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
-import 'package:kfazer3/src/common_widgets/empty_placeholder.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/common_widgets/single_child_menu_button.dart';
 import 'package:kfazer3/src/features/notifications/data/notifications_repository.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
 import 'package:kfazer3/src/features/notifications/domain/readable_notification.dart';
-import 'package:kfazer3/src/features/notifications/presentation/notifications_screen_controller.dart';
+import 'package:kfazer3/src/features/notifications/presentation/notification_paging_controller.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:smart_space/smart_space.dart';
 
@@ -37,7 +35,7 @@ class NotificationsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notificationListValue = ref.watch(notificationListProvider);
+    final pagingController = ref.watch(notificationPagingControllerProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text('Notifications'.hardcoded),
@@ -54,36 +52,22 @@ class NotificationsScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: AsyncValueWidget<List<Notification>>(
-        value: notificationListValue,
-        data: (notificationList) {
-          if (notificationList.isEmpty) {
-            return EmptyPlaceholder(
-              message: 'You have no notifications'.hardcoded,
-              illustration: UnDrawIllustration.floating,
-            );
-          }
-          // final notificationsGroup =
-          //     notificationList.groupListsBy((n) => n.timestamp.timeless);
-          return ResponsiveCenter(
-            padding: EdgeInsets.symmetric(vertical: kSpace),
-            child: PagedListView<int, Notification>(
-              pagingController:
-                  ref.read(notificationListProvider.notifier).pagingController,
-              builderDelegate: PagedChildBuilderDelegate(
-                itemBuilder: (context, notification, _) {
-                  return NotificationCard(
-                    notification: notification,
-                    onPressed: (notification) {
-                      markAsRead(ref, notification);
-                      context.go(notification.path);
-                    },
-                  );
+      body: ResponsiveCenter(
+        padding: EdgeInsets.symmetric(vertical: kSpace),
+        child: PagedListView<int, Notification>(
+          pagingController: pagingController,
+          builderDelegate: PagedChildBuilderDelegate(
+            itemBuilder: (context, notification, _) {
+              return NotificationCard(
+                notification: notification,
+                onPressed: (notification) {
+                  markAsRead(ref, notification);
+                  context.go(notification.path);
                 },
-              ),
-            ),
-          );
-        },
+              );
+            },
+          ),
+        ),
       ),
     );
   }

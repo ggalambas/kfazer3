@@ -13,26 +13,23 @@ class FakeNotificationsRepository extends NotificationsRepository {
   }
 
   @override
-  Stream<List<Notification>> watchNotificationList(
+  Future<List<Notification>> fetchNotificationList(
     String? lastNotificationId,
-  ) async* {
+  ) async {
     await Future.delayed(const Duration(seconds: 1));
-    yield* _notifications.stream.map(
-      (ns) {
-        ns.sort((a, b) => a.timestamp.compareTo(b.timestamp));
-        ns = lastNotificationId == null
-            ? ns
-            : ns.skipWhile((n) => n.id != lastNotificationId).skip(1).toList();
-        return ns
-            .take(15) //TODO items count hardcoded
-            .toList();
-      },
-    );
+    var notifications = _notifications.value
+      ..sort((a, b) => a.timestamp.compareTo(b.timestamp));
+    if (lastNotificationId != null) {
+      notifications = notifications
+          .skipWhile((n) => n.id != lastNotificationId)
+          .skip(1)
+          .toList();
+    }
+    return notifications.take(notificationsPerFetch).toList();
   }
 
   @override
   Future<void> setNotification(Notification notification) async {
-    await Future.delayed(const Duration(seconds: 1));
     // First, get the notification list
     final notifications = _notifications.value;
     // Then, change the notification
