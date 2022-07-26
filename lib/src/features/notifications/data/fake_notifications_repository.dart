@@ -13,19 +13,20 @@ class FakeNotificationsRepository extends NotificationsRepository {
   }
 
   @override
-  Future<List<Notification>> fetchNotificationList(
-    String? lastNotificationId,
-  ) async {
+  Future<List<Notification>> fetchNotificationList(String? lastId) async {
     await Future.delayed(const Duration(seconds: 1));
     var notifications = _notifications.value
       ..sort((a, b) => a.timestamp.compareTo(b.timestamp));
-    if (lastNotificationId != null) {
-      notifications = notifications
-          .skipWhile((n) => n.id != lastNotificationId)
-          .skip(1)
-          .toList();
+    if (lastId != null) {
+      notifications =
+          notifications.skipWhile((n) => n.id != lastId).skip(1).toList();
     }
     return notifications.take(notificationsPerFetch).toList();
+  }
+
+  @override
+  Stream<Notification> watchNotification(String id) async* {
+    yield* _notifications.stream.map((ns) => ns.firstWhere((n) => n.id == id));
   }
 
   @override

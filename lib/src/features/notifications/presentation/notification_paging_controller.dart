@@ -16,19 +16,19 @@ final notificationPagingControllerProvider =
 );
 
 class NotificationPagingController extends PagingController<int, Notification> {
-  final ProviderRef ref;
+  final ProviderRef _ref;
 
-  NotificationPagingController(this.ref) : super(firstPageKey: 0) {
+  NotificationPagingController(this._ref) : super(firstPageKey: 0) {
     addPageRequestListener(_fetchItems);
     addStatusListener((status) {
-      ref.read(isNotificationPagingLoadingProvider.state).state =
+      _ref.read(isNotificationPagingLoadingProvider.state).state =
           status == PagingStatus.loadingFirstPage;
     });
-    ref.onDispose(dispose);
+    _ref.onDispose(dispose);
   }
 
   int get notificationsPerFetch =>
-      ref.read(notificationsRepositoryProvider).notificationsPerFetch;
+      _ref.read(notificationsRepositoryProvider).notificationsPerFetch;
 
   Future<void> _fetchItems(int pageKey) async {
     try {
@@ -38,14 +38,14 @@ class NotificationPagingController extends PagingController<int, Notification> {
           currentNotificationList.isEmpty ? null : currentNotificationList.last;
 
       // load next notifications
-      final nextNotificationList = await ref
+      final nextNotificationList = await _ref
           .read(notificationsRepositoryProvider)
           .fetchNotificationList((lastNotification?.id));
 
       // pre load users
       await Future.wait(
         nextNotificationList.map((notification) =>
-            ref.read(userStreamProvider(notification.notifierId).future)),
+            _ref.read(userStreamProvider(notification.notifierId).future)),
       );
 
       // append notifications

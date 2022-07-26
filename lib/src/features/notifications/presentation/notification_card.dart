@@ -2,13 +2,14 @@ import 'package:flutter/material.dart' hide Notification;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
+import 'package:kfazer3/src/features/notifications/data/notifications_repository.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
 import 'package:kfazer3/src/features/team/data/users_repository.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
 /// Used to show a single notification inside a card.
-class NotificationCard extends StatelessWidget {
+class NotificationCard extends ConsumerWidget {
   final Notification notification;
   final void Function(Notification notification) onPressed;
 
@@ -22,7 +23,12 @@ class NotificationCard extends StatelessWidget {
   String formatTime(DateTime timestamp) => DateFormat.jm().format(timestamp);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final notification = ref
+            .watch(notificationStreamProvider(this.notification.id))
+            .valueOrNull ??
+        this.notification;
+
     return InkWell(
       onTap: () => onPressed(notification),
       child: Material(
