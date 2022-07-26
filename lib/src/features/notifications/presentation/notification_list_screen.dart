@@ -16,7 +16,6 @@ import 'package:kfazer3/src/utils/date_timeless.dart';
 import 'package:smart_space/smart_space.dart';
 
 import 'notification_card.dart';
-import 'notification_list_skeleton.dart';
 import 'notification_paging_controller.dart';
 
 class NotificationsListScreen extends ConsumerWidget {
@@ -35,7 +34,6 @@ class NotificationsListScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pagingController = ref.watch(notificationPagingControllerProvider);
-    final isFirstPageLoading = ref.watch(isNotificationPagingLoadingProvider);
     DateTime? lastNotificationDate;
     return Scaffold(
       appBar: AppBar(
@@ -62,12 +60,11 @@ class NotificationsListScreen extends ConsumerWidget {
           padding: EdgeInsets.symmetric(vertical: kSpace),
           child: PagedListView<int, Notification>(
             pagingController: pagingController,
-            physics: isFirstPageLoading
-                ? const NeverScrollableScrollPhysics()
-                : null,
             builderDelegate: PagedChildBuilderDelegate(
               firstPageProgressIndicatorBuilder: (context) {
-                return const NotificationListSkeleton();
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
               },
               firstPageErrorIndicatorBuilder: (context) {
                 return Center(

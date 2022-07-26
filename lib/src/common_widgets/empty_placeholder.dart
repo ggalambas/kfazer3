@@ -8,11 +8,13 @@ export 'package:ms_undraw/illustrations.g.dart';
 
 class EmptyPlaceholder extends StatelessWidget {
   final UnDrawIllustration illustration;
+  final Color? illustrationColor;
   final String message;
 
   const EmptyPlaceholder({
     super.key,
     required this.illustration,
+    this.illustrationColor,
     required this.message,
   });
 
@@ -27,7 +29,7 @@ class EmptyPlaceholder extends StatelessWidget {
             aspectRatio: 1,
             child: UnDraw(
               illustration: illustration,
-              color: context.colorScheme.primaryContainer,
+              color: illustrationColor ?? context.colorScheme.primary,
             ),
           ),
           Text(message, style: context.textTheme.bodyLarge),

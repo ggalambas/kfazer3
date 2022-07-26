@@ -6,13 +6,11 @@ import 'error_message_widget.dart';
 class AsyncValueWidget<T> extends StatelessWidget {
   final AsyncValue<T> value;
   final Widget Function(T) data;
-  final Widget? loading;
 
   const AsyncValueWidget({
     super.key,
     required this.value,
     required this.data,
-    this.loading,
   });
 
   @override
@@ -24,13 +22,11 @@ class AsyncValueWidget<T> extends StatelessWidget {
           child: ErrorMessageWidget(e.toString()),
         ),
       ),
-      loading: () =>
-          loading ??
-          const Material(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          ),
+      loading: () => const Material(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      ),
     );
   }
 }

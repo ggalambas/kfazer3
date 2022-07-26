@@ -5,7 +5,6 @@ import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_list/workspace_list_skeleton.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
@@ -26,7 +25,6 @@ class WorkspaceListScreen extends ConsumerWidget {
         padding: EdgeInsets.all(kSpace),
         child: AsyncValueWidget<List<Workspace>>(
           value: workspaceListValue,
-          loading: const WorkspaceListSkeleton(),
           data: (workspaceList) => workspaceList.isEmpty
               ? const WorkspaceEmptyList()
               : ListView(

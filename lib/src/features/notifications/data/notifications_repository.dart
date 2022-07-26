@@ -9,7 +9,7 @@ final notificationsRepositoryProvider = Provider<NotificationsRepository>(
 );
 
 abstract class NotificationsRepository {
-  final notificationsPerFetch = 15; //!
+  final notificationsPerFetch = 15;
   Stream<int> watchUnreadNotificationCount();
   Future<List<Notification>> fetchNotificationList(String? lastId);
   Stream<Notification> watchNotification(String id);

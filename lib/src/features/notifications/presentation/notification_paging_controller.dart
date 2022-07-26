@@ -4,12 +4,6 @@ import 'package:kfazer3/src/features/notifications/data/notifications_repository
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
 import 'package:kfazer3/src/features/team/data/users_repository.dart';
 
-final isNotificationPagingLoadingProvider = StateProvider.autoDispose<bool>(
-  (ref) =>
-      ref.watch(notificationPagingControllerProvider).value.status ==
-      PagingStatus.loadingFirstPage,
-);
-
 final notificationPagingControllerProvider =
     Provider.autoDispose<NotificationPagingController>(
   (ref) => NotificationPagingController(ref),
@@ -20,10 +14,6 @@ class NotificationPagingController extends PagingController<int, Notification> {
 
   NotificationPagingController(this._ref) : super(firstPageKey: 0) {
     addPageRequestListener(_fetchItems);
-    addStatusListener((status) {
-      _ref.read(isNotificationPagingLoadingProvider.state).state =
-          status == PagingStatus.loadingFirstPage;
-    });
     _ref.onDispose(dispose);
   }
 
