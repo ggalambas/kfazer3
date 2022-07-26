@@ -8,19 +8,25 @@ class Avatar extends StatelessWidget {
   final double diameter;
   final BoxShape shape;
   final ImageProvider? foregroundImage;
+
+  /// the text is visible when [foregroundImage] is null or loading
   final String? text;
 
-  //TODO default image for nulls
+  /// the icon is visible appears when [text] is null or empty
+  final IconData? icon;
+
   const Avatar({
     super.key,
     double radius = 16,
     this.shape = BoxShape.circle,
     this.foregroundImage,
     this.text,
+    this.icon,
   }) : diameter = radius * 2;
 
   factory Avatar.fromUser(AppUser? user, {double radius = 16}) => Avatar(
         text: user?.name,
+        icon: Icons.person,
         radius: radius,
         foregroundImage:
             user?.photoUrl == null ? null : NetworkImage(user!.photoUrl!),
@@ -29,6 +35,7 @@ class Avatar extends StatelessWidget {
   factory Avatar.fromWorkspace(Workspace workspace, {double radius = 20}) =>
       Avatar(
         text: workspace.title,
+        icon: Icons.workspaces,
         radius: radius,
         shape: BoxShape.rectangle,
         foregroundImage: workspace.photoUrl == null
@@ -57,8 +64,8 @@ class Avatar extends StatelessWidget {
   }
 
   String initials() {
-    final notEmptyText = _isTextEmpty ? '?' : text!;
-    var parts = notEmptyText.trim().split(' ').map((p) => p.substring(0, 1));
+    if (_isTextEmpty) return '';
+    var parts = text!.trim().split(' ').map((p) => p.substring(0, 1));
     if (parts.length > 2) parts = [parts.first, parts.last];
     return parts.join('').toUpperCase();
   }
@@ -84,12 +91,14 @@ class Avatar extends StatelessWidget {
               ),
             ),
       child: Center(
-        child: Text(
-          initials(),
-          style: context.textTheme.labelLarge!.copyWith(
-            fontSize: 0.45 * diameter,
-          ),
-        ),
+        child: _isTextEmpty
+            ? Icon(icon)
+            : Text(
+                initials(),
+                style: context.textTheme.labelLarge!.copyWith(
+                  fontSize: 0.45 * diameter,
+                ),
+              ),
       ),
     );
     return _isTextEmpty ? avatar : Tooltip(message: text, child: avatar);
