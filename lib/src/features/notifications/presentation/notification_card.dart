@@ -36,6 +36,7 @@ class NotificationCard extends ConsumerWidget {
           ),
           child: Row(
             children: [
+              //TODO user loading
               Consumer(
                 builder: (context, ref, child) {
                   final userValue =

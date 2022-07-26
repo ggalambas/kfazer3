@@ -45,24 +45,20 @@ class WorkspaceListScreen extends ConsumerWidget {
                   ],
                 ),
               )
-            : CustomScrollView(
-                slivers: [
-                  ResponsiveSliverCenter(
-                    padding: EdgeInsets.all(kSpace),
-                    child: Column(
-                      children: [
-                        for (final workspace in workspaceList)
-                          WorkspaceCard(
-                            workspace: workspace,
-                            onPressed: () => context.goNamed(
-                              AppRoute.workspace.name,
-                              params: {'workspaceId': workspace.id},
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                ],
+            : ResponsiveCenter(
+                padding: EdgeInsets.all(kSpace),
+                child: ListView(
+                  children: [
+                    for (final workspace in workspaceList)
+                      WorkspaceCard(
+                        workspace: workspace,
+                        onPressed: () => context.goNamed(
+                          AppRoute.workspace.name,
+                          params: {'workspaceId': workspace.id},
+                        ),
+                      ),
+                  ],
+                ),
               ),
       ),
       floatingActionButton: FloatingActionButton.extended(

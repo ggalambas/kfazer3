@@ -4,6 +4,8 @@ import 'package:kfazer3/src/utils/int_to_list.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:smart_space/smart_space.dart';
 
+//TODO use non-scrollable list view
+//TODO create WorkspaceSkeleton
 class WorkspaceListSkeleton extends StatelessWidget {
   const WorkspaceListSkeleton({super.key});
 
@@ -13,7 +15,7 @@ class WorkspaceListSkeleton extends StatelessWidget {
       builder: (context, constraints) {
         // workspace avatar diameter + padding + margin
         const itemHeight = 64; // 40+16+8
-        final itemCount = (constraints.maxHeight / itemHeight).floor();
+        final itemCount = ((constraints.maxHeight - 16) / itemHeight).floor();
         return ResponsiveCenter(
           padding: EdgeInsets.all(kSpace),
           child: Column(

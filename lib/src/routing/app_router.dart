@@ -18,7 +18,6 @@ import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/wor
 import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/workspace_setup_screen.dart';
 import 'package:kfazer3/src/routing/not_found_screen.dart';
 
-//TODO Rethink fullscreen dialogs
 enum AppRoute {
   signIn,
   signInPage,
@@ -33,14 +32,13 @@ enum AppRoute {
   motivationalMessages,
   workspaceArchive, //! fullscreenDialog
 
-  task, //! fullscreenDialog
+  task,
 
   notifications, //! fullscreenDialog
   settings, //! fullscreenDialog
   account,
 }
 
-//TODO go throught every go and push
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authRepository = ref.watch(authRepositoryProvider);
   return GoRouter(
@@ -125,6 +123,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             name: AppRoute.workspaceSetupPage.name,
             redirect: (state) {
               //TODO workspace setup auto reset
+
               // final pageName = state.params['page']!;
               // final workspaceId = ref
               //     .read(workspaceSetupControllerProvider.notifier)
@@ -179,13 +178,9 @@ final goRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: 't/:taskId',
                 name: AppRoute.task.name,
-                pageBuilder: (_, state) {
+                builder: (_, state) {
                   final taskId = state.params['taskId']!;
-                  return MaterialPage(
-                    key: state.pageKey,
-                    fullscreenDialog: true,
-                    child: TaskScreen(taskId: taskId),
-                  );
+                  return TaskScreen(taskId: taskId);
                 },
               ),
               GoRoute(
