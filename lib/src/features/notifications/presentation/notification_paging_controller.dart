@@ -3,6 +3,12 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:kfazer3/src/features/notifications/data/notifications_repository.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
 
+final isNotificationPagingLoadingProvider = StateProvider.autoDispose<bool>(
+  (ref) =>
+      ref.watch(notificationPagingControllerProvider).value.status ==
+      PagingStatus.loadingFirstPage,
+);
+
 final notificationPagingControllerProvider =
     Provider.autoDispose<NotificationPagingController>(
   (ref) => NotificationPagingController(ref),
@@ -13,6 +19,10 @@ class NotificationPagingController extends PagingController<int, Notification> {
 
   NotificationPagingController(this.ref) : super(firstPageKey: 0) {
     addPageRequestListener(_fetchItems);
+    addStatusListener((status) {
+      ref.read(isNotificationPagingLoadingProvider.state).state =
+          status == PagingStatus.loadingFirstPage;
+    });
     ref.onDispose(dispose);
   }
 

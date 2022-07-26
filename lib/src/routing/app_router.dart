@@ -6,7 +6,7 @@ import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/account_screen.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
-import 'package:kfazer3/src/features/notifications/presentation/notifications_screen.dart';
+import 'package:kfazer3/src/features/notifications/presentation/notification_list_screen.dart';
 import 'package:kfazer3/src/features/settings/presentation/settings_screen.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 import 'package:kfazer3/src/features/tasks/presentation/archive/archived_tasks_screen.dart';
@@ -93,7 +93,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             pageBuilder: (_, state) => MaterialPage(
               key: state.pageKey,
               fullscreenDialog: true,
-              child: const NotificationsScreen(),
+              child: const NotificationsListScreen(),
             ),
           ),
           GoRoute(

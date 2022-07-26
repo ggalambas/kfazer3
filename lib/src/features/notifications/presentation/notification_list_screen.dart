@@ -17,8 +17,8 @@ import 'package:smart_space/smart_space.dart';
 import 'notification_list_skeleton.dart';
 import 'notification_paging_controller.dart';
 
-class NotificationsScreen extends ConsumerWidget {
-  const NotificationsScreen({super.key});
+class NotificationsListScreen extends ConsumerWidget {
+  const NotificationsListScreen({super.key});
 
   void markAsRead(WidgetRef ref, Notification notification) => ref
       .read(notificationsRepositoryProvider)
@@ -35,6 +35,7 @@ class NotificationsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pagingController = ref.watch(notificationPagingControllerProvider);
+    final isFirstPageLoading = ref.watch(isNotificationPagingLoadingProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text('Notifications'.hardcoded),
@@ -56,8 +57,8 @@ class NotificationsScreen extends ConsumerWidget {
         padding: EdgeInsets.symmetric(vertical: kSpace),
         child: PagedListView<int, Notification>(
           pagingController: pagingController,
-          //TODO physics
-          // physics: const NeverScrollableScrollPhysics(),
+          physics:
+              isFirstPageLoading ? const NeverScrollableScrollPhysics() : null,
           builderDelegate: PagedChildBuilderDelegate(
             firstPageProgressIndicatorBuilder: (context) {
               return const NotificationListSkeleton();
