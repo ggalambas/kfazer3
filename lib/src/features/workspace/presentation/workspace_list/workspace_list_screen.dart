@@ -22,32 +22,14 @@ class WorkspaceListScreen extends ConsumerWidget {
     final workspaceListValue = ref.watch(workspaceListStreamProvider);
     return Scaffold(
       appBar: const HomeBar(),
-      body: AsyncValueWidget<List<Workspace>>(
-        value: workspaceListValue,
-        loading: const WorkspaceListSkeleton(),
-        data: (workspaceList) => workspaceList.isEmpty
-            ? ResponsiveCenter(
-                padding: EdgeInsets.all(kSpace * 4),
-                child: Column(
-                  children: [
-                    const Spacer(),
-                    Text(
-                      'Create your first workspace!'.hardcoded,
-                      style: context.textTheme.displaySmall,
-                    ),
-                    Space(),
-                    Text(
-                      'A workspace is where you can '
-                      'structure a team and manage your tasks.',
-                      style: context.textTheme.labelLarge,
-                    ),
-                    const Spacer(flex: 2),
-                  ],
-                ),
-              )
-            : ResponsiveCenter(
-                padding: EdgeInsets.all(kSpace),
-                child: ListView(
+      body: ResponsiveCenter(
+        padding: EdgeInsets.all(kSpace),
+        child: AsyncValueWidget<List<Workspace>>(
+          value: workspaceListValue,
+          loading: const WorkspaceListSkeleton(),
+          data: (workspaceList) => workspaceList.isEmpty
+              ? const WorkspaceEmptyList()
+              : ListView(
                   children: [
                     for (final workspace in workspaceList)
                       WorkspaceCard(
@@ -59,12 +41,39 @@ class WorkspaceListScreen extends ConsumerWidget {
                       ),
                   ],
                 ),
-              ),
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.goNamed(AppRoute.workspaceSetup.name),
         icon: const Icon(Icons.add),
         label: Text('Create new'.hardcoded),
+      ),
+    );
+  }
+}
+
+class WorkspaceEmptyList extends StatelessWidget {
+  const WorkspaceEmptyList({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(kSpace * 3),
+      child: Column(
+        children: [
+          const Spacer(),
+          Text(
+            'Create your first workspace!'.hardcoded,
+            style: context.textTheme.displaySmall,
+          ),
+          Space(),
+          Text(
+            'A workspace is where you can '
+            'structure a team and manage your tasks.',
+            style: context.textTheme.labelLarge,
+          ),
+          const Spacer(flex: 2),
+        ],
       ),
     );
   }

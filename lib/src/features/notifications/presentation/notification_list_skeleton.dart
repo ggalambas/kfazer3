@@ -10,7 +10,7 @@ class NotificationListSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    final itemCount = height ~/ NotificationSkeleton.height(context);
+    final itemCount = (height / NotificationSkeleton.height(context)).ceil();
     return Column(
       children: itemCount
           .generateList()
