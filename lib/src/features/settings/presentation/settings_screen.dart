@@ -5,6 +5,7 @@ import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
+import 'package:kfazer3/src/features/settings/data/settings_repository.dart';
 import 'package:kfazer3/src/features/settings/domain/settings.dart';
 import 'package:kfazer3/src/features/settings/presentation/selection_setting_tile.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
@@ -29,17 +30,20 @@ class SettingsScreen extends ConsumerWidget {
             ),
             const Divider(),
             SelectionSettingTile(
+              provider: openOnStartStateProvider,
               icon: Icons.workspaces,
               title: 'Open on start'.hardcoded,
               description: 'Page to show when oppening the app'.hardcoded,
               options: OpenOnStart.values,
             ),
             SelectionSettingTile(
+              provider: themeModeStateProvider,
               icon: Icons.brightness_4,
               title: 'Theme'.hardcoded,
               options: ThemeMode.values,
             ),
             SelectionSettingTile(
+              provider: languageStateProvider,
               icon: Icons.language,
               title: 'Language'.hardcoded,
               options: Language.values,

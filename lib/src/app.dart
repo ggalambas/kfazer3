@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kfazer3/src/features/settings/data/settings_repository.dart';
 import 'package:kfazer3/src/theme/app_theme.dart';
 
 // import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -14,6 +15,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //TODO check if new goRouter version no longer has bugs
     final goRouter = ref.watch(goRouterProvider);
+    final themeMode = ref.watch(themeModeStateProvider);
     final lightTheme = ref.watch(themeProvider(Brightness.light));
     final darkTheme = ref.watch(themeProvider(Brightness.dark));
     return MaterialApp.router(
@@ -26,7 +28,7 @@ class MyApp extends ConsumerWidget {
       title: 'KFazer',
       theme: lightTheme,
       darkTheme: darkTheme,
-      themeMode: ThemeMode.system,
+      themeMode: themeMode,
     );
   }
 }

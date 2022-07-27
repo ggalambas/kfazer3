@@ -4,7 +4,8 @@ import 'package:kfazer3/src/features/settings/data/settings_repository.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 
-class SelectionSettingTile<T extends Enum> extends ConsumerStatefulWidget {
+class SelectionSettingTile<T extends Enum> extends ConsumerWidget {
+  final AutoDisposeStateNotifierProvider<SettingNotifier<T>, T> provider;
   final IconData icon;
   final String title;
   final String? description;
@@ -12,6 +13,7 @@ class SelectionSettingTile<T extends Enum> extends ConsumerStatefulWidget {
 
   const SelectionSettingTile({
     super.key,
+    required this.provider,
     required this.icon,
     required this.title,
     this.description,
@@ -19,31 +21,20 @@ class SelectionSettingTile<T extends Enum> extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<SelectionSettingTile> createState() =>
-      _SelectionSettingTileState<T>();
-}
-
-class _SelectionSettingTileState<T extends Enum>
-    extends ConsumerState<SelectionSettingTile> {
-  @override
-  Widget build(BuildContext context) {
-    final value =
-        ref.watch(settingsRepositoryProvider).getSetting(widget.options);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final value = ref.watch(provider);
     return ListTile(
       onTap: () => showDialog(
         context: context,
         builder: (context) => SimpleDialog(
-          title: Text(widget.title),
-          children: widget.options
+          title: Text(title),
+          children: options
               .map(
                 (option) => RadioListTile(
                   value: option,
                   groupValue: value,
                   onChanged: (newValue) {
-                    ref
-                        .read(settingsRepositoryProvider)
-                        .setSetting(newValue! as T);
-                    setState(() {});
+                    ref.read(provider.notifier).state = newValue as T;
                     Navigator.pop(context);
                   },
                   title: Text(option.name.hardcoded),
@@ -52,9 +43,9 @@ class _SelectionSettingTileState<T extends Enum>
               .toList(),
         ),
       ),
-      leading: Icon(widget.icon),
-      title: Text(widget.title),
-      subtitle: widget.description == null ? null : Text(widget.description!),
+      leading: Icon(icon),
+      title: Text(title),
+      subtitle: description == null ? null : Text(description!),
       trailing: Text(
         value.name.hardcoded,
         style: context.textTheme.labelMedium!.copyWith(
