@@ -78,8 +78,9 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (code) {
             if (!submitted) return null;
-            final controller = ref.read(signInControllerProvider.notifier);
-            return controller.codeErrorText(code ?? '');
+            return ref
+                .read(signInControllerProvider.notifier)
+                .codeErrorText(code ?? '');
           },
         ),
       ],

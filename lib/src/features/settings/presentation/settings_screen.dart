@@ -16,7 +16,7 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(authRepositoryProvider).currentUser!;
+    final user = ref.watch(currentUserStateProvider);
     return Scaffold(
       appBar: AppBar(title: Text('Settings'.hardcoded)),
       body: ResponsiveCenter(

@@ -45,6 +45,8 @@ class Avatar extends StatelessWidget {
 
   bool get _isTextEmpty => text == null || text!.isEmpty;
 
+  double get size => 0.45 * diameter;
+
   BorderRadiusGeometry? get borderRadius => shape == BoxShape.rectangle
       ? BorderRadius.circular(diameter * 0.3)
       : null;
@@ -53,7 +55,7 @@ class Avatar extends StatelessWidget {
     if (foregroundImage != null || _isTextEmpty) {
       return context.colorScheme.primaryContainer;
     }
-    final textCode = text!.codeUnits.sum;
+    final textCode = initials().codeUnits.sum;
     final colors = Colors.primaries
         .map((color) => ColorScheme.fromSeed(
               seedColor: color,
@@ -92,11 +94,11 @@ class Avatar extends StatelessWidget {
             ),
       child: Center(
         child: _isTextEmpty
-            ? Icon(icon)
+            ? Icon(icon, size: size)
             : Text(
                 initials(),
                 style: context.textTheme.labelLarge!.copyWith(
-                  fontSize: 0.45 * diameter,
+                  fontSize: size,
                 ),
               ),
       ),

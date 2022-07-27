@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
+import 'package:kfazer3/src/features/auth/presentation/account/account_screen_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
@@ -66,8 +67,9 @@ class _AccountSetupPageState extends ConsumerState<AccountSetupPage> {
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (name) {
             if (!submitted) return null;
-            final controller = ref.read(signInControllerProvider.notifier);
-            return controller.nameErrorText(name ?? '');
+            return ref
+                .read(signInControllerProvider.notifier)
+                .nameErrorText(name ?? '');
           },
         ),
       ],

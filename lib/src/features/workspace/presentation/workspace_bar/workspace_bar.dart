@@ -34,5 +34,5 @@ class WorkspaceBar extends StatelessWidget with PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(60.0);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

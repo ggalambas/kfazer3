@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SingleChildMenuButton extends StatelessWidget {
-  final VoidCallback onSelected;
+  final VoidCallback? onSelected;
   final Widget child;
 
   const SingleChildMenuButton({
@@ -13,7 +13,8 @@ class SingleChildMenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
-      onSelected: (_) => onSelected(),
+      enabled: onSelected != null,
+      onSelected: (_) => onSelected?.call(),
       itemBuilder: (_) => [PopupMenuItem(value: UniqueKey(), child: child)],
     );
   }

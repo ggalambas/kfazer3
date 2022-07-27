@@ -14,6 +14,7 @@ class CountryController extends StateNotifier<Country?> {
   set value(Country country) => state = country;
 }
 
+// TODO do not receive countries anymore
 class CountryPicker extends StatefulWidget {
   final CountryController? controller;
   final List<Country> countries;

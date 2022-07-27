@@ -5,6 +5,7 @@ import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/features/auth/data/country_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/country.dart';
+import 'package:kfazer3/src/features/auth/presentation/account/account_screen_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/country_picker/country_picker.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.dart';
@@ -105,8 +106,9 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (phoneNumber) {
               if (!submitted) return null;
-              final controller = ref.read(signInControllerProvider.notifier);
-              return controller.phoneNumberErrorText(phoneNumber ?? '');
+              return ref
+                  .read(signInControllerProvider.notifier)
+                  .phoneNumberErrorText(phoneNumber ?? '');
             },
           ),
         ),

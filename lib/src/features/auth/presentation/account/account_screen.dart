@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
-import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
-import 'package:kfazer3/src/common_widgets/single_child_menu_button.dart';
+import 'package:kfazer3/src/common_widgets/tap_to_unfocus.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
-import 'package:kfazer3/src/features/auth/data/country_repository.dart';
-import 'package:kfazer3/src/features/auth/domain/country.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/account_screen_controller.dart';
-import 'package:kfazer3/src/features/auth/presentation/country_picker/country_picker.dart';
-import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
+import 'package:kfazer3/src/features/auth/presentation/account/editing_account_screen.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
+
+import 'account_bar.dart';
 
 class AccountScreen extends ConsumerStatefulWidget {
   const AccountScreen({super.key});
@@ -25,162 +23,70 @@ class AccountScreen extends ConsumerStatefulWidget {
 }
 
 class _AccountScreenState extends ConsumerState<AccountScreen> {
-  late final user = ref.read(authRepositoryProvider).currentUser!;
-
-  final formKey = GlobalKey<FormState>();
-  late final nameController = TextEditingController(text: user.name);
-  late final phoneNumberController = TextEditingController(
-    text: user.phoneNumber,
-  );
-  final countryController = CountryController();
-
-  String get name => nameController.text;
-  String get phoneNumber => phoneNumberController.text;
-  String get phoneCode => countryController.value.phoneCode;
-
-  // local variable used to apply AutovalidateMode.onUserInteraction and show
-  // error hints only when the form has been submitted
-  // For more details on how this is implemented, see:
-  // https://codewithandrea.com/articles/flutter-text-field-form-validation/
-  var submitted = false;
-
-  @override
-  void dispose() {
-    nameController.dispose();
-    phoneNumberController.dispose();
-    super.dispose();
-  }
-
-  void save() async {
-    setState(() => submitted = true);
-    if (!formKey.currentState!.validate()) return;
-
-    final controller = ref.read(accountScreenControllerProvider.notifier);
-    await controller.save(name, phoneNumber);
-  }
-
   void signOut() async {
     final logout = await showAlertDialog(
       context: context,
       title: 'Are you sure?'.hardcoded,
       cancelActionText: 'Cancel'.hardcoded,
-      defaultActionText: 'Logout'.hardcoded,
+      defaultActionText: 'Sign Out'.hardcoded,
     );
-    if (logout == true) ref.read(signOutControllerProvider.notifier).signOut();
+    if (logout == true) {
+      ref.read(accountScreenControllerProvider.notifier).signOut();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     ref.listen<AsyncValue>(
-      signOutControllerProvider,
+      accountScreenControllerProvider,
       (_, state) => state.showAlertDialogOnError(context),
     );
-    final countryListValue = ref.watch(countryListFutureProvider);
-    final editState = ref.watch(accountScreenControllerProvider);
-    final signOutState = ref.watch(signOutControllerProvider);
-    return Scaffold(
-      appBar: AppBar(
-        //TODO canceling is not properly done, cuz we reading the controllers instead of the actual values
-        leading: editState.value
-            ? CloseButton(
-                onPressed:
-                    ref.read(accountScreenControllerProvider.notifier).cancel,
-              )
-            : null,
-        title: Text('Account'.hardcoded),
-        actions: [
-          if (editState.value)
-            LoadingTextButton(
-              isLoading: editState.isLoading,
-              onPressed: save,
-              child: Text('Save'.hardcoded),
-            )
-          else ...[
-            IconButton(
-              tooltip: 'Edit'.hardcoded,
-              onPressed:
-                  ref.read(accountScreenControllerProvider.notifier).edit,
-              icon: const Icon(Icons.edit),
-            ),
-            SingleChildMenuButton(
-              onSelected: () => showNotImplementedAlertDialog(context: context),
-              child: Text('Delete account'.hardcoded),
-            ),
-          ],
-        ],
-      ),
-      body: AsyncValueWidget<List<Country>>(
-          value: countryListValue,
-          data: (countryList) => CustomScrollView(
-                slivers: [
-                  ResponsiveSliverCenter(
-                    maxContentWidth: Breakpoint.tablet,
-                    padding: EdgeInsets.all(kSpace * 2),
-                    child: Form(
-                      key: formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Center(
-                            child: Avatar.fromUser(user, radius: 80),
-                          ),
-                          Space(4),
-                          //TODO refact input decoration to the theme?
-                          TextFormField(
-                            enabled: editState.value,
-                            controller: nameController,
-                            keyboardType: TextInputType.name,
-                            textInputAction: TextInputAction.next,
-                            decoration: InputDecoration(
-                              labelText: 'Display name'.hardcoded,
-                            ),
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (name) {
-                              if (!submitted) return null;
-                              final controller =
-                                  ref.read(signInControllerProvider.notifier);
-                              return controller.nameErrorText(name ?? '');
-                            },
-                          ),
-                          Space(),
-                          TextFormField(
-                            enabled: editState.value,
-                            controller: phoneNumberController,
-                            keyboardType: TextInputType.phone,
-                            textInputAction: TextInputAction.done,
-                            decoration: InputDecoration(
-                              labelText: 'Phone number'.hardcoded,
-                              prefix: CountryPickerPrefix(
-                                controller: countryController,
-                                countries: countryList,
-                              ),
-                            ),
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (phoneNumber) {
-                              if (!submitted) return null;
-                              final controller =
-                                  ref.read(signInControllerProvider.notifier);
-                              return controller
-                                  .phoneNumberErrorText(phoneNumber ?? '');
-                            },
-                          ),
-                          //TODO with the amount of 'if's that this screen has, maybe they sould be two diferent screens
-                          if (!editState.value) ...[
-                            Space(2),
-                            LoadingElevatedButton(
-                              isLoading: signOutState.isLoading,
-                              onPressed: signOut,
-                              child: Text('Sign out'.hardcoded),
-                            ),
-                          ],
-                        ],
+    final isEditing = ref.watch(accountEditStateProvider);
+    if (isEditing) return const EditingAccountScreen();
+
+    final user = ref.watch(currentUserStateProvider);
+    final state = ref.watch(accountScreenControllerProvider);
+    return TapToUnfocus(
+      child: Scaffold(
+          appBar: AccountBar(loading: state.isLoading),
+          body: ResponsiveCenter(
+            maxContentWidth: Breakpoint.tablet,
+            padding: EdgeInsets.all(kSpace * 2),
+            child: ListView(
+              children: [
+                Column(
+                  children: [
+                    Avatar.fromUser(user, radius: kSpace * 10),
+                    Space(4),
+                    TextFormField(
+                      enabled: false,
+                      initialValue: user.name,
+                      decoration: InputDecoration(
+                        labelText: 'Display name'.hardcoded,
                       ),
                     ),
+                    Space(),
+                    TextFormField(
+                      enabled: false,
+                      initialValue: user.phoneNumber,
+                      decoration: InputDecoration(
+                        labelText: 'Phone number'.hardcoded,
+                      ),
+                    ),
+                  ],
+                ),
+                Space(2),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: LoadingElevatedButton(
+                    isLoading: state.isLoading,
+                    onPressed: signOut,
+                    child: Text('Sign out'.hardcoded),
                   ),
-                ],
-              )),
+                ),
+              ],
+            ),
+          )),
     );
   }
 }

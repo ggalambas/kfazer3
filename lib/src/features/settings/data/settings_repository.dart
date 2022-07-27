@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/settings/domain/settings.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
+import 'package:kfazer3/src/utils/stream_notifier.dart';
 
 import 'shared_preferences_settings_repository.dart';
 
@@ -28,39 +29,35 @@ abstract class SettingsRepository {
 
 //* Providers
 
-final openOnStartStateProvider = StateNotifierProvider.autoDispose<
-    SettingNotifier<OpenOnStart>, OpenOnStart>(
-  (ref) => SettingNotifier(
-    initial: ref.watch(settingsRepositoryProvider).getOpenOnStart(),
-    stream: ref.watch(settingsRepositoryProvider).watchOpenOnStart(),
-  ),
+final openOnStartStateProvider =
+    StateNotifierProvider.autoDispose<StreamNotifier<OpenOnStart>, OpenOnStart>(
+  (ref) {
+    final repository = ref.watch(settingsRepositoryProvider);
+    return StreamNotifier(
+      initial: repository.getOpenOnStart(),
+      stream: repository.watchOpenOnStart(),
+    );
+  },
 );
 
 final themeModeStateProvider =
-    StateNotifierProvider.autoDispose<SettingNotifier<ThemeMode>, ThemeMode>(
-  (ref) => SettingNotifier(
-    initial: ref.watch(settingsRepositoryProvider).getThemeMode(),
-    stream: ref.watch(settingsRepositoryProvider).watchThemeMode(),
-  ),
+    StateNotifierProvider.autoDispose<StreamNotifier<ThemeMode>, ThemeMode>(
+  (ref) {
+    final repository = ref.watch(settingsRepositoryProvider);
+    return StreamNotifier(
+      initial: repository.getThemeMode(),
+      stream: repository.watchThemeMode(),
+    );
+  },
 );
 
 final languageStateProvider =
-    StateNotifierProvider.autoDispose<SettingNotifier<Language>, Language>(
-  (ref) => SettingNotifier(
-    initial: ref.watch(settingsRepositoryProvider).getLanguage(),
-    stream: ref.watch(settingsRepositoryProvider).watchLanguage(),
-  ),
+    StateNotifierProvider.autoDispose<StreamNotifier<Language>, Language>(
+  (ref) {
+    final repository = ref.watch(settingsRepositoryProvider);
+    return StreamNotifier(
+      initial: repository.getLanguage(),
+      stream: repository.watchLanguage(),
+    );
+  },
 );
-
-class SettingNotifier<T> extends StateNotifier<T> {
-  SettingNotifier({
-    required T initial,
-    required Stream<T> stream,
-  }) : super(initial) {
-    _listen(stream);
-  }
-
-  void _listen(Stream<T> stream) {
-    stream.listen((setting) => state = setting);
-  }
-}

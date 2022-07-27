@@ -9,7 +9,6 @@ abstract class WorkspacesRepository {
 }
 
 final workspacesRepositoryProvider = Provider<WorkspacesRepository>(
-  //TODO replace with real repository
   (ref) => FakeWorkspacesRepository(),
 );
 
