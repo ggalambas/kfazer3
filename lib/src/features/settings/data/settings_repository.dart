@@ -22,7 +22,6 @@ abstract class SettingsRepository {
   void setThemeMode(ThemeMode themeMode);
   void setLanguage(Language language);
   //TODO update this value when
-  // opening a workspace
   // removing a workspace
   void setLastWorkspaceId(WorkspaceId? id);
 }
