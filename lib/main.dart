@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kfazer3/src/features/settings/data/settings_repository.dart';
 
 import 'src/app.dart';
 import 'src/localization/string_hardcoded.dart';
@@ -12,12 +13,19 @@ void main() async {
   // https://docs.flutter.dev/testing/errors
   await runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
-    // turn off the # in the URLs on the web
+    final providerContainer = ProviderContainer();
+    // Turn off the # in the URLs on the web
     GoRouter.setUrlPathStrategy(UrlPathStrategy.path);
-    // Entry point of the app
-    runApp(const ProviderScope(child: MyApp()));
+    // Load app settings
+    await providerContainer.read(settingsRepositoryProvider).init();
 
-    // This code will present some error UI if any uncaught exception happens
+    //* Entry point of the app
+    runApp(UncontrolledProviderScope(
+      container: providerContainer,
+      child: const MyApp(),
+    ));
+
+    //! This code will present some error UI if any uncaught exception happens
     FlutterError.onError = (details) => FlutterError.presentError(details);
     ErrorWidget.builder = (details) => Scaffold(
           appBar: AppBar(

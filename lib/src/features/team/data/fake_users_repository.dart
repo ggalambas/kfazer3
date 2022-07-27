@@ -3,7 +3,7 @@ import 'package:kfazer3/src/constants/test_users.dart';
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 import 'package:kfazer3/src/features/team/data/users_repository.dart';
 
-class FakeUsersRepository extends UsersRepository {
+class FakeUsersRepository implements UsersRepository {
   final List<AppUser> _users = kTestUsers;
 
   @override

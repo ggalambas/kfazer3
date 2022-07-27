@@ -3,7 +3,7 @@ import 'package:kfazer3/src/constants/test_workspaces.dart';
 import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 
-class FakeWorkspacesRepository extends WorkspacesRepository {
+class FakeWorkspacesRepository implements WorkspacesRepository {
   final List<Workspace> _workspaces = kTestWorkspaces;
 
   @override

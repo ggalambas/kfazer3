@@ -3,8 +3,11 @@ import 'package:kfazer3/src/features/notifications/data/notifications_repository
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
 import 'package:kfazer3/src/utils/in_memory_store.dart';
 
-class FakeNotificationsRepository extends NotificationsRepository {
+class FakeNotificationsRepository implements NotificationsRepository {
   final _notifications = InMemorStore<List<Notification>>(kTestNotifications);
+
+  @override
+  final notificationsPerFetch = 15;
 
   @override
   Stream<int> watchUnreadNotificationCount() async* {
