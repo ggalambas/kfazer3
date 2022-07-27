@@ -40,12 +40,13 @@ enum AppRoute {
   settings, //! fullscreenDialog
   account;
 
-  static String getLocation(OpenOnStart openOnStart) {
-    switch (openOnStart) {
-      case OpenOnStart.home:
-        return '/';
-      case OpenOnStart.lastWorkspace:
-        return '/w/0'; //TODO save last workspace
+  static String getLocation(SettingsRepository repository) {
+    final openOnStart = repository.getOpenOnStart();
+    final lastWorkspaceId = repository.getLastWorkspaceId();
+    if (openOnStart == OpenOnStart.home || lastWorkspaceId == null) {
+      return '/';
+    } else {
+      return '/w/$lastWorkspaceId';
     }
   }
 }
@@ -53,16 +54,14 @@ enum AppRoute {
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authRepository = ref.watch(authRepositoryProvider);
   final settingsRepository = ref.watch(settingsRepositoryProvider);
-  final openOnStart = settingsRepository.getOpenOnStart();
   return GoRouter(
-    initialLocation: AppRoute.getLocation(openOnStart),
+    initialLocation: AppRoute.getLocation(settingsRepository),
     debugLogDiagnostics: false,
     redirect: (state) {
       final isLoggedIn = authRepository.currentUser != null;
       if (isLoggedIn) {
         if (state.location.contains('/sign-in')) {
-          final openOnStart = settingsRepository.getOpenOnStart();
-          return AppRoute.getLocation(openOnStart);
+          return AppRoute.getLocation(settingsRepository);
         }
       } else {
         if (!state.location.contains('/sign-in')) return '/sign-in';

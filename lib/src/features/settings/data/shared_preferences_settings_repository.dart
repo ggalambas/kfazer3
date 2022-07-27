@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kfazer3/src/features/settings/data/settings_repository.dart';
 import 'package:kfazer3/src/features/settings/domain/settings.dart';
+import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 class SharedPreferencesSettingsRepository implements SettingsRepository {
@@ -14,6 +15,7 @@ class SharedPreferencesSettingsRepository implements SettingsRepository {
   final openOnStartKey = 'openOnStart';
   final themeModeKey = 'themeMode';
   final languageKey = 'language';
+  final lastWorkspaceKey = 'lastWorkspaceKey';
 
   @override
   OpenOnStart getOpenOnStart() {
@@ -58,4 +60,15 @@ class SharedPreferencesSettingsRepository implements SettingsRepository {
   @override
   void setLanguage(Language language) =>
       prefs.setInt(languageKey, language.index);
+
+  @override
+  WorkspaceId? getLastWorkspaceId() {
+    final id = prefs.getString(lastWorkspaceKey, defaultValue: '').getValue();
+    return id.isEmpty ? null : id;
+  }
+
+  @override
+  void setLastWorkspaceId(WorkspaceId? id) => id == null
+      ? prefs.remove(lastWorkspaceKey)
+      : prefs.setString(lastWorkspaceKey, id);
 }

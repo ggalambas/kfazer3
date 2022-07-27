@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/settings/domain/settings.dart';
+import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 
 import 'shared_preferences_settings_repository.dart';
 
@@ -13,12 +14,17 @@ abstract class SettingsRepository {
   OpenOnStart getOpenOnStart();
   ThemeMode getThemeMode();
   Language getLanguage();
+  WorkspaceId? getLastWorkspaceId();
   Stream<OpenOnStart> watchOpenOnStart();
   Stream<ThemeMode> watchThemeMode();
   Stream<Language> watchLanguage();
   void setOpenOnStart(OpenOnStart openOnStart);
   void setThemeMode(ThemeMode themeMode);
   void setLanguage(Language language);
+  //TODO update this value when
+  // opening a workspace
+  // removing a workspace
+  void setLastWorkspaceId(WorkspaceId? id);
 }
 
 //* Providers
