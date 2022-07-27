@@ -10,42 +10,52 @@ final settingsRepositoryProvider = Provider<SettingsRepository>(
 
 abstract class SettingsRepository {
   Future<void> init();
-  T getSetting<T extends Enum>(List<T> values);
-  void setSetting<T extends Enum>(T value);
+  OpenOnStart getOpenOnStart();
+  ThemeMode getThemeMode();
+  Language getLanguage();
+  Stream<OpenOnStart> watchOpenOnStart();
+  Stream<ThemeMode> watchThemeMode();
+  Stream<Language> watchLanguage();
+  void setOpenOnStart(OpenOnStart openOnStart);
+  void setThemeMode(ThemeMode themeMode);
+  void setLanguage(Language language);
 }
 
 //* Providers
 
 final openOnStartStateProvider = StateNotifierProvider.autoDispose<
-    SettingNotifier<OpenOnStart>, OpenOnStart>((ref) {
-  final initial =
-      ref.watch(settingsRepositoryProvider).getSetting(OpenOnStart.values);
-  return SettingNotifier(ref.read, initial);
-});
+    SettingNotifier<OpenOnStart>, OpenOnStart>(
+  (ref) => SettingNotifier(
+    initial: ref.watch(settingsRepositoryProvider).getOpenOnStart(),
+    stream: ref.watch(settingsRepositoryProvider).watchOpenOnStart(),
+  ),
+);
 
 final themeModeStateProvider =
     StateNotifierProvider.autoDispose<SettingNotifier<ThemeMode>, ThemeMode>(
-        (ref) {
-  final initial =
-      ref.watch(settingsRepositoryProvider).getSetting(ThemeMode.values);
-  return SettingNotifier(ref.read, initial);
-});
+  (ref) => SettingNotifier(
+    initial: ref.watch(settingsRepositoryProvider).getThemeMode(),
+    stream: ref.watch(settingsRepositoryProvider).watchThemeMode(),
+  ),
+);
 
 final languageStateProvider =
     StateNotifierProvider.autoDispose<SettingNotifier<Language>, Language>(
-        (ref) {
-  final initial =
-      ref.watch(settingsRepositoryProvider).getSetting(Language.values);
-  return SettingNotifier(ref.read, initial);
-});
+  (ref) => SettingNotifier(
+    initial: ref.watch(settingsRepositoryProvider).getLanguage(),
+    stream: ref.watch(settingsRepositoryProvider).watchLanguage(),
+  ),
+);
 
-class SettingNotifier<T extends Enum> extends StateNotifier<T> {
-  final Reader read;
-  SettingNotifier(this.read, T value) : super(value);
+class SettingNotifier<T> extends StateNotifier<T> {
+  SettingNotifier({
+    required T initial,
+    required Stream<T> stream,
+  }) : super(initial) {
+    _listen(stream);
+  }
 
-  @override
-  set state(T value) {
-    read(settingsRepositoryProvider).setSetting(value);
-    super.state = value;
+  void _listen(Stream<T> stream) {
+    stream.listen((setting) => state = setting);
   }
 }

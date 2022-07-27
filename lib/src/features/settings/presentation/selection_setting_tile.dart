@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kfazer3/src/features/settings/data/settings_repository.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 
-class SelectionSettingTile<T extends Enum> extends ConsumerWidget {
-  final AutoDisposeStateNotifierProvider<SettingNotifier<T>, T> provider;
+class SelectionSettingTile<T extends Enum> extends StatelessWidget {
+  final T selected;
+  final ValueChanged<T> onChanged;
+  final List<T> options;
   final IconData icon;
   final String title;
   final String? description;
-  final List<T> options;
 
   const SelectionSettingTile({
     super.key,
-    required this.provider,
+    required this.selected,
+    required this.onChanged,
+    required this.options,
     required this.icon,
     required this.title,
     this.description,
-    required this.options,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final value = ref.watch(provider);
+  Widget build(BuildContext context) {
     return ListTile(
       onTap: () => showDialog(
         context: context,
@@ -30,11 +29,11 @@ class SelectionSettingTile<T extends Enum> extends ConsumerWidget {
           title: Text(title),
           children: options
               .map(
-                (option) => RadioListTile(
+                (option) => RadioListTile<T>(
                   value: option,
-                  groupValue: value,
+                  groupValue: selected,
                   onChanged: (newValue) {
-                    ref.read(provider.notifier).state = newValue as T;
+                    onChanged(newValue!);
                     Navigator.pop(context);
                   },
                   title: Text(option.name.hardcoded),
@@ -47,7 +46,7 @@ class SelectionSettingTile<T extends Enum> extends ConsumerWidget {
       title: Text(title),
       subtitle: description == null ? null : Text(description!),
       trailing: Text(
-        value.name.hardcoded,
+        selected.name.hardcoded,
         style: context.textTheme.labelMedium!.copyWith(
           color: context.colorScheme.primary,
         ),

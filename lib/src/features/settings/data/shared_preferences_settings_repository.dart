@@ -1,19 +1,61 @@
+import 'package:flutter/material.dart';
 import 'package:kfazer3/src/features/settings/data/settings_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:kfazer3/src/features/settings/domain/settings.dart';
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 class SharedPreferencesSettingsRepository implements SettingsRepository {
-  late final SharedPreferences prefs;
+  late final StreamingSharedPreferences prefs;
 
   @override
   Future<void> init() async {
-    prefs = await SharedPreferences.getInstance();
-    prefs.clear();
+    prefs = await StreamingSharedPreferences.instance;
+  }
+
+  final openOnStartKey = 'openOnStart';
+  final themeModeKey = 'themeMode';
+  final languageKey = 'language';
+
+  @override
+  OpenOnStart getOpenOnStart() {
+    final i = prefs.getInt(openOnStartKey, defaultValue: 0).getValue();
+    return OpenOnStart.values[i];
   }
 
   @override
-  T getSetting<T extends Enum>(List<T> values) =>
-      values[prefs.getInt(values.first.runtimeType.toString()) ?? 0];
+  ThemeMode getThemeMode() {
+    final i = prefs.getInt(themeModeKey, defaultValue: 0).getValue();
+    return ThemeMode.values[i];
+  }
+
   @override
-  void setSetting<T extends Enum>(T value) =>
-      prefs.setInt(value.runtimeType.toString(), value.index);
+  Language getLanguage() {
+    final i = prefs.getInt(languageKey, defaultValue: 0).getValue();
+    return Language.values[i];
+  }
+
+  @override
+  Stream<OpenOnStart> watchOpenOnStart() => prefs
+      .getInt(openOnStartKey, defaultValue: 0)
+      .map((i) => OpenOnStart.values[i]);
+
+  @override
+  Stream<ThemeMode> watchThemeMode() => prefs
+      .getInt(themeModeKey, defaultValue: 0)
+      .map((i) => ThemeMode.values[i]);
+
+  @override
+  Stream<Language> watchLanguage() =>
+      prefs.getInt(languageKey, defaultValue: 0).map((i) => Language.values[i]);
+
+  @override
+  void setOpenOnStart(OpenOnStart openOnStart) =>
+      prefs.setInt(openOnStartKey, openOnStart.index);
+
+  @override
+  void setThemeMode(ThemeMode themeMode) =>
+      prefs.setInt(themeModeKey, themeMode.index);
+
+  @override
+  void setLanguage(Language language) =>
+      prefs.setInt(languageKey, language.index);
 }

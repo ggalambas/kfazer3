@@ -29,24 +29,37 @@ class SettingsScreen extends ConsumerWidget {
               subtitle: Text(user.phoneNumber),
             ),
             const Divider(),
-            SelectionSettingTile(
-              provider: openOnStartStateProvider,
-              icon: Icons.workspaces,
-              title: 'Open on start'.hardcoded,
-              description: 'Page to show when oppening the app'.hardcoded,
-              options: OpenOnStart.values,
+            Consumer(
+              builder: (context, ref, _) => SelectionSettingTile<OpenOnStart>(
+                selected: ref.watch(openOnStartStateProvider),
+                onChanged: (value) =>
+                    ref.read(settingsRepositoryProvider).setOpenOnStart(value),
+                options: OpenOnStart.values,
+                icon: Icons.workspaces,
+                title: 'Open on start'.hardcoded,
+                description: 'Page to show when oppening the app'.hardcoded,
+              ),
             ),
-            SelectionSettingTile(
-              provider: themeModeStateProvider,
-              icon: Icons.brightness_4,
-              title: 'Theme'.hardcoded,
-              options: ThemeMode.values,
+            Consumer(
+              builder: (context, ref, _) => SelectionSettingTile<ThemeMode>(
+                selected: ref.watch(themeModeStateProvider),
+                onChanged: (value) =>
+                    ref.read(settingsRepositoryProvider).setThemeMode(value),
+                options: ThemeMode.values,
+                icon: Icons.brightness_4,
+                title: 'Theme'.hardcoded,
+              ),
             ),
-            SelectionSettingTile(
-              provider: languageStateProvider,
-              icon: Icons.language,
-              title: 'Language'.hardcoded,
-              options: Language.values,
+            //TODO languages
+            Consumer(
+              builder: (context, ref, _) => SelectionSettingTile<Language>(
+                selected: ref.watch(languageStateProvider),
+                onChanged: (value) =>
+                    ref.read(settingsRepositoryProvider).setLanguage(value),
+                options: Language.values,
+                icon: Icons.language,
+                title: 'Language'.hardcoded,
+              ),
             ),
             ListTile(
               onTap: () => showNotImplementedAlertDialog(context: context),
