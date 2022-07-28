@@ -9,29 +9,45 @@ class Avatar extends StatelessWidget {
   final BoxShape shape;
   final ImageProvider? foregroundImage;
 
-  /// the text is visible when [foregroundImage] is null or loading
   final String? text;
+  late final String? initials;
+  final IconData icon;
 
-  /// the icon is visible appears when [text] is null or empty
-  final IconData? icon;
-
-  const Avatar({
+  /// A shape that represents an entity.
+  /// Typically used with an image, or, in the absence of such an image, a text initials.
+  /// If [foregroundImage] fails then [initials] is used. If [initials] fails too, [icon] is used.
+  /// [text] is used to generate [initials] and be displayed in a tooltip
+  Avatar({
     super.key,
     double radius = 16,
     this.shape = BoxShape.circle,
     this.foregroundImage,
     this.text,
-    this.icon,
-  }) : diameter = radius * 2;
+    this.icon = Icons.person,
+  }) : diameter = radius * 2 {
+    initials = _generateInitials(text);
+  }
 
+  String? _generateInitials(String? text) {
+    if (text == null || text.isEmpty) return null;
+    var parts = text
+        .trim()
+        .split(' ')
+        .where((p) => p.isNotEmpty)
+        .map((p) => p.substring(0, 1));
+    if (parts.length > 2) parts = [parts.first, parts.last];
+    return parts.join('').toUpperCase();
+  }
+
+  /// Circle avatar with the user photo and initials.
   factory Avatar.fromUser(AppUser? user, {double radius = 16}) => Avatar(
         text: user?.name,
-        icon: Icons.person,
         radius: radius,
         foregroundImage:
             user?.photoUrl == null ? null : NetworkImage(user!.photoUrl!),
       );
 
+  /// Squircle avatar with the workspace image and initials.
   factory Avatar.fromWorkspace(Workspace workspace, {double radius = 20}) =>
       Avatar(
         text: workspace.title,
@@ -43,19 +59,19 @@ class Avatar extends StatelessWidget {
             : NetworkImage(workspace.photoUrl!),
       );
 
-  bool get _isTextEmpty => text == null || text!.isEmpty;
-
-  double get size => 0.45 * diameter;
-
-  BorderRadiusGeometry? get borderRadius => shape == BoxShape.rectangle
+  double get _fontSize => 0.45 * diameter;
+  BorderRadiusGeometry? get _borderRadius => shape == BoxShape.rectangle
       ? BorderRadius.circular(diameter * 0.3)
       : null;
 
-  Color backgroundColor(BuildContext context) {
-    if (foregroundImage != null || _isTextEmpty) {
+  Color _generateBackgroundColor(BuildContext context) {
+    // use the primaryContainer color when:
+    // - there's a foreground image (to deal with opacity)
+    // - there's no initials (icon is displayed)
+    if (foregroundImage != null || initials == null) {
       return context.colorScheme.primaryContainer;
     }
-    final textCode = initials().codeUnits.sum;
+    final textCode = initials!.codeUnits.sum;
     final colors = Colors.primaries
         .map((color) => ColorScheme.fromSeed(
               seedColor: color,
@@ -65,13 +81,6 @@ class Avatar extends StatelessWidget {
     return colors[textCode % colors.length];
   }
 
-  String initials() {
-    if (_isTextEmpty) return '';
-    var parts = text!.trim().split(' ').map((p) => p.substring(0, 1));
-    if (parts.length > 2) parts = [parts.first, parts.last];
-    return parts.join('').toUpperCase();
-  }
-
   @override
   Widget build(BuildContext context) {
     final avatar = Container(
@@ -79,30 +88,31 @@ class Avatar extends StatelessWidget {
       width: diameter,
       decoration: BoxDecoration(
         shape: shape,
-        borderRadius: borderRadius,
-        color: backgroundColor(context),
+        borderRadius: _borderRadius,
+        color: _generateBackgroundColor(context),
       ),
       foregroundDecoration: foregroundImage == null
           ? null
           : BoxDecoration(
               shape: shape,
-              borderRadius: borderRadius,
+              borderRadius: _borderRadius,
               image: DecorationImage(
                 image: foregroundImage!,
                 fit: BoxFit.cover,
               ),
             ),
       child: Center(
-        child: _isTextEmpty
-            ? Icon(icon, size: size)
+        child: initials == null
+            ? Icon(icon, size: _fontSize)
             : Text(
-                initials(),
+                initials!,
                 style: context.textTheme.labelLarge!.copyWith(
-                  fontSize: size,
+                  fontSize: _fontSize,
                 ),
               ),
       ),
     );
-    return _isTextEmpty ? avatar : Tooltip(message: text, child: avatar);
+    if (initials == null) return avatar;
+    return Tooltip(message: text, child: avatar);
   }
 }
