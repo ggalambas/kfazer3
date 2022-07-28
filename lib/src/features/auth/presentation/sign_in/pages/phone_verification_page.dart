@@ -92,7 +92,7 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
                 ref.watch(smsCodeControllerProvider(phoneNumber));
             final timer = smsCodeController.value ?? 0;
             return LoadingOutlinedButton(
-              isLoading: smsCodeController.isLoading,
+              loading: smsCodeController.isLoading,
               onPressed: state.isLoading || timer > 0
                   ? null
                   : () => resendSmsCode(phoneNumber),
@@ -103,7 +103,7 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
           },
         ),
         LoadingElevatedButton(
-          isLoading: state.isLoading,
+          loading: state.isLoading,
           onPressed: submit,
           child: Text('Sign in'.hardcoded),
         ),

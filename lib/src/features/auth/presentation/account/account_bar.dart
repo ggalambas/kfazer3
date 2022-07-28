@@ -61,7 +61,7 @@ class EditingAccountBar extends ConsumerWidget with PreferredSizeWidget {
       title: Text('Account'.hardcoded),
       actions: [
         LoadingTextButton(
-          isLoading: loading,
+          loading: loading,
           onPressed: onSave,
           child: Text('Save'.hardcoded),
         ),

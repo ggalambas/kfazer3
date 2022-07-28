@@ -36,7 +36,7 @@ class MotivationalMessagesScreen extends ConsumerWidget {
               actions: [
                 if (editState.value)
                   LoadingTextButton(
-                    isLoading: editState.isLoading,
+                    loading: editState.isLoading,
                     onPressed: ref
                         .read(motivationalMessagesControllerProvider.notifier)
                         .save,

@@ -71,7 +71,7 @@ class AccountScreen extends ConsumerWidget {
                 Align(
                   alignment: Alignment.centerRight,
                   child: LoadingElevatedButton(
-                    isLoading: state.isLoading,
+                    loading: state.isLoading,
                     onPressed: () => signOut(context, ref.read),
                     child: Text('Sign out'.hardcoded),
                   ),

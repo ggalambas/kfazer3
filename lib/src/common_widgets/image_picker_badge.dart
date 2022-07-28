@@ -64,7 +64,7 @@ class ImagePickerBadge extends StatelessWidget {
       children: [
         child,
         LoadingElevatedButton(
-          isLoading: loading,
+          loading: loading,
           style: ElevatedButton.styleFrom(
             primary: context.colorScheme.surface,
             shape: const CircleBorder(),

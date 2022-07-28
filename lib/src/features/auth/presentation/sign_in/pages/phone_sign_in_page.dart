@@ -120,7 +120,7 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
       cta: [
         if (countryListValue.hasValue)
           LoadingElevatedButton(
-            isLoading: state.isLoading,
+            loading: state.isLoading,
             onPressed: submit,
             child: Text('Next'.hardcoded),
           ),
