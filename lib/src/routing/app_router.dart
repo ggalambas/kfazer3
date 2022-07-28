@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/account_screen.dart';
+import 'package:kfazer3/src/features/auth/presentation/account/editing_account_screen.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 import 'package:kfazer3/src/features/notifications/presentation/notification_list_screen.dart';
@@ -123,7 +124,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: 'account',
                 name: AppRoute.account.name,
-                builder: (_, state) => const AccountScreen(),
+                builder: (_, state) {
+                  final editingParam = state.queryParams['editing'];
+                  final editing = editingParam == 'true';
+                  return editing
+                      ? const EditingAccountScreen()
+                      : const AccountScreen();
+                },
               ),
             ],
           ),

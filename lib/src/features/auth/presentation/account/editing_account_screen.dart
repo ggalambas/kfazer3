@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
@@ -11,6 +12,7 @@ import 'package:kfazer3/src/features/auth/domain/updatable_app_user.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/account_screen_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code_dropdown_button.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
@@ -56,12 +58,13 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
     super.dispose();
   }
 
-  void save() {
+  void save() async {
     setState(() => submitted = true);
     if (!formKey.currentState!.validate()) return;
     final phoneNumber = PhoneNumber(phoneCode, this.phoneNumber);
     final updatedUser = user.updateName(name).updatePhoneNumber(phoneNumber);
-    ref.read(accountScreenControllerProvider.notifier).save(updatedUser);
+    await ref.read(accountScreenControllerProvider.notifier).save(updatedUser);
+    if (mounted) context.goNamed(AppRoute.account.name);
   }
 
   void pickImage() async {

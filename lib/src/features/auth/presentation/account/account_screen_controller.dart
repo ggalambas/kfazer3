@@ -5,9 +5,6 @@ import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/utils/string_validator.dart';
 
-final accountEditStateProvider =
-    StateProvider.autoDispose<bool>((ref) => false);
-
 final accountScreenControllerProvider =
     StateNotifierProvider.autoDispose<AccountScreenController, AsyncValue>(
   (ref) => AccountScreenController(ref.read),
@@ -19,16 +16,10 @@ class AccountScreenController extends StateNotifier<AsyncValue>
   AccountScreenController(this.read) : super(const AsyncValue.data(null));
 
   AuthRepository get _authRepository => read(authRepositoryProvider);
-  StateController<bool> get _editController =>
-      read(accountEditStateProvider.notifier);
-
-  void edit() => _editController.state = true;
-  void cancel() => _editController.state = false;
 
   Future<void> save(AppUser user) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() => _authRepository.updateAccount(user));
-    _editController.state = false;
   }
 
   Future<void> signOut() async {

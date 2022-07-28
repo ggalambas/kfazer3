@@ -8,7 +8,6 @@ import 'package:kfazer3/src/common_widgets/tap_to_unfocus.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/account_screen_controller.dart';
-import 'package:kfazer3/src/features/auth/presentation/account/editing_account_screen.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
@@ -36,8 +35,6 @@ class AccountScreen extends ConsumerWidget {
       accountScreenControllerProvider,
       (_, state) => state.showAlertDialogOnError(context),
     );
-    final isEditing = ref.watch(accountEditStateProvider);
-    if (isEditing) return const EditingAccountScreen();
 
     final user = ref.watch(currentUserStateProvider);
     final state = ref.watch(accountScreenControllerProvider);
