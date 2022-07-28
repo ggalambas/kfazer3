@@ -42,7 +42,7 @@ class AccountBar extends ConsumerWidget with PreferredSizeWidget {
 
 class EditingAccountBar extends ConsumerWidget with PreferredSizeWidget {
   final bool loading;
-  final VoidCallback onSave;
+  final VoidCallback? onSave;
 
   const EditingAccountBar({
     super.key,

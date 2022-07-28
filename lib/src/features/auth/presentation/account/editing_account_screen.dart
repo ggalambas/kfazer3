@@ -9,6 +9,7 @@ import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/auth/domain/updatable_app_user.dart';
+import 'package:kfazer3/src/features/auth/presentation/account/image_editing_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code_dropdown_button.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
@@ -70,12 +71,14 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
   }
 
   void pickImage() async {
-    final picker = ImagePicker();
-    final xfile = await picker.pickImage(source: ImageSource.gallery);
-    if (xfile == null) return;
-    final bytes = await xfile.readAsBytes();
-    setState(() => image = MemoryImage(bytes));
+    const source = ImageSource.gallery; //TODO choose from popup
+    final bytes = await ref
+        .read(imageEditingControllerProvider.notifier)
+        .pickProfilePicture(ImageSource.gallery);
+    if (bytes != null) setState(() => image = MemoryImage(bytes));
   }
+
+  void removeImage() => setState(() => image = null);
 
   @override
   Widget build(BuildContext context) {
@@ -85,11 +88,12 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
     );
 
     final state = ref.watch(editingAccountScreenControllerProvider);
+    final imageState = ref.watch(imageEditingControllerProvider);
     return TapToUnfocus(
       child: Scaffold(
         appBar: EditingAccountBar(
           loading: state.isLoading,
-          onSave: save,
+          onSave: imageState.isLoading ? null : save,
         ),
         body: ResponsiveCenter(
           maxContentWidth: Breakpoint.tablet,
@@ -119,7 +123,7 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
                                   kMinInteractiveDimension,
                                 ),
                               ),
-                              onPressed: pickImage,
+                              onPressed: state.isLoading ? null : pickImage,
                               child: const Icon(Icons.image),
                             ),
                           ],
