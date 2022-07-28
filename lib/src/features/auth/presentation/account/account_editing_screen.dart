@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
+import 'package:kfazer3/src/common_widgets/image_picker_badge.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/common_widgets/tap_to_unfocus.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
@@ -14,11 +15,10 @@ import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
-import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
 import 'account_bar.dart';
-import 'editing_account_screen_controller.dart';
+import 'account_editing_screen_controller.dart';
 
 class EditingAccountScreen extends ConsumerStatefulWidget {
   const EditingAccountScreen({super.key});
@@ -63,6 +63,7 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
     setState(() => submitted = true);
     if (!formKey.currentState!.validate()) return;
     final phoneNumber = PhoneNumber(phoneCode, this.phoneNumber);
+    //TODO save image
     final updatedUser = user.updateName(name).updatePhoneNumber(phoneNumber);
     await ref
         .read(editingAccountScreenControllerProvider.notifier)
@@ -70,90 +71,22 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
     if (mounted) context.goNamed(AppRoute.account.name);
   }
 
-  void pickImage() async {
-    final option = await showDialog<int>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Profile photo'.hardcoded),
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly, //?
-          children: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                OutlinedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                    side: BorderSide(color: context.theme.dividerColor),
-                    fixedSize: const Size.square(
-                      kMinInteractiveDimension,
-                    ),
-                  ),
-                  onPressed: () => Navigator.pop(context, 0),
-                  child: const Icon(Icons.camera),
-                ),
-                Space(),
-                Text('Camera'.hardcoded),
-              ],
-            ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                OutlinedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                    side: BorderSide(color: context.theme.dividerColor),
-                    fixedSize: const Size.square(
-                      kMinInteractiveDimension,
-                    ),
-                  ),
-                  onPressed: () => Navigator.pop(context, 1),
-                  child: const Icon(Icons.image),
-                ),
-                Space(),
-                Text('Gallery'.hardcoded),
-              ],
-            ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                OutlinedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                    onPrimary: context.colorScheme.error,
-                    side: BorderSide(color: context.theme.dividerColor),
-                    fixedSize: const Size.square(
-                      kMinInteractiveDimension,
-                    ),
-                  ),
-                  onPressed: () => Navigator.pop(context, 2),
-                  child: const Icon(Icons.delete),
-                ),
-                Space(),
-                Text('Delete'.hardcoded),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-    print(option);
-    if (option == null) return;
-    if (option == 3) return; //TODO delete photo
-
-    final source = option == 1 ? ImageSource.gallery : ImageSource.gallery;
+  void applyImage(XFile? file) async {
+    if (file == null) return setState(() => image = null);
     final bytes = await ref
         .read(imageEditingControllerProvider.notifier)
-        .pickProfilePicture(source);
+        .readAsBytes(file);
     if (bytes != null) setState(() => image = MemoryImage(bytes));
   }
-
-  void removeImage() => setState(() => image = null);
 
   @override
   Widget build(BuildContext context) {
     ref.listen<AsyncValue>(
       editingAccountScreenControllerProvider,
+      (_, state) => state.showAlertDialogOnError(context),
+    );
+    ref.listen<AsyncValue>(
+      imageEditingControllerProvider,
       (_, state) => state.showAlertDialogOnError(context),
     );
 
@@ -177,26 +110,16 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
                     ValueListenableBuilder(
                       valueListenable: nameController,
                       builder: (context, _, __) {
-                        return Stack(
-                          alignment: Alignment.bottomRight,
-                          children: [
-                            Avatar(
-                              radius: kSpace * 10,
-                              foregroundImage: image,
-                              text: nameController.text,
-                            ),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: context.colorScheme.surface,
-                                shape: const CircleBorder(),
-                                fixedSize: const Size.square(
-                                  kMinInteractiveDimension,
-                                ),
-                              ),
-                              onPressed: state.isLoading ? null : pickImage,
-                              child: const Icon(Icons.camera_alt),
-                            ),
-                          ],
+                        return ImagePickerBadge(
+                          loading: imageState.isLoading,
+                          disabled: state.isLoading,
+                          onImagePicked: applyImage,
+                          showDeleteOption: image != null,
+                          child: Avatar(
+                            radius: kSpace * 10,
+                            foregroundImage: image,
+                            text: nameController.text,
+                          ),
                         );
                       },
                     ),

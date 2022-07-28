@@ -6,7 +6,7 @@ import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/features/auth/data/country_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/country.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
-import 'package:kfazer3/src/features/auth/presentation/account/editing_account_screen_controller.dart';
+import 'package:kfazer3/src/features/auth/presentation/account/account_editing_screen_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code_dropdown_button.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.dart';

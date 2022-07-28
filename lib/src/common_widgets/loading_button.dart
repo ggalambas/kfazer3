@@ -11,17 +11,20 @@ class LoadingElevatedButton extends StatelessWidget {
   final Widget child;
   final bool isLoading;
   final VoidCallback? onPressed;
+  final ButtonStyle? style;
 
   const LoadingElevatedButton({
     super.key,
     required this.child,
     this.isLoading = false,
     this.onPressed,
+    this.style,
   });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
+      style: style,
       onPressed: isLoading ? null : onPressed,
       child: isLoading
           ? const SizedBox.square(
