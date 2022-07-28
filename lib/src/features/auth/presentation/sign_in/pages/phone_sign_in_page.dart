@@ -12,7 +12,7 @@ import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controlle
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
-import 'package:kfazer3/src/routing/external_uri.dart';
+import 'package:kfazer3/src/routing/website.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -76,14 +76,14 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
             text: 'Terms of Service',
             style: TextStyle(color: context.colorScheme.primary),
             recognizer: TapGestureRecognizer()
-              ..onTap = () => launchUrl(ExternalUri.terms),
+              ..onTap = () => launchUrl(Website.terms),
           ),
           const TextSpan(text: ' and '),
           TextSpan(
             text: 'Privacy Policy',
             style: TextStyle(color: context.colorScheme.primary),
             recognizer: TapGestureRecognizer()
-              ..onTap = () => launchUrl(ExternalUri.privacy),
+              ..onTap = () => launchUrl(Website.privacy),
           ),
         ],
       ),

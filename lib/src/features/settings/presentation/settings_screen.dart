@@ -10,6 +10,8 @@ import 'package:kfazer3/src/features/settings/domain/settings.dart';
 import 'package:kfazer3/src/features/settings/presentation/selection_setting_tile.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
+import 'package:kfazer3/src/routing/website.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -68,13 +70,13 @@ class SettingsScreen extends ConsumerWidget {
               subtitle: Text('Open system settings'.hardcoded),
             ),
             ListTile(
-              onTap: () => showNotImplementedAlertDialog(context: context),
+              onTap: () => launchUrl(Website.contactUs),
               leading: const Icon(Icons.people),
               title: Text('Contact us'.hardcoded),
               subtitle: Text('Questions? Need help?'.hardcoded),
             ),
             ListTile(
-              onTap: () => showNotImplementedAlertDialog(context: context),
+              onTap: () => launchUrl(Website.policies),
               leading: const Icon(Icons.description),
               title: Text('Policies'.hardcoded),
               subtitle: Text('Privacy & Terms'.hardcoded),
