@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/common_widgets/tap_to_unfocus.dart';
@@ -12,6 +12,7 @@ import 'package:kfazer3/src/features/auth/presentation/account/account_screen_co
 import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code_dropdown_button.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
+import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
 import 'account_bar.dart';
@@ -35,6 +36,8 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
     code: user.phoneNumber.code,
   );
 
+  late ImageProvider? image =
+      user.photoUrl == null ? null : NetworkImage(user.photoUrl!);
   String get name => nameController.text;
   String get phoneNumber => phoneNumberController.text;
   String get phoneCode => phoneCodeController.code;
@@ -61,16 +64,12 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
     ref.read(accountScreenControllerProvider.notifier).save(updatedUser);
   }
 
-  void signOut() async {
-    final logout = await showAlertDialog(
-      context: context,
-      title: 'Are you sure?'.hardcoded,
-      cancelActionText: 'Cancel'.hardcoded,
-      defaultActionText: 'Sign Out'.hardcoded,
-    );
-    if (logout == true) {
-      ref.read(accountScreenControllerProvider.notifier).signOut();
-    }
+  void pickImage() async {
+    final picker = ImagePicker();
+    final xfile = await picker.pickImage(source: ImageSource.gallery);
+    if (xfile == null) return;
+    final bytes = await xfile.readAsBytes();
+    setState(() => image = MemoryImage(bytes));
   }
 
   @override
@@ -96,13 +95,29 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
                 key: formKey,
                 child: Column(
                   children: [
-                    //TODO import photo
                     ValueListenableBuilder(
                       valueListenable: nameController,
                       builder: (context, _, __) {
-                        return Avatar.fromUser(
-                          user.updateName(nameController.text),
-                          radius: kSpace * 10,
+                        return Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            Avatar(
+                              radius: kSpace * 10,
+                              foregroundImage: image,
+                              text: nameController.text,
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: context.colorScheme.surface,
+                                shape: const CircleBorder(),
+                                fixedSize: const Size.square(
+                                  kMinInteractiveDimension,
+                                ),
+                              ),
+                              onPressed: pickImage,
+                              child: const Icon(Icons.image),
+                            ),
+                          ],
                         );
                       },
                     ),

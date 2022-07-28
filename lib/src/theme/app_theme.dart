@@ -17,11 +17,6 @@ final themeProvider = Provider.family<ThemeData, Brightness>((ref, brightness) {
         ),
       ),
     ),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        tapTargetSize: MaterialTapTargetSize.padded,
-      ),
-    ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         tapTargetSize: MaterialTapTargetSize.padded,
@@ -43,6 +38,12 @@ final themeProvider = Provider.family<ThemeData, Brightness>((ref, brightness) {
         theme.backgroundColor,
         theme.colorScheme.surfaceTint,
         6.0,
+      ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        tapTargetSize: MaterialTapTargetSize.padded,
+        primary: theme.colorScheme.primaryContainer,
       ),
     ),
   );

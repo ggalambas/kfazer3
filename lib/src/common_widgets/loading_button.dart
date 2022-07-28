@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kfazer3/src/constants/constants.dart';
-import 'package:kfazer3/src/utils/context_theme.dart';
 
 /// Loading button based on [ElevatedButton].
 /// Useful for CTAs in the app.
@@ -23,9 +22,6 @@ class LoadingElevatedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        primary: context.colorScheme.primaryContainer,
-      ),
       onPressed: isLoading ? null : onPressed,
       child: isLoading
           ? const SizedBox.square(
