@@ -75,7 +75,7 @@ class _AccountSetupPageState extends ConsumerState<AccountSetupPage> {
       ],
       cta: [
         LoadingElevatedButton(
-          isLoading: state.isLoading,
+          loading: state.isLoading,
           onPressed: submit,
           child: Text('Save'.hardcoded),
         ),
