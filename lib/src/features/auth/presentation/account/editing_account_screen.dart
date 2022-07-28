@@ -9,7 +9,6 @@ import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/auth/domain/updatable_app_user.dart';
-import 'package:kfazer3/src/features/auth/presentation/account/account_screen_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code_dropdown_button.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
@@ -18,6 +17,7 @@ import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
 import 'account_bar.dart';
+import 'editing_account_screen_controller.dart';
 
 class EditingAccountScreen extends ConsumerStatefulWidget {
   const EditingAccountScreen({super.key});
@@ -63,7 +63,9 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
     if (!formKey.currentState!.validate()) return;
     final phoneNumber = PhoneNumber(phoneCode, this.phoneNumber);
     final updatedUser = user.updateName(name).updatePhoneNumber(phoneNumber);
-    await ref.read(accountScreenControllerProvider.notifier).save(updatedUser);
+    await ref
+        .read(editingAccountScreenControllerProvider.notifier)
+        .save(updatedUser);
     if (mounted) context.goNamed(AppRoute.account.name);
   }
 
@@ -78,11 +80,11 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
   @override
   Widget build(BuildContext context) {
     ref.listen<AsyncValue>(
-      accountScreenControllerProvider,
+      editingAccountScreenControllerProvider,
       (_, state) => state.showAlertDialogOnError(context),
     );
 
-    final state = ref.watch(accountScreenControllerProvider);
+    final state = ref.watch(editingAccountScreenControllerProvider);
     return TapToUnfocus(
       child: Scaffold(
         appBar: EditingAccountBar(
@@ -136,7 +138,8 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
                       validator: (name) {
                         if (!submitted) return null;
                         return ref
-                            .read(accountScreenControllerProvider.notifier)
+                            .read(
+                                editingAccountScreenControllerProvider.notifier)
                             .nameErrorText(name ?? '');
                       },
                     ),
@@ -155,7 +158,8 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
                       validator: (phoneNumber) {
                         if (!submitted) return null;
                         return ref
-                            .read(accountScreenControllerProvider.notifier)
+                            .read(
+                                editingAccountScreenControllerProvider.notifier)
                             .phoneNumberErrorText(phoneNumber ?? '');
                       },
                     ),
