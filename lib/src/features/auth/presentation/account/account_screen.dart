@@ -15,15 +15,10 @@ import 'package:smart_space/smart_space.dart';
 
 import 'account_bar.dart';
 
-class AccountScreen extends ConsumerStatefulWidget {
+class AccountScreen extends ConsumerWidget {
   const AccountScreen({super.key});
 
-  @override
-  ConsumerState<AccountScreen> createState() => _AccountScreenState();
-}
-
-class _AccountScreenState extends ConsumerState<AccountScreen> {
-  void signOut() async {
+  void signOut(BuildContext context, Reader read) async {
     final logout = await showAlertDialog(
       context: context,
       title: 'Are you sure?'.hardcoded,
@@ -31,12 +26,12 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
       defaultActionText: 'Sign Out'.hardcoded,
     );
     if (logout == true) {
-      ref.read(accountScreenControllerProvider.notifier).signOut();
+      read(accountScreenControllerProvider.notifier).signOut();
     }
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     ref.listen<AsyncValue>(
       accountScreenControllerProvider,
       (_, state) => state.showAlertDialogOnError(context),
@@ -80,7 +75,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                   alignment: Alignment.centerRight,
                   child: LoadingElevatedButton(
                     isLoading: state.isLoading,
-                    onPressed: signOut,
+                    onPressed: () => signOut(context, ref.read),
                     child: Text('Sign out'.hardcoded),
                   ),
                 ),

@@ -6,12 +6,12 @@ import 'auth_repository.dart';
 
 class FakeAuthRepository implements AuthRepository {
   final _authState = InMemorStore<AppUser?>(
-    // null,
-    AppUser(
-      id: '+351912776411'.split('').reversed.join(),
-      name: 'Alexandre Galambas',
-      phoneNumber: PhoneNumber('+351', '912776411'),
-    ),
+    null,
+    // AppUser(
+    //   id: '+351912776411'.split('').reversed.join(),
+    //   name: 'Alexandre Galambas',
+    //   phoneNumber: PhoneNumber('+351', '912776411'),
+    // ),
   );
 
   @override

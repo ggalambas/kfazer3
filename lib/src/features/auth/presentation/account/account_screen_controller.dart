@@ -5,7 +5,8 @@ import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/utils/string_validator.dart';
 
-final accountEditStateProvider = StateProvider<bool>((ref) => false);
+final accountEditStateProvider =
+    StateProvider.autoDispose<bool>((ref) => false);
 
 final accountScreenControllerProvider =
     StateNotifierProvider.autoDispose<AccountScreenController, AsyncValue>(

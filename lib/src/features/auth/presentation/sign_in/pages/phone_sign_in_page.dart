@@ -5,8 +5,9 @@ import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/features/auth/data/country_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/country.dart';
+import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/account_screen_controller.dart';
-import 'package:kfazer3/src/features/auth/presentation/country_picker/country_picker.dart';
+import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code_dropdown_button.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
@@ -27,10 +28,10 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
   final formKey = GlobalKey<FormState>();
   final phoneNumberNode = FocusNode();
   final phoneNumberController = TextEditingController();
-  final countryController = CountryController();
+  PhoneCodeController? phoneCodeController;
 
   String get phoneNumber => phoneNumberController.text;
-  String get phoneCode => countryController.value.phoneCode;
+  String get phoneCode => phoneCodeController!.code;
 
   // local variable used to apply AutovalidateMode.onUserInteraction and show
   // error hints only when the form has been submitted
@@ -40,6 +41,7 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
 
   @override
   void dispose() {
+    phoneCodeController?.dispose();
     phoneNumberController.dispose();
     phoneNumberNode.dispose();
     super.dispose();
@@ -54,10 +56,8 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
     if (!formKey.currentState!.validate()) return;
 
     final controller = ref.read(signInControllerProvider.notifier);
-    final success = await controller.submit(
-      SignInPage.phone,
-      '$phoneCode$phoneNumber',
-    );
+    final phoneNumber = PhoneNumber(phoneCode, this.phoneNumber);
+    final success = await controller.submit(SignInPage.phone, phoneNumber);
     if (success) widget.onSuccess?.call();
   }
 
@@ -90,27 +90,31 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
       content: [
         AsyncValueWidget<List<Country>>(
           value: countryListValue,
-          data: (countryList) => TextFormField(
-            focusNode: phoneNumberNode,
-            controller: phoneNumberController,
-            keyboardType: TextInputType.phone,
-            textInputAction: TextInputAction.done,
-            decoration: InputDecoration(
-              labelText: 'Phone number'.hardcoded,
-              prefix: CountryPickerPrefix(
-                controller: countryController,
-                countries: countryList,
+          data: (countryList) {
+            phoneCodeController ??= PhoneCodeController.fromLocale(
+              Localizations.localeOf(context),
+              countryList,
+            );
+            return TextFormField(
+              focusNode: phoneNumberNode,
+              controller: phoneNumberController,
+              keyboardType: TextInputType.phone,
+              textInputAction: TextInputAction.done,
+              decoration: InputDecoration(
+                labelText: 'Phone number'.hardcoded,
+                prefix:
+                    PhoneCodeDropdownPrefix(controller: phoneCodeController!),
               ),
-            ),
-            onEditingComplete: submit,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: (phoneNumber) {
-              if (!submitted) return null;
-              return ref
-                  .read(signInControllerProvider.notifier)
-                  .phoneNumberErrorText(phoneNumber ?? '');
-            },
-          ),
+              onEditingComplete: submit,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (phoneNumber) {
+                if (!submitted) return null;
+                return ref
+                    .read(signInControllerProvider.notifier)
+                    .phoneNumberErrorText(phoneNumber ?? '');
+              },
+            );
+          },
         ),
       ],
       cta: [
