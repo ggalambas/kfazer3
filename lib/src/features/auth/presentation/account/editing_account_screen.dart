@@ -70,8 +70,79 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
   }
 
   void pickImage() async {
+    final option = await showDialog<int>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Profile photo'.hardcoded),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly, //?
+          children: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                OutlinedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: const CircleBorder(),
+                    side: BorderSide(color: context.theme.dividerColor),
+                    fixedSize: const Size.square(
+                      kMinInteractiveDimension,
+                    ),
+                  ),
+                  onPressed: () => Navigator.pop(context, 0),
+                  child: const Icon(Icons.camera),
+                ),
+                Space(),
+                Text('Camera'.hardcoded),
+              ],
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                OutlinedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: const CircleBorder(),
+                    side: BorderSide(color: context.theme.dividerColor),
+                    fixedSize: const Size.square(
+                      kMinInteractiveDimension,
+                    ),
+                  ),
+                  onPressed: () => Navigator.pop(context, 1),
+                  child: const Icon(Icons.image),
+                ),
+                Space(),
+                Text('Gallery'.hardcoded),
+              ],
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                OutlinedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: const CircleBorder(),
+                    onPrimary: context.colorScheme.error,
+                    side: BorderSide(color: context.theme.dividerColor),
+                    fixedSize: const Size.square(
+                      kMinInteractiveDimension,
+                    ),
+                  ),
+                  onPressed: () => Navigator.pop(context, 2),
+                  child: const Icon(Icons.delete),
+                ),
+                Space(),
+                Text('Delete'.hardcoded),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+    print(option);
+    if (option == null) return;
+    if (option == 3) return; //TODO delete photo
     final picker = ImagePicker();
-    final xfile = await picker.pickImage(source: ImageSource.gallery);
+    final xfile = await picker.pickImage(
+      source: option == 1 ? ImageSource.gallery : ImageSource.gallery,
+    );
     if (xfile == null) return;
     final bytes = await xfile.readAsBytes();
     setState(() => image = MemoryImage(bytes));
@@ -120,7 +191,7 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
                                 ),
                               ),
                               onPressed: pickImage,
-                              child: const Icon(Icons.image),
+                              child: const Icon(Icons.camera_alt),
                             ),
                           ],
                         );
