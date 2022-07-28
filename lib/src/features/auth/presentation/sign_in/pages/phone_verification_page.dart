@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
+import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
@@ -49,7 +50,7 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
     if (success) widget.onSuccess?.call();
   }
 
-  void resendSmsCode(String phoneNumber) =>
+  void resendSmsCode(PhoneNumber phoneNumber) =>
       ref.read(smsCodeControllerProvider(phoneNumber).notifier).resendSmsCode();
 
   @override

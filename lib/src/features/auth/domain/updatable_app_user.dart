@@ -1,3 +1,5 @@
+import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
+
 import 'app_user.dart';
 
 extension UpdatableAppUser on AppUser {
@@ -7,7 +9,7 @@ extension UpdatableAppUser on AppUser {
         phoneNumber: phoneNumber,
       );
 
-  AppUser updatePhoneNumber(String phoneNumber) => AppUser(
+  AppUser updatePhoneNumber(PhoneNumber phoneNumber) => AppUser(
         id: id,
         name: name,
         phoneNumber: phoneNumber,

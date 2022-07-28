@@ -68,7 +68,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                     Space(),
                     TextFormField(
                       enabled: false,
-                      initialValue: user.phoneNumber,
+                      initialValue: user.phoneNumber.toString(),
                       decoration: InputDecoration(
                         labelText: 'Phone number'.hardcoded,
                       ),

@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
+import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/account_screen_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sms_code_controller.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
@@ -16,21 +17,24 @@ final signInControllerProvider =
 class SignInController extends StateNotifier<AsyncValue>
     with SignInValidators, AccountValidators {
   final Reader read;
-  String? phoneNumber;
+  PhoneNumber? phoneNumber;
 
   SignInController({required this.read}) : super(const AsyncValue.data(null));
 
   AuthRepository get authRepository => read(authRepositoryProvider);
 
-  Future<bool> submit(SignInPage page, String value) async {
+  Future<bool> submit(SignInPage page, dynamic value) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() {
       switch (page) {
         case SignInPage.phone:
+          assert(value is PhoneNumber);
           return read(smsCodeControllerProvider(value).notifier).sendSmsCode();
         case SignInPage.verification:
+          assert(value is String);
           return authRepository.verifySmsCode(phoneNumber!, value);
         case SignInPage.account:
+          assert(value is String);
           return authRepository.createAccount(phoneNumber!, value);
       }
     });

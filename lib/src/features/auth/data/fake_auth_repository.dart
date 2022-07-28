@@ -1,4 +1,5 @@
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
+import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/utils/in_memory_store.dart';
 
 import 'auth_repository.dart';
@@ -7,9 +8,9 @@ class FakeAuthRepository implements AuthRepository {
   final _authState = InMemorStore<AppUser?>(
     // null,
     AppUser(
-      id: '912345678'.split('').reversed.join(),
-      name: 'Tareco Buíto',
-      phoneNumber: '912345678',
+      id: '+351912776411'.split('').reversed.join(),
+      name: 'Alexandre Galambas',
+      phoneNumber: PhoneNumber('+351', '912776411'),
     ),
   );
 
@@ -19,7 +20,7 @@ class FakeAuthRepository implements AuthRepository {
   AppUser? get currentUser => _authState.value;
 
   @override
-  Future<void> sendSmsCode(String phoneNumber) async {
+  Future<void> sendSmsCode(PhoneNumber phoneNumber) async {
     await Future.delayed(const Duration(seconds: 1));
     // throw Exception();
     if (currentUser == null) {
@@ -29,7 +30,7 @@ class FakeAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<void> verifySmsCode(String phoneNumber, String smsCode) async {
+  Future<void> verifySmsCode(PhoneNumber phoneNumber, String smsCode) async {
     await Future.delayed(const Duration(seconds: 1));
     // throw Exception();
     if (currentUser == null) {
@@ -41,7 +42,10 @@ class FakeAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<void> createAccount(String phoneNumber, String displayName) async {
+  Future<void> createAccount(
+    PhoneNumber phoneNumber,
+    String displayName,
+  ) async {
     await Future.delayed(const Duration(seconds: 1));
     // throw Exception();
     if (currentUser == null) {
@@ -52,13 +56,18 @@ class FakeAuthRepository implements AuthRepository {
   }
 
   Future<void> _signInWithPhoneNumber(
-    String phoneNumber, {
+    PhoneNumber phoneNumber, {
     String? displayName,
   }) async {
     if (currentUser == null) {
       _authState.value = AppUser(
-        id: phoneNumber.split('').reversed.join(),
-        name: displayName ?? 'Tareco Buíto',
+        id: phoneNumber
+            .toString()
+            .replaceAll(' ', '')
+            .split('')
+            .reversed
+            .join(),
+        name: displayName ?? 'Alexandre Galambas',
         phoneNumber: phoneNumber,
       );
     }

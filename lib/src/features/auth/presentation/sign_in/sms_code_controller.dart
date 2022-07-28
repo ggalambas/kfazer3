@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
+import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 
 const _kTimerDuration = Duration(seconds: 30);
 
 final smsCodeControllerProvider = StateNotifierProvider.family
-    .autoDispose<SmsCodeController, AsyncValue<int>, String>(
+    .autoDispose<SmsCodeController, AsyncValue<int>, PhoneNumber>(
   (ref, phoneNumber) {
     final authRepository = ref.watch(authRepositoryProvider);
     return SmsCodeController(phoneNumber, authRepository: authRepository);
@@ -16,7 +17,7 @@ final smsCodeControllerProvider = StateNotifierProvider.family
 
 class SmsCodeController extends StateNotifier<AsyncValue<int>> {
   final AuthRepository authRepository;
-  final String phoneNumber;
+  final PhoneNumber phoneNumber;
   late final Timer timer;
 
   SmsCodeController(this.phoneNumber, {required this.authRepository})

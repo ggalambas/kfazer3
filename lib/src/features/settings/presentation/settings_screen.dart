@@ -26,7 +26,7 @@ class SettingsScreen extends ConsumerWidget {
               onTap: () => context.goNamed(AppRoute.account.name),
               leading: Avatar.fromUser(user),
               title: Text(user.name),
-              subtitle: Text(user.phoneNumber),
+              subtitle: Text(user.phoneNumber.number),
             ),
             const Divider(),
             Consumer(

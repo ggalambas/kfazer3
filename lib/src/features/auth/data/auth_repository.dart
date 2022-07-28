@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
+import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/utils/stream_notifier.dart';
 
 import 'fake_auth_repository.dart';
@@ -18,9 +19,9 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
 abstract class AuthRepository {
   Stream<AppUser?> authStateChanges();
   AppUser? get currentUser;
-  Future<void> sendSmsCode(String phoneNumber);
-  Future<void> verifySmsCode(String phoneNumber, String smsCode);
-  Future<void> createAccount(String phoneNumber, String displayName);
+  Future<void> sendSmsCode(PhoneNumber phoneNumber);
+  Future<void> verifySmsCode(PhoneNumber phoneNumber, String smsCode);
+  Future<void> createAccount(PhoneNumber phoneNumber, String displayName);
   Future<void> updateAccount(AppUser user);
   Future<void> signOut();
 }
