@@ -32,17 +32,6 @@ class SettingsScreen extends ConsumerWidget {
             ),
             const Divider(),
             Consumer(
-              builder: (context, ref, _) => SelectionSettingTile<OpenOnStart>(
-                selected: ref.watch(openOnStartStateProvider),
-                onChanged: (value) =>
-                    ref.read(settingsRepositoryProvider).setOpenOnStart(value),
-                options: OpenOnStart.values,
-                icon: Icons.workspaces,
-                title: 'Open on start'.hardcoded,
-                description: 'Page to show when oppening the app'.hardcoded,
-              ),
-            ),
-            Consumer(
               builder: (context, ref, _) => SelectionSettingTile<ThemeMode>(
                 selected: ref.watch(themeModeStateProvider),
                 onChanged: (value) =>

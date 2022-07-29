@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
-import 'package:kfazer3/src/features/settings/data/settings_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
@@ -58,7 +57,6 @@ class WorkspaceMenuButton extends ConsumerWidget {
             showNotImplementedAlertDialog(context: context);
             break;
           case WorkspaceMenuOption.leave:
-            ref.read(settingsRepositoryProvider).removeLastWorkspaceId();
             showNotImplementedAlertDialog(context: context);
             break;
         }

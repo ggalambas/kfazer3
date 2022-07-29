@@ -8,8 +8,6 @@ import 'package:kfazer3/src/features/auth/presentation/account/account_edit_scre
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 import 'package:kfazer3/src/features/notifications/presentation/notification_list_screen.dart';
-import 'package:kfazer3/src/features/settings/data/settings_repository.dart';
-import 'package:kfazer3/src/features/settings/domain/settings.dart';
 import 'package:kfazer3/src/features/settings/presentation/settings_screen.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 import 'package:kfazer3/src/features/tasks/presentation/archive/archived_tasks_screen.dart';
@@ -42,31 +40,18 @@ enum AppRoute {
 
   notifications, //! fullscreenDialog
   settings, //! fullscreenDialog
-  accountDetails;
-
-  static String getLocation(SettingsRepository repository) {
-    final openOnStart = repository.getOpenOnStart();
-    final lastWorkspaceId = repository.getLastWorkspaceId();
-    if (openOnStart == OpenOnStart.home || lastWorkspaceId == null) {
-      return '/';
-    } else {
-      return '/w/$lastWorkspaceId';
-    }
-  }
+  accountDetails,
 }
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authRepository = ref.watch(authRepositoryProvider);
-  final settingsRepository = ref.watch(settingsRepositoryProvider);
   return GoRouter(
-    initialLocation: AppRoute.getLocation(settingsRepository),
+    initialLocation: '/',
     debugLogDiagnostics: false,
     redirect: (state) {
       final isLoggedIn = authRepository.currentUser != null;
       if (isLoggedIn) {
-        if (state.location.contains('/sign-in')) {
-          return AppRoute.getLocation(settingsRepository);
-        }
+        if (state.location.contains('/sign-in')) return '/';
       } else {
         if (!state.location.contains('/sign-in')) return '/sign-in';
       }
