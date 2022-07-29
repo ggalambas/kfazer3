@@ -13,7 +13,6 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //TODO check if new goRouter version no longer has bugs
     final goRouter = ref.watch(goRouterProvider);
     final themeMode = ref.watch(themeModeStateProvider);
     final lightTheme = ref.watch(themeProvider(Brightness.light));
@@ -24,6 +23,7 @@ class MyApp extends ConsumerWidget {
       // supportedLocales: AppLocalizations.supportedLocales,
       routerDelegate: goRouter.routerDelegate,
       routeInformationParser: goRouter.routeInformationParser,
+      routeInformationProvider: goRouter.routeInformationProvider,
       restorationScopeId: 'app',
       title: 'KFazer',
       theme: lightTheme,
