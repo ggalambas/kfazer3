@@ -53,7 +53,11 @@ class ImagePickerBadge extends StatelessWidget {
         return;
     }
 
-    final file = await ImagePicker().pickImage(source: source);
+    final file = await ImagePicker().pickImage(
+      source: source,
+      preferredCameraDevice: CameraDevice.front,
+    );
+    if (file == null) return;
     onImagePicked?.call(file);
   }
 
