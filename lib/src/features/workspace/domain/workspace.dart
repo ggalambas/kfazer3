@@ -1,3 +1,5 @@
+import 'package:kfazer3/src/features/workspace/domain/preferences.dart';
+
 /// * The workspace identifier is an important concept and can have its own type.
 typedef WorkspaceId = String;
 
@@ -9,6 +11,7 @@ class Workspace {
   final String description;
   final String? photoUrl;
   final List<String> motivationalMessages;
+  final WorkspacePlan plan;
 
   const Workspace({
     required this.id,
@@ -16,5 +19,6 @@ class Workspace {
     required this.description,
     this.photoUrl,
     this.motivationalMessages = const [],
+    this.plan = WorkspacePlan.family,
   });
 }

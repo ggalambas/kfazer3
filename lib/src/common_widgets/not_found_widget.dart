@@ -9,7 +9,8 @@ import 'package:smart_space/smart_space.dart';
 /// Placeholder widget showing a message and CTA to go back to the home screen.
 class NotFoundWidget extends StatelessWidget {
   final String message;
-  const NotFoundWidget({super.key, required this.message});
+  final VoidCallback? onLeave;
+  const NotFoundWidget({super.key, required this.message, this.onLeave});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,10 @@ class NotFoundWidget extends StatelessWidget {
             ),
             Space(4),
             LoadingElevatedButton(
-              onPressed: () => context.goNamed(AppRoute.home.name),
+              onPressed: () {
+                onLeave?.call();
+                context.goNamed(AppRoute.home.name);
+              },
               child: Text('Go Home'.hardcoded),
             )
           ],

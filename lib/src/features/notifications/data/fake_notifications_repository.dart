@@ -4,7 +4,7 @@ import 'package:kfazer3/src/features/notifications/domain/notification.dart';
 import 'package:kfazer3/src/utils/in_memory_store.dart';
 
 class FakeNotificationsRepository implements NotificationsRepository {
-  final _notifications = InMemorStore<List<Notification>>(kTestNotifications);
+  final _notifications = InMemoryStore<List<Notification>>(kTestNotifications);
 
   @override
   final notificationsPerFetch = 15;

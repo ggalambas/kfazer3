@@ -24,7 +24,8 @@ abstract class SettingsRepository {
   void setLanguage(Language language);
   //TODO update this value when
   // removing a workspace
-  void setLastWorkspaceId(WorkspaceId? id);
+  void setLastWorkspaceId(WorkspaceId id);
+  void removeLastWorkspaceId();
 }
 
 //* Providers

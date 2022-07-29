@@ -2,10 +2,10 @@ import 'package:rxdart/rxdart.dart' show BehaviorSubject;
 
 /// An in-memory store backed by BehaviorSubject that can be used to
 /// store the data for all the fake repositories in the app
-class InMemorStore<T> {
+class InMemoryStore<T> {
   /// The BehaviourSubject that holds the data
   final BehaviorSubject<T> _subject;
-  InMemorStore(T initial) : _subject = BehaviorSubject<T>.seeded(initial);
+  InMemoryStore(T initial) : _subject = BehaviorSubject<T>.seeded(initial);
 
   /// The output stream that can be used to listen to the data
   Stream<T> get stream => _subject.stream;

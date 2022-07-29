@@ -216,14 +216,18 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                     child: WorkspacePreferencesScreen(workspaceId: workspaceId),
                   );
                 },
-              ),
-              GoRoute(
-                path: 'motivational-messages',
-                name: AppRoute.motivationalMessages.name,
-                builder: (_, state) {
-                  final workspaceId = state.params['workspaceId']!;
-                  return MotivationalMessagesScreen(workspaceId: workspaceId);
-                },
+                routes: [
+                  GoRoute(
+                    path: 'motivational-messages',
+                    name: AppRoute.motivationalMessages.name,
+                    builder: (_, state) {
+                      final workspaceId = state.params['workspaceId']!;
+                      return MotivationalMessagesScreen(
+                        workspaceId: workspaceId,
+                      );
+                    },
+                  ),
+                ],
               ),
               GoRoute(
                 path: 'archive',

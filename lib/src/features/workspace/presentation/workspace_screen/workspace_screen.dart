@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
-import 'package:kfazer3/src/common_widgets/not_found_widget.dart';
 import 'package:kfazer3/src/features/dashboard/presentation/dashboard_page.dart';
 import 'package:kfazer3/src/features/settings/data/settings_repository.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
@@ -13,6 +12,8 @@ import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_bar/workspace_bar.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
+
+import 'not_found_workspace.dart';
 
 /// The three sub-routes that are presented as part of the workspace screen.
 enum WorkspaceMenu { tasks, team, dashboard }
@@ -109,15 +110,7 @@ class _WorkspaceScreenState extends ConsumerState<WorkspaceScreen>
     return AsyncValueWidget<Workspace?>(
       value: workspaceValue,
       data: (workspace) {
-        if (workspace == null) {
-          return Material(
-            child: NotFoundWidget(
-              message: 'You do not have access to this workspace. '
-                      'Please contact a member to add you to their team'
-                  .hardcoded,
-            ),
-          );
-        }
+        if (workspace == null) return const NotFoundWorkspace();
         return Scaffold(
           appBar: WorkspaceBar(workspace: workspace),
           body: PageView(

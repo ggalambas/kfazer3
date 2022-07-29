@@ -5,7 +5,7 @@ import 'package:kfazer3/src/utils/in_memory_store.dart';
 import 'auth_repository.dart';
 
 class FakeAuthRepository implements AuthRepository {
-  final _authState = InMemorStore<AppUser?>(
+  final _authState = InMemoryStore<AppUser?>(
     // null,
     AppUser(
       id: '+351912776411'.split('').reversed.join(),
@@ -75,7 +75,7 @@ class FakeAuthRepository implements AuthRepository {
 
   @override
   Future<void> updateAccount(AppUser user) async {
-    await Future.delayed(const Duration(seconds: 1));
+    // await Future.delayed(const Duration(seconds: 1));
     if (currentUser != null) _authState.value = user;
   }
 

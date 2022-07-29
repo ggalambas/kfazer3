@@ -70,6 +70,11 @@ class SettingsScreen extends ConsumerWidget {
               subtitle: Text('Open system settings'.hardcoded),
             ),
             ListTile(
+              onTap: () => showNotImplementedAlertDialog(context: context),
+              leading: const Icon(Icons.calendar_view_month),
+              title: Text('Sheet template'.hardcoded),
+            ),
+            ListTile(
               onTap: () => launchUrl(Website.contactUs),
               leading: const Icon(Icons.people),
               title: Text('Contact us'.hardcoded),
@@ -81,18 +86,6 @@ class SettingsScreen extends ConsumerWidget {
               title: Text('Policies'.hardcoded),
               subtitle: Text('Privacy & Terms'.hardcoded),
             ),
-            //TODO move to workspace preferences
-            // ListTile(
-            //   onTap: () => showNotImplementedAlertDialog(context: context),
-            //   leading: const Icon(Icons.description),
-            //   title: Text('Sheet template'.hardcoded),
-            // ),
-            // ListTile(
-            //   onTap: () => showNotImplementedAlertDialog(context: context),
-            //   leading: const Icon(Icons.download),
-            //   title: Text('Export'.hardcoded),
-            //   subtitle: Text('Export workspace in XXX format'.hardcoded),
-            // ),
           ],
         ),
       ),

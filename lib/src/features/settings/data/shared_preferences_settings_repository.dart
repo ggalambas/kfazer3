@@ -36,6 +36,12 @@ class SharedPreferencesSettingsRepository implements SettingsRepository {
   }
 
   @override
+  WorkspaceId? getLastWorkspaceId() {
+    final id = prefs.getString(lastWorkspaceKey, defaultValue: '').getValue();
+    return id.isEmpty ? null : id;
+  }
+
+  @override
   Stream<OpenOnStart> watchOpenOnStart() => prefs
       .getInt(openOnStartKey, defaultValue: 0)
       .map((i) => OpenOnStart.values[i]);
@@ -62,13 +68,9 @@ class SharedPreferencesSettingsRepository implements SettingsRepository {
       prefs.setInt(languageKey, language.index);
 
   @override
-  WorkspaceId? getLastWorkspaceId() {
-    final id = prefs.getString(lastWorkspaceKey, defaultValue: '').getValue();
-    return id.isEmpty ? null : id;
-  }
+  void setLastWorkspaceId(WorkspaceId id) =>
+      prefs.setString(lastWorkspaceKey, id);
 
   @override
-  void setLastWorkspaceId(WorkspaceId? id) => id == null
-      ? prefs.remove(lastWorkspaceKey)
-      : prefs.setString(lastWorkspaceKey, id);
+  void removeLastWorkspaceId() => prefs.remove(lastWorkspaceKey);
 }
