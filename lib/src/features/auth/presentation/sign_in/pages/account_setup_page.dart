@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
+import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/account_edit_screen_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.dart';
@@ -60,7 +61,9 @@ class _AccountSetupPageState extends ConsumerState<AccountSetupPage> {
           controller: nameController,
           keyboardType: TextInputType.name,
           textInputAction: TextInputAction.done,
+          maxLength: kNameLength,
           decoration: InputDecoration(
+            counterText: '',
             labelText: 'Display name'.hardcoded,
           ),
           onEditingComplete: submit,

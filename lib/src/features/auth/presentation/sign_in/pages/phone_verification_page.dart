@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
+import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.dart';
@@ -70,7 +71,7 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
           controller: codeController,
           keyboardType: TextInputType.number,
           textInputAction: TextInputAction.done,
-          maxLength: 6,
+          maxLength: kCodeLength,
           decoration: InputDecoration(
             counterText: '',
             labelText: 'Code'.hardcoded,

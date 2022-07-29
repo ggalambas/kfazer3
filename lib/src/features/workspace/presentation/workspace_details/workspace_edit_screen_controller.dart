@@ -30,12 +30,9 @@ class WorkspaceEditScreenController extends StateNotifier<AsyncValue>
 mixin WorkspaceValidators {
   final titleSubmitValidators = [
     NonEmptyStringValidator('Title can\'t be empty'.hardcoded),
-    //TODO max lenght?
   ];
 
-  final descriptionSubmitValidators = [
-    //TODO max lenght?
-  ];
+  final descriptionSubmitValidators = [];
 }
 
 extension WorkspaceValidatorsText on WorkspaceValidators {

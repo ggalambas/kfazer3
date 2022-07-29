@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/account_edit_screen_controller.dart';
@@ -46,8 +47,8 @@ class SignInController extends StateNotifier<AsyncValue>
 mixin SignInValidators {
   final codeSubmitValidators = [
     ExactLengthStringValidator(
-      'Code must have 6 characters'.hardcoded,
-      length: 6,
+      'Code must have $kCodeLength characters'.hardcoded,
+      length: kCodeLength,
     ),
   ];
 }

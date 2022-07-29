@@ -34,7 +34,6 @@ mixin AccountValidators {
 
   final nameSubmitValidators = [
     NonEmptyStringValidator('Name can\'t be empty'.hardcoded),
-    //TODO max lenght?
   ];
 }
 

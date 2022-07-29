@@ -7,6 +7,7 @@ import 'package:kfazer3/src/common_widgets/image_picker_badge.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/common_widgets/tap_to_unfocus.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
+import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/auth/domain/updatable_app_user.dart';
@@ -133,7 +134,9 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
                       controller: nameController,
                       keyboardType: TextInputType.name,
                       textInputAction: TextInputAction.next,
+                      maxLength: kNameLength,
                       decoration: InputDecoration(
+                        counterText: '',
                         labelText: 'Display name'.hardcoded,
                       ),
                       autovalidateMode: AutovalidateMode.onUserInteraction,

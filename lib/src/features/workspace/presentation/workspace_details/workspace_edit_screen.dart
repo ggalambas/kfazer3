@@ -8,6 +8,7 @@ import 'package:kfazer3/src/common_widgets/image_picker_badge.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/common_widgets/tap_to_unfocus.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
+import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/image_editing_controller.dart';
 import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/updatable_workspace.dart';
@@ -153,7 +154,9 @@ class _WorkspaceEditScreenState extends ConsumerState<WorkspaceEditScreen> {
                             controller: titleController,
                             keyboardType: TextInputType.name,
                             textInputAction: TextInputAction.next,
+                            maxLength: kTitleLength,
                             decoration: InputDecoration(
+                              counterText: '',
                               labelText: 'Title'.hardcoded,
                             ),
                             autovalidateMode:
@@ -172,6 +175,7 @@ class _WorkspaceEditScreenState extends ConsumerState<WorkspaceEditScreen> {
                             controller: descriptionController,
                             keyboardType: TextInputType.name,
                             textInputAction: TextInputAction.next,
+                            maxLength: kDescriptionLength,
                             decoration: InputDecoration(
                               labelText: 'Description'.hardcoded,
                             ),
