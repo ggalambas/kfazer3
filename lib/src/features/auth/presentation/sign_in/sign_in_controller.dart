@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
-import 'package:kfazer3/src/features/auth/presentation/account/account_editing_screen_controller.dart';
+import 'package:kfazer3/src/features/auth/presentation/account/account_edit_screen_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sms_code_controller.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/utils/string_validator.dart';

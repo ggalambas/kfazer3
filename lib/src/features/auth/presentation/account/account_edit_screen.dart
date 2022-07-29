@@ -17,18 +17,17 @@ import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
 
-import 'account_bar.dart';
-import 'account_editing_screen_controller.dart';
+import '../../../../common_widgets/details_bar.dart';
+import 'account_edit_screen_controller.dart';
 
-class EditingAccountScreen extends ConsumerStatefulWidget {
-  const EditingAccountScreen({super.key});
+class AccountEditScreen extends ConsumerStatefulWidget {
+  const AccountEditScreen({super.key});
 
   @override
-  ConsumerState<EditingAccountScreen> createState() =>
-      _EditingAccountScreenState();
+  ConsumerState<AccountEditScreen> createState() => _AccountEditScreenState();
 }
 
-class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
+class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
   final formKey = GlobalKey<FormState>();
   late final user = ref.read(authRepositoryProvider).currentUser!;
   late final nameController = TextEditingController(text: user.name);
@@ -59,16 +58,15 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
     super.dispose();
   }
 
-  void save() async {
+  Future<void> save() async {
     setState(() => submitted = true);
     if (!formKey.currentState!.validate()) return;
     final phoneNumber = PhoneNumber(phoneCode, this.phoneNumber);
     //TODO save image
     final updatedUser = user.updateName(name).updatePhoneNumber(phoneNumber);
-    await ref
-        .read(editingAccountScreenControllerProvider.notifier)
+    return ref
+        .read(accountEditScreenControllerProvider.notifier)
         .save(updatedUser);
-    if (mounted) context.goNamed(AppRoute.account.name);
   }
 
   void applyImage(XFile? file) async {
@@ -82,7 +80,7 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
   @override
   Widget build(BuildContext context) {
     ref.listen<AsyncValue>(
-      editingAccountScreenControllerProvider,
+      accountEditScreenControllerProvider,
       (_, state) => state.showAlertDialogOnError(context),
     );
     ref.listen<AsyncValue>(
@@ -90,13 +88,20 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
       (_, state) => state.showAlertDialogOnError(context),
     );
 
-    final state = ref.watch(editingAccountScreenControllerProvider);
+    final state = ref.watch(accountEditScreenControllerProvider);
     final imageState = ref.watch(imageEditingControllerProvider);
     return TapToUnfocus(
       child: Scaffold(
-        appBar: EditingAccountBar(
+        appBar: EditingBar(
+          title: 'Account'.hardcoded,
           loading: state.isLoading,
-          onSave: imageState.isLoading ? null : save,
+          onCancel: () => context.goNamed(AppRoute.accountDetails.name),
+          onSave: imageState.isLoading
+              ? null
+              : () async {
+                  await save();
+                  if (mounted) context.goNamed(AppRoute.accountDetails.name);
+                },
         ),
         body: ResponsiveCenter(
           maxContentWidth: Breakpoint.tablet,
@@ -118,7 +123,7 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
                           child: Avatar(
                             radius: kSpace * 10,
                             foregroundImage: image,
-                            text: nameController.text,
+                            text: name,
                           ),
                         );
                       },
@@ -135,8 +140,7 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
                       validator: (name) {
                         if (!submitted) return null;
                         return ref
-                            .read(
-                                editingAccountScreenControllerProvider.notifier)
+                            .read(accountEditScreenControllerProvider.notifier)
                             .nameErrorText(name ?? '');
                       },
                     ),
@@ -155,8 +159,7 @@ class _EditingAccountScreenState extends ConsumerState<EditingAccountScreen> {
                       validator: (phoneNumber) {
                         if (!submitted) return null;
                         return ref
-                            .read(
-                                editingAccountScreenControllerProvider.notifier)
+                            .read(accountEditScreenControllerProvider.notifier)
                             .phoneNumberErrorText(phoneNumber ?? '');
                       },
                     ),

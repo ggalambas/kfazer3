@@ -5,19 +5,19 @@ import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/utils/string_validator.dart';
 
-final editingAccountScreenControllerProvider = StateNotifierProvider
-    .autoDispose<EditingAccountScreenController, AsyncValue>(
+final accountEditScreenControllerProvider =
+    StateNotifierProvider.autoDispose<AccountEditScreenController, AsyncValue>(
   (ref) {
     final repository = ref.read(authRepositoryProvider);
-    return EditingAccountScreenController(repository);
+    return AccountEditScreenController(repository);
   },
 );
 
-class EditingAccountScreenController extends StateNotifier<AsyncValue>
+class AccountEditScreenController extends StateNotifier<AsyncValue>
     with AccountValidators {
   final AuthRepository _authRepository;
 
-  EditingAccountScreenController(this._authRepository)
+  AccountEditScreenController(this._authRepository)
       : super(const AsyncValue.data(null));
 
   Future<void> save(AppUser user) async {
@@ -34,6 +34,7 @@ mixin AccountValidators {
 
   final nameSubmitValidators = [
     NonEmptyStringValidator('Name can\'t be empty'.hardcoded),
+    //TODO max lenght?
   ];
 }
 

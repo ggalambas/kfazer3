@@ -1,36 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/common_widgets/single_child_menu_button.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
-import 'package:kfazer3/src/routing/app_router.dart';
+import 'package:kfazer3/src/utils/context_theme.dart';
 
-class AccountBar extends ConsumerWidget with PreferredSizeWidget {
+class DetailsBar extends ConsumerWidget with PreferredSizeWidget {
   final bool loading;
-  const AccountBar({super.key, required this.loading});
+  final VoidCallback? onEdit;
+  final String? title;
+
+  const DetailsBar({
+    super.key,
+    this.title,
+    this.loading = false,
+    required this.onEdit,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AppBar(
-      title: Text('Account'.hardcoded),
+      title: title == null ? null : Text(title!),
       actions: [
         IconButton(
           tooltip: 'Edit'.hardcoded,
-          onPressed: loading
-              ? null
-              : () => context.goNamed(
-                    AppRoute.account.name,
-                    queryParams: {'editing': 'true'},
-                  ),
+          onPressed: loading ? null : onEdit?.call,
           icon: const Icon(Icons.edit),
         ),
         SingleChildMenuButton(
-          onSelected: loading
-              ? null
-              : () => showNotImplementedAlertDialog(context: context),
-          child: Text('Delete account'.hardcoded),
+          enabled: !loading,
+          onSelected: () => showNotImplementedAlertDialog(context: context),
+          child: Text(
+            'Delete'.hardcoded,
+            style: TextStyle(color: context.colorScheme.error),
+          ),
         ),
       ],
     );
@@ -40,13 +44,17 @@ class AccountBar extends ConsumerWidget with PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
-class EditingAccountBar extends ConsumerWidget with PreferredSizeWidget {
+class EditingBar extends ConsumerWidget with PreferredSizeWidget {
   final bool loading;
+  final VoidCallback? onCancel;
   final VoidCallback? onSave;
+  final String? title;
 
-  const EditingAccountBar({
+  const EditingBar({
     super.key,
-    required this.loading,
+    this.title,
+    this.loading = false,
+    required this.onCancel,
     required this.onSave,
   });
 
@@ -54,11 +62,10 @@ class EditingAccountBar extends ConsumerWidget with PreferredSizeWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AppBar(
       leading: IconButton(
-        onPressed:
-            loading ? null : () => context.goNamed(AppRoute.account.name),
+        onPressed: loading ? null : onCancel,
         icon: const Icon(Icons.close),
       ),
-      title: Text('Account'.hardcoded),
+      title: title == null ? null : Text(title!),
       actions: [
         LoadingTextButton(
           loading: loading,

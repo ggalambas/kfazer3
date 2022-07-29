@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
-import 'package:kfazer3/src/features/auth/presentation/account/account_editing_screen.dart';
-import 'package:kfazer3/src/features/auth/presentation/account/account_screen.dart';
+import 'package:kfazer3/src/features/auth/presentation/account/account_details_screen.dart';
+import 'package:kfazer3/src/features/auth/presentation/account/account_edit_screen.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 import 'package:kfazer3/src/features/notifications/presentation/notification_list_screen.dart';
@@ -16,6 +16,8 @@ import 'package:kfazer3/src/features/tasks/presentation/archive/archived_tasks_s
 import 'package:kfazer3/src/features/tasks/presentation/task_screen/task_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/preferences/motivational_messages_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/preferences/workspace_preferences_screen.dart';
+import 'package:kfazer3/src/features/workspace/presentation/workspace_details/workspace_details_screen.dart';
+import 'package:kfazer3/src/features/workspace/presentation/workspace_details/workspace_edit_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_list/workspace_list_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/workspace_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/workspace_setup_screen.dart';
@@ -32,6 +34,7 @@ enum AppRoute {
   workspace,
   workspaceMenu,
   workspacePreferences, //! fullscreenDialog
+  workspaceDetails,
   motivationalMessages,
   workspaceArchive, //! fullscreenDialog
 
@@ -39,7 +42,7 @@ enum AppRoute {
 
   notifications, //! fullscreenDialog
   settings, //! fullscreenDialog
-  account;
+  accountDetails;
 
   static String getLocation(SettingsRepository repository) {
     final openOnStart = repository.getOpenOnStart();
@@ -123,13 +126,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: 'account',
-                name: AppRoute.account.name,
+                name: AppRoute.accountDetails.name,
                 builder: (_, state) {
                   final editingParam = state.queryParams['editing'];
                   final editing = editingParam == 'true';
                   return editing
-                      ? const EditingAccountScreen()
-                      : const AccountScreen();
+                      ? const AccountEditScreen()
+                      : const AccountDetailsScreen();
                 },
               ),
             ],
@@ -217,6 +220,18 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                   );
                 },
                 routes: [
+                  GoRoute(
+                    path: 'details',
+                    name: AppRoute.workspaceDetails.name,
+                    builder: (_, state) {
+                      final workspaceId = state.params['workspaceId']!;
+                      final editingParam = state.queryParams['editing'];
+                      final editing = editingParam == 'true';
+                      return editing
+                          ? WorkspaceEditScreen(workspaceId: workspaceId)
+                          : WorkspaceDetailsScreen(workspaceId: workspaceId);
+                    },
+                  ),
                   GoRoute(
                     path: 'motivational-messages',
                     name: AppRoute.motivationalMessages.name,

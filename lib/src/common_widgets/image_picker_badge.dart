@@ -68,9 +68,8 @@ class ImagePickerBadge extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             primary: context.colorScheme.surface,
             shape: const CircleBorder(),
-            fixedSize: const Size.square(
-              kMinInteractiveDimension,
-            ),
+            minimumSize: const Size.square(kMinInteractiveDimension),
+            padding: EdgeInsets.zero,
           ),
           onPressed: disabled ? null : () => pickImage(context),
           child: const Icon(Icons.camera_alt),

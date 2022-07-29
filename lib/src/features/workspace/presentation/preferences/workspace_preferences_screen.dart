@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
@@ -36,7 +35,10 @@ class WorkspacePreferencesScreen extends ConsumerWidget {
             child: ListView(
               children: [
                 ListTile(
-                  onTap: () => showNotImplementedAlertDialog(context: context),
+                  onTap: () => context.goNamed(
+                    AppRoute.workspaceDetails.name,
+                    params: {'workspaceId': workspace.id},
+                  ),
                   leading: Avatar.fromWorkspace(workspace),
                   title: Text(workspace.title),
                 ),
