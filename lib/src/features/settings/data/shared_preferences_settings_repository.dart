@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kfazer3/src/features/settings/data/settings_repository.dart';
 import 'package:kfazer3/src/features/settings/domain/settings.dart';
-import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 class SharedPreferencesSettingsRepository implements SettingsRepository {
@@ -27,12 +26,6 @@ class SharedPreferencesSettingsRepository implements SettingsRepository {
   Language getLanguage() {
     final i = prefs.getInt(languageKey, defaultValue: 0).getValue();
     return Language.values[i];
-  }
-
-  @override
-  WorkspaceId? getLastWorkspaceId() {
-    final id = prefs.getString(lastWorkspaceKey, defaultValue: '').getValue();
-    return id.isEmpty ? null : id;
   }
 
   @override
