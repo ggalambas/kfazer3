@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/common_widgets/single_child_menu_button.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
@@ -9,6 +8,7 @@ import 'package:kfazer3/src/utils/context_theme.dart';
 class DetailsBar extends ConsumerWidget with PreferredSizeWidget {
   final bool loading;
   final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
   final String? title;
 
   const DetailsBar({
@@ -16,6 +16,7 @@ class DetailsBar extends ConsumerWidget with PreferredSizeWidget {
     this.title,
     this.loading = false,
     required this.onEdit,
+    required this.onDelete,
   });
 
   @override
@@ -30,7 +31,7 @@ class DetailsBar extends ConsumerWidget with PreferredSizeWidget {
         ),
         SingleChildMenuButton(
           enabled: !loading,
-          onSelected: () => showNotImplementedAlertDialog(context: context),
+          onSelected: onDelete,
           child: Text(
             'Delete'.hardcoded,
             style: TextStyle(color: context.colorScheme.error),

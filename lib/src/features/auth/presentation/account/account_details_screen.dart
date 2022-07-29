@@ -47,6 +47,7 @@ class AccountDetailsScreen extends ConsumerWidget {
           AppRoute.accountDetails.name,
           queryParams: {'editing': 'true'},
         ),
+        onDelete: () => showNotImplementedAlertDialog(context: context),
       ),
       body: ResponsiveCenter(
         maxContentWidth: Breakpoint.tablet,
