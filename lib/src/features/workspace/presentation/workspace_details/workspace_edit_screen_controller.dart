@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,10 +23,16 @@ class WorkspaceEditScreenController extends StateNotifier<AsyncValue>
   WorkspaceEditScreenController(this._workspacesRepository)
       : super(const AsyncValue.data(null));
 
-  Future<void> save(Workspace workspace) async {
+  Future<void> save(Workspace workspace, Uint8List? imageBytes) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(
-        () => _workspacesRepository.updateWorkspace(workspace));
+      () => _workspacesRepository.updateWorkspace(workspace),
+    );
+    //TODO save image
+    // save image into storage
+    // get image url
+    // update workspace photoUrl
+    // update workspace
   }
 }
 

@@ -11,8 +11,10 @@ import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_bar/workspace_bar.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
+import 'package:kfazer3/src/utils/async_value_ui.dart';
 
 import 'not_found_workspace.dart';
+import 'workspace_screen_controller.dart';
 
 /// The three sub-routes that are presented as part of the workspace screen.
 enum WorkspaceMenu { tasks, team, dashboard }
@@ -98,6 +100,10 @@ class _WorkspaceScreenState extends ConsumerState<WorkspaceScreen>
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<AsyncValue>(
+      workspaceScreenControllerProvider,
+      (_, state) => state.showAlertDialogOnError(context),
+    );
     // call `super.build` when using `AutomaticKeepAliveClientMixin`
     super.build(context);
     // Return a Scaffold with a PageView containing the 3 pages.

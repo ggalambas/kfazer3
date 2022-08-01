@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'loading_button.dart';
 
 /// Generic function to show a Material dialog with a loading button
+/// The dialog is not automatically dismissed after [onDefaultAction]
 Future<void> showLoadingDialog({
   required BuildContext context,
   required String title,
@@ -13,6 +14,7 @@ Future<void> showLoadingDialog({
   required AsyncCallback onDefaultAction,
 }) =>
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (context) => LoadingDialog(
         title: title,
@@ -54,7 +56,7 @@ class _LoadingDialogState extends State<LoadingDialog> {
       actions: [
         if (widget.cancelActionText != null)
           TextButton(
-            onPressed: Navigator.of(context).pop,
+            onPressed: isLoading ? null : Navigator.of(context).pop,
             child: Text(widget.cancelActionText!),
           ),
         LoadingTextButton(
@@ -62,7 +64,7 @@ class _LoadingDialogState extends State<LoadingDialog> {
           onPressed: () async {
             setState(() => isLoading = true);
             await widget.onDefaultAction();
-            setState(() => isLoading = false);
+            // setState(() => isLoading = false);
           },
           child: Text(widget.defaultActionText),
         ),
