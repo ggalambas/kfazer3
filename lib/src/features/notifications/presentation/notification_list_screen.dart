@@ -1,8 +1,8 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart' hide Notification;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/empty_placeholder.dart';
 import 'package:kfazer3/src/common_widgets/error_message_widget.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
@@ -48,9 +48,8 @@ class NotificationsListScreen extends ConsumerWidget {
             },
             icon: const Icon(Icons.playlist_add_check),
           ),
-          //TODO notification settings
           SingleChildMenuButton(
-            onSelected: () => showNotImplementedAlertDialog(context: context),
+            onSelected: () => AppSettings.openNotificationSettings(),
             child: Text('Settings'.hardcoded),
           ),
         ],
