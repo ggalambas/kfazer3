@@ -1,6 +1,5 @@
 {
   "appTitle": "KFazer",
-
   "welcome": "Welcome to KFazer",
   "welcomeDescription": "We will need to verify your phone number.\nOn pressing \"next\", you agree to the",
   "termsOfService": "Terms Of Service",
@@ -16,29 +15,24 @@
   "profileSetUp": "Set up your profile",
   "profileSetUpDescription": "Choose a name that others will recognize you.",
   "displayName": "Display name",
-
   "searchHint": "Search...",
   "clear": "Clear",
   "countryListLoadFailed": "Failed to load list of countries",
-
   "account": "Account",
   "signOut": "Sign Out",
   "profilePhoto": "Profile photo",
   "imagePickerCamera": "Camera",
   "imagePickerGallery": "Gallery",
   "imagePickerDelete": "Delete",
-  
   "invalidPhoneNumberEmpty": "Phone number is required",
   "invalidPhoneNumberOnlyNumber": "Phone number can only contain numbers",
   "invalidNameNumberEmpty": "Name is required",
   "invalidCodeLength": "Code must have {codeLength} characters",
   "invalidTitleEmpty": "Title is required",
-
   "notifications": "Notifications",
   "markAllAsRead": "Mark all as read",
   "noNotifications": "You have no notifications",
   "today": "Today",
-
   "settings": "Settings",
   "theme": "Theme",
   "language": "Language",
@@ -48,13 +42,11 @@
   "contactUsDescription": "Questions? Need help?",
   "policies": "Policies",
   "policiesDescription": "Privacy & Terms",
-
   "about": "About",
   "members": "Members",
   "archive": "Archive",
   "export": "Export",
   "leave": "Leave",
-
   "preferences": "Preferences",
   "plan": "Plan",
   "planDescription": "More features and less limitations",
@@ -66,19 +58,14 @@
   "workspaceCreateFirst": "Create your first workspace!",
   "workspaceCreateFirstDescription": "A workspace is where you can structure a team and manage your tasks.",
   "workspaceNoAccess": "You do not have access to this workspace. Please contact a member to add you to their team",
-
   "tasks": "Tasks",
   "noTasks": "No tasks to show",
   "taskNotFound": "Task not Found",
-
   "team": "Team",
-
   "performance": "Performance",
-
   "pageNotFound": "404 - Page not found!",
   "goHome": "Go Home",
   "error": "Error",
-  
   "ok": "OK",
   "edit": "Edit",
   "delete": "Delete",

@@ -19,7 +19,8 @@ class MotivationDetailsScreen extends ConsumerWidget {
   final String workspaceId;
   const MotivationDetailsScreen({super.key, required this.workspaceId});
 
-  void clearMessages(BuildContext context, Reader read) async {
+  void clearMessages(
+      BuildContext context, Reader read, Workspace workspace) async {
     final clear = await showAlertDialog(
       context: context,
       title: 'Are you sure?'.hardcoded,
@@ -28,7 +29,7 @@ class MotivationDetailsScreen extends ConsumerWidget {
     );
     if (clear == true) {
       read(motivationDetailsScreenControllerProvider.notifier)
-          .clearMessages(workspaceId);
+          .clearMessages(workspace);
     }
   }
 
@@ -55,7 +56,7 @@ class MotivationDetailsScreen extends ConsumerWidget {
                 queryParams: {'editing': 'true'},
               ),
               deleteText: 'Clear all'.hardcoded,
-              onDelete: () => clearMessages(context, ref.read),
+              onDelete: () => clearMessages(context, ref.read, workspace),
             ),
             body: ResponsiveCenter(
               maxContentWidth: Breakpoint.tablet,

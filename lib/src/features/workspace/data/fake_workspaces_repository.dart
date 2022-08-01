@@ -35,13 +35,7 @@ class FakeWorkspacesRepository implements WorkspacesRepository {
   }
 
   @override
-  Future<void> clearMotivationalMessages(WorkspaceId id) {
-    // TODO: implement clearMotivationalMessages
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> delete(WorkspaceId id) {
+  Future<void> deleteWorkspace(WorkspaceId id) {
     // TODO: implement delete
     throw UnimplementedError();
   }
