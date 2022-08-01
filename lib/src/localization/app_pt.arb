@@ -2,7 +2,7 @@
   "appTitle": "KFazer",
 
   "welcome": "Bem vindo a KFazer",
-  "welcomeDescription": "Precisamos de verificar o seu número de telemóvel. Ao pressionar \"seguinte\", está a concordar com os',
+  "welcomeDescription": "Precisamos de verificar o seu número de telemóvel. Ao pressionar \"seguinte\", está a concordar com os",
   "termsOfService": "Termos de Serviço",
   "and": "e",
   "privacyPolicy": "Política de Privacidade",
@@ -14,7 +14,7 @@
   "resendSms": "Reenviar SMS",
   "signIn": "Entrar",
   "profileSetUp": "Cria o teu perfil",
-  "profileSetUpDescription": "Insere um nome pelo qual és reconhecido.",
+  "profileSetUpDescription": "Insere um nome que te irão reconhecer.",
   "displayName": "Nome",
 
   "searchHint": "Procurar...",
@@ -75,7 +75,7 @@
 
   "performance": "Desempenho",
 
-  "pageNotFound": "404 - Esta página não existe!",
+  "pageNotFound": "404 - Página não encontrada!",
   "goHome": "Voltar ao início",
   "error": "Erro",
   
