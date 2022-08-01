@@ -7,8 +7,6 @@ import 'package:smart_space/smart_space.dart';
 
 import 'loading_button.dart';
 
-//TODO image sizes
-
 enum ImagePickerOption with LocalizedEnum {
   camera(Icons.camera_alt),
   gallery(Icons.image),

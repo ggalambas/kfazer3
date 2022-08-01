@@ -27,6 +27,7 @@ class AccountEditScreenController extends StateNotifier<AsyncValue>
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() => _authRepository.updateAccount(user));
     //TODO save image
+
     // save image into storage
     // get image url
     // update appuser photoUrl
