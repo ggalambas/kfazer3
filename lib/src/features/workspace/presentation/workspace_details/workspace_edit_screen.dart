@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -37,6 +39,12 @@ class _WorkspaceEditScreenState extends ConsumerState<WorkspaceEditScreen> {
   TextEditingController? descriptionController;
   ImageProvider? image;
 
+  Uint8List? _imageBytes;
+  set imageBytes(Uint8List bytes) {
+    _imageBytes = bytes;
+    image = MemoryImage(bytes);
+  }
+
   String get title => titleController!.text;
   String get description => descriptionController!.text;
 
@@ -64,21 +72,20 @@ class _WorkspaceEditScreenState extends ConsumerState<WorkspaceEditScreen> {
   Future<void> save(Workspace workspace) async {
     setState(() => submitted = true);
     if (!formKey.currentState!.validate()) return;
-    //TODO save image
     final updatedWorkspace =
         workspace.updateTitle(title).updateDescription(description);
     await ref
         .read(workspaceEditScreenControllerProvider.notifier)
-        .save(updatedWorkspace);
+        .save(updatedWorkspace, _imageBytes);
     if (mounted) goBack();
   }
 
   void applyImage(XFile? file) async {
-    if (file == null) return setState(() => image = null);
+    if (file == null) return setState(() => _imageBytes = null);
     final bytes = await ref
         .read(imageEditingControllerProvider.notifier)
         .readAsBytes(file);
-    if (bytes != null) setState(() => image = MemoryImage(bytes));
+    if (bytes != null) setState(() => _imageBytes = bytes);
   }
 
   void goBack() => context.goNamed(
