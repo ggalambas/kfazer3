@@ -89,8 +89,5 @@ class FakeAuthRepository implements AuthRepository {
   void dispose() => _authState.close();
 
   @override
-  Future<void> deleteAccount() {
-    // TODO: implement deleteAccount
-    throw UnimplementedError();
-  }
+  Future<void> deleteAccount() => signOut();
 }
