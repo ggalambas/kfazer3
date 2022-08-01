@@ -7,7 +7,7 @@ Future<bool?> showAlertDialog({
   required String title,
   String? content,
   String? cancelActionText,
-  String defaultActionText = 'OK',
+  String defaultActionText = 'OK', //.hardcoded
 }) =>
     showDialog(
       context: context,
