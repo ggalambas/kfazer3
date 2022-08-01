@@ -44,4 +44,7 @@ class FakeWorkspacesRepository implements WorkspacesRepository {
     // Finally, update the workspace list data (will emit a new value)
     _workspaces.value = workspaces;
   }
+
+  @override
+  Future<void> leaveWorkspace(WorkspaceId id) => deleteWorkspace(id);
 }

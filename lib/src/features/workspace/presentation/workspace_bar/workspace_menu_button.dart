@@ -61,6 +61,17 @@ class WorkspaceMenuButton extends ConsumerWidget {
           case WorkspaceMenuOption.leave:
             //TODO leave workspace
             showNotImplementedAlertDialog(context: context);
+            //! use a controller
+            //! listen for error
+            //! on success, go home
+            // showLoadingDialog(
+            //   context: context,
+            //   title: 'Are you sure'.hardcoded,
+            //   defaultActionText: 'Leave',
+            //   onDefaultAction: () async {
+            //     final success = ref.read(workspacesRepositoryProvider).leaveWorkspace(workspace.id);
+            //   },
+            // );
             break;
         }
       },

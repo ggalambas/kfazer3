@@ -12,6 +12,7 @@ abstract class WorkspacesRepository {
   Stream<Workspace?> watchWorkspace(WorkspaceId id);
   Future<void> updateWorkspace(Workspace workspace);
   Future<void> deleteWorkspace(WorkspaceId id);
+  Future<void> leaveWorkspace(WorkspaceId id);
 }
 
 //* Providers
