@@ -47,13 +47,13 @@ class WorkspacePreferencesScreen extends ConsumerWidget {
                   selected: workspace.plan,
                   onChanged: (plan) => changePlan(ref.read, workspace, plan),
                   options: WorkspacePlan.values,
-                  icon: Icons.payment,
+                  icon: Icons.auto_awesome,
                   title: 'Plan'.hardcoded,
                   description: 'More features and less limitations'.hardcoded,
                 ),
                 ListTile(
                   onTap: () => context.goNamed(
-                    AppRoute.motivationalMessages.name,
+                    AppRoute.motivation.name,
                     params: {'workspaceId': workspace.id},
                   ),
                   leading: const Icon(Icons.mark_chat_read),

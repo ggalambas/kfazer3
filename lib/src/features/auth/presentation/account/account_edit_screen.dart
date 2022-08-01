@@ -72,10 +72,11 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
     setState(() => submitted = true);
     if (!formKey.currentState!.validate()) return;
     final phoneNumber = PhoneNumber(phoneCode, this.phoneNumber);
-    return ref.read(accountEditScreenControllerProvider.notifier).save(
+    await ref.read(accountEditScreenControllerProvider.notifier).save(
           user.updateName(name).updatePhoneNumber(phoneNumber),
           _imageBytes,
         );
+    if (mounted) goBack();
   }
 
   void applyImage(XFile? file) async {
@@ -85,6 +86,8 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
         .readAsBytes(file);
     if (bytes != null) setState(() => _imageBytes = bytes);
   }
+
+  void goBack() => context.goNamed(AppRoute.accountDetails.name);
 
   @override
   Widget build(BuildContext context) {
@@ -104,80 +107,73 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
         appBar: EditingBar(
           title: 'Account'.hardcoded,
           loading: state.isLoading,
-          onCancel: () => context.goNamed(AppRoute.accountDetails.name),
-          onSave: imageState.isLoading
-              ? null
-              : () async {
-                  await save();
-                  if (mounted) context.goNamed(AppRoute.accountDetails.name);
-                },
+          onCancel: goBack,
+          onSave: imageState.isLoading ? null : () => save(),
         ),
-        body: ResponsiveCenter(
-          maxContentWidth: Breakpoint.tablet,
-          padding: EdgeInsets.all(kSpace * 2),
-          child: ListView(
-            children: [
-              Form(
-                key: formKey,
-                child: Column(
-                  children: [
-                    ValueListenableBuilder(
-                      valueListenable: nameController,
-                      builder: (context, _, __) {
-                        return ImagePickerBadge(
-                          loading: imageState.isLoading,
-                          disabled: state.isLoading,
-                          onImagePicked: applyImage,
-                          showDeleteOption: image != null,
-                          child: Avatar(
-                            radius: kSpace * 10,
-                            foregroundImage: image,
-                            text: name,
-                          ),
-                        );
-                      },
-                    ),
-                    Space(4),
-                    TextFormField(
-                      controller: nameController,
-                      keyboardType: TextInputType.name,
-                      textInputAction: TextInputAction.next,
-                      maxLength: kNameLength,
-                      decoration: InputDecoration(
-                        counterText: '',
-                        labelText: 'Display name'.hardcoded,
-                      ),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (name) {
-                        if (!submitted) return null;
-                        return ref
-                            .read(accountEditScreenControllerProvider.notifier)
-                            .nameErrorText(name ?? '');
-                      },
-                    ),
-                    Space(),
-                    TextFormField(
-                      controller: phoneNumberController,
-                      keyboardType: TextInputType.phone,
-                      textInputAction: TextInputAction.done,
-                      decoration: InputDecoration(
-                        labelText: 'Phone number'.hardcoded,
-                        prefix: PhoneCodeDropdownPrefix(
-                          controller: phoneCodeController,
+        body: SingleChildScrollView(
+          child: ResponsiveCenter(
+            maxContentWidth: Breakpoint.tablet,
+            padding: EdgeInsets.all(kSpace * 2),
+            child: Form(
+              key: formKey,
+              child: Column(
+                children: [
+                  ValueListenableBuilder(
+                    valueListenable: nameController,
+                    builder: (context, _, __) {
+                      return ImagePickerBadge(
+                        loading: imageState.isLoading,
+                        disabled: state.isLoading,
+                        onImagePicked: applyImage,
+                        showDeleteOption: image != null,
+                        child: Avatar(
+                          radius: kSpace * 10,
+                          foregroundImage: image,
+                          text: name,
                         ),
-                      ),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (phoneNumber) {
-                        if (!submitted) return null;
-                        return ref
-                            .read(accountEditScreenControllerProvider.notifier)
-                            .phoneNumberErrorText(phoneNumber ?? '');
-                      },
+                      );
+                    },
+                  ),
+                  Space(4),
+                  TextFormField(
+                    controller: nameController,
+                    keyboardType: TextInputType.name,
+                    textInputAction: TextInputAction.next,
+                    maxLength: kNameLength,
+                    decoration: InputDecoration(
+                      counterText: '',
+                      labelText: 'Display name'.hardcoded,
                     ),
-                  ],
-                ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (name) {
+                      if (!submitted) return null;
+                      return ref
+                          .read(accountEditScreenControllerProvider.notifier)
+                          .nameErrorText(name ?? '');
+                    },
+                  ),
+                  Space(),
+                  TextFormField(
+                    controller: phoneNumberController,
+                    keyboardType: TextInputType.phone,
+                    textInputAction: TextInputAction.done,
+                    decoration: InputDecoration(
+                      labelText: 'Phone number'.hardcoded,
+                      prefix: PhoneCodeDropdownPrefix(
+                        controller: phoneCodeController,
+                      ),
+                    ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (phoneNumber) {
+                      if (!submitted) return null;
+                      return ref
+                          .read(accountEditScreenControllerProvider.notifier)
+                          .phoneNumberErrorText(phoneNumber ?? '');
+                    },
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

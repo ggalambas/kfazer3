@@ -7,7 +7,6 @@ import 'package:kfazer3/src/common_widgets/avatar.dart';
 import 'package:kfazer3/src/common_widgets/details_bar.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
-import 'package:kfazer3/src/features/settings/data/settings_repository.dart';
 import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/not_found_workspace.dart';
@@ -28,44 +27,42 @@ class WorkspaceDetailsScreen extends ConsumerWidget {
         if (workspace == null) return const NotFoundWorkspace();
         return Scaffold(
           appBar: DetailsBar(
-              title: 'Workspace'.hardcoded,
-              onEdit: () => context.goNamed(
-                    AppRoute.workspaceDetails.name,
-                    params: {'workspaceId': workspaceId},
-                    queryParams: {'editing': 'true'},
+            title: 'Workspace'.hardcoded,
+            onEdit: () => context.goNamed(
+              AppRoute.workspaceDetails.name,
+              params: {'workspaceId': workspaceId},
+              queryParams: {'editing': 'true'},
+            ),
+            deleteText: 'Delete workspace'.hardcoded,
+            //TODO delete workspace
+            onDelete: () => showNotImplementedAlertDialog(context: context),
+          ),
+          body: SingleChildScrollView(
+            child: ResponsiveCenter(
+              maxContentWidth: Breakpoint.tablet,
+              padding: EdgeInsets.all(kSpace * 2),
+              child: Column(
+                children: [
+                  Avatar.fromWorkspace(workspace, radius: kSpace * 10),
+                  Space(4),
+                  TextFormField(
+                    enabled: false,
+                    initialValue: workspace.title,
+                    decoration: InputDecoration(
+                      labelText: 'Title'.hardcoded,
+                    ),
                   ),
-              onDelete: () {
-                ref.read(settingsRepositoryProvider).removeLastWorkspaceId();
-                showNotImplementedAlertDialog(context: context);
-              }),
-          body: ResponsiveCenter(
-            maxContentWidth: Breakpoint.tablet,
-            padding: EdgeInsets.all(kSpace * 2),
-            child: ListView(
-              children: [
-                Column(
-                  children: [
-                    Avatar.fromWorkspace(workspace, radius: kSpace * 10),
-                    Space(4),
-                    TextFormField(
-                      enabled: false,
-                      initialValue: workspace.title,
-                      decoration: InputDecoration(
-                        labelText: 'Title'.hardcoded,
-                      ),
+                  Space(),
+                  TextFormField(
+                    enabled: false,
+                    initialValue: workspace.description,
+                    maxLines: null,
+                    decoration: InputDecoration(
+                      labelText: 'Description'.hardcoded,
                     ),
-                    Space(),
-                    TextFormField(
-                      enabled: false,
-                      initialValue: workspace.description,
-                      maxLines: null,
-                      decoration: InputDecoration(
-                        labelText: 'Description'.hardcoded,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         );

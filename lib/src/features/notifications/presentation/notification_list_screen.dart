@@ -48,6 +48,7 @@ class NotificationsListScreen extends ConsumerWidget {
             },
             icon: const Icon(Icons.playlist_add_check),
           ),
+          //TODO notification settings
           SingleChildMenuButton(
             onSelected: () => showNotImplementedAlertDialog(context: context),
             child: Text('Settings'.hardcoded),

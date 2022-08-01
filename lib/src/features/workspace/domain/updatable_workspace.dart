@@ -27,4 +27,13 @@ extension UpdatableWorkspace on Workspace {
         motivationalMessages: motivationalMessages,
         plan: plan,
       );
+  Workspace updateMotivationalMessages(List<String> motivationalMessages) =>
+      Workspace(
+        id: id,
+        title: title,
+        description: description,
+        photoUrl: photoUrl,
+        motivationalMessages: motivationalMessages,
+        plan: plan,
+      );
 }

@@ -47,44 +47,44 @@ class AccountDetailsScreen extends ConsumerWidget {
           AppRoute.accountDetails.name,
           queryParams: {'editing': 'true'},
         ),
+        deleteText: 'Delete account'.hardcoded,
+        //TODO delete account
         onDelete: () => showNotImplementedAlertDialog(context: context),
       ),
-      body: ResponsiveCenter(
-        maxContentWidth: Breakpoint.tablet,
-        padding: EdgeInsets.all(kSpace * 2),
-        child: ListView(
-          children: [
-            Column(
-              children: [
-                Avatar.fromUser(user, radius: kSpace * 10),
-                Space(4),
-                TextFormField(
-                  enabled: false,
-                  initialValue: user.name,
-                  decoration: InputDecoration(
-                    labelText: 'Display name'.hardcoded,
-                  ),
+      body: SingleChildScrollView(
+        child: ResponsiveCenter(
+          maxContentWidth: Breakpoint.tablet,
+          padding: EdgeInsets.all(kSpace * 2),
+          child: Column(
+            children: [
+              Avatar.fromUser(user, radius: kSpace * 10),
+              Space(4),
+              TextFormField(
+                enabled: false,
+                initialValue: user.name,
+                decoration: InputDecoration(
+                  labelText: 'Display name'.hardcoded,
                 ),
-                Space(),
-                TextFormField(
-                  enabled: false,
-                  initialValue: user.phoneNumber.toString(),
-                  decoration: InputDecoration(
-                    labelText: 'Phone number'.hardcoded,
-                  ),
-                ),
-              ],
-            ),
-            Space(2),
-            Align(
-              alignment: Alignment.centerRight,
-              child: LoadingElevatedButton(
-                loading: state.isLoading,
-                onPressed: () => signOut(context, ref.read),
-                child: Text('Sign out'.hardcoded),
               ),
-            ),
-          ],
+              Space(),
+              TextFormField(
+                enabled: false,
+                initialValue: user.phoneNumber.toString(),
+                decoration: InputDecoration(
+                  labelText: 'Phone number'.hardcoded,
+                ),
+              ),
+              Space(2),
+              Align(
+                alignment: Alignment.centerRight,
+                child: LoadingElevatedButton(
+                  loading: state.isLoading,
+                  onPressed: () => signOut(context, ref.read),
+                  child: Text('Sign out'.hardcoded),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

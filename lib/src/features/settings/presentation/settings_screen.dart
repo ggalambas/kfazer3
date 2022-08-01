@@ -32,17 +32,6 @@ class SettingsScreen extends ConsumerWidget {
             ),
             const Divider(),
             Consumer(
-              builder: (context, ref, _) => SelectionSettingTile<OpenOnStart>(
-                selected: ref.watch(openOnStartStateProvider),
-                onChanged: (value) =>
-                    ref.read(settingsRepositoryProvider).setOpenOnStart(value),
-                options: OpenOnStart.values,
-                icon: Icons.workspaces,
-                title: 'Open on start'.hardcoded,
-                description: 'Page to show when oppening the app'.hardcoded,
-              ),
-            ),
-            Consumer(
               builder: (context, ref, _) => SelectionSettingTile<ThemeMode>(
                 selected: ref.watch(themeModeStateProvider),
                 onChanged: (value) =>
@@ -64,12 +53,14 @@ class SettingsScreen extends ConsumerWidget {
               ),
             ),
             ListTile(
+              //TODO notification setings
               onTap: () => showNotImplementedAlertDialog(context: context),
               leading: const Icon(Icons.notifications),
               title: Text('Notifications'.hardcoded),
               subtitle: Text('Open system settings'.hardcoded),
             ),
             ListTile(
+              //TODO sheet template download
               onTap: () => showNotImplementedAlertDialog(context: context),
               leading: const Icon(Icons.calendar_view_month),
               title: Text('Sheet template'.hardcoded),

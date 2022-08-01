@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kfazer3/src/features/settings/data/settings_repository.dart';
 import 'package:kfazer3/src/features/settings/domain/settings.dart';
-import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 class SharedPreferencesSettingsRepository implements SettingsRepository {
@@ -18,12 +17,6 @@ class SharedPreferencesSettingsRepository implements SettingsRepository {
   final lastWorkspaceKey = 'lastWorkspaceKey';
 
   @override
-  OpenOnStart getOpenOnStart() {
-    final i = prefs.getInt(openOnStartKey, defaultValue: 0).getValue();
-    return OpenOnStart.values[i];
-  }
-
-  @override
   ThemeMode getThemeMode() {
     final i = prefs.getInt(themeModeKey, defaultValue: 0).getValue();
     return ThemeMode.values[i];
@@ -36,17 +29,6 @@ class SharedPreferencesSettingsRepository implements SettingsRepository {
   }
 
   @override
-  WorkspaceId? getLastWorkspaceId() {
-    final id = prefs.getString(lastWorkspaceKey, defaultValue: '').getValue();
-    return id.isEmpty ? null : id;
-  }
-
-  @override
-  Stream<OpenOnStart> watchOpenOnStart() => prefs
-      .getInt(openOnStartKey, defaultValue: 0)
-      .map((i) => OpenOnStart.values[i]);
-
-  @override
   Stream<ThemeMode> watchThemeMode() => prefs
       .getInt(themeModeKey, defaultValue: 0)
       .map((i) => ThemeMode.values[i]);
@@ -56,21 +38,10 @@ class SharedPreferencesSettingsRepository implements SettingsRepository {
       prefs.getInt(languageKey, defaultValue: 0).map((i) => Language.values[i]);
 
   @override
-  void setOpenOnStart(OpenOnStart openOnStart) =>
-      prefs.setInt(openOnStartKey, openOnStart.index);
-
-  @override
   void setThemeMode(ThemeMode themeMode) =>
       prefs.setInt(themeModeKey, themeMode.index);
 
   @override
   void setLanguage(Language language) =>
       prefs.setInt(languageKey, language.index);
-
-  @override
-  void setLastWorkspaceId(WorkspaceId id) =>
-      prefs.setString(lastWorkspaceKey, id);
-
-  @override
-  void removeLastWorkspaceId() => prefs.remove(lastWorkspaceKey);
 }

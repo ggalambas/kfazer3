@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/features/dashboard/presentation/dashboard_page.dart';
-import 'package:kfazer3/src/features/settings/data/settings_repository.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_list/task_list_page.dart';
 import 'package:kfazer3/src/features/team/presentation/team_page.dart';
@@ -53,8 +52,6 @@ class _WorkspaceScreenState extends ConsumerState<WorkspaceScreen>
   @override
   void initState() {
     super.initState();
-    // set this workspace as the last openned
-    ref.read(settingsRepositoryProvider).setLastWorkspaceId(widget.workspaceId);
     controller.addListener(() {
       final page = controller.page;
       if (page != null && page == page.toInt()) {
