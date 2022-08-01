@@ -33,4 +33,16 @@ class FakeWorkspacesRepository implements WorkspacesRepository {
     // Finally, update the workspace list data (will emit a new value)
     _workspaces.value = workspaces;
   }
+
+  @override
+  Future<void> clearMotivationalMessages(WorkspaceId id) {
+    // TODO: implement clearMotivationalMessages
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> delete(WorkspaceId id) {
+    // TODO: implement delete
+    throw UnimplementedError();
+  }
 }

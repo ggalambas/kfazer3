@@ -10,10 +10,11 @@ import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/updatable_workspace.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
-import 'package:kfazer3/src/features/workspace/presentation/preferences/motivation_edit_controller.dart';
+import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_edit_controller.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/not_found_workspace.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
+import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
 
 class MotivationEditScreen extends ConsumerStatefulWidget {
@@ -82,6 +83,11 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<AsyncValue>(
+      motivationEditScreenControllerProvider,
+      (_, state) => state.showAlertDialogOnError(context),
+    );
+
     final state = ref.watch(motivationEditScreenControllerProvider);
     final workspaceValue =
         ref.watch(workspaceStreamProvider(widget.workspaceId));

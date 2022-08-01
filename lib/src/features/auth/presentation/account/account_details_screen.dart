@@ -18,6 +18,18 @@ import '../../../../common_widgets/details_bar.dart';
 class AccountDetailsScreen extends ConsumerWidget {
   const AccountDetailsScreen({super.key});
 
+  void deleteAccount(BuildContext context, Reader read) async {
+    final delete = await showAlertDialog(
+      context: context,
+      title: 'Are you sure?'.hardcoded,
+      cancelActionText: 'Cancel'.hardcoded,
+      defaultActionText: 'Delete'.hardcoded,
+    );
+    if (delete == true) {
+      read(accountDetailsScreenControllerProvider.notifier).deleteAccount();
+    }
+  }
+
   void signOut(BuildContext context, Reader read) async {
     final logout = await showAlertDialog(
       context: context,
@@ -41,15 +53,14 @@ class AccountDetailsScreen extends ConsumerWidget {
     final state = ref.watch(accountDetailsScreenControllerProvider);
     return Scaffold(
       appBar: DetailsBar(
-        title: 'Account'.hardcoded,
         loading: state.isLoading,
+        title: 'Account'.hardcoded,
         onEdit: () => context.goNamed(
           AppRoute.accountDetails.name,
           queryParams: {'editing': 'true'},
         ),
         deleteText: 'Delete account'.hardcoded,
-        //TODO delete account
-        onDelete: () => showNotImplementedAlertDialog(context: context),
+        onDelete: () => deleteAccount(context, ref.read),
       ),
       body: SingleChildScrollView(
         child: ResponsiveCenter(

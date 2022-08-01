@@ -15,15 +15,15 @@ final workspaceEditScreenControllerProvider = StateNotifierProvider.autoDispose<
 
 class WorkspaceEditScreenController extends StateNotifier<AsyncValue>
     with WorkspaceValidators {
-  final WorkspacesRepository _workspaceRepository;
+  final WorkspacesRepository _workspacesRepository;
 
-  WorkspaceEditScreenController(this._workspaceRepository)
+  WorkspaceEditScreenController(this._workspacesRepository)
       : super(const AsyncValue.data(null));
 
   Future<void> save(Workspace workspace) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(
-        () => _workspaceRepository.updateWorkspace(workspace));
+        () => _workspacesRepository.updateWorkspace(workspace));
   }
 }
 
