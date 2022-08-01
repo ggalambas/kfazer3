@@ -21,7 +21,7 @@ class NotFoundWidget extends StatelessWidget {
           children: [
             Text(
               message,
-              style: context.textTheme.headlineLarge,
+              style: context.textTheme.displaySmall,
               textAlign: TextAlign.center,
             ),
             Space(4),
