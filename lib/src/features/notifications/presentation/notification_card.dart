@@ -19,8 +19,7 @@ class NotificationCard extends ConsumerWidget {
     required this.onPressed,
   });
 
-  //TODO Check if jm uses 24h format on portuguese location. If not, use Hm
-  String formatTime(DateTime timestamp) => DateFormat.jm().format(timestamp);
+  String formatTime(DateTime timestamp) => DateFormat.Hm().format(timestamp);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
