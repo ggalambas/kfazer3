@@ -7,16 +7,18 @@ import 'package:kfazer3/src/utils/context_theme.dart';
 
 class DetailsBar extends ConsumerWidget with PreferredSizeWidget {
   final bool loading;
+  final String? title;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
-  final String? title;
+  final String deleteText;
 
   const DetailsBar({
     super.key,
-    this.title,
     this.loading = false,
+    this.title,
     required this.onEdit,
     required this.onDelete,
+    this.deleteText = 'Delete',
   });
 
   @override
@@ -33,7 +35,7 @@ class DetailsBar extends ConsumerWidget with PreferredSizeWidget {
           enabled: !loading,
           onSelected: onDelete,
           child: Text(
-            'Delete'.hardcoded,
+            deleteText.hardcoded,
             style: TextStyle(color: context.colorScheme.error),
           ),
         ),
@@ -47,14 +49,14 @@ class DetailsBar extends ConsumerWidget with PreferredSizeWidget {
 
 class EditingBar extends ConsumerWidget with PreferredSizeWidget {
   final bool loading;
+  final String? title;
   final VoidCallback? onCancel;
   final VoidCallback? onSave;
-  final String? title;
 
   const EditingBar({
     super.key,
-    this.title,
     this.loading = false,
+    this.title,
     required this.onCancel,
     required this.onSave,
   });

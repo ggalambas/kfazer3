@@ -53,12 +53,14 @@ class SettingsScreen extends ConsumerWidget {
               ),
             ),
             ListTile(
+              //TODO notification setings
               onTap: () => showNotImplementedAlertDialog(context: context),
               leading: const Icon(Icons.notifications),
               title: Text('Notifications'.hardcoded),
               subtitle: Text('Open system settings'.hardcoded),
             ),
             ListTile(
+              //TODO sheet template download
               onTap: () => showNotImplementedAlertDialog(context: context),
               leading: const Icon(Icons.calendar_view_month),
               title: Text('Sheet template'.hardcoded),

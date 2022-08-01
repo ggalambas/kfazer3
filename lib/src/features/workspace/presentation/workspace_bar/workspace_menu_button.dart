@@ -45,6 +45,7 @@ class WorkspaceMenuButton extends ConsumerWidget {
             );
             break;
           case WorkspaceMenuOption.members:
+            //TODO go to members screen
             showNotImplementedAlertDialog(context: context);
             break;
           case WorkspaceMenuOption.archive:
@@ -54,9 +55,11 @@ class WorkspaceMenuButton extends ConsumerWidget {
             );
             break;
           case WorkspaceMenuOption.export:
+            //TODO export workspace
             showNotImplementedAlertDialog(context: context);
             break;
           case WorkspaceMenuOption.leave:
+            //TODO leave workspace
             showNotImplementedAlertDialog(context: context);
             break;
         }

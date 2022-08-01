@@ -33,36 +33,36 @@ class WorkspaceDetailsScreen extends ConsumerWidget {
               params: {'workspaceId': workspaceId},
               queryParams: {'editing': 'true'},
             ),
+            deleteText: 'Delete workspace'.hardcoded,
+            //TODO delete workspace
             onDelete: () => showNotImplementedAlertDialog(context: context),
           ),
-          body: ResponsiveCenter(
-            maxContentWidth: Breakpoint.tablet,
-            padding: EdgeInsets.all(kSpace * 2),
-            child: ListView(
-              children: [
-                Column(
-                  children: [
-                    Avatar.fromWorkspace(workspace, radius: kSpace * 10),
-                    Space(4),
-                    TextFormField(
-                      enabled: false,
-                      initialValue: workspace.title,
-                      decoration: InputDecoration(
-                        labelText: 'Title'.hardcoded,
-                      ),
+          body: SingleChildScrollView(
+            child: ResponsiveCenter(
+              maxContentWidth: Breakpoint.tablet,
+              padding: EdgeInsets.all(kSpace * 2),
+              child: Column(
+                children: [
+                  Avatar.fromWorkspace(workspace, radius: kSpace * 10),
+                  Space(4),
+                  TextFormField(
+                    enabled: false,
+                    initialValue: workspace.title,
+                    decoration: InputDecoration(
+                      labelText: 'Title'.hardcoded,
                     ),
-                    Space(),
-                    TextFormField(
-                      enabled: false,
-                      initialValue: workspace.description,
-                      maxLines: null,
-                      decoration: InputDecoration(
-                        labelText: 'Description'.hardcoded,
-                      ),
+                  ),
+                  Space(),
+                  TextFormField(
+                    enabled: false,
+                    initialValue: workspace.description,
+                    maxLines: null,
+                    decoration: InputDecoration(
+                      labelText: 'Description'.hardcoded,
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         );

@@ -12,7 +12,8 @@ import 'package:kfazer3/src/features/settings/presentation/settings_screen.dart'
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 import 'package:kfazer3/src/features/tasks/presentation/archive/archived_tasks_screen.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_screen/task_screen.dart';
-import 'package:kfazer3/src/features/workspace/presentation/preferences/motivational_messages_screen.dart';
+import 'package:kfazer3/src/features/workspace/presentation/preferences/motivation_details_screen.dart';
+import 'package:kfazer3/src/features/workspace/presentation/preferences/motivation_edit_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/preferences/workspace_preferences_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_details/workspace_details_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_details/workspace_edit_screen.dart';
@@ -33,7 +34,7 @@ enum AppRoute {
   workspaceMenu,
   workspacePreferences, //! fullscreenDialog
   workspaceDetails,
-  motivationalMessages,
+  motivation,
   workspaceArchive, //! fullscreenDialog
 
   task,
@@ -219,12 +220,14 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                   ),
                   GoRoute(
                     path: 'motivational-messages',
-                    name: AppRoute.motivationalMessages.name,
+                    name: AppRoute.motivation.name,
                     builder: (_, state) {
                       final workspaceId = state.params['workspaceId']!;
-                      return MotivationalMessagesScreen(
-                        workspaceId: workspaceId,
-                      );
+                      final editingParam = state.queryParams['editing'];
+                      final editing = editingParam == 'true';
+                      return editing
+                          ? MotivationEditScreen(workspaceId: workspaceId)
+                          : MotivationDetailsScreen(workspaceId: workspaceId);
                     },
                   ),
                 ],

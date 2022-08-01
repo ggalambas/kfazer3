@@ -67,9 +67,10 @@ class _WorkspaceEditScreenState extends ConsumerState<WorkspaceEditScreen> {
     //TODO save image
     final updatedWorkspace =
         workspace.updateTitle(title).updateDescription(description);
-    return ref
+    await ref
         .read(workspaceEditScreenControllerProvider.notifier)
         .save(updatedWorkspace);
+    if (mounted) goBack();
   }
 
   void applyImage(XFile? file) async {
@@ -79,6 +80,11 @@ class _WorkspaceEditScreenState extends ConsumerState<WorkspaceEditScreen> {
         .readAsBytes(file);
     if (bytes != null) setState(() => image = MemoryImage(bytes));
   }
+
+  void goBack() => context.goNamed(
+        AppRoute.workspaceDetails.name,
+        params: {'workspaceId': widget.workspaceId},
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -104,95 +110,78 @@ class _WorkspaceEditScreenState extends ConsumerState<WorkspaceEditScreen> {
           return TapToUnfocus(
             child: Scaffold(
               appBar: EditingBar(
-                title: 'Workspace'.hardcoded,
                 loading: state.isLoading,
-                onCancel: () => context.goNamed(
-                  AppRoute.workspaceDetails.name,
-                  params: {'workspaceId': widget.workspaceId},
-                ),
-                onSave: imageState.isLoading
-                    ? null
-                    : () {
-                        save(workspace);
-                        if (mounted) {
-                          context.goNamed(
-                            AppRoute.workspaceDetails.name,
-                            params: {'workspaceId': widget.workspaceId},
-                          );
-                        }
-                      },
+                title: 'Workspace'.hardcoded,
+                onCancel: goBack,
+                onSave: imageState.isLoading ? null : () => save(workspace),
               ),
-              body: ResponsiveCenter(
-                maxContentWidth: Breakpoint.tablet,
-                padding: EdgeInsets.all(kSpace * 2),
-                child: ListView(
-                  children: [
-                    Form(
-                      key: formKey,
-                      child: Column(
-                        children: [
-                          ValueListenableBuilder(
-                            valueListenable: titleController!,
-                            builder: (context, _, __) {
-                              return ImagePickerBadge(
-                                loading: imageState.isLoading,
-                                disabled: state.isLoading,
-                                onImagePicked: applyImage,
-                                showDeleteOption: image != null,
-                                child: Avatar(
-                                  icon: Icons.workspaces,
-                                  radius: kSpace * 10,
-                                  shape: BoxShape.rectangle,
-                                  foregroundImage: image,
-                                  text: title,
-                                ),
-                              );
-                            },
+              body: SingleChildScrollView(
+                child: ResponsiveCenter(
+                  maxContentWidth: Breakpoint.tablet,
+                  padding: EdgeInsets.all(kSpace * 2),
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      children: [
+                        ValueListenableBuilder(
+                          valueListenable: titleController!,
+                          builder: (context, _, __) {
+                            return ImagePickerBadge(
+                              loading: imageState.isLoading,
+                              disabled: state.isLoading,
+                              onImagePicked: applyImage,
+                              showDeleteOption: image != null,
+                              child: Avatar(
+                                icon: Icons.workspaces,
+                                radius: kSpace * 10,
+                                shape: BoxShape.rectangle,
+                                foregroundImage: image,
+                                text: title,
+                              ),
+                            );
+                          },
+                        ),
+                        Space(4),
+                        TextFormField(
+                          controller: titleController,
+                          keyboardType: TextInputType.name,
+                          textInputAction: TextInputAction.next,
+                          maxLength: kTitleLength,
+                          decoration: InputDecoration(
+                            counterText: '',
+                            labelText: 'Title'.hardcoded,
                           ),
-                          Space(4),
-                          TextFormField(
-                            controller: titleController,
-                            keyboardType: TextInputType.name,
-                            textInputAction: TextInputAction.next,
-                            maxLength: kTitleLength,
-                            decoration: InputDecoration(
-                              counterText: '',
-                              labelText: 'Title'.hardcoded,
-                            ),
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (name) {
-                              if (!submitted) return null;
-                              return ref
-                                  .read(workspaceEditScreenControllerProvider
-                                      .notifier)
-                                  .titleErrorText(name ?? '');
-                            },
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (name) {
+                            if (!submitted) return null;
+                            return ref
+                                .read(workspaceEditScreenControllerProvider
+                                    .notifier)
+                                .titleErrorText(name ?? '');
+                          },
+                        ),
+                        Space(),
+                        TextFormField(
+                          maxLines: null,
+                          controller: descriptionController,
+                          keyboardType: TextInputType.multiline,
+                          textInputAction: TextInputAction.done,
+                          maxLength: kDescriptionLength,
+                          decoration: InputDecoration(
+                            labelText: 'Description'.hardcoded,
                           ),
-                          Space(),
-                          TextFormField(
-                            maxLines: null,
-                            controller: descriptionController,
-                            keyboardType: TextInputType.name,
-                            textInputAction: TextInputAction.next,
-                            maxLength: kDescriptionLength,
-                            decoration: InputDecoration(
-                              labelText: 'Description'.hardcoded,
-                            ),
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (name) {
-                              if (!submitted) return null;
-                              return ref
-                                  .read(workspaceEditScreenControllerProvider
-                                      .notifier)
-                                  .descriptionErrorText(name ?? '');
-                            },
-                          ),
-                        ],
-                      ),
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (description) {
+                            if (!submitted) return null;
+                            return ref
+                                .read(workspaceEditScreenControllerProvider
+                                    .notifier)
+                                .descriptionErrorText(description ?? '');
+                          },
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),

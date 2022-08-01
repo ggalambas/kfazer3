@@ -53,7 +53,7 @@ class WorkspacePreferencesScreen extends ConsumerWidget {
                 ),
                 ListTile(
                   onTap: () => context.goNamed(
-                    AppRoute.motivationalMessages.name,
+                    AppRoute.motivation.name,
                     params: {'workspaceId': workspace.id},
                   ),
                   leading: const Icon(Icons.mark_chat_read),
