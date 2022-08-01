@@ -50,7 +50,7 @@ class NotificationsListScreen extends ConsumerWidget {
           ),
           SingleChildMenuButton(
             onSelected: () => showNotImplementedAlertDialog(context: context),
-            child: const Text('Settings'),
+            child: Text('Settings'.hardcoded),
           ),
         ],
       ),

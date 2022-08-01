@@ -67,7 +67,8 @@ class WorkspaceEmptyList extends StatelessWidget {
           Space(),
           Text(
             'A workspace is where you can '
-            'structure a team and manage your tasks.',
+                    'structure a team and manage your tasks.'
+                .hardcoded,
             style: context.textTheme.labelLarge,
           ),
           const Spacer(flex: 2),
