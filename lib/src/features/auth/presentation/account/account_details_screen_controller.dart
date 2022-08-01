@@ -19,4 +19,9 @@ class AccountDetailsScreenController extends StateNotifier<AsyncValue> {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() => _authRepository.signOut());
   }
+
+  Future<void> deleteAccount() async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() => _authRepository.deleteAccount());
+  }
 }

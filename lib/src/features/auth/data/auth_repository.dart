@@ -24,6 +24,7 @@ abstract class AuthRepository {
   Future<void> createAccount(PhoneNumber phoneNumber, String displayName);
   Future<void> updateAccount(AppUser user);
   Future<void> signOut();
+  Future<void> deleteAccount();
 }
 
 //* Providers
