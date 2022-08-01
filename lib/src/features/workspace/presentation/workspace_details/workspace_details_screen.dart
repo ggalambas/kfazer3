@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
 import 'package:kfazer3/src/common_widgets/details_bar.dart';
+import 'package:kfazer3/src/common_widgets/loading_dialog.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
@@ -17,31 +17,39 @@ import 'package:smart_space/smart_space.dart';
 
 import 'workspace_details_screen_controller.dart';
 
-class WorkspaceDetailsScreen extends ConsumerWidget {
+class WorkspaceDetailsScreen extends ConsumerStatefulWidget {
   final String workspaceId;
   const WorkspaceDetailsScreen({super.key, required this.workspaceId});
 
-  void deleteWorkspace(BuildContext context, Reader read) async {
-    final delete = await showAlertDialog(
-      context: context,
-      title: 'Are you sure?'.hardcoded,
-      cancelActionText: 'Cancel'.hardcoded,
-      defaultActionText: 'Delete'.hardcoded,
-    );
-    if (delete == true) {
-      read(workspaceDetailsScreenControllerProvider.notifier)
-          .deleteWorkspace(workspaceId);
-    }
-  }
+  @override
+  ConsumerState<WorkspaceDetailsScreen> createState() =>
+      _WorkspaceDetailsScreenState();
+}
+
+class _WorkspaceDetailsScreenState
+    extends ConsumerState<WorkspaceDetailsScreen> {
+  void deleteWorkspace(Workspace workspace) => showLoadingDialog(
+        context: context,
+        title: 'Are you sure?'.hardcoded,
+        cancelActionText: 'Cancel'.hardcoded,
+        defaultActionText: 'Delete'.hardcoded,
+        onDefaultAction: () async {
+          final success = await ref
+              .read(workspaceDetailsScreenControllerProvider.notifier)
+              .deleteWorkspace(widget.workspaceId);
+          if (mounted && success) context.goNamed(AppRoute.home.name);
+        },
+      );
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     ref.listen<AsyncValue>(
       workspaceDetailsScreenControllerProvider,
       (_, state) => state.showAlertDialogOnError(context),
     );
 
-    final workspaceValue = ref.watch(workspaceStreamProvider(workspaceId));
+    final workspaceValue =
+        ref.watch(workspaceStreamProvider(widget.workspaceId));
     final state = ref.watch(workspaceDetailsScreenControllerProvider);
     return AsyncValueWidget<Workspace?>(
       value: workspaceValue,
@@ -53,11 +61,11 @@ class WorkspaceDetailsScreen extends ConsumerWidget {
             title: 'Workspace'.hardcoded,
             onEdit: () => context.goNamed(
               AppRoute.workspaceDetails.name,
-              params: {'workspaceId': workspaceId},
+              params: {'workspaceId': widget.workspaceId},
               queryParams: {'editing': 'true'},
             ),
             deleteText: 'Delete workspace'.hardcoded,
-            onDelete: () => deleteWorkspace(context, ref.read),
+            onDelete: () => deleteWorkspace(workspace),
           ),
           body: SingleChildScrollView(
             child: ResponsiveCenter(

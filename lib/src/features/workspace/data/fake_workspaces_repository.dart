@@ -35,8 +35,13 @@ class FakeWorkspacesRepository implements WorkspacesRepository {
   }
 
   @override
-  Future<void> deleteWorkspace(WorkspaceId id) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<void> deleteWorkspace(WorkspaceId id) async {
+    await Future.delayed(const Duration(seconds: 1));
+    // First, get the workspace list
+    final workspaces = _workspaces.value;
+    // Then, delete the workspace
+    workspaces.removeWhere((ws) => id == ws.id);
+    // Finally, update the workspace list data (will emit a new value)
+    _workspaces.value = workspaces;
   }
 }
