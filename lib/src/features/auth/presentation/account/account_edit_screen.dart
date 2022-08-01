@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -39,8 +41,15 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
     code: user.phoneNumber.code,
   );
 
+  Uint8List? _imageBytes;
+  set imageBytes(Uint8List bytes) {
+    _imageBytes = bytes;
+    image = MemoryImage(bytes);
+  }
+
   late ImageProvider? image =
       user.photoUrl == null ? null : NetworkImage(user.photoUrl!);
+
   String get name => nameController.text;
   String get phoneNumber => phoneNumberController.text;
   String get phoneCode => phoneCodeController.code;
@@ -63,19 +72,18 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
     setState(() => submitted = true);
     if (!formKey.currentState!.validate()) return;
     final phoneNumber = PhoneNumber(phoneCode, this.phoneNumber);
-    //TODO save image
-    final updatedUser = user.updateName(name).updatePhoneNumber(phoneNumber);
-    return ref
-        .read(accountEditScreenControllerProvider.notifier)
-        .save(updatedUser);
+    return ref.read(accountEditScreenControllerProvider.notifier).save(
+          user.updateName(name).updatePhoneNumber(phoneNumber),
+          _imageBytes,
+        );
   }
 
   void applyImage(XFile? file) async {
-    if (file == null) return setState(() => image = null);
+    if (file == null) return setState(() => _imageBytes = null);
     final bytes = await ref
         .read(imageEditingControllerProvider.notifier)
         .readAsBytes(file);
-    if (bytes != null) setState(() => image = MemoryImage(bytes));
+    if (bytes != null) setState(() => _imageBytes = bytes);
   }
 
   @override

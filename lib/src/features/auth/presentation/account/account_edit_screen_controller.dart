@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
@@ -20,9 +22,17 @@ class AccountEditScreenController extends StateNotifier<AsyncValue>
   AccountEditScreenController(this._authRepository)
       : super(const AsyncValue.data(null));
 
-  Future<void> save(AppUser user) async {
+  Future<void> save(
+    AppUser user,
+    Uint8List? imageBytes,
+  ) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() => _authRepository.updateAccount(user));
+    //TODO auth service
+    // save image into storage
+    // get image url
+    // update appuser photoUrl
+    // update account
   }
 }
 
