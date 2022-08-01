@@ -42,9 +42,9 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
   );
 
   Uint8List? _imageBytes;
-  set imageBytes(Uint8List bytes) {
+  set imageBytes(Uint8List? bytes) {
     _imageBytes = bytes;
-    image = MemoryImage(bytes);
+    image = bytes == null ? null : MemoryImage(bytes);
   }
 
   late ImageProvider? image =
@@ -80,11 +80,11 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
   }
 
   void applyImage(XFile? file) async {
-    if (file == null) return setState(() => _imageBytes = null);
+    if (file == null) return setState(() => imageBytes = null);
     final bytes = await ref
         .read(imageEditingControllerProvider.notifier)
         .readAsBytes(file);
-    if (bytes != null) setState(() => _imageBytes = bytes);
+    if (bytes != null) setState(() => imageBytes = bytes);
   }
 
   void goBack() => context.goNamed(AppRoute.accountDetails.name);
