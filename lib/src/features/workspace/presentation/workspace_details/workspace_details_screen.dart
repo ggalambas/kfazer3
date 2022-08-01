@@ -10,7 +10,7 @@ import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/not_found_workspace.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
@@ -30,9 +30,9 @@ class _WorkspaceDetailsScreenState
     extends ConsumerState<WorkspaceDetailsScreen> {
   void deleteWorkspace(Workspace workspace) => showLoadingDialog(
         context: context,
-        title: 'Are you sure?'.hardcoded,
-        cancelActionText: 'Cancel'.hardcoded,
-        defaultActionText: 'Delete'.hardcoded,
+        title: context.loc.areYouSure,
+        cancelActionText: context.loc.cancel,
+        defaultActionText: context.loc.delete,
         onDefaultAction: () async {
           final success = await ref
               .read(workspaceDetailsScreenControllerProvider.notifier)
@@ -58,13 +58,13 @@ class _WorkspaceDetailsScreenState
         return Scaffold(
           appBar: DetailsBar(
             loading: state.isLoading,
-            title: 'Workspace'.hardcoded,
+            title: context.loc.workspace,
             onEdit: () => context.goNamed(
               AppRoute.workspaceDetails.name,
               params: {'workspaceId': widget.workspaceId},
               queryParams: {'editing': 'true'},
             ),
-            deleteText: 'Delete workspace'.hardcoded,
+            deleteText: context.loc.deleteWorkspace,
             onDelete: () => deleteWorkspace(workspace),
           ),
           body: SingleChildScrollView(
@@ -79,7 +79,7 @@ class _WorkspaceDetailsScreenState
                     enabled: false,
                     initialValue: workspace.title,
                     decoration: InputDecoration(
-                      labelText: 'Title'.hardcoded,
+                      labelText: context.loc.title,
                     ),
                   ),
                   Space(),
@@ -88,7 +88,7 @@ class _WorkspaceDetailsScreenState
                     initialValue: workspace.description,
                     maxLines: null,
                     decoration: InputDecoration(
-                      labelText: 'Description'.hardcoded,
+                      labelText: context.loc.description,
                     ),
                   ),
                 ],

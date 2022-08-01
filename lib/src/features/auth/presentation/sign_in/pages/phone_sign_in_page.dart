@@ -11,7 +11,7 @@ import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/website.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -67,20 +67,19 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
     final countryListValue = ref.watch(countryListFutureProvider);
     return SignInLayout(
       formKey: formKey,
-      title: 'Welcome to KFazer'.hardcoded,
+      title: context.loc.welcome,
       description: TextSpan(
-        text: 'We will need to verify your phone number.\n'
-            'On pressing "next", you agree to the ',
+        text: context.loc.welcomeDescription,
         children: [
           TextSpan(
-            text: 'Terms of Service',
+            text: context.loc.termsOfService,
             style: TextStyle(color: context.colorScheme.primary),
             recognizer: TapGestureRecognizer()
               ..onTap = () => launchUrl(Website.terms),
           ),
-          const TextSpan(text: ' and '),
+          TextSpan(text: ' ${context.loc.and} '),
           TextSpan(
-            text: 'Privacy Policy',
+            text: context.loc.privacyPolicy,
             style: TextStyle(color: context.colorScheme.primary),
             recognizer: TapGestureRecognizer()
               ..onTap = () => launchUrl(Website.privacy),
@@ -101,7 +100,7 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
               keyboardType: TextInputType.phone,
               textInputAction: TextInputAction.done,
               decoration: InputDecoration(
-                labelText: 'Phone number'.hardcoded,
+                labelText: context.loc.phoneNumber,
                 prefix:
                     PhoneCodeDropdownPrefix(controller: phoneCodeController!),
               ),
@@ -111,7 +110,7 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
                 if (!submitted) return null;
                 return ref
                     .read(signInControllerProvider.notifier)
-                    .phoneNumberErrorText(phoneNumber ?? '');
+                    .phoneNumberErrorText(context, phoneNumber ?? '');
               },
             );
           },
@@ -122,7 +121,7 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
           LoadingElevatedButton(
             loading: state.isLoading,
             onPressed: submit,
-            child: Text('Next'.hardcoded),
+            child: Text(context.loc.next),
           ),
       ],
     );

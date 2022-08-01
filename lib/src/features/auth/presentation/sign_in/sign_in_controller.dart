@@ -1,11 +1,12 @@
 import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/account_edit_screen_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sms_code_controller.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/utils/string_validator.dart';
 
 import 'sign_in_screen.dart';
@@ -45,16 +46,17 @@ class SignInController extends StateNotifier<AsyncValue>
 }
 
 mixin SignInValidators {
-  final codeSubmitValidators = [
-    ExactLengthStringValidator(
-      'Code must have $kCodeLength characters'.hardcoded,
-      length: kCodeLength,
-    ),
-  ];
+  List<StringValidator> codeSubmitValidators(BuildContext context) => [
+        ExactLengthStringValidator(
+          context.loc.invalidCodeLength(kCodeLength),
+          length: kCodeLength,
+        ),
+      ];
 }
 
 extension SignInValidatorsText on SignInValidators {
-  String? codeErrorText(String code) => codeSubmitValidators
-      .firstWhereOrNull((validator) => !validator.isValid(code))
-      ?.errorText;
+  String? codeErrorText(BuildContext context, String code) =>
+      codeSubmitValidators(context)
+          .firstWhereOrNull((validator) => !validator.isValid(code))
+          ?.errorText;
 }

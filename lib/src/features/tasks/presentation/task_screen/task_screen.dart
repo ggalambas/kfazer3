@@ -5,7 +5,7 @@ import 'package:kfazer3/src/common_widgets/not_found_widget.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/features/tasks/data/fake_tasks_repository.dart';
 import 'package:kfazer3/src/features/tasks/domain/task.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
@@ -22,7 +22,7 @@ class TaskScreen extends ConsumerWidget {
       body: AsyncValueWidget<Task?>(
         value: taskValue,
         data: (task) => task == null
-            ? NotFoundWidget(message: 'Task not found'.hardcoded)
+            ? NotFoundWidget(message: context.loc.taskNotFound)
             : CustomScrollView(
                 slivers: [
                   ResponsiveSliverCenter(

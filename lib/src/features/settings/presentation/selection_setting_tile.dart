@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/localized_enum.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 
-class SelectionSettingTile<T extends Enum> extends StatelessWidget {
+class SelectionSettingTile<T extends LocalizedEnum> extends StatelessWidget {
   final T selected;
   final ValueChanged<T> onChanged;
   final List<T> options;
@@ -33,10 +33,10 @@ class SelectionSettingTile<T extends Enum> extends StatelessWidget {
                   value: option,
                   groupValue: selected,
                   onChanged: (newValue) {
-                    onChanged(newValue!);
+                    onChanged(newValue as T);
                     Navigator.pop(context);
                   },
-                  title: Text(option.name.hardcoded),
+                  title: Text(option.locName(context)),
                 ),
               )
               .toList(),
@@ -46,7 +46,7 @@ class SelectionSettingTile<T extends Enum> extends StatelessWidget {
       title: Text(title),
       subtitle: description == null ? null : Text(description!),
       trailing: Text(
-        selected.name.hardcoded,
+        selected.locName(context),
         style: context.textTheme.labelMedium!.copyWith(
           color: context.colorScheme.primary,
         ),

@@ -1,8 +1,9 @@
 import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/utils/string_validator.dart';
 
 final workspaceEditScreenControllerProvider = StateNotifierProvider.autoDispose<
@@ -28,19 +29,21 @@ class WorkspaceEditScreenController extends StateNotifier<AsyncValue>
 }
 
 mixin WorkspaceValidators {
-  final titleSubmitValidators = [
-    NonEmptyStringValidator('Title can\'t be empty'.hardcoded),
-  ];
+  List<StringValidator> titleSubmitValidators(BuildContext context) => [
+        NonEmptyStringValidator(context.loc.invalidTitleEmpty),
+      ];
 
-  final descriptionSubmitValidators = [];
+  List<StringValidator> descriptionSubmitValidators(BuildContext context) => [];
 }
 
 extension WorkspaceValidatorsText on WorkspaceValidators {
-  String? titleErrorText(String name) => titleSubmitValidators
-      .firstWhereOrNull((validator) => !validator.isValid(name))
-      ?.errorText;
+  String? titleErrorText(BuildContext context, String name) =>
+      titleSubmitValidators(context)
+          .firstWhereOrNull((validator) => !validator.isValid(name))
+          ?.errorText;
 
-  String? descriptionErrorText(String name) => descriptionSubmitValidators
-      .firstWhereOrNull((validator) => !validator.isValid(name))
-      ?.errorText;
+  String? descriptionErrorText(BuildContext context, String name) =>
+      descriptionSubmitValidators(context)
+          .firstWhereOrNull((validator) => !validator.isValid(name))
+          ?.errorText;
 }

@@ -3,16 +3,35 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
+import 'package:kfazer3/src/localization/localized_enum.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 
-enum WorkspaceMenuOption {
+enum WorkspaceMenuOption with LocalizedEnum {
   about,
   preferences,
   members,
   archive,
   export,
-  leave,
+  leave;
+
+  @override
+  String locName(BuildContext context) {
+    switch (this) {
+      case about:
+        return context.loc.about;
+      case preferences:
+        return context.loc.preferences;
+      case members:
+        return context.loc.members;
+      case archive:
+        return context.loc.archive;
+      case export:
+        return context.loc.export;
+      case leave:
+        return context.loc.leave;
+    }
+  }
 }
 
 class WorkspaceMenuButton extends ConsumerWidget {
@@ -26,7 +45,7 @@ class WorkspaceMenuButton extends ConsumerWidget {
         for (final option in WorkspaceMenuOption.values)
           PopupMenuItem(
             value: option,
-            child: Text(option.name.hardcoded),
+            child: Text(option.locName(context)),
           ),
       ],
       onSelected: (option) {

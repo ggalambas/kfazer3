@@ -1,10 +1,11 @@
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/utils/string_validator.dart';
 
 final accountEditScreenControllerProvider =
@@ -37,22 +38,24 @@ class AccountEditScreenController extends StateNotifier<AsyncValue>
 }
 
 mixin AccountValidators {
-  final phoneSubmitValidators = [
-    NonEmptyStringValidator('Phone number can\'t be empty'.hardcoded),
-    NumberStringValidator('Phone number can only contain numbers'.hardcoded),
-  ];
+  List<StringValidator> phoneSubmitValidators(BuildContext context) => [
+        NonEmptyStringValidator(context.loc.invalidPhoneNumberEmpty),
+        NumberStringValidator(context.loc.invalidPhoneNumberOnlyNumbers),
+      ];
 
-  final nameSubmitValidators = [
-    NonEmptyStringValidator('Name can\'t be empty'.hardcoded),
-  ];
+  List<StringValidator> nameSubmitValidators(BuildContext context) => [
+        NonEmptyStringValidator(context.loc.invalidNameEmpty),
+      ];
 }
 
 extension AccountValidatorsText on AccountValidators {
-  String? phoneNumberErrorText(String phoneNumber) => phoneSubmitValidators
-      .firstWhereOrNull((validator) => !validator.isValid(phoneNumber))
-      ?.errorText;
+  String? phoneNumberErrorText(BuildContext context, String phoneNumber) =>
+      phoneSubmitValidators(context)
+          .firstWhereOrNull((validator) => !validator.isValid(phoneNumber))
+          ?.errorText;
 
-  String? nameErrorText(String name) => nameSubmitValidators
-      .firstWhereOrNull((validator) => !validator.isValid(name))
-      ?.errorText;
+  String? nameErrorText(BuildContext context, String name) =>
+      nameSubmitValidators(context)
+          .firstWhereOrNull((validator) => !validator.isValid(name))
+          ?.errorText;
 }

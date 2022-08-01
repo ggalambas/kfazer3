@@ -14,7 +14,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final goRouter = ref.watch(goRouterProvider);
     final locale = ref.watch(languageStateProvider).locale;
-    final themeMode = ref.watch(themeModeStateProvider);
+    final themeMode = ref.watch(themeModeStateProvider).mode;
     final lightTheme = ref.watch(themeProvider(Brightness.light));
     final darkTheme = ref.watch(themeProvider(Brightness.dark));
     return MaterialApp.router(

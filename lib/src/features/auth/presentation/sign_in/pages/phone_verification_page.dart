@@ -7,7 +7,7 @@ import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controlle
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sms_code_controller.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 
 class PhoneVerificationPage extends ConsumerStatefulWidget {
   final VoidCallback? onSuccess;
@@ -61,9 +61,9 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
         ref.watch(signInControllerProvider.notifier).phoneNumber!;
     return SignInLayout(
       formKey: formKey,
-      title: 'Verifying your number'.hardcoded,
+      title: context.loc.phoneNumberVerification,
       description: TextSpan(
-        text: 'We have sent a code to $phoneNumber'.hardcoded,
+        text: context.loc.phoneNumberVerificationDescription(phoneNumber),
       ),
       content: [
         TextFormField(
@@ -74,7 +74,7 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
           maxLength: kCodeLength,
           decoration: InputDecoration(
             counterText: '',
-            labelText: 'Code'.hardcoded,
+            labelText: context.loc.code,
           ),
           onEditingComplete: submit,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -82,7 +82,7 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
             if (!submitted) return null;
             return ref
                 .read(signInControllerProvider.notifier)
-                .codeErrorText(code ?? '');
+                .codeErrorText(context, code ?? '');
           },
         ),
       ],
@@ -98,7 +98,7 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
                   ? null
                   : () => resendSmsCode(phoneNumber),
               child: Text(
-                'Resend SMS${timer > 0 ? ' ($timer)' : ''}'.hardcoded,
+                '${context.loc.resendSms}${timer > 0 ? ' ($timer)' : ''}',
               ),
             );
           },
@@ -106,7 +106,7 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
         LoadingElevatedButton(
           loading: state.isLoading,
           onPressed: submit,
-          child: Text('Sign in'.hardcoded),
+          child: Text(context.loc.signIn),
         ),
       ],
     );

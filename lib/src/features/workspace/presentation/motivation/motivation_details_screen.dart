@@ -10,7 +10,7 @@ import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_details_screen_controller.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/not_found_workspace.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
@@ -23,9 +23,9 @@ class MotivationDetailsScreen extends ConsumerWidget {
       BuildContext context, Reader read, Workspace workspace) async {
     final clear = await showAlertDialog(
       context: context,
-      title: 'Are you sure?'.hardcoded,
-      cancelActionText: 'Cancel'.hardcoded,
-      defaultActionText: 'Clear'.hardcoded,
+      title: context.loc.areYouSure,
+      cancelActionText: context.loc.cancel,
+      defaultActionText: context.loc.clear,
     );
     if (clear == true) {
       read(motivationDetailsScreenControllerProvider.notifier)
@@ -49,13 +49,13 @@ class MotivationDetailsScreen extends ConsumerWidget {
           return Scaffold(
             appBar: DetailsBar(
               loading: state.isLoading,
-              title: 'Motivation'.hardcoded,
+              title: context.loc.motivation,
               onEdit: () => context.goNamed(
                 AppRoute.motivation.name,
                 params: {'workspaceId': workspaceId},
                 queryParams: {'editing': 'true'},
               ),
-              deleteText: 'Clear all'.hardcoded,
+              deleteText: context.loc.clearAll,
               onDelete: () => clearMessages(context, ref.read, workspace),
             ),
             body: ResponsiveCenter(

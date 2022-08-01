@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
+import 'package:kfazer3/src/localization/localized_enum.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
@@ -8,13 +9,25 @@ import 'loading_button.dart';
 
 //TODO image sizes
 
-enum ImagePickerOption {
+enum ImagePickerOption with LocalizedEnum {
   camera(Icons.camera_alt),
   gallery(Icons.image),
   delete(Icons.delete);
 
   final IconData icon;
   const ImagePickerOption(this.icon);
+
+  @override
+  String locName(BuildContext context) {
+    switch (this) {
+      case camera:
+        return context.loc.imagePickerCamera;
+      case gallery:
+        return context.loc.imagePickerGallery;
+      case delete:
+        return context.loc.imagePickerDelete;
+    }
+  }
 }
 
 class ImagePickerBadge extends StatelessWidget {
@@ -93,7 +106,7 @@ class ImagePickerDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Profile photo'.hardcoded),
+      title: Text(context.loc.profilePhoto),
       content: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -116,7 +129,7 @@ class ImagePickerDialog extends StatelessWidget {
                   child: Icon(option.icon),
                 ),
                 Space(),
-                Text(option.name.hardcoded),
+                Text(option.locName(context)),
               ],
             ),
         ],

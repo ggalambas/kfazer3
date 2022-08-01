@@ -6,7 +6,7 @@ import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/auth/data/country_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/country.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:smart_space/smart_space.dart';
 
 class CountryPickerDialog extends StatefulWidget {
@@ -60,7 +60,7 @@ class CountrySearchField extends StatelessWidget {
           controller: controller,
           textInputAction: TextInputAction.search,
           decoration: InputDecoration(
-            hintText: 'Search...'.hardcoded,
+            hintText: context.loc.searchHint,
             suffixIcon: controller.text.isEmpty
                 ? const IconButton(
                     iconSize: kSmallIconSize,
@@ -68,7 +68,7 @@ class CountrySearchField extends StatelessWidget {
                     icon: Icon(Icons.search_outlined),
                   )
                 : IconButton(
-                    tooltip: 'Clear'.hardcoded,
+                    tooltip: context.loc.clear,
                     iconSize: kSmallIconSize,
                     onPressed: () => controller.text = '',
                     icon: const Icon(Icons.clear_outlined),

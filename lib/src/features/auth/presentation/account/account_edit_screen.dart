@@ -15,7 +15,7 @@ import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/auth/domain/updatable_app_user.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/image_editing_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code_dropdown_button.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
@@ -105,7 +105,7 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
     return TapToUnfocus(
       child: Scaffold(
         appBar: EditingBar(
-          title: 'Account'.hardcoded,
+          title: context.loc.account,
           loading: state.isLoading,
           onCancel: goBack,
           onSave: imageState.isLoading ? null : () => save(),
@@ -142,14 +142,14 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
                     maxLength: kNameLength,
                     decoration: InputDecoration(
                       counterText: '',
-                      labelText: 'Display name'.hardcoded,
+                      labelText: context.loc.displayName,
                     ),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (name) {
                       if (!submitted) return null;
                       return ref
                           .read(accountEditScreenControllerProvider.notifier)
-                          .nameErrorText(name ?? '');
+                          .nameErrorText(context, name ?? '');
                     },
                   ),
                   Space(),
@@ -158,7 +158,7 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
                     keyboardType: TextInputType.phone,
                     textInputAction: TextInputAction.done,
                     decoration: InputDecoration(
-                      labelText: 'Phone number'.hardcoded,
+                      labelText: context.loc.phoneNumber,
                       prefix: PhoneCodeDropdownPrefix(
                         controller: phoneCodeController,
                       ),
@@ -168,7 +168,7 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
                       if (!submitted) return null;
                       return ref
                           .read(accountEditScreenControllerProvider.notifier)
-                          .phoneNumberErrorText(phoneNumber ?? '');
+                          .phoneNumberErrorText(context, phoneNumber ?? '');
                     },
                   ),
                 ],

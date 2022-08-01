@@ -10,7 +10,7 @@ import 'package:kfazer3/src/features/workspace/domain/preferences.dart';
 import 'package:kfazer3/src/features/workspace/domain/updatable_workspace.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/not_found_workspace.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 
 class WorkspacePreferencesScreen extends ConsumerWidget {
@@ -30,7 +30,7 @@ class WorkspacePreferencesScreen extends ConsumerWidget {
       data: (workspace) {
         if (workspace == null) return const NotFoundWorkspace();
         return Scaffold(
-          appBar: AppBar(title: Text('Preferences'.hardcoded)),
+          appBar: AppBar(title: Text(context.loc.preferences)),
           body: ResponsiveCenter(
             child: ListView(
               children: [
@@ -48,8 +48,8 @@ class WorkspacePreferencesScreen extends ConsumerWidget {
                   onChanged: (plan) => changePlan(ref.read, workspace, plan),
                   options: WorkspacePlan.values,
                   icon: Icons.auto_awesome,
-                  title: 'Plan'.hardcoded,
-                  description: 'More features and less limitations'.hardcoded,
+                  title: context.loc.plan,
+                  description: context.loc.planDescription,
                 ),
                 ListTile(
                   onTap: () => context.goNamed(
@@ -57,9 +57,8 @@ class WorkspacePreferencesScreen extends ConsumerWidget {
                     params: {'workspaceId': workspace.id},
                   ),
                   leading: const Icon(Icons.mark_chat_read),
-                  title: Text('Motivational Messages'.hardcoded),
-                  subtitle:
-                      Text('Messages shown when finishing a task'.hardcoded),
+                  title: Text(context.loc.motivationalMessages),
+                  subtitle: Text(context.loc.motivationalMessagesDescription),
                 ),
               ],
             ),

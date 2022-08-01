@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 
 extension AsyncValueUi on AsyncValue {
   void showAlertDialogOnError(BuildContext context) {
     if (!isRefreshing && hasError) {
       showExceptionAlertDialog(
         context: context,
-        title: 'Error'.hardcoded,
+        title: context.loc.error,
         exception: error,
       );
     }

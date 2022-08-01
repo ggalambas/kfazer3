@@ -6,7 +6,7 @@ import 'package:kfazer3/src/features/auth/presentation/account/account_edit_scre
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 
 class AccountSetupPage extends ConsumerStatefulWidget {
   const AccountSetupPage({super.key});
@@ -51,9 +51,9 @@ class _AccountSetupPageState extends ConsumerState<AccountSetupPage> {
     final state = ref.watch(signInControllerProvider);
     return SignInLayout(
       formKey: formKey,
-      title: 'Set up your profile'.hardcoded,
+      title: context.loc.profileSetUp,
       description: TextSpan(
-        text: 'Choose a name that others will recognize you.'.hardcoded,
+        text: context.loc.profileSetUpDescription,
       ),
       content: [
         TextFormField(
@@ -64,7 +64,7 @@ class _AccountSetupPageState extends ConsumerState<AccountSetupPage> {
           maxLength: kNameLength,
           decoration: InputDecoration(
             counterText: '',
-            labelText: 'Display name'.hardcoded,
+            labelText: context.loc.displayName,
           ),
           onEditingComplete: submit,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -72,7 +72,7 @@ class _AccountSetupPageState extends ConsumerState<AccountSetupPage> {
             if (!submitted) return null;
             return ref
                 .read(signInControllerProvider.notifier)
-                .nameErrorText(name ?? '');
+                .nameErrorText(context, name ?? '');
           },
         ),
       ],
@@ -80,7 +80,7 @@ class _AccountSetupPageState extends ConsumerState<AccountSetupPage> {
         LoadingElevatedButton(
           loading: state.isLoading,
           onPressed: submit,
-          child: Text('Save'.hardcoded),
+          child: Text(context.loc.save),
         ),
       ],
     );

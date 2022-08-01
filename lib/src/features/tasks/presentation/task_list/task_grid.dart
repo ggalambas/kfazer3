@@ -8,7 +8,7 @@ import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/features/tasks/data/fake_tasks_repository.dart';
 import 'package:kfazer3/src/features/tasks/domain/task.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 
@@ -27,7 +27,7 @@ class TaskGrid extends ConsumerWidget {
       data: (taskList) => taskList.isEmpty
           ? Center(
               child: Text(
-                'No tasks to show'.hardcoded,
+                context.loc.noTasks,
                 style: context.textTheme.headlineLarge,
               ),
             )

@@ -10,6 +10,7 @@
   "next": "Próximo",
   "phoneNumberVerification": "Comprobando tu número",
   "phoneNumberVerificationDescription": "Hemos enviado un código a {phoneNumber}",
+  "@phoneNumberVerificationDescription": {"placeholders": {"phoneNumber": {}}},
   "code": "Código",
   "resendSms": "Reenviar SMS",
   "signIn": "Iniciar sesión",
@@ -22,6 +23,7 @@
   "countryListLoadFailed": "Error al cargar la lista de países",
 
   "account": "Cuenta",
+  "deleteAccount": "Borrar cuenta",
   "signOut": "Desconectar",
   "profilePhoto": "Foto de perfil",
   "imagePickerCamera": "Cámara",
@@ -29,10 +31,12 @@
   "imagePickerDelete": "Borrar",
 
   "invalidPhoneNumberEmpty": "Se require el número de teléfono",
-  "invalidPhoneNumberOnlyNumber": "El número de teléfono solo puede contener números",
-  "invalidNameNumberEmpty": "Se requiere el nombre",
+  "invalidPhoneNumberOnlyNumbers": "El número de teléfono solo puede contener números",
+  "invalidNameEmpty": "Se requiere el nombre",
   "invalidCodeLength": "El código debe tener {codeLength} caracteres",
+  "@invalidCodeLength": {"placeholders": {"codeLength": {}}},
   "invalidTitleEmpty": "Se requiere título",
+  "invalidMessageEmpty": "El mensaje no puede estar vacia",
 
   "notifications": "Notificaciones",
   "markAllAsRead": "Marcar todo como leido",
@@ -40,8 +44,17 @@
   "today": "Este dia",
 
   "settings": "Ajustes",
+  "system": "Sistema",
+
   "theme": "Tema",
+  "light": "Luz",
+  "dark": "Oscuro",
+
   "language": "Idioma",
+  "english": "Inglés",
+  "portuguese": "Portugués",
+  "spanish": "Español",
+
   "notificationSettingsDescription": "Abrir la configuración del sistema",
   "sheetTemplate": "Plantilla de hoja de calculo",
   "contactUs": "Contáctenos",
@@ -58,9 +71,15 @@
   "preferences": "Preferencias",
   "plan": "Plan",
   "planDescription": "Más funciones y menos limitaciones",
+  "family": "Familia",
+  "standard": "Estándar",
+  "professional": "Profesional",
+  "corporative": "Corporativo",
   "motivationalMessages": "Mensajes motivacionales",
   "motivationalMessagesDescription": "Mensajes que se muestran al completar una tarea",
+  "motivation": "Motivación",
   "workspace": "Espacio de trabajo",
+  "deleteWorkspace": "Borrar espacio de trabajo",
   "title": "Título",
   "description": "Descripción",
   "workspaceCreateFirst": "¡Crea tu primer espacio de trabajo!",
@@ -75,6 +94,8 @@
 
   "performance": "Desempeño",
 
+  "notImplemented": "No se ha implementado",
+  "errorOccurred": "Ocurrió un error",
   "pageNotFound": "404 - ¡Pagina no encontrada!",
   "goHome": "Regresar al comienzo",
   "error": "Error",

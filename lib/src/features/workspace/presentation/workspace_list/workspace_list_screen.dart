@@ -5,7 +5,7 @@ import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
@@ -44,7 +44,7 @@ class WorkspaceListScreen extends ConsumerWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.goNamed(AppRoute.workspaceSetup.name),
         icon: const Icon(Icons.add),
-        label: Text('Create new'.hardcoded),
+        label: Text(context.loc.createNew),
       ),
     );
   }
@@ -61,14 +61,12 @@ class WorkspaceEmptyList extends StatelessWidget {
         children: [
           const Spacer(),
           Text(
-            'Create your first workspace!'.hardcoded,
+            context.loc.workspaceCreateFirst,
             style: context.textTheme.displaySmall,
           ),
           Space(),
           Text(
-            'A workspace is where you can '
-                    'structure a team and manage your tasks.'
-                .hardcoded,
+            context.loc.workspaceCreateFirstDescription,
             style: context.textTheme.labelLarge,
           ),
           const Spacer(flex: 2),

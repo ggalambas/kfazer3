@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/common_widgets/single_child_menu_button.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 
 class DetailsBar extends ConsumerWidget with PreferredSizeWidget {
@@ -10,7 +10,7 @@ class DetailsBar extends ConsumerWidget with PreferredSizeWidget {
   final String? title;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
-  final String deleteText;
+  final String? deleteText;
 
   const DetailsBar({
     super.key,
@@ -18,7 +18,7 @@ class DetailsBar extends ConsumerWidget with PreferredSizeWidget {
     this.title,
     required this.onEdit,
     required this.onDelete,
-    this.deleteText = 'Delete',
+    this.deleteText,
   });
 
   @override
@@ -27,7 +27,7 @@ class DetailsBar extends ConsumerWidget with PreferredSizeWidget {
       title: title == null ? null : Text(title!),
       actions: [
         IconButton(
-          tooltip: 'Edit'.hardcoded,
+          tooltip: context.loc.edit,
           onPressed: loading ? null : onEdit?.call,
           icon: const Icon(Icons.edit),
         ),
@@ -35,7 +35,7 @@ class DetailsBar extends ConsumerWidget with PreferredSizeWidget {
           enabled: !loading,
           onSelected: onDelete,
           child: Text(
-            deleteText.hardcoded,
+            deleteText ?? context.loc.delete,
             style: TextStyle(color: context.colorScheme.error),
           ),
         ),
@@ -73,7 +73,7 @@ class EditingBar extends ConsumerWidget with PreferredSizeWidget {
         LoadingTextButton(
           loading: loading,
           onPressed: onSave,
-          child: Text('Save'.hardcoded),
+          child: Text(context.loc.save),
         ),
       ],
     );

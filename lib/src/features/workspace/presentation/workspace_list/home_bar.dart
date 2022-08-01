@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/single_child_menu_button.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_bar/notifications_icon.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 
 enum HomeMenuOption { settings }
@@ -23,13 +23,13 @@ class HomeBar extends StatelessWidget with PreferredSizeWidget {
     // used instead.
     final screenWidth = MediaQuery.of(context).size.width;
     return AppBar(
-      title: Text('KFazer'.hardcoded),
+      title: Text(context.loc.appTitle),
       centerTitle: screenWidth >= Breakpoint.tablet,
       actions: [
         const NotificationsIcon(),
         SingleChildMenuButton(
           onSelected: () => context.goNamed(AppRoute.settings.name),
-          child: Text('Settings'.hardcoded),
+          child: Text(context.loc.settings),
         ),
       ],
     );

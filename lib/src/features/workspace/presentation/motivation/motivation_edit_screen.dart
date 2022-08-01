@@ -12,7 +12,7 @@ import 'package:kfazer3/src/features/workspace/domain/updatable_workspace.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_edit_controller.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/not_found_workspace.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
@@ -99,7 +99,7 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
           return Scaffold(
             appBar: EditingBar(
               loading: state.isLoading,
-              title: 'Motivation'.hardcoded,
+              title: context.loc.motivation,
               onCancel: goBack,
               onSave: () => save(workspace),
             ),
@@ -125,7 +125,7 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
                             isDense: true,
                             contentPadding: EdgeInsets.all(kSpace),
                             suffixIcon: IconButton(
-                              tooltip: 'Delete'.hardcoded,
+                              tooltip: context.loc.delete,
                               onPressed: () => delete(messageController),
                               icon: const Icon(Icons.clear),
                             ),
@@ -136,7 +136,7 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
                             return ref
                                 .read(motivationEditScreenControllerProvider
                                     .notifier)
-                                .messageErrorText(message ?? '');
+                                .messageErrorText(context, message ?? '');
                           },
                         ),
                       )

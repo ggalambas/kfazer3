@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 
 /// Generic function to show a Material dialog
 Future<bool?> showAlertDialog({
@@ -7,7 +7,7 @@ Future<bool?> showAlertDialog({
   required String title,
   String? content,
   String? cancelActionText,
-  String defaultActionText = 'OK', //.hardcoded
+  String? defaultActionText,
 }) =>
     showDialog(
       context: context,
@@ -21,7 +21,7 @@ Future<bool?> showAlertDialog({
               onPressed: () => Navigator.of(context).pop(false),
             ),
           TextButton(
-            child: Text(defaultActionText),
+            child: Text(defaultActionText ?? context.loc.ok),
             onPressed: () => Navigator.of(context).pop(true),
           ),
         ],
@@ -38,11 +38,10 @@ Future<void> showExceptionAlertDialog({
       context: context,
       title: title,
       content: exception.toString(),
-      defaultActionText: 'OK'.hardcoded,
     );
 
 Future<void> showNotImplementedAlertDialog({required BuildContext context}) =>
     showAlertDialog(
       context: context,
-      title: 'Not implemented'.hardcoded,
+      title: context.loc.notImplemented,
     );

@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:kfazer3/src/features/settings/data/settings_repository.dart';
-import 'package:kfazer3/src/features/settings/domain/settings.dart';
+import 'package:kfazer3/src/localization/language.dart';
+import 'package:kfazer3/src/theme/loc_theme_mode.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 class SharedPreferencesSettingsRepository implements SettingsRepository {
@@ -17,9 +17,9 @@ class SharedPreferencesSettingsRepository implements SettingsRepository {
   final lastWorkspaceKey = 'lastWorkspaceKey';
 
   @override
-  ThemeMode getThemeMode() {
+  LocThemeMode getThemeMode() {
     final i = prefs.getInt(themeModeKey, defaultValue: 0).getValue();
-    return ThemeMode.values[i];
+    return LocThemeMode.values[i];
   }
 
   @override
@@ -29,16 +29,16 @@ class SharedPreferencesSettingsRepository implements SettingsRepository {
   }
 
   @override
-  Stream<ThemeMode> watchThemeMode() => prefs
+  Stream<LocThemeMode> watchThemeMode() => prefs
       .getInt(themeModeKey, defaultValue: 0)
-      .map((i) => ThemeMode.values[i]);
+      .map((i) => LocThemeMode.values[i]);
 
   @override
   Stream<Language> watchLanguage() =>
       prefs.getInt(languageKey, defaultValue: 0).map((i) => Language.values[i]);
 
   @override
-  void setThemeMode(ThemeMode themeMode) =>
+  void setThemeMode(LocThemeMode themeMode) =>
       prefs.setInt(themeModeKey, themeMode.index);
 
   @override

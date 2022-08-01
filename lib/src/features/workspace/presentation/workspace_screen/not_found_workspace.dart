@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/not_found_widget.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 
 class NotFoundWorkspace extends ConsumerWidget {
   const NotFoundWorkspace({super.key});
@@ -10,10 +10,7 @@ class NotFoundWorkspace extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Material(
       child: NotFoundWidget(
-        // reset last openned workspace
-        message: 'You do not have access to this workspace. '
-                'Please contact a member to add you to their team'
-            .hardcoded,
+        message: context.loc.workspaceNoAccess,
       ),
     );
   }

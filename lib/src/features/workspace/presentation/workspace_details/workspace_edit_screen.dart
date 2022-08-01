@@ -14,7 +14,7 @@ import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/updatable_workspace.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/not_found_workspace.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
@@ -111,7 +111,7 @@ class _WorkspaceEditScreenState extends ConsumerState<WorkspaceEditScreen> {
             child: Scaffold(
               appBar: EditingBar(
                 loading: state.isLoading,
-                title: 'Workspace'.hardcoded,
+                title: context.loc.workspace,
                 onCancel: goBack,
                 onSave: imageState.isLoading ? null : () => save(workspace),
               ),
@@ -149,7 +149,7 @@ class _WorkspaceEditScreenState extends ConsumerState<WorkspaceEditScreen> {
                           maxLength: kTitleLength,
                           decoration: InputDecoration(
                             counterText: '',
-                            labelText: 'Title'.hardcoded,
+                            labelText: context.loc.title,
                           ),
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (name) {
@@ -157,7 +157,7 @@ class _WorkspaceEditScreenState extends ConsumerState<WorkspaceEditScreen> {
                             return ref
                                 .read(workspaceEditScreenControllerProvider
                                     .notifier)
-                                .titleErrorText(name ?? '');
+                                .titleErrorText(context, name ?? '');
                           },
                         ),
                         Space(),
@@ -168,7 +168,7 @@ class _WorkspaceEditScreenState extends ConsumerState<WorkspaceEditScreen> {
                           textInputAction: TextInputAction.done,
                           maxLength: kDescriptionLength,
                           decoration: InputDecoration(
-                            labelText: 'Description'.hardcoded,
+                            labelText: context.loc.description,
                           ),
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (description) {
@@ -176,7 +176,8 @@ class _WorkspaceEditScreenState extends ConsumerState<WorkspaceEditScreen> {
                             return ref
                                 .read(workspaceEditScreenControllerProvider
                                     .notifier)
-                                .descriptionErrorText(description ?? '');
+                                .descriptionErrorText(
+                                    context, description ?? '');
                           },
                         ),
                       ],

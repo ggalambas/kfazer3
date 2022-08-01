@@ -11,7 +11,7 @@ import 'package:kfazer3/src/features/notifications/data/notifications_repository
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
 import 'package:kfazer3/src/features/notifications/domain/readable_notification.dart';
 import 'package:kfazer3/src/features/notifications/presentation/notification_divider.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/utils/date_timeless.dart';
 import 'package:smart_space/smart_space.dart';
 
@@ -37,10 +37,10 @@ class NotificationsListScreen extends ConsumerWidget {
     DateTime? lastNotificationDate;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notifications'.hardcoded),
+        title: Text(context.loc.notifications),
         actions: [
           IconButton(
-            tooltip: 'Mark all as read'.hardcoded,
+            tooltip: context.loc.markAllAsRead,
             onPressed: () {
               if (pagingController.itemList != null) {
                 markAllAsRead(ref, pagingController.itemList!);
@@ -50,7 +50,7 @@ class NotificationsListScreen extends ConsumerWidget {
           ),
           SingleChildMenuButton(
             onSelected: () => AppSettings.openNotificationSettings(),
-            child: Text('Settings'.hardcoded),
+            child: Text(context.loc.settings),
           ),
         ],
       ),
@@ -75,7 +75,7 @@ class NotificationsListScreen extends ConsumerWidget {
               },
               noItemsFoundIndicatorBuilder: (context) {
                 return EmptyPlaceholder(
-                  message: 'You have no notifications'.hardcoded,
+                  message: context.loc.noNotifications,
                   illustration: UnDrawIllustration.floating,
                 );
               },

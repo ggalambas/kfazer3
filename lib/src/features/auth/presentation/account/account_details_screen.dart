@@ -8,7 +8,7 @@ import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/account_details_screen_controller.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
@@ -21,9 +21,9 @@ class AccountDetailsScreen extends ConsumerWidget {
   void deleteAccount(BuildContext context, Reader read) async {
     final delete = await showAlertDialog(
       context: context,
-      title: 'Are you sure?'.hardcoded,
-      cancelActionText: 'Cancel'.hardcoded,
-      defaultActionText: 'Delete'.hardcoded,
+      title: context.loc.areYouSure,
+      cancelActionText: context.loc.cancel,
+      defaultActionText: context.loc.delete,
     );
     if (delete == true) {
       read(accountDetailsScreenControllerProvider.notifier).deleteAccount();
@@ -33,9 +33,9 @@ class AccountDetailsScreen extends ConsumerWidget {
   void signOut(BuildContext context, Reader read) async {
     final logout = await showAlertDialog(
       context: context,
-      title: 'Are you sure?'.hardcoded,
-      cancelActionText: 'Cancel'.hardcoded,
-      defaultActionText: 'Sign Out'.hardcoded,
+      title: context.loc.areYouSure,
+      cancelActionText: context.loc.cancel,
+      defaultActionText: context.loc.signOut,
     );
     if (logout == true) {
       read(accountDetailsScreenControllerProvider.notifier).signOut();
@@ -54,12 +54,12 @@ class AccountDetailsScreen extends ConsumerWidget {
     return Scaffold(
       appBar: DetailsBar(
         loading: state.isLoading,
-        title: 'Account'.hardcoded,
+        title: context.loc.account,
         onEdit: () => context.goNamed(
           AppRoute.accountDetails.name,
           queryParams: {'editing': 'true'},
         ),
-        deleteText: 'Delete account'.hardcoded,
+        deleteText: context.loc.deleteAccount,
         onDelete: () => deleteAccount(context, ref.read),
       ),
       body: SingleChildScrollView(
@@ -74,7 +74,7 @@ class AccountDetailsScreen extends ConsumerWidget {
                 enabled: false,
                 initialValue: user.name,
                 decoration: InputDecoration(
-                  labelText: 'Display name'.hardcoded,
+                  labelText: context.loc.displayName,
                 ),
               ),
               Space(),
@@ -82,7 +82,7 @@ class AccountDetailsScreen extends ConsumerWidget {
                 enabled: false,
                 initialValue: user.phoneNumber.toString(),
                 decoration: InputDecoration(
-                  labelText: 'Phone number'.hardcoded,
+                  labelText: context.loc.phoneNumber,
                 ),
               ),
               Space(2),
@@ -91,7 +91,7 @@ class AccountDetailsScreen extends ConsumerWidget {
                 child: LoadingElevatedButton(
                   loading: state.isLoading,
                   onPressed: () => signOut(context, ref.read),
-                  child: Text('Sign out'.hardcoded),
+                  child: Text(context.loc.signOut),
                 ),
               ),
             ],

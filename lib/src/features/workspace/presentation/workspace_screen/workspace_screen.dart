@@ -9,7 +9,7 @@ import 'package:kfazer3/src/features/team/presentation/team_page.dart';
 import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_bar/workspace_bar.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 
 import 'not_found_workspace.dart';
@@ -129,15 +129,15 @@ class _WorkspaceScreenState extends ConsumerState<WorkspaceScreen>
             destinations: [
               NavigationDestination(
                 icon: const Icon(Icons.check),
-                label: 'Tasks'.hardcoded,
+                label: context.loc.tasks,
               ),
               NavigationDestination(
                 icon: const Icon(Icons.people_alt),
-                label: 'Team'.hardcoded,
+                label: context.loc.team,
               ),
               NavigationDestination(
                 icon: const Icon(Icons.insights),
-                label: 'Dashboard'.hardcoded,
+                label: context.loc.performance,
               ),
             ],
           ),

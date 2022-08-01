@@ -10,6 +10,7 @@
   "next": "Seguinte",
   "phoneNumberVerification": "A verificar o seu número",
   "phoneNumberVerificationDescription": "Enviámos um código para {phoneNumber}",
+  "@phoneNumberVerificationDescription": {"placeholders": {"phoneNumber": {}}},
   "code": "Código",
   "resendSms": "Reenviar SMS",
   "signIn": "Entrar",
@@ -22,6 +23,7 @@
   "countryListLoadFailed": "Erro ao ler a lista de países",
 
   "account": "Conta",
+  "deleteAccount": "Eliminar conta",
   "signOut": "Terminar sessão",
   "profilePhoto": "Foto de perfil",
   "imagePickerCamera": "Câmara",
@@ -29,10 +31,12 @@
   "imagePickerDelete": "Eliminar",
   
   "invalidPhoneNumberEmpty": "O número de telemóvel é obrigatório",
-  "invalidPhoneNumberOnlyNumber": "O número de telemóvel só pode contêr números",
-  "invalidNameNumberEmpty": "O nome é obrigatório",
+  "invalidPhoneNumberOnlyNumbers": "O número de telemóvel só pode contêr números",
+  "invalidNameEmpty": "O nome é obrigatório",
   "invalidCodeLength": "O código tem de ter {codeLength} caracteres",
+  "@invalidCodeLength": {"placeholders": {"codeLength": {}}},
   "invalidTitleEmpty": "O título é obrigatório",
+  "invalidMessageEmpty": "A mensagem não pode ser vazia",
 
   "notifications": "Notificações",
   "markAllAsRead": "Marcar todas como lidas",
@@ -40,8 +44,17 @@
   "today": "Hoje",
 
   "settings": "Definições",
+  "system": "Sistema",
+
   "theme": "Tema",
+  "light": "Claro",
+  "dark": "Escuro",
+
   "language": "Linguagem",
+  "english": "Inglês",
+  "portuguese": "Português",
+  "spanish": "Espanhol",
+
   "notificationSettingsDescription": "Abrir definições de sistema",
   "sheetTemplate": "Folha de cálculo modelo",
   "contactUs": "Contacta-nos",
@@ -58,9 +71,15 @@
   "preferences": "Preferências",
   "plan": "Plano",
   "planDescription": "Mais funcionalidades e menos limitações",
+  "family": "Família",
+  "standard": "Padrão",
+  "professional": "Profissional",
+  "corporative": "Corporativo",
   "motivationalMessages": "Mensagens motivacionais",
   "motivationalMessagesDescription": "Mensagens mostradas na conclusão de uma tarefa",
+  "motivation": "Motivação",
   "workspace": "Espaço de trabalho",
+  "deleteWorkspace": "ELiminar espaço de trabalho",
   "title": "Título",
   "description": "Descrição",
   "workspaceCreateFirst": "Cria o teu primeiro espaço de trabalho!",
@@ -75,6 +94,8 @@
 
   "performance": "Desempenho",
 
+  "notImplemented": "Não implementado",
+  "errorOccurred": "Ocorreu um erro",
   "pageNotFound": "404 - Página não encontrada!",
   "goHome": "Voltar ao início",
   "error": "Erro",
