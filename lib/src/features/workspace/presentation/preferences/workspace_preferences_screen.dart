@@ -47,7 +47,7 @@ class WorkspacePreferencesScreen extends ConsumerWidget {
                   selected: workspace.plan,
                   onChanged: (plan) => changePlan(ref.read, workspace, plan),
                   options: WorkspacePlan.values,
-                  icon: Icons.payment,
+                  icon: Icons.auto_awesome,
                   title: 'Plan'.hardcoded,
                   description: 'More features and less limitations'.hardcoded,
                 ),
