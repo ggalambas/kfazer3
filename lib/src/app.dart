@@ -13,6 +13,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final goRouter = ref.watch(goRouterProvider);
+    final locale = ref.watch(languageStateProvider).locale;
     final themeMode = ref.watch(themeModeStateProvider);
     final lightTheme = ref.watch(themeProvider(Brightness.light));
     final darkTheme = ref.watch(themeProvider(Brightness.dark));
@@ -20,6 +21,7 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      locale: locale,
       routerDelegate: goRouter.routerDelegate,
       routeInformationParser: goRouter.routeInformationParser,
       routeInformationProvider: goRouter.routeInformationProvider,

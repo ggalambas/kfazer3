@@ -10,14 +10,6 @@
   "next": "Next",
   "phoneNumberVerification": "Verifying your number",
   "phoneNumberVerificationDescription": "We have sent a code to {phoneNumber}",
-  "@phoneNumberVerificationDescription": {
-    "placeholders": {
-      "phoneNumber": {
-        "type": "String",
-        "example": "+351 9XXXXXXXX"
-      }
-    }
-  },
   "code": "Code",
   "resendSms": "Resend SMS",
   "signIn": "Sign In",
@@ -36,19 +28,11 @@
   "imagePickerGallery": "Gallery",
   "imagePickerDelete": "Delete",
   
-  "invalidPhoneNumberEmpty": "Phone number can't be empty",
+  "invalidPhoneNumberEmpty": "Phone number is required",
   "invalidPhoneNumberOnlyNumber": "Phone number can only contain numbers",
-  "invalidNameNumberEmpty": "Name can't be empty",
+  "invalidNameNumberEmpty": "Name is required",
   "invalidCodeLength": "Code must have {codeLength} characters",
-  "@invalidCodeLength": {
-    "placeholders": {
-      "codeLength": {
-        "type": "String",
-        "example": "8"
-      }
-    }
-  },
-  "invalidTitleEmpty": "Title can't be empty",
+  "invalidTitleEmpty": "Title is required",
 
   "notifications": "Notifications",
   "markAllAsRead": "Mark all as read",
@@ -65,18 +49,17 @@
   "policies": "Policies",
   "policiesDescription": "Privacy & Terms",
 
-  "workspaceMenuAbout": "About",
-  "workspaceMenuPreferences": "Preferences",
-  "workspaceMenuMembers": "Members",
-  "workspaceMenuArchive": "Archive",
-  "workspaceMenuExport": "Export",
-  "workspaceMenuLeave": "Leave",
+  "about": "About",
+  "members": "Members",
+  "archive": "Archive",
+  "export": "Export",
+  "leave": "Leave",
 
   "preferences": "Preferences",
   "plan": "Plan",
   "planDescription": "More features and less limitations",
   "motivationalMessages": "Motivational messages",
-  "motivationalMessagesDescription": "Messages shown when finishing a task",
+  "motivationalMessagesDescription": "Messages shown when completing a task",
   "workspace": "Workspace",
   "title": "Title",
   "description": "Description",
@@ -90,7 +73,7 @@
 
   "team": "Team",
 
-  "dashboard": "Dashboard",
+  "performance": "Performance",
 
   "pageNotFound": "404 - Page not found!",
   "goHome": "Go Home",

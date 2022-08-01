@@ -8,6 +8,7 @@ import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/settings/data/settings_repository.dart';
 import 'package:kfazer3/src/features/settings/domain/settings.dart';
 import 'package:kfazer3/src/features/settings/presentation/selection_setting_tile.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/routing/website.dart';
@@ -20,7 +21,7 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(currentUserStateProvider);
     return Scaffold(
-      appBar: AppBar(title: Text('Settings'.hardcoded)),
+      appBar: AppBar(title: Text(context.loc.settings)),
       body: ResponsiveCenter(
         child: ListView(
           children: [
