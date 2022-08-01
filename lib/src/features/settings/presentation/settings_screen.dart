@@ -2,7 +2,6 @@ import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
@@ -60,8 +59,7 @@ class SettingsScreen extends ConsumerWidget {
               subtitle: Text(context.loc.notificationSettingsDescription),
             ),
             ListTile(
-              //TODO sheet template download
-              onTap: () => showNotImplementedAlertDialog(context: context),
+              onTap: () => launchUrl(Website.sheetTemplate),
               leading: const Icon(Icons.calendar_view_month),
               title: Text(context.loc.sheetTemplate),
             ),
