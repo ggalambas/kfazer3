@@ -30,7 +30,7 @@ class WorkspacePreferencesScreen extends ConsumerWidget {
       data: (workspace) {
         if (workspace == null) return const NotFoundWorkspace();
         return Scaffold(
-          appBar: AppBar(title: Text('Settings'.hardcoded)),
+          appBar: AppBar(title: Text('Preferences'.hardcoded)),
           body: ResponsiveCenter(
             child: ListView(
               children: [
