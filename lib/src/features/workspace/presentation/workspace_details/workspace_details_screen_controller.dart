@@ -18,7 +18,7 @@ class WorkspaceDetailsScreenController extends StateNotifier<AsyncValue> {
 
   Future<void> deleteWorkspace(WorkspaceId workspaceId) async {
     state = const AsyncValue.loading();
-    state =
-        await AsyncValue.guard(() => _workspacesRepository.delete(workspaceId));
+    state = await AsyncValue.guard(
+        () => _workspacesRepository.deleteWorkspace(workspaceId));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
+import 'package:kfazer3/src/features/workspace/domain/updatable_workspace.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 
 final motivationDetailsScreenControllerProvider = StateNotifierProvider
@@ -16,10 +17,11 @@ class MotivationDetailsScreenController extends StateNotifier<AsyncValue> {
   MotivationDetailsScreenController(this._workspacesRepository)
       : super(const AsyncValue.data(null));
 
-  Future<void> clearMessages(WorkspaceId workspaceId) async {
+  Future<void> clearMessages(Workspace workspace) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(
-      () => _workspacesRepository.clearMotivationalMessages(workspaceId),
+      () => _workspacesRepository
+          .updateWorkspace(workspace.updateMotivationalMessages([])),
     );
   }
 }
