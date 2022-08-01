@@ -133,8 +133,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             path: 'setup/:page',
             name: AppRoute.workspaceSetupPage.name,
             redirect: (state) {
-              //TODO workspace setup auto reset
-
+              //! workspace setup auto reset
               // final pageName = state.params['page']!;
               // final workspaceId = ref
               //     .read(workspaceSetupControllerProvider.notifier)

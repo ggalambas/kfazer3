@@ -86,12 +86,11 @@ class _WorkspaceSetupScreenState extends ConsumerState<WorkspaceSetupScreen> {
       child: TapToUnfocus(
         child: Scaffold(
           appBar: AppBar(
-            //TODO check how I dealt with the leading hehehe
             actions: [
-              //TODO switch for each page
+              //! switch for each page
               //? maybe do it on the enum itself, cuz we have a switch in the WillPopScope widget
               //! remove the onSuccess callback from the pages
-              //TODO worksapce setup > deal with last page
+              //! worksapce setup > deal with last page
               TextButton(
                 onPressed: () => widget.page.next == null
                     ? showNotImplementedAlertDialog(context: context)

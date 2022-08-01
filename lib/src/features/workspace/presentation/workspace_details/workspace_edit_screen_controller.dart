@@ -28,7 +28,7 @@ class WorkspaceEditScreenController extends StateNotifier<AsyncValue>
     state = await AsyncValue.guard(
       () => _workspacesRepository.updateWorkspace(workspace),
     );
-    //TODO save image
+    //TODO save workspace image
 
     // save image into storage
     // get image url
