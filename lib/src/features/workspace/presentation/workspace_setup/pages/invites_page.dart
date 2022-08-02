@@ -12,6 +12,7 @@ import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:smart_space/smart_space.dart';
 
 class InvitesPage extends ConsumerStatefulWidget {
@@ -46,7 +47,10 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
     super.dispose();
   }
 
-  void shareInviteLink() {}
+  void shareInviteLink() => Share.share(
+        'https://k-fazer.com/invite?code=FGH54V',
+        subject: 'Join us at KFazer!',
+      );
 
   void remove(PhoneNumber member) => setState(() => members.remove(member));
 

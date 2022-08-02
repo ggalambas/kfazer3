@@ -6,11 +6,7 @@ import 'package:kfazer3/src/features/team/data/users_repository.dart';
 
 final notificationPagingControllerProvider =
     Provider.autoDispose<NotificationPagingController>(
-  (ref) {
-    final controller = NotificationPagingController(ref);
-    ref.onDispose(() => controller.dispose());
-    return controller;
-  },
+  (ref) => NotificationPagingController(ref),
 );
 
 class NotificationPagingController extends PagingController<int, Notification> {
