@@ -1,23 +1,29 @@
 import 'package:kfazer3/src/constants/test_notifications.dart';
 import 'package:kfazer3/src/features/notifications/data/notifications_repository.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
+import 'package:kfazer3/src/utils/delay.dart';
 import 'package:kfazer3/src/utils/in_memory_store.dart';
 
 class FakeNotificationsRepository implements NotificationsRepository {
+  // final _notifications = InMemoryStore<List<Notification>>([]);
   final _notifications = InMemoryStore<List<Notification>>(kTestNotifications);
+  void dispose() => _notifications.close();
+
+  final bool addDelay;
+  FakeNotificationsRepository({this.addDelay = true});
 
   @override
   final notificationsPerFetch = 15;
 
   @override
   Stream<int> watchUnreadNotificationCount() async* {
-    await Future.delayed(const Duration(seconds: 1));
+    await delay(addDelay);
     yield* _notifications.stream.map((ns) => ns.where((n) => !n.read).length);
   }
 
   @override
   Future<List<Notification>> fetchNotificationList(String? lastId) async {
-    await Future.delayed(const Duration(seconds: 1));
+    await delay(addDelay);
     var notifications = _notifications.value
       ..sort((a, b) => a.timestamp.compareTo(b.timestamp));
     if (lastId != null) {
@@ -34,6 +40,7 @@ class FakeNotificationsRepository implements NotificationsRepository {
 
   @override
   Future<void> setNotification(Notification notification) async {
+    await delay(addDelay);
     // First, get the notification list
     final notifications = _notifications.value;
     // Then, change the notification

@@ -10,7 +10,6 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
   // const isFake = String.fromEnvironment('useFakeRepos') == 'true';
   // if (isFake) {
   final repository = FakeAuthRepository();
-  // TODO dispose inMemoryStore everywhere
   ref.onDispose(() => repository.dispose());
   return repository;
   // }

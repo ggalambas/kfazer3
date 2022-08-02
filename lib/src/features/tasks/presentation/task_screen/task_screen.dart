@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/not_found_widget.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
-import 'package:kfazer3/src/features/tasks/data/fake_tasks_repository.dart';
+import 'package:kfazer3/src/features/tasks/data/tasks_repository.dart';
 import 'package:kfazer3/src/features/tasks/domain/task.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';

@@ -8,6 +8,7 @@ import 'package:kfazer3/src/utils/in_memory_store.dart';
 import 'auth_repository.dart';
 
 class FakeAuthRepository implements AuthRepository {
+  // final _authState = InMemoryStore<AppUser?>(null);
   final _authState = InMemoryStore<AppUser?>(kTestUsers.first);
   void dispose() => _authState.close();
 

@@ -4,7 +4,11 @@ import 'package:kfazer3/src/features/notifications/domain/notification.dart';
 import 'fake_notifications_repository.dart';
 
 final notificationsRepositoryProvider = Provider<NotificationsRepository>(
-  (ref) => FakeNotificationsRepository(),
+  (ref) {
+    final repository = FakeNotificationsRepository();
+    ref.onDispose(() => repository.dispose());
+    return repository;
+  },
 );
 
 abstract class NotificationsRepository {

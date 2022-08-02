@@ -5,7 +5,7 @@ import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
-import 'package:kfazer3/src/features/tasks/data/fake_tasks_repository.dart';
+import 'package:kfazer3/src/features/tasks/data/tasks_repository.dart';
 import 'package:kfazer3/src/features/tasks/domain/task.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
