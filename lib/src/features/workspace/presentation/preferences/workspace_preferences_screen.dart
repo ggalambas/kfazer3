@@ -5,7 +5,7 @@ import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/features/settings/presentation/selection_setting_tile.dart';
-import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
+import 'package:kfazer3/src/features/workspace/data/workspace_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/preferences.dart';
 import 'package:kfazer3/src/features/workspace/domain/updatable_workspace.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
@@ -19,7 +19,7 @@ class WorkspacePreferencesScreen extends ConsumerWidget {
 
   void changePlan(Reader read, Workspace workspace, WorkspacePlan plan) {
     final newWorkspace = workspace.updatePlan(plan);
-    read(workspacesRepositoryProvider).updateWorkspace(newWorkspace);
+    read(workspaceRepositoryProvider).updateWorkspace(newWorkspace);
   }
 
   @override

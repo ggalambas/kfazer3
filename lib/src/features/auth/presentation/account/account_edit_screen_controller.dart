@@ -25,7 +25,7 @@ class AccountEditScreenController extends StateNotifier<AsyncValue>
 
   Future<void> save(AppUser user, Uint8List? imageBytes) async {
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() => _authRepository.updateAccount(user));
+    state = await AsyncValue.guard(() => _authRepository.updateUser(user));
     //TODO save account image
 
     // save image into storage

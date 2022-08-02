@@ -7,7 +7,7 @@ import 'package:kfazer3/src/common_widgets/details_bar.dart';
 import 'package:kfazer3/src/common_widgets/loading_dialog.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
-import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
+import 'package:kfazer3/src/features/workspace/data/workspace_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/not_found_workspace.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';

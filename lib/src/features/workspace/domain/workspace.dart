@@ -21,4 +21,9 @@ class Workspace {
     this.motivationalMessages = const [],
     this.plan = WorkspacePlan.family,
   });
+
+  @override
+  String toString() {
+    return 'Workspace(id: $id, title: $title, description: $description, photoUrl: $photoUrl, motivationalMessages: $motivationalMessages, plan: $plan)';
+  }
 }

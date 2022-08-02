@@ -6,7 +6,7 @@ import 'package:kfazer3/src/features/dashboard/presentation/dashboard_page.dart'
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_list/task_list_page.dart';
 import 'package:kfazer3/src/features/team/presentation/team_page.dart';
-import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
+import 'package:kfazer3/src/features/workspace/data/workspace_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_bar/workspace_bar.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';

@@ -37,7 +37,7 @@ class SignInController extends StateNotifier<AsyncValue>
           return authRepository.verifySmsCode(phoneNumber!, value);
         case SignInPage.account:
           assert(value is String);
-          return authRepository.createAccount(phoneNumber!, value);
+          return authRepository.createUser(phoneNumber!, value);
       }
     });
     if (page == SignInPage.phone && !state.hasError) phoneNumber = value;

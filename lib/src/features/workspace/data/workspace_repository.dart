@@ -3,11 +3,11 @@ import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 
 import 'fake_workspaces_repository.dart';
 
-final workspacesRepositoryProvider = Provider<WorkspacesRepository>(
-  (ref) => FakeWorkspacesRepository(),
+final workspaceRepositoryProvider = Provider<WorkspaceRepository>(
+  (ref) => FakeWorkspaceRepository(),
 );
 
-abstract class WorkspacesRepository {
+abstract class WorkspaceRepository {
   Stream<List<Workspace>> watchWorkspaceList();
   Stream<Workspace?> watchWorkspace(WorkspaceId id);
   Future<void> updateWorkspace(Workspace workspace);
@@ -19,15 +19,15 @@ abstract class WorkspacesRepository {
 
 final workspaceListStreamProvider = StreamProvider.autoDispose<List<Workspace>>(
   (ref) {
-    final workspacesRepository = ref.watch(workspacesRepositoryProvider);
-    return workspacesRepository.watchWorkspaceList();
+    final workspaceRepository = ref.watch(workspaceRepositoryProvider);
+    return workspaceRepository.watchWorkspaceList();
   },
 );
 
 final workspaceStreamProvider =
     StreamProvider.autoDispose.family<Workspace?, WorkspaceId>(
   (ref, id) {
-    final workspacesRepository = ref.watch(workspacesRepositoryProvider);
-    return workspacesRepository.watchWorkspace(id);
+    final workspaceRepository = ref.watch(workspaceRepositoryProvider);
+    return workspaceRepository.watchWorkspace(id);
   },
 );

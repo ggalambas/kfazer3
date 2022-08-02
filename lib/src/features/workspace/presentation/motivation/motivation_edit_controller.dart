@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kfazer3/src/features/workspace/data/workspaces_repository.dart';
+import 'package:kfazer3/src/features/workspace/data/workspace_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/utils/string_validator.dart';
@@ -9,14 +9,14 @@ import 'package:kfazer3/src/utils/string_validator.dart';
 final motivationEditScreenControllerProvider = StateNotifierProvider
     .autoDispose<MotivationEditScreenController, AsyncValue>(
   (ref) {
-    final repository = ref.read(workspacesRepositoryProvider);
+    final repository = ref.read(workspaceRepositoryProvider);
     return MotivationEditScreenController(repository);
   },
 );
 
 class MotivationEditScreenController extends StateNotifier<AsyncValue>
     with MotivationValidators {
-  final WorkspacesRepository _workspaceRepository;
+  final WorkspaceRepository _workspaceRepository;
 
   MotivationEditScreenController(this._workspaceRepository)
       : super(const AsyncValue.data(null));

@@ -10,6 +10,7 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
   // const isFake = String.fromEnvironment('useFakeRepos') == 'true';
   // if (isFake) {
   final repository = FakeAuthRepository();
+  // TODO dispose inMemoryStore everywhere
   ref.onDispose(() => repository.dispose());
   return repository;
   // }
@@ -21,10 +22,10 @@ abstract class AuthRepository {
   AppUser? get currentUser;
   Future<void> sendSmsCode(PhoneNumber phoneNumber);
   Future<void> verifySmsCode(PhoneNumber phoneNumber, String smsCode);
-  Future<void> createAccount(PhoneNumber phoneNumber, String displayName);
-  Future<void> updateAccount(AppUser user);
+  Future<void> createUser(PhoneNumber phoneNumber, String displayName);
+  Future<void> updateUser(AppUser user);
   Future<void> signOut();
-  Future<void> deleteAccount();
+  Future<void> deleteUser();
 }
 
 //* Providers
