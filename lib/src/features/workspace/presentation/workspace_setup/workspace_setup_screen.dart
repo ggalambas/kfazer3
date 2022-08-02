@@ -1,28 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/tap_to_unfocus.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/pages/invites_page.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/pages/motivation_page.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/pages/workspace_details_page.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
+import 'package:kfazer3/src/localization/localized_enum.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 
+import 'pages/invites_page.dart';
+import 'pages/motivation_page.dart';
+import 'pages/workspace_details_page.dart';
+
 /// The three sub-routes that are presented as part of the workspace setup flow.
-enum WorkspaceSetupPage {
+enum WorkspaceSetupPage with LocalizedEnum {
   details,
   motivation,
   invites;
 
   WorkspaceSetupPage? get previous {
-    final pages =
-        WorkspaceSetupPage.values.reversed.skipWhile((page) => this != page);
-    return pages.length < 2 ? null : pages.elementAt(1);
+    final i = index - 1;
+    return i < 0 ? null : WorkspaceSetupPage.values[i];
   }
 
   WorkspaceSetupPage? get next {
-    final pages = WorkspaceSetupPage.values.skipWhile((page) => this != page);
-    return pages.length < 2 ? null : pages.elementAt(1);
+    final i = index + 1;
+    return i >= WorkspaceSetupPage.values.length
+        ? null
+        : WorkspaceSetupPage.values[i];
+  }
+
+  @override
+  String locName(BuildContext context) {
+    switch (this) {
+      case details:
+        return context.loc.details;
+      case motivation:
+        return context.loc.motivation;
+      case invites:
+        return context.loc.invites;
+    }
   }
 }
 
@@ -86,19 +101,11 @@ class _WorkspaceSetupScreenState extends ConsumerState<WorkspaceSetupScreen> {
       child: TapToUnfocus(
         child: Scaffold(
           appBar: AppBar(
+            title: Text(widget.page.locName(context)),
             actions: [
-              //! switch for each page
-              //? maybe do it on the enum itself, cuz we have a switch in the WillPopScope widget
-              //! remove the onSuccess callback from the pages
-              //! worksapce setup > deal with last page
               TextButton(
-                onPressed: () => widget.page.next == null
-                    ? showNotImplementedAlertDialog(context: context)
-                    : context.goNamed(
-                        AppRoute.workspaceSetupPage.name,
-                        params: {'page': widget.page.next!.name},
-                      ),
-                child: const Text('Next'),
+                onPressed: () => context.goNamed(AppRoute.home.name),
+                child: Text(context.loc.cancel),
               ),
             ],
           ),
@@ -113,18 +120,13 @@ class _WorkspaceSetupScreenState extends ConsumerState<WorkspaceSetupScreen> {
                   params: {'page': WorkspaceSetupPage.motivation.name},
                 ),
               ),
-              MotivationalMessagesPage(
+              MotivationPage(
                 onSuccess: () => context.goNamed(
                   AppRoute.workspaceSetupPage.name,
                   params: {'page': WorkspaceSetupPage.invites.name},
                 ),
               ),
-              InvitesPage(
-                onSuccess: (workspaceId) => context.goNamed(
-                  AppRoute.workspace.name,
-                  params: {'workspaceId': workspaceId},
-                ),
-              ),
+              const InvitesPage(),
             ],
           ),
         ),

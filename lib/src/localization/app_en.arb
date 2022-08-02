@@ -62,6 +62,10 @@
   "policies": "Policies",
   "policiesDescription": "Privacy & Terms",
 
+  "details": "Details",  
+  "motivation": "Motivation",  
+  "invites": "Invites",  
+
   "about": "About",
   "members": "Members",
   "archive": "Archive",
@@ -77,7 +81,6 @@
   "corporative": "Corporative",
   "motivationalMessages": "Motivational messages",
   "motivationalMessagesDescription": "Messages shown when completing a task",
-  "motivation": "Motivation",
   "workspace": "Workspace",
   "deleteWorkspace": "Delete workspace",
   "title": "Title",

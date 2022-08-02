@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
+import 'package:kfazer3/src/common_widgets/setup_layout.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/account_edit_screen_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
-import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 
@@ -49,7 +49,7 @@ class _AccountSetupPageState extends ConsumerState<AccountSetupPage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(signInControllerProvider);
-    return SignInLayout(
+    return SetupLayout(
       formKey: formKey,
       title: context.loc.profileSetUp,
       description: TextSpan(

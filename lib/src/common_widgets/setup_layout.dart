@@ -4,14 +4,14 @@ import 'package:kfazer3/src/common_widgets/responsive_two_column_layout.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
-class SignInLayout extends StatelessWidget {
+class SetupLayout extends StatelessWidget {
   final Key? formKey;
   final String title;
   final InlineSpan description;
   final List<Widget> content;
   final List<Widget> cta;
 
-  const SignInLayout({
+  const SetupLayout({
     super.key,
     this.formKey,
     required this.title,

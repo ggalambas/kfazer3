@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
+import 'package:kfazer3/src/common_widgets/setup_layout.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
-import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_layout.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sms_code_controller.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
@@ -59,7 +59,7 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
     final state = ref.watch(signInControllerProvider);
     final phoneNumber =
         ref.watch(signInControllerProvider.notifier).phoneNumber!;
-    return SignInLayout(
+    return SetupLayout(
       formKey: formKey,
       title: context.loc.phoneNumberVerification,
       description: TextSpan(
