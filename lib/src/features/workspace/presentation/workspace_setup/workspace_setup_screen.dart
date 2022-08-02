@@ -5,6 +5,7 @@ import 'package:kfazer3/src/common_widgets/tap_to_unfocus.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/localized_enum.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
+import 'package:smart_space/smart_space.dart';
 
 import 'pages/invites_page.dart';
 import 'pages/motivation_page.dart';
@@ -103,9 +104,12 @@ class _WorkspaceSetupScreenState extends ConsumerState<WorkspaceSetupScreen> {
           appBar: AppBar(
             title: Text(widget.page.locName(context)),
             actions: [
-              TextButton(
-                onPressed: () => context.goNamed(AppRoute.home.name),
-                child: Text(context.loc.cancel),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: kSpace * 2),
+                child: TextButton(
+                  onPressed: () => context.goNamed(AppRoute.home.name),
+                  child: Text(context.loc.cancel),
+                ),
               ),
             ],
           ),

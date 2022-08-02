@@ -21,6 +21,8 @@ class _MotivationPageState extends State<MotivationPage> {
   List<FocusNode>? messageNodes;
   List<TextEditingController>? messageControllers;
 
+  final scrollController = ScrollController();
+
   List<String> get messages =>
       messageControllers!.map((controller) => controller.text).toList();
 
@@ -55,12 +57,14 @@ class _MotivationPageState extends State<MotivationPage> {
         messageNodes!.removeAt(i);
       });
 
-  void add() {
+  void add() async {
     setState(() {
       messageControllers!.add(TextEditingController());
       messageNodes!.add(FocusNode());
     });
-    messageNodes!.first.requestFocus();
+    messageNodes!.last.requestFocus();
+    await Future.delayed(const Duration(milliseconds: 100));
+    scrollController.jumpTo(scrollController.position.maxScrollExtent);
   }
 
   void submit() async {
@@ -90,42 +94,50 @@ class _MotivationPageState extends State<MotivationPage> {
             'We added some messages to get you started!\n\nMotivational messages are shown when completing a task, so you can keep everyone stimulated at all times. You can manage your messages later in the settings.'
                 .hardcoded,
       ),
-      content: messageControllers!
-          .mapIndexed(
-            (i, messageController) => TextFormField(
-              focusNode: messageNodes![i],
-              controller: messageController,
-              keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              maxLength: kMotivationalMessagesLength,
-              maxLines: null,
-              decoration: InputDecoration(
-                counterText: '',
-                filled: false,
-                isDense: true,
-                contentPadding: EdgeInsets.all(kSpace),
-                suffixIcon: IconButton(
-                  tooltip: context.loc.delete,
-                  onPressed: () => delete(messageController),
-                  icon: const Icon(Icons.clear),
+      content: [
+        // SizedBox(
+        //   height: MediaQuery.of(context).size.height * 0.5,
+        //   child: ListView(
+        //     controller: scrollController,
+        //     children: [],
+        //   ),
+        // ),
+        ...messageControllers!
+            .mapIndexed(
+              (i, messageController) => TextFormField(
+                focusNode: messageNodes![i],
+                controller: messageController,
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                maxLength: kMotivationalMessagesLength,
+                maxLines: null,
+                decoration: InputDecoration(
+                  counterText: '',
+                  filled: false,
+                  isDense: true,
+                  contentPadding: EdgeInsets.all(kSpace),
+                  suffixIcon: IconButton(
+                    tooltip: context.loc.delete,
+                    onPressed: () => delete(messageController),
+                    icon: const Icon(Icons.clear),
+                  ),
                 ),
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (message) {
+                  return null;
+                  // if (!submitted) return null;
+                  // return ref
+                  //     .read(motivationEditScreenControllerProvider
+                  //         .notifier)
+                  //     .messageErrorText(context, message ?? '');
+                },
               ),
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (message) {
-                return null;
-                // if (!submitted) return null;
-                // return ref
-                //     .read(motivationEditScreenControllerProvider
-                //         .notifier)
-                //     .messageErrorText(context, message ?? '');
-              },
-            ),
-          )
-          .expandIndexed((i, textField) => [
-                textField,
-                if (i < messageControllers!.length - 1) const Divider(),
-              ])
-          .toList(),
+            )
+            .expandIndexed((i, textField) => [
+                  textField,
+                  if (i < messageControllers!.length - 1) const Divider(),
+                ]),
+      ],
       cta: [
         LoadingOutlinedButton(
           // loading: smsCodeController.isLoading,
