@@ -6,7 +6,9 @@ import 'package:kfazer3/src/utils/delay.dart';
 import 'package:kfazer3/src/utils/in_memory_store.dart';
 
 class FakeWorkspaceRepository implements WorkspaceRepository {
+  // final _workspaces = InMemoryStore<List<Workspace>>([]);
   final _workspaces = InMemoryStore<List<Workspace>>(kTestWorkspaces);
+  void dispose() => _workspaces.close();
 
   final bool addDelay;
   FakeWorkspaceRepository({this.addDelay = true});

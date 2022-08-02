@@ -4,7 +4,11 @@ import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'fake_workspaces_repository.dart';
 
 final workspaceRepositoryProvider = Provider<WorkspaceRepository>(
-  (ref) => FakeWorkspaceRepository(),
+  (ref) {
+    final repository = FakeWorkspaceRepository();
+    ref.onDispose(() => repository.dispose());
+    return repository;
+  },
 );
 
 abstract class WorkspaceRepository {

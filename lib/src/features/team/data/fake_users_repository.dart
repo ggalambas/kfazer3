@@ -2,14 +2,21 @@ import 'package:collection/collection.dart';
 import 'package:kfazer3/src/constants/test_users.dart';
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 import 'package:kfazer3/src/features/team/data/users_repository.dart';
+import 'package:kfazer3/src/utils/delay.dart';
+import 'package:kfazer3/src/utils/in_memory_store.dart';
 
 class FakeUsersRepository implements UsersRepository {
-  final List<AppUser> _users = kTestUsers;
+  // final _users = InMemoryStore<List<AppUser>>([]);
+  final _users = InMemoryStore<List<AppUser>>(kTestUsers);
+  void dispose() => _users.close();
+
+  final bool addDelay;
+  FakeUsersRepository({this.addDelay = true});
 
   @override
   Future<List<AppUser>> fetchUserList() async {
-    await Future.delayed(const Duration(seconds: 1));
-    return _users;
+    delay(addDelay);
+    return _users.value;
   }
 
   @override

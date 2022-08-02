@@ -9,7 +9,11 @@ abstract class UsersRepository {
 }
 
 final usersRepositoryProvider = Provider<UsersRepository>(
-  (ref) => FakeUsersRepository(),
+  (ref) {
+    final repository = FakeUsersRepository();
+    ref.onDispose(() => repository.dispose());
+    return repository;
+  },
 );
 
 final userListFutureProvider = FutureProvider.autoDispose<List<AppUser>>(
