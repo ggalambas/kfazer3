@@ -4,6 +4,7 @@ import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_list/task_grid.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/workspace_screen.dart';
+import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
@@ -99,7 +100,8 @@ class _TaskListPageState extends State<TaskListPage>
           indicatorColor: context.colorScheme.onBackground,
           labelColor: context.colorScheme.onBackground,
           tabs: [
-            for (final taskState in TaskState.tabs) Tab(text: taskState.name),
+            for (final taskState in TaskState.tabs)
+              Tab(text: taskState.name.hardcoded),
           ],
         ),
         Expanded(
