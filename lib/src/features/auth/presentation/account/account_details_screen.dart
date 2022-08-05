@@ -26,7 +26,7 @@ class AccountDetailsScreen extends ConsumerWidget {
       defaultActionText: context.loc.delete,
     );
     if (delete == true) {
-      read(accountDetailsScreenControllerProvider.notifier).deleteAccount();
+      read(accountDetailsScreenControllerProvider.notifier).deleteUser();
     }
   }
 

@@ -5,23 +5,23 @@ final accountDetailsScreenControllerProvider = StateNotifierProvider
     .autoDispose<AccountDetailsScreenController, AsyncValue>(
   (ref) {
     final repository = ref.read(authRepositoryProvider);
-    return AccountDetailsScreenController(repository);
+    return AccountDetailsScreenController(authRepository: repository);
   },
 );
 
 class AccountDetailsScreenController extends StateNotifier<AsyncValue> {
-  final AuthRepository _authRepository;
+  final AuthRepository authRepository;
 
-  AccountDetailsScreenController(this._authRepository)
+  AccountDetailsScreenController({required this.authRepository})
       : super(const AsyncValue.data(null));
 
   Future<void> signOut() async {
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() => _authRepository.signOut());
+    state = await AsyncValue.guard(() => authRepository.signOut());
   }
 
-  Future<void> deleteAccount() async {
+  Future<void> deleteUser() async {
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() => _authRepository.deleteUser());
+    state = await AsyncValue.guard(() => authRepository.deleteUser());
   }
 }
