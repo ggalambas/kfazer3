@@ -13,17 +13,26 @@ import 'sign_in_screen.dart';
 
 final signInControllerProvider =
     StateNotifierProvider.autoDispose<SignInController, AsyncValue>(
-  (ref) => SignInController(read: ref.read),
+  (ref) {
+    final authRepository = ref.watch(authRepositoryProvider);
+    return SignInController(
+      authRepository: authRepository,
+      smsCodeController: (phoneNumber) =>
+          ref.read(smsCodeControllerProvider(phoneNumber).notifier),
+    );
+  },
 );
 
 class SignInController extends StateNotifier<AsyncValue>
     with SignInValidators, AccountValidators {
-  final Reader read;
+  final AuthRepository authRepository;
+  final SmsCodeController Function(PhoneNumber phoneNumber) smsCodeController;
   PhoneNumber? phoneNumber;
 
-  SignInController({required this.read}) : super(const AsyncValue.data(null));
-
-  AuthRepository get authRepository => read(authRepositoryProvider);
+  SignInController({
+    required this.authRepository,
+    required this.smsCodeController,
+  }) : super(const AsyncValue.data(null));
 
   Future<bool> submit(SignInPage page, dynamic value) async {
     state = const AsyncValue.loading();
@@ -31,7 +40,7 @@ class SignInController extends StateNotifier<AsyncValue>
       switch (page) {
         case SignInPage.phone:
           assert(value is PhoneNumber);
-          return read(smsCodeControllerProvider(value).notifier).sendSmsCode();
+          return smsCodeController(value).sendSmsCode();
         case SignInPage.verification:
           assert(value is String);
           return authRepository.verifySmsCode(phoneNumber!, value);
