@@ -9,7 +9,7 @@ void main() {
   final testPhoneNumber = PhoneNumber('+351', '912345678');
   const testName = 'Jimmy Hawkins';
   final testUser = AppUser(
-    id: testPhoneNumber.toString(),
+    id: testPhoneNumber.entire(),
     phoneNumber: testPhoneNumber,
     name: testName,
   );

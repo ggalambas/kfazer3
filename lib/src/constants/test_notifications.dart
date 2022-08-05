@@ -4,7 +4,8 @@ import 'package:kfazer3/src/constants/test_users.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
 
 /// Test notifications to be used until a data source is implemented
-final kTestNotifications = List.generate(
+List<Notification> get kTestNotifications => [..._kTestNotifications];
+final _kTestNotifications = List.generate(
   100,
   (i) => Notification(
     id: '$i',
