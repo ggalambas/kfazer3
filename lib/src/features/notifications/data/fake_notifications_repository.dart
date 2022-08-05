@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:kfazer3/src/constants/test_notifications.dart';
 import 'package:kfazer3/src/features/notifications/data/notifications_repository.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
@@ -34,8 +35,9 @@ class FakeNotificationsRepository implements NotificationsRepository {
   }
 
   @override
-  Stream<Notification> watchNotification(String id) async* {
-    yield* _notifications.stream.map((ns) => ns.firstWhere((n) => n.id == id));
+  Stream<Notification?> watchNotification(String id) async* {
+    yield* _notifications.stream
+        .map((ns) => ns.firstWhereOrNull((n) => n.id == id));
   }
 
   @override
