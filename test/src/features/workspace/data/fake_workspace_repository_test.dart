@@ -63,7 +63,7 @@ void main() {
         emits(null),
       );
     });
-    test('leave after dispose throws exception', () async {
+    test('leave after dispose throws exception', () {
       final workspaceRepository = makeWorkspaceRepository();
       workspaceRepository.dispose();
       expect(

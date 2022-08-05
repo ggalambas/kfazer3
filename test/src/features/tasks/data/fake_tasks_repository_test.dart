@@ -37,12 +37,11 @@ void main() {
         emits(null),
       );
     });
-    //TODO test dispose for tasks repo
-    // test('watchTaskList after dispose throws exception', () async {
+    // test('createTask after dispose throws exception', () {
     //   final workspaceRepository = makeTasksRepository();
     //   workspaceRepository.dispose();
     //   expect(
-    //     () => workspaceRepository.watchTask('0'),
+    //     () => workspaceRepository.createTask(/* task */),
     //     throwsStateError,
     //   );
     // });

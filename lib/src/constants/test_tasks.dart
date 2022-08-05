@@ -5,7 +5,8 @@ import 'package:kfazer3/src/features/tasks/domain/task.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 
 /// Test tasks to be used until a data source is implemented
-final kTestTasks = List.generate(
+List<Task> get kTestTasks => [..._kTestTasks];
+final _kTestTasks = List.generate(
   100,
   (i) => Task(
     id: i.toString(),
