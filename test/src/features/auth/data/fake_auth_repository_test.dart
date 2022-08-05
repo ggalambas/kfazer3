@@ -71,7 +71,7 @@ void main() {
       expect(authRepository.currentUser, updatedUser);
       expect(authRepository.authStateChanges(), emits(updatedUser));
     });
-    test('sign out after dispose throws exception', () async {
+    test('sign out after dispose throws exception', () {
       final authRepository = makeAuthRepository();
       authRepository.dispose();
       expect(
