@@ -28,12 +28,11 @@ void main() {
         emits(null),
       );
     });
-    //TODO test dispose for users repo
     // test('fetchUserList after dispose throws exception', () async {
     //   final usersRepository = makeUsersRepository();
     //   usersRepository.dispose();
     //   expect(
-    //     () async => await usersRepository.fetchUserList(),
+    //     () async => await usersRepository.someActionThatChangesTheList(),
     //     throwsStateError,
     //   );
     // });
