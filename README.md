@@ -1,4 +1,4 @@
-# kfazer3
+# kfazer3 <a href="https://github.com/ggalambas/kfazer3/actions"><img src="https://github.com/ggalambas/kfazer3/workflows/Run Tests/badge.svg" alt="Build Status"></a>
 
 A new Flutter project.
 
