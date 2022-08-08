@@ -7,21 +7,21 @@ final motivationDetailsScreenControllerProvider = StateNotifierProvider
     .autoDispose<MotivationDetailsScreenController, AsyncValue>(
   (ref) {
     final repository = ref.read(workspaceRepositoryProvider);
-    return MotivationDetailsScreenController(repository);
+    return MotivationDetailsScreenController(workspaceRepository: repository);
   },
 );
 
 class MotivationDetailsScreenController extends StateNotifier<AsyncValue> {
-  final WorkspaceRepository _workspaceRepository;
+  final WorkspaceRepository workspaceRepository;
 
-  MotivationDetailsScreenController(this._workspaceRepository)
+  MotivationDetailsScreenController({required this.workspaceRepository})
       : super(const AsyncValue.data(null));
 
   Future<void> clearMessages(Workspace workspace) async {
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(
-      () => _workspaceRepository
-          .updateWorkspace(workspace.updateMotivationalMessages([])),
-    );
+    state = await AsyncValue.guard(() {
+      final updatedWorkspace = workspace.updateMotivationalMessages([]);
+      return workspaceRepository.updateWorkspace(updatedWorkspace);
+    });
   }
 }

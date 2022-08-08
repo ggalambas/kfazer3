@@ -21,30 +21,27 @@ void main() {
       );
     });
     test(
-      'fetchNotificationList(null) returns first notificationsPerFetch items',
-      () async {
-        final notifications = kTestNotifications
-          ..sort((a, b) => a.timestamp.compareTo(b.timestamp));
-        expect(
-          await notificationsRepository.fetchNotificationList(null),
-          notifications.take(notificationsRepository.notificationsPerFetch),
-        );
-      },
-    );
-    test(
-      'fetchNotificationList(15) returns second notificationsPerFetch items',
-      () async {
-        final notifications = kTestNotifications
-          ..sort((a, b) => a.timestamp.compareTo(b.timestamp));
-        expect(
-          await notificationsRepository
-              .fetchNotificationList(notifications[14].id),
-          notifications
-              .skip(15)
-              .take(notificationsRepository.notificationsPerFetch),
-        );
-      },
-    );
+        'fetchNotificationList(null) returns first notificationsPerFetch items',
+        () async {
+      final notifications = kTestNotifications
+        ..sort((a, b) => a.timestamp.compareTo(b.timestamp));
+      expect(
+        await notificationsRepository.fetchNotificationList(null),
+        notifications.take(notificationsRepository.notificationsPerFetch),
+      );
+    });
+    test('fetchNotificationList(15) returns second notificationsPerFetch items',
+        () async {
+      final notifications = kTestNotifications
+        ..sort((a, b) => a.timestamp.compareTo(b.timestamp));
+      expect(
+        await notificationsRepository
+            .fetchNotificationList(notifications[14].id),
+        notifications
+            .skip(15)
+            .take(notificationsRepository.notificationsPerFetch),
+      );
+    });
     test('fetchNotificationList(-1) returns empty list', () async {
       expect(
         await notificationsRepository.fetchNotificationList('-1'),

@@ -1,10 +1,11 @@
+import 'package:equatable/equatable.dart';
 import 'package:kfazer3/src/features/workspace/domain/preferences.dart';
 
 /// * The workspace identifier is an important concept and can have its own type.
 typedef WorkspaceId = String;
 
 /// Class representing a workspace.
-class Workspace {
+class Workspace with EquatableMixin {
   /// Unique workspace id
   final WorkspaceId id;
   final String title;
@@ -26,4 +27,7 @@ class Workspace {
   String toString() {
     return 'Workspace(id: $id, title: $title, description: $description, photoUrl: $photoUrl, motivationalMessages: $motivationalMessages, plan: $plan)';
   }
+
+  @override
+  List<Object?> get props => [id];
 }

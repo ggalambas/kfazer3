@@ -6,20 +6,20 @@ final workspaceDetailsScreenControllerProvider = StateNotifierProvider
     .autoDispose<WorkspaceDetailsScreenController, AsyncValue>(
   (ref) {
     final repository = ref.read(workspaceRepositoryProvider);
-    return WorkspaceDetailsScreenController(repository);
+    return WorkspaceDetailsScreenController(workspaceRepository: repository);
   },
 );
 
 class WorkspaceDetailsScreenController extends StateNotifier<AsyncValue> {
-  final WorkspaceRepository _workspaceRepository;
+  final WorkspaceRepository workspaceRepository;
 
-  WorkspaceDetailsScreenController(this._workspaceRepository)
+  WorkspaceDetailsScreenController({required this.workspaceRepository})
       : super(const AsyncValue.data(null));
 
   Future<bool> deleteWorkspace(WorkspaceId workspaceId) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(
-      () => _workspaceRepository.deleteWorkspace(workspaceId),
+      () => workspaceRepository.deleteWorkspace(workspaceId),
     );
     return !state.hasError;
   }

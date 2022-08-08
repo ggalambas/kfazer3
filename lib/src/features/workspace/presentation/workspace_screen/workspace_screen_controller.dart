@@ -1,24 +1,24 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/workspace/data/workspace_repository.dart';
-import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 
 final workspaceScreenControllerProvider =
     StateNotifierProvider.autoDispose<WorkspaceScreenController, AsyncValue>(
-  (ref) => WorkspaceScreenController(read: ref.read),
+  (ref) {
+    final repository = ref.watch(workspaceRepositoryProvider);
+    return WorkspaceScreenController(workspaceRepository: repository);
+  },
 );
 
 class WorkspaceScreenController extends StateNotifier<AsyncValue> {
-  final Reader read;
+  final WorkspaceRepository workspaceRepository;
 
-  WorkspaceScreenController({required this.read})
+  WorkspaceScreenController({required this.workspaceRepository})
       : super(const AsyncValue.data(null));
 
-  WorkspaceRepository get repository => read(workspaceRepositoryProvider);
-
-  Future<bool> leave(Workspace workspace) async {
+  Future<bool> leave(String workspaceId) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(
-      () => repository.leaveWorkspace(workspace.id),
+      () => workspaceRepository.leaveWorkspace(workspaceId),
     );
     return !state.hasError;
   }

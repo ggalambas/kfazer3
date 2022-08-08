@@ -14,9 +14,9 @@ import 'sign_in_screen.dart';
 final signInControllerProvider =
     StateNotifierProvider.autoDispose<SignInController, AsyncValue>(
   (ref) {
-    final authRepository = ref.watch(authRepositoryProvider);
+    final repository = ref.watch(authRepositoryProvider);
     return SignInController(
-      authRepository: authRepository,
+      authRepository: repository,
       smsCodeController: (phoneNumber) =>
           ref.read(smsCodeControllerProvider(phoneNumber).notifier),
     );
@@ -40,7 +40,7 @@ class SignInController extends StateNotifier<AsyncValue>
       switch (page) {
         case SignInPage.phone:
           assert(value is PhoneNumber);
-          return smsCodeController(value).sendSmsCode();
+          return smsCodeController(value).sendSmsCode(throwError: true);
         case SignInPage.verification:
           assert(value is String);
           return authRepository.verifySmsCode(phoneNumber!, value);

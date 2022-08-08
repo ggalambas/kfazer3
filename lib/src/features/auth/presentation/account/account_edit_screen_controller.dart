@@ -12,26 +12,27 @@ final accountEditScreenControllerProvider =
     StateNotifierProvider.autoDispose<AccountEditScreenController, AsyncValue>(
   (ref) {
     final repository = ref.read(authRepositoryProvider);
-    return AccountEditScreenController(repository);
+    return AccountEditScreenController(authRepository: repository);
   },
 );
 
 class AccountEditScreenController extends StateNotifier<AsyncValue>
     with AccountValidators {
-  final AuthRepository _authRepository;
+  final AuthRepository authRepository;
 
-  AccountEditScreenController(this._authRepository)
+  AccountEditScreenController({required this.authRepository})
       : super(const AsyncValue.data(null));
 
   Future<void> save(AppUser user, Uint8List? imageBytes) async {
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() => _authRepository.updateUser(user));
+    state = await AsyncValue.guard(() => authRepository.updateUser(user));
     //TODO save account image
 
     // save image into storage
     // get image url
     // update appuser photoUrl
     // update account
+    //! update test file
   }
 }
 

@@ -10,21 +10,21 @@ final motivationEditScreenControllerProvider = StateNotifierProvider
     .autoDispose<MotivationEditScreenController, AsyncValue>(
   (ref) {
     final repository = ref.read(workspaceRepositoryProvider);
-    return MotivationEditScreenController(repository);
+    return MotivationEditScreenController(workspaceRepository: repository);
   },
 );
 
 class MotivationEditScreenController extends StateNotifier<AsyncValue>
     with MotivationValidators {
-  final WorkspaceRepository _workspaceRepository;
+  final WorkspaceRepository workspaceRepository;
 
-  MotivationEditScreenController(this._workspaceRepository)
+  MotivationEditScreenController({required this.workspaceRepository})
       : super(const AsyncValue.data(null));
 
   Future<void> save(Workspace workspace) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(
-        () => _workspaceRepository.updateWorkspace(workspace));
+        () => workspaceRepository.updateWorkspace(workspace));
   }
 }
 

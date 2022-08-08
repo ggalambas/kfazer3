@@ -12,21 +12,21 @@ final workspaceEditScreenControllerProvider = StateNotifierProvider.autoDispose<
     WorkspaceEditScreenController, AsyncValue>(
   (ref) {
     final repository = ref.read(workspaceRepositoryProvider);
-    return WorkspaceEditScreenController(repository);
+    return WorkspaceEditScreenController(workspaceRepository: repository);
   },
 );
 
 class WorkspaceEditScreenController extends StateNotifier<AsyncValue>
     with WorkspaceValidators {
-  final WorkspaceRepository _workspaceRepository;
+  final WorkspaceRepository workspaceRepository;
 
-  WorkspaceEditScreenController(this._workspaceRepository)
+  WorkspaceEditScreenController({required this.workspaceRepository})
       : super(const AsyncValue.data(null));
 
   Future<void> save(Workspace workspace, Uint8List? imageBytes) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(
-      () => _workspaceRepository.updateWorkspace(workspace),
+      () => workspaceRepository.updateWorkspace(workspace),
     );
     //TODO save workspace image
 
@@ -34,6 +34,7 @@ class WorkspaceEditScreenController extends StateNotifier<AsyncValue>
     // get image url
     // update workspace photoUrl
     // update workspace
+    //! update tests
   }
 }
 

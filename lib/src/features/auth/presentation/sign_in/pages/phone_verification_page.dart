@@ -52,7 +52,7 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
   }
 
   void resendSmsCode(PhoneNumber phoneNumber) =>
-      ref.read(smsCodeControllerProvider(phoneNumber).notifier).resendSmsCode();
+      ref.read(smsCodeControllerProvider(phoneNumber).notifier).sendSmsCode();
 
   @override
   Widget build(BuildContext context) {

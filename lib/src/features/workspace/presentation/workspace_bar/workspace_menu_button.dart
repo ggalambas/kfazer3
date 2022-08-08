@@ -101,7 +101,7 @@ class _WorkspaceMenuButtonState extends ConsumerState<WorkspaceMenuButton> {
               onDefaultAction: () async {
                 final success = await ref
                     .read(workspaceScreenControllerProvider.notifier)
-                    .leave(widget.workspace);
+                    .leave(widget.workspace.id);
                 if (mounted && success) context.goNamed(AppRoute.home.name);
               },
             );
