@@ -84,7 +84,7 @@ void main() {
         'And state is AsyncData',
         () => testSuccess(
           SignInPage.phone,
-          smsCodeController.sendSmsCode,
+          () => smsCodeController.sendSmsCode(throwError: true),
           testPhoneNumber,
         ),
       );
@@ -95,7 +95,7 @@ void main() {
         'And state is AsyncError',
         () => testFailure(
           SignInPage.phone,
-          smsCodeController.sendSmsCode,
+          () => smsCodeController.sendSmsCode(throwError: true),
           testPhoneNumber,
         ),
       );

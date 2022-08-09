@@ -20,12 +20,15 @@ void main() {
     );
   });
   group('SmsCodeController', () {
-    test('initial state', () {
+    test('initial state', () async {
+      // run
+      await Future.delayed(const Duration(seconds: 1));
+      expect(controller.timer.tick, 1);
       expect(controller.debugState, const AsyncData<int>(0));
       expect(controller.isTicking, false);
       expect(controller.timer.isActive, true);
       verifyNever(() => authRepository.sendSmsCode(testPhoneNumber));
-    });
+    }, timeout: const Timeout(Duration(milliseconds: 1500)));
     test('dispose', () {
       // run
       controller.dispose();
@@ -41,7 +44,7 @@ void main() {
         expectLater(
           controller.stream,
           emitsInOrder([
-            const AsyncLoading(),
+            const AsyncLoading<int>(),
             AsyncData(kCodeTimerDuration.inSeconds),
           ]),
         );
@@ -59,7 +62,7 @@ void main() {
         // expect later
         expectLater(
           controller.stream,
-          emitsInOrder([const AsyncLoading(), isA<AsyncError>()]),
+          emitsInOrder([const AsyncLoading<int>(), isA<AsyncError<int>>()]),
         );
         // run
         await controller.sendSmsCode();
@@ -75,7 +78,7 @@ void main() {
         // expect later
         expectLater(
           controller.stream,
-          emitsInOrder([const AsyncLoading(), isA<AsyncError>()]),
+          emitsInOrder([const AsyncLoading<int>(), isA<AsyncError<int>>()]),
         );
         // run
         expect(() => controller.sendSmsCode(throwError: true), throwsException);
@@ -91,7 +94,7 @@ void main() {
         expectLater(
           controller.stream,
           emitsInOrder([
-            const AsyncLoading(),
+            const AsyncLoading<int>(),
             AsyncData(kCodeTimerDuration.inSeconds),
           ]),
         );

@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 
-const _kTimerDuration = Duration(seconds: 30);
+const kCodeTimerDuration = Duration(seconds: 30);
 
 final smsCodeControllerProvider = StateNotifierProvider.family
     .autoDispose<SmsCodeController, AsyncValue<int>, PhoneNumber>(
@@ -12,7 +12,7 @@ final smsCodeControllerProvider = StateNotifierProvider.family
     final authRepository = ref.watch(authRepositoryProvider);
     return SmsCodeController(phoneNumber, authRepository: authRepository);
   },
-  disposeDelay: _kTimerDuration,
+  disposeDelay: kCodeTimerDuration,
 );
 
 class SmsCodeController extends StateNotifier<AsyncValue<int>> {
@@ -25,28 +25,22 @@ class SmsCodeController extends StateNotifier<AsyncValue<int>> {
     _initTimer();
   }
 
-  bool get _isTicking => state.value != 0;
+  bool get isTicking => (state.valueOrNull ?? 0) != 0;
 
   void _initTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_isTicking) state = AsyncValue.data(state.value! - 1);
+      if (isTicking) state = AsyncValue.data(state.value! - 1);
     });
   }
 
-  Future<void> sendSmsCode() async {
-    if (_isTicking) return;
-    await authRepository.sendSmsCode(phoneNumber);
-    state = AsyncValue.data(_kTimerDuration.inSeconds);
-  }
-
-  Future<bool> resendSmsCode() async {
-    if (_isTicking) return true;
+  Future<void> sendSmsCode({bool throwError = false}) async {
+    if (isTicking) return;
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await authRepository.sendSmsCode(phoneNumber);
-      return _kTimerDuration.inSeconds;
+      return kCodeTimerDuration.inSeconds;
     });
-    return !state.hasError;
+    if (throwError && state.hasError) throw state.error!;
   }
 
   @override
