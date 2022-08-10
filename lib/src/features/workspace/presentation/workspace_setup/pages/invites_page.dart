@@ -125,6 +125,7 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
           },
         ),
         if (members.isNotEmpty) Space(),
+        //TODO give size just like to the messages
         for (final member in members)
           ListTile(
             visualDensity: VisualDensity.compact,
