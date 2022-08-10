@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
 import 'package:kfazer3/src/features/notifications/data/notifications_repository.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
-import 'package:kfazer3/src/features/team/data/users_repository.dart';
+import 'package:kfazer3/src/features/users/data/users_repository.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 

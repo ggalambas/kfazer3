@@ -2,7 +2,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kfazer3/src/constants/test_users.dart';
-import 'package:kfazer3/src/features/team/data/fake_users_repository.dart';
+import 'package:kfazer3/src/features/users/data/fake_users_repository.dart';
 
 void main() {
   late FakeUsersRepository usersRepository;
