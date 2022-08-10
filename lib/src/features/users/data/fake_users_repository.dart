@@ -1,9 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:kfazer3/src/constants/test_users.dart';
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
-import 'package:kfazer3/src/features/team/data/users_repository.dart';
 import 'package:kfazer3/src/utils/delay.dart';
 import 'package:kfazer3/src/utils/in_memory_store.dart';
+
+import 'users_repository.dart';
 
 class FakeUsersRepository implements UsersRepository {
   // final _users = InMemoryStore<List<AppUser>>([]);
