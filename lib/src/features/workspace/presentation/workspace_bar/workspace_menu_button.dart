@@ -93,6 +93,7 @@ class _WorkspaceMenuButtonState extends ConsumerState<WorkspaceMenuButton> {
             showNotImplementedAlertDialog(context: context);
             break;
           case WorkspaceMenuOption.leave:
+            //TODO don't show for creator
             showLoadingDialog(
               context: context,
               title: 'Are you sure'.hardcoded,
