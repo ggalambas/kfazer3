@@ -65,6 +65,7 @@ class _WorkspaceDetailsScreenState
               queryParams: {'editing': 'true'},
             ),
             deleteText: context.loc.deleteWorkspace,
+            //TODO only show for creator
             onDelete: () => deleteWorkspace(workspace),
           ),
           body: SingleChildScrollView(

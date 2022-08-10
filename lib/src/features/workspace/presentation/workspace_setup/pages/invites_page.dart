@@ -63,9 +63,11 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
 
   //TODO deal with late phoneNumberNode
   void submit() async {
-    phoneNumberNode
-      ..nextFocus()
-      ..unfocus();
+    if (phoneNumberNode.hasFocus) {
+      phoneNumberNode
+        ..nextFocus()
+        ..unfocus();
+    }
 
     final controller = ref.read(workspaceSetupControllerProvider.notifier);
     controller.saveMembers(members);
