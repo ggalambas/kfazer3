@@ -2,6 +2,7 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:kfazer3/src/features/workspace/domain/preferences.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_details_screen_controller.dart';
 import 'package:mocktail/mocktail.dart';
@@ -12,7 +13,8 @@ void main() {
   const testWorkspace = Workspace(
     id: 'id',
     title: 'title',
-    description: 'description',
+    motivationalMessages: [],
+    plan: WorkspacePlan.family,
   );
   late MockWorkspaceRepository workspaceRepository;
   late MotivationDetailsScreenController controller;
