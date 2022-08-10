@@ -61,13 +61,10 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
     phoneNumberController.clear();
   }
 
-  //TODO deal with late phoneNumberNode
   void submit() async {
-    if (phoneNumberNode.hasFocus) {
-      phoneNumberNode
-        ..nextFocus()
-        ..unfocus();
-    }
+    phoneNumberNode
+      ..nextFocus()
+      ..unfocus();
 
     final controller = ref.read(workspaceSetupControllerProvider.notifier);
     controller.saveMembers(members);
@@ -144,23 +141,25 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
             ),
           ),
       ],
-      cta: [
-        OutlinedButton.icon(
-          onPressed: state.isLoading ? null : importContacts,
-          icon: const Icon(Icons.upload),
-          label: Text('Import file'.hardcoded),
-        ),
-        OutlinedButton.icon(
-          onPressed: state.isLoading ? null : shareInviteLink,
-          icon: const Icon(Icons.link),
-          label: Text('Share invite link'.hardcoded),
-        ),
-        LoadingElevatedButton(
-          loading: state.isLoading,
-          onPressed: submit,
-          child: Text('Create workspace'.hardcoded),
-        ),
-      ],
+      cta: countryListValue.hasValue
+          ? [
+              OutlinedButton.icon(
+                onPressed: state.isLoading ? null : importContacts,
+                icon: const Icon(Icons.upload),
+                label: Text('Import file'.hardcoded),
+              ),
+              OutlinedButton.icon(
+                onPressed: state.isLoading ? null : shareInviteLink,
+                icon: const Icon(Icons.link),
+                label: Text('Share invite link'.hardcoded),
+              ),
+              LoadingElevatedButton(
+                loading: state.isLoading,
+                onPressed: submit,
+                child: Text('Create workspace'.hardcoded),
+              ),
+            ]
+          : [],
     );
   }
 }
