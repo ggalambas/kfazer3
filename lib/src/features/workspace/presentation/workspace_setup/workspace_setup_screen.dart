@@ -22,13 +22,6 @@ enum WorkspaceSetupPage with LocalizedEnum {
     return i < 0 ? null : WorkspaceSetupPage.values[i];
   }
 
-  WorkspaceSetupPage? get next {
-    final i = index + 1;
-    return i >= WorkspaceSetupPage.values.length
-        ? null
-        : WorkspaceSetupPage.values[i];
-  }
-
   @override
   String locName(BuildContext context) {
     switch (this) {

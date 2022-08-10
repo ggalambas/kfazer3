@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:kfazer3/src/common_widgets/loading_button.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/setup_layout.dart';
+import 'package:kfazer3/src/constants/constants.dart';
+import 'package:kfazer3/src/features/workspace/presentation/workspace_details/workspace_edit_screen_controller.dart';
+import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/workspace_setup_controller.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 
-class WorkspaceDetailsPage extends StatefulWidget {
+class WorkspaceDetailsPage extends ConsumerStatefulWidget {
   final VoidCallback? onSuccess;
   const WorkspaceDetailsPage({super.key, required this.onSuccess});
 
   @override
-  State<WorkspaceDetailsPage> createState() => _WorkspaceDetailsPageState();
+  ConsumerState<WorkspaceDetailsPage> createState() =>
+      _WorkspaceDetailsPageState();
 }
 
-class _WorkspaceDetailsPageState extends State<WorkspaceDetailsPage> {
+class _WorkspaceDetailsPageState extends ConsumerState<WorkspaceDetailsPage> {
   final formKey = GlobalKey<FormState>();
   final titleNode = FocusNode();
   final titleController = TextEditingController();
@@ -40,15 +44,13 @@ class _WorkspaceDetailsPageState extends State<WorkspaceDetailsPage> {
     setState(() => submitted = true);
     if (!formKey.currentState!.validate()) return;
 
-    // final controller = ref.read(signInControllerProvider.notifier);
-    // final success = await controller.submit();
-    // if (success)
+    final controller = ref.read(workspaceSetupControllerProvider.notifier);
+    controller.saveTitle(title);
     widget.onSuccess?.call();
   }
 
   @override
   Widget build(BuildContext context) {
-    // final state = ref.watch(signInControllerProvider);
     return SetupLayout(
       formKey: formKey,
       title: 'Name your workspace'.hardcoded,
@@ -63,23 +65,25 @@ class _WorkspaceDetailsPageState extends State<WorkspaceDetailsPage> {
           controller: titleController,
           keyboardType: TextInputType.name,
           textInputAction: TextInputAction.done,
-          decoration: InputDecoration(labelText: context.loc.title),
+          maxLength: kTitleLength,
+          decoration: InputDecoration(
+            counterText: '',
+            labelText: context.loc.title,
+          ),
           onEditingComplete: submit,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (title) {
-            return null;
-            // if (!submitted) return null;
-            // return ref
-            //     .read(signInControllerProvider.notifier)
-            //     .phoneNumberErrorText(context, phoneNumber ?? '');
+            if (!submitted) return null;
+            return ref
+                .read(workspaceSetupControllerProvider.notifier)
+                .titleErrorText(context, title ?? '');
           },
         ),
       ],
       cta: [
-        LoadingElevatedButton(
-          // loading: state.isLoading,
+        ElevatedButton(
           onPressed: submit,
-          child: Text(context.loc.next), //!
+          child: Text(context.loc.next),
         ),
       ],
     );

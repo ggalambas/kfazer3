@@ -56,9 +56,7 @@ class _WorkspaceScreenState extends ConsumerState<WorkspaceScreen>
     super.initState();
     controller.addListener(() {
       final page = controller.page;
-      if (page != null && page == page.toInt()) {
-        goToMenu(page.toInt());
-      }
+      if (page != null && page == page.toInt()) goToMenu(page.toInt());
     });
   }
 

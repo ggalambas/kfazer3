@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
@@ -25,7 +24,7 @@ class NotFoundWidget extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             Space(4),
-            LoadingElevatedButton(
+            ElevatedButton(
               onPressed: () => context.goNamed(AppRoute.home.name),
               child: Text(context.loc.goHome),
             )

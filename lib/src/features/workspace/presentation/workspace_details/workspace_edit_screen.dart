@@ -159,12 +159,12 @@ class _WorkspaceEditScreenState extends ConsumerState<WorkspaceEditScreen> {
                             labelText: context.loc.title,
                           ),
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (name) {
+                          validator: (title) {
                             if (!submitted) return null;
                             return ref
                                 .read(workspaceEditScreenControllerProvider
                                     .notifier)
-                                .titleErrorText(context, name ?? '');
+                                .titleErrorText(context, title ?? '');
                           },
                         ),
                         Space(),

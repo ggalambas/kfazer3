@@ -27,12 +27,13 @@ class SignInController extends StateNotifier<AsyncValue>
     with SignInValidators, AccountValidators {
   final AuthRepository authRepository;
   final SmsCodeController Function(PhoneNumber phoneNumber) smsCodeController;
-  PhoneNumber? phoneNumber;
 
   SignInController({
     required this.authRepository,
     required this.smsCodeController,
   }) : super(const AsyncValue.data(null));
+
+  PhoneNumber? phoneNumber;
 
   Future<bool> submit(SignInPage page, dynamic value) async {
     state = const AsyncValue.loading();
