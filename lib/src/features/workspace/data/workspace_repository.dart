@@ -16,7 +16,7 @@ final workspaceRepositoryProvider = Provider<WorkspaceRepository>(
 abstract class WorkspaceRepository {
   Stream<List<Workspace>> watchWorkspaceList();
   Stream<Workspace?> watchWorkspace(WorkspaceId id);
-  Future<void> createWorkspace(
+  Future<String> createWorkspace(
     String title,
     List<String> motivationalMessages,
     WorkspacePlan plan,

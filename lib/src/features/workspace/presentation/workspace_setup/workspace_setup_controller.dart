@@ -6,15 +6,15 @@ import 'package:kfazer3/src/features/workspace/domain/preferences.dart';
 import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_edit_screen_controller.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_details/workspace_edit_screen_controller.dart';
 
-final workspaceSetupControllerProvider =
-    StateNotifierProvider.autoDispose<WorkspaceSetupController, AsyncValue>(
+final workspaceSetupControllerProvider = StateNotifierProvider.autoDispose<
+    WorkspaceSetupController, AsyncValue<String?>>(
   (ref) {
     final repository = ref.watch(workspaceRepositoryProvider);
     return WorkspaceSetupController(workspaceRepository: repository);
   },
 );
 
-class WorkspaceSetupController extends StateNotifier<AsyncValue>
+class WorkspaceSetupController extends StateNotifier<AsyncValue<String?>>
     with WorkspaceValidators, MotivationValidators, AccountValidators {
   final WorkspaceRepository workspaceRepository;
 
@@ -26,11 +26,12 @@ class WorkspaceSetupController extends StateNotifier<AsyncValue>
 
   String? _title;
   List<String>? _messages;
-  WorkspacePlan? _plan;
+  WorkspacePlan? _plan = WorkspacePlan.family; //TODO setup plan page
   List<PhoneNumber>? _phoneNumbers;
 
   WorkspacePlan? get plan => _plan;
 
+  //TODO trim input fields
   void saveTitle(String title) => _title = title;
   void saveMessages(List<String> messages) => _messages = messages;
   void savePlan(WorkspacePlan plan) => _plan = plan;
@@ -39,10 +40,10 @@ class WorkspaceSetupController extends StateNotifier<AsyncValue>
 
   Future<bool> createWorkspace() async {
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() {
-      return workspaceRepository.createWorkspace(
-          _title!, _messages!, _plan!, _phoneNumbers!);
-    });
+    state = await AsyncValue.guard(
+      () => workspaceRepository.createWorkspace(
+          _title!, _messages!, _plan!, _phoneNumbers!),
+    );
     return !state.hasError;
   }
 }

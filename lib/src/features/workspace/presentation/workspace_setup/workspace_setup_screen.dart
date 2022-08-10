@@ -5,11 +5,13 @@ import 'package:kfazer3/src/common_widgets/tap_to_unfocus.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/localized_enum.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
+import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
 
 import 'pages/invites_page.dart';
 import 'pages/motivation_page.dart';
 import 'pages/workspace_details_page.dart';
+import 'workspace_setup_controller.dart';
 
 /// The three sub-routes that are presented as part of the workspace setup flow.
 enum WorkspaceSetupPage with LocalizedEnum {
@@ -75,10 +77,10 @@ class _WorkspaceSetupScreenState extends ConsumerState<WorkspaceSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // ref.listen<AsyncValue>(
-    //   workspaceSetupControllerProvider,
-    //   (_, state) => state.showAlertDialogOnError(context),
-    // );
+    ref.listen<AsyncValue>(
+      workspaceSetupControllerProvider,
+      (_, state) => state.showAlertDialogOnError(context),
+    );
     // Return a Scaffold with a PageView containing the 3 pages.
     // This allows for a nice scroll animation when switching between pages.
     // Note: only the currently active page will be visible.

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
+import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/common_widgets/setup_layout.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/auth/data/country_repository.dart';
@@ -60,6 +61,7 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
     phoneNumberController.clear();
   }
 
+  //TODO deal with late phoneNumberNode
   void submit() async {
     phoneNumberNode
       ..nextFocus()
@@ -69,16 +71,17 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
     controller.saveMembers(members);
     final success = await controller.createWorkspace();
     if (success && mounted) {
+      final workspaceId = ref.read(workspaceSetupControllerProvider).value!;
       context.goNamed(
         AppRoute.workspace.name,
-        params: {'workspaceId': '0'},
+        params: {'workspaceId': workspaceId},
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // final state = ref.watch(signInControllerProvider);
+    final state = ref.watch(workspaceSetupControllerProvider);
     final countryListValue = ref.watch(countryListFutureProvider);
     return SetupLayout(
       formKey: formKey,
@@ -141,16 +144,17 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
       ],
       cta: [
         OutlinedButton.icon(
-          onPressed: importContacts,
+          onPressed: state.isLoading ? null : importContacts,
           icon: const Icon(Icons.upload),
           label: Text('Import file'.hardcoded),
         ),
         OutlinedButton.icon(
-          onPressed: shareInviteLink,
+          onPressed: state.isLoading ? null : shareInviteLink,
           icon: const Icon(Icons.link),
           label: Text('Share invite link'.hardcoded),
         ),
-        ElevatedButton(
+        LoadingElevatedButton(
+          loading: state.isLoading,
           onPressed: submit,
           child: Text('Create workspace'.hardcoded),
         ),

@@ -31,20 +31,27 @@ class FakeWorkspaceRepository implements WorkspaceRepository {
   }
 
   @override
-  Future<void> createWorkspace(
+  Future<String> createWorkspace(
     String title,
     List<String> motivationalMessages,
     WorkspacePlan plan,
     List<PhoneNumber> phoneNumbers,
   ) async {
-    await delay(addDelay);
     //TODO what to do with the invites (phoneNumbers)
-    _workspaces.value.add(Workspace(
-      id: '${_workspaces.value.length}',
+    await delay(addDelay);
+    // First, get the workspace list
+    final workspaces = _workspaces.value;
+    // Then, add the workspace
+    final workspace = Workspace(
+      id: '${workspaces.length}',
       title: title,
       motivationalMessages: motivationalMessages,
       plan: plan,
-    ));
+    );
+    workspaces.add(workspace);
+    // Finally, update the notification list data (will emit a new value)
+    _workspaces.value = workspaces;
+    return workspace.id;
   }
 
   @override
