@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/common_widgets/setup_layout.dart';
+import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/constants/test_workspaces.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
@@ -86,70 +87,84 @@ class _MotivationPageState extends State<MotivationPage> {
   Widget build(BuildContext context) {
     // final state = ref.watch(signInControllerProvider);
     init();
-    return SetupLayout(
-      formKey: formKey,
-      title: 'Motivate your employees'.hardcoded,
-      description: TextSpan(
-        text:
-            'We added some messages to get you started!\n\nMotivational messages are shown when completing a task, so you can keep everyone stimulated at all times. You can manage your messages later in the settings.'
-                .hardcoded,
-      ),
-      content: [
-        // SizedBox(
-        //   height: MediaQuery.of(context).size.height * 0.5,
-        //   child: ListView(
-        //     controller: scrollController,
-        //     children: [],
-        //   ),
-        // ),
-        ...messageControllers!
-            .mapIndexed(
-              (i, messageController) => TextFormField(
-                focusNode: messageNodes![i],
-                controller: messageController,
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-                maxLength: kMotivationalMessagesLength,
-                maxLines: null,
-                decoration: InputDecoration(
-                  counterText: '',
-                  filled: false,
-                  isDense: true,
-                  contentPadding: EdgeInsets.all(kSpace),
-                  suffixIcon: IconButton(
-                    tooltip: context.loc.delete,
-                    onPressed: () => delete(messageController),
-                    icon: const Icon(Icons.clear),
-                  ),
-                ),
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (message) {
-                  return null;
-                  // if (!submitted) return null;
-                  // return ref
-                  //     .read(motivationEditScreenControllerProvider
-                  //         .notifier)
-                  //     .messageErrorText(context, message ?? '');
-                },
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isSingleColumn = constraints.maxWidth < Breakpoint.tablet;
+        return SetupLayout(
+          formKey: formKey,
+          title: 'Motivate your employees'.hardcoded,
+          description: TextSpan(
+            text:
+                'Motivational messages are shown when completing a task, so you can keep everyone motivated at all times. You can manage your messages later in the settings.\n\n'
+                        'We\'ve added some messages to get you started!'
+                    .hardcoded,
+          ),
+          content: [
+            SizedBox(
+              height: isSingleColumn
+                  ? null
+                  : MediaQuery.of(context).size.height * 0.5,
+              child: ListView(
+                shrinkWrap: isSingleColumn,
+                controller: scrollController,
+                physics: isSingleColumn
+                    ? const NeverScrollableScrollPhysics()
+                    : null,
+                children: [
+                  ...messageControllers!
+                      .mapIndexed(
+                        (i, messageController) => TextFormField(
+                          focusNode: messageNodes![i],
+                          controller: messageController,
+                          keyboardType: TextInputType.text,
+                          textInputAction: TextInputAction.next,
+                          maxLength: kMotivationalMessagesLength,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            counterText: '',
+                            filled: false,
+                            isDense: true,
+                            contentPadding: EdgeInsets.all(kSpace),
+                            suffixIcon: IconButton(
+                              tooltip: context.loc.delete,
+                              onPressed: () => delete(messageController),
+                              icon: const Icon(Icons.clear),
+                            ),
+                          ),
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (message) {
+                            return null;
+                            // if (!submitted) return null;
+                            // return ref
+                            //     .read(motivationEditScreenControllerProvider
+                            //         .notifier)
+                            //     .messageErrorText(context, message ?? '');
+                          },
+                        ),
+                      )
+                      .expandIndexed((i, textField) => [
+                            textField,
+                            if (i < messageControllers!.length - 1)
+                              const Divider(),
+                          ]),
+                ],
               ),
-            )
-            .expandIndexed((i, textField) => [
-                  textField,
-                  if (i < messageControllers!.length - 1) const Divider(),
-                ]),
-      ],
-      cta: [
-        LoadingOutlinedButton(
-          // loading: smsCodeController.isLoading,
-          onPressed: add,
-          child: Text('Add new message'.hardcoded),
-        ),
-        LoadingElevatedButton(
-          // loading: state.isLoading,
-          onPressed: submit,
-          child: Text(context.loc.next), //!
-        ),
-      ],
+            ),
+          ],
+          cta: [
+            LoadingOutlinedButton(
+              // loading: smsCodeController.isLoading,
+              onPressed: add,
+              child: Text('Add new message'.hardcoded),
+            ),
+            LoadingElevatedButton(
+              // loading: state.isLoading,
+              onPressed: submit,
+              child: Text(context.loc.next), //!
+            ),
+          ],
+        );
+      },
     );
   }
 }
