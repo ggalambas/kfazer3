@@ -12,6 +12,7 @@ final contactsControllerProvider = StateNotifierProvider.autoDispose<
   },
 );
 
+//TODO this shouldn't exist, shift the code to the invites page controller?
 class ContactsController extends StateNotifier<AsyncValue<PhoneNumber?>> {
   final ContactsRepository contactsRepository;
   ContactsController({required this.contactsRepository})
