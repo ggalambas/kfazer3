@@ -72,6 +72,7 @@ class _WorkspaceMenuButtonState extends ConsumerState<WorkspaceMenuButton> {
               content: widget.workspace.description,
             );
             break;
+          //TODO only show for admins
           case WorkspaceMenuOption.preferences:
             context.pushNamed(
               AppRoute.workspacePreferences.name,

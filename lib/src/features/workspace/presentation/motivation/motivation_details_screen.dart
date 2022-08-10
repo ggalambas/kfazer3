@@ -42,6 +42,7 @@ class MotivationDetailsScreen extends ConsumerWidget {
 
     final workspaceValue = ref.watch(workspaceStreamProvider(workspaceId));
     final state = ref.watch(motivationDetailsScreenControllerProvider);
+    //TODO empty motivation screen
     return AsyncValueWidget<Workspace?>(
         value: workspaceValue,
         data: (workspace) {

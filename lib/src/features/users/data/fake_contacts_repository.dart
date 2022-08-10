@@ -1,0 +1,41 @@
+import 'package:collection/collection.dart';
+import 'package:fluttercontactpicker/fluttercontactpicker.dart'
+    hide PhoneNumber;
+import 'package:kfazer3/src/features/auth/domain/country.dart';
+import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
+import 'package:kfazer3/src/features/users/data/contacts_repository.dart';
+import 'package:kfazer3/src/localization/string_hardcoded.dart';
+
+class FakeContactsRepository implements ContactsRepository {
+  @override
+  Future<PhoneNumber> fetchPhoneNumberFromContacts(
+    List<Country> countryList,
+  ) async {
+    final phoneContact = await FlutterContactPicker.pickPhoneContact();
+    final phoneNumber = phoneContact.phoneNumber?.number;
+    if (phoneNumber == null) {
+      throw Exception('Failed to import contact'.hardcoded);
+    }
+    late final String? code;
+    if (phoneNumber.startsWith('00')) phoneNumber.replaceFirst('00', '+');
+    if (phoneNumber.startsWith('+')) {
+      code = countryList
+          .firstWhereOrNull((c) => phoneNumber.startsWith(c.code))
+          ?.code;
+    }
+    if (code == null) return PhoneNumber('', phoneNumber);
+    return PhoneNumber(code, phoneNumber.replaceFirst(code, ''));
+  }
+
+  @override
+  Future<PhoneNumber> fetchPhoneNumbersFromCSV() {
+    // https://pub.dev/packages/csv
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<PhoneNumber> fetchPhoneNumbersFromVCard() {
+    // https://pub.dev/packages/simple_vcard_parser
+    throw UnimplementedError();
+  }
+}
