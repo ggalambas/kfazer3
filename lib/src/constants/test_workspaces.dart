@@ -1,3 +1,4 @@
+import 'package:kfazer3/src/features/workspace/domain/preferences.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 
 /// Test workspaces to be used until a data source is implemented
@@ -10,6 +11,7 @@ final _kTestWorkspaces = List.generate(
     description:
         'A workspace made by him for the company x in the center of the world.',
     motivationalMessages: [...kMotivationalMessages],
+    plan: WorkspacePlan.family,
   ),
 );
 

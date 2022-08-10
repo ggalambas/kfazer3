@@ -3,10 +3,13 @@ import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/localized_enum.dart';
 
 enum WorkspacePlan with LocalizedEnum {
-  family,
-  standard,
-  professional,
-  corporative;
+  family(4),
+  standard(20),
+  professional(50),
+  corporative(null);
+
+  final int? maxUsers;
+  const WorkspacePlan(this.maxUsers);
 
   @override
   String locName(BuildContext context) {

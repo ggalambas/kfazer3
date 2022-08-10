@@ -9,7 +9,7 @@ class Workspace with EquatableMixin {
   /// Unique workspace id
   final WorkspaceId id;
   final String title;
-  final String description;
+  final String? description;
   final String? photoUrl;
   final List<String> motivationalMessages;
   final WorkspacePlan plan;
@@ -17,10 +17,10 @@ class Workspace with EquatableMixin {
   const Workspace({
     required this.id,
     required this.title,
-    required this.description,
+    this.description,
     this.photoUrl,
-    this.motivationalMessages = const [],
-    this.plan = WorkspacePlan.family,
+    required this.motivationalMessages,
+    required this.plan,
   });
 
   @override

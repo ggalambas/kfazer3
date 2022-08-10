@@ -1,6 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:kfazer3/src/constants/test_workspaces.dart';
+import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/workspace/data/workspace_repository.dart';
+import 'package:kfazer3/src/features/workspace/domain/preferences.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/utils/delay.dart';
 import 'package:kfazer3/src/utils/in_memory_store.dart';
@@ -26,6 +28,23 @@ class FakeWorkspaceRepository implements WorkspaceRepository {
         (workspace) => workspace.id == id,
       ),
     );
+  }
+
+  @override
+  Future<void> createWorkspace(
+    String title,
+    List<String> motivationalMessages,
+    WorkspacePlan plan,
+    List<PhoneNumber> phoneNumbers,
+  ) async {
+    await delay(addDelay);
+    //TODO what to do with the invites (phoneNumbers)
+    _workspaces.value.add(Workspace(
+      id: '${_workspaces.value.length}',
+      title: title,
+      motivationalMessages: motivationalMessages,
+      plan: plan,
+    ));
   }
 
   @override

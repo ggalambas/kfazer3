@@ -1,9 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
+import 'package:kfazer3/src/features/auth/presentation/account/account_edit_screen_controller.dart';
 import 'package:kfazer3/src/features/workspace/data/workspace_repository.dart';
+import 'package:kfazer3/src/features/workspace/domain/preferences.dart';
+import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_edit_screen_controller.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_details/workspace_edit_screen_controller.dart';
 
 final workspaceSetupControllerProvider =
-    StateNotifierProvider<WorkspaceSetupController, AsyncValue>(
+    StateNotifierProvider.autoDispose<WorkspaceSetupController, AsyncValue>(
   (ref) {
     final repository = ref.watch(workspaceRepositoryProvider);
     return WorkspaceSetupController(workspaceRepository: repository);
@@ -11,13 +15,33 @@ final workspaceSetupControllerProvider =
 );
 
 class WorkspaceSetupController extends StateNotifier<AsyncValue>
-    with WorkspaceValidators {
+    with WorkspaceValidators, MotivationValidators, AccountValidators {
   final WorkspaceRepository workspaceRepository;
 
   WorkspaceSetupController({required this.workspaceRepository})
       : super(const AsyncValue.data(null));
 
-  String? title;
+  //TODO save values when going back the pages
 
-  void saveTitle(String title) => this.title = title;
+  String? _title;
+  List<String>? _messages;
+  WorkspacePlan? _plan;
+  List<PhoneNumber>? _phoneNumbers;
+
+  WorkspacePlan? get plan => _plan;
+
+  void saveTitle(String title) => _title = title;
+  void saveMessages(List<String> messages) => _messages = messages;
+  void savePlan(WorkspacePlan plan) => _plan = plan;
+  void saveMembers(List<PhoneNumber> phoneNumbers) =>
+      _phoneNumbers = phoneNumbers;
+
+  Future<bool> createWorkspace() async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() {
+      return workspaceRepository.createWorkspace(
+          _title!, _messages!, _plan!, _phoneNumbers!);
+    });
+    return !state.hasError;
+  }
 }

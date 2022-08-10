@@ -15,6 +15,7 @@ import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/not
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
+import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
 class MotivationEditScreen extends ConsumerStatefulWidget {
@@ -58,6 +59,8 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
   void delete(TextEditingController controller) => setState(() {
         messageControllers!.remove(controller);
       });
+
+  void clear() => setState(() => messageControllers!.clear());
 
   void add() {
     setState(() {
@@ -109,44 +112,52 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
               child: Form(
                 key: formKey,
                 child: ListView(
-                  padding: EdgeInsets.only(bottom: kSpace * 8),
-                  children: messageControllers!
-                      .mapIndexed(
-                        (i, messageController) => TextFormField(
-                          focusNode: i == 0 ? firstMessageNode : null,
-                          controller: messageController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          maxLength: kMotivationalMessagesLength,
-                          maxLines: null,
-                          decoration: InputDecoration(
-                            counterText: '',
-                            filled: false,
-                            isDense: true,
-                            contentPadding: EdgeInsets.all(kSpace),
-                            suffixIcon: IconButton(
-                              tooltip: context.loc.delete,
-                              onPressed: () => delete(messageController),
-                              icon: const Icon(Icons.clear),
+                    padding: EdgeInsets.only(bottom: kSpace * 8),
+                    children: [
+                      ...messageControllers!
+                          .mapIndexed(
+                            (i, messageController) => TextFormField(
+                              focusNode: i == 0 ? firstMessageNode : null,
+                              controller: messageController,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.next,
+                              maxLength: kMotivationalMessagesLength,
+                              maxLines: null,
+                              decoration: InputDecoration(
+                                counterText: '',
+                                filled: false,
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(kSpace),
+                                suffixIcon: IconButton(
+                                  tooltip: context.loc.delete,
+                                  onPressed: () => delete(messageController),
+                                  icon: const Icon(Icons.clear),
+                                ),
+                              ),
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              validator: (message) {
+                                if (!submitted) return null;
+                                return ref
+                                    .read(motivationEditScreenControllerProvider
+                                        .notifier)
+                                    .messageErrorText(context, message ?? '');
+                              },
                             ),
+                          )
+                          .expandIndexed((i, textField) => [
+                                textField,
+                                const Divider(),
+                              ]),
+                      if (messageControllers!.length > 1)
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            primary: context.colorScheme.error,
                           ),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (message) {
-                            if (!submitted) return null;
-                            return ref
-                                .read(motivationEditScreenControllerProvider
-                                    .notifier)
-                                .messageErrorText(context, message ?? '');
-                          },
+                          onPressed: clear,
+                          child: const Text('Clear all'),
                         ),
-                      )
-                      .expandIndexed((i, textField) => [
-                            textField,
-                            if (i < messageControllers!.length - 1)
-                              const Divider(),
-                          ])
-                      .toList(),
-                ),
+                    ]),
               ),
             ),
             floatingActionButton: FloatingActionButton(

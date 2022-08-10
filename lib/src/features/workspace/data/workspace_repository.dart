@@ -1,4 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
+import 'package:kfazer3/src/features/workspace/domain/preferences.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 
 import 'fake_workspaces_repository.dart';
@@ -14,6 +16,12 @@ final workspaceRepositoryProvider = Provider<WorkspaceRepository>(
 abstract class WorkspaceRepository {
   Stream<List<Workspace>> watchWorkspaceList();
   Stream<Workspace?> watchWorkspace(WorkspaceId id);
+  Future<void> createWorkspace(
+    String title,
+    List<String> motivationalMessages,
+    WorkspacePlan plan,
+    List<PhoneNumber> phoneNumbers,
+  );
   Future<void> updateWorkspace(Workspace workspace);
   Future<void> deleteWorkspace(WorkspaceId id);
   Future<void> leaveWorkspace(WorkspaceId id);

@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
-import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/common_widgets/setup_layout.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/auth/data/country_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/country.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
+import 'package:kfazer3/src/features/auth/presentation/account/account_edit_screen_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code_dropdown_button.dart';
+import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/workspace_setup_controller.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
@@ -24,7 +25,7 @@ class InvitesPage extends ConsumerStatefulWidget {
 
 class _InvitesPageState extends ConsumerState<InvitesPage> {
   final formKey = GlobalKey<FormState>();
-  final phoneNumberNode = FocusNode();
+  late final phoneNumberNode = FocusNode()..addListener(() => setState(() {}));
   final phoneNumberController = TextEditingController();
   PhoneCodeController? phoneCodeController;
 
@@ -32,12 +33,6 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
 
   String get phoneNumber => phoneNumberController.text;
   String get phoneCode => phoneCodeController!.code;
-
-  // local variable used to apply AutovalidateMode.onUserInteraction and show
-  // error hints only when the form has been submitted
-  // For more details on how this is implemented, see:
-  // https://codewithandrea.com/articles/flutter-text-field-form-validation/
-  var submitted = false;
 
   @override
   void dispose() {
@@ -47,6 +42,9 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
     super.dispose();
   }
 
+  //TODO import contacts
+  void importContacts() {}
+
   void shareInviteLink() => Share.share(
         'https://k-fazer.com/invite?code=FGH54V',
         subject: 'Join us at KFazer!',
@@ -55,7 +53,10 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
   void remove(PhoneNumber member) => setState(() => members.remove(member));
 
   void add() {
-    setState(() => members.add(PhoneNumber(phoneCode, phoneNumber)));
+    if (!formKey.currentState!.validate()) return;
+
+    final phoneNumber = PhoneNumber(phoneCode, this.phoneNumber);
+    setState(() => members.add(phoneNumber));
     phoneNumberController.clear();
   }
 
@@ -64,16 +65,15 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
       ..nextFocus()
       ..unfocus();
 
-    setState(() => submitted = true);
-    if (!formKey.currentState!.validate()) return;
-
-    // final controller = ref.read(signInControllerProvider.notifier);
-    // final success = await controller.submit();
-    // if (success)
-    context.goNamed(
-      AppRoute.workspace.name,
-      params: {'workspaceId': '0'},
-    );
+    final controller = ref.read(workspaceSetupControllerProvider.notifier);
+    controller.saveMembers(members);
+    final success = await controller.createWorkspace();
+    if (success && mounted) {
+      context.goNamed(
+        AppRoute.workspace.name,
+        params: {'workspaceId': '0'},
+      );
+    }
   }
 
   @override
@@ -85,7 +85,8 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
       title: 'Add members'.hardcoded,
       description: TextSpan(
         text:
-            'You can invite your workspace members through their phone number or by sending them an invite link. You can also do this later.'
+            'You can invite your workspace members through their phone number or by sending them an invite link. You can also do this later.\n\n'
+                    'Have a CSV or vCard file? Import contacts instead.'
                 .hardcoded,
       ),
       content: [
@@ -105,23 +106,25 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
                 labelText: context.loc.phoneNumber,
                 prefix:
                     PhoneCodeDropdownPrefix(controller: phoneCodeController!),
-                suffixIcon: TextButton(
-                  onPressed: add,
-                  child: Text('Add'.hardcoded),
-                ),
+                suffixIcon: phoneNumberNode.hasFocus
+                    ? TextButton(
+                        onPressed: add,
+                        child: Text('Add'.hardcoded),
+                      )
+                    //TODO contact picker
+                    : IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.perm_contact_calendar),
+                      ),
               ),
-              onEditingComplete: submit,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (phoneNumber) {
-                return null;
-                // if (!submitted) return null;
-                // return ref
-                //     .read(signInControllerProvider.notifier)
-                //     .phoneNumberErrorText(context, phoneNumber ?? '');
-              },
+              onEditingComplete: add,
+              validator: (phoneNumber) => ref
+                  .read(workspaceSetupControllerProvider.notifier)
+                  .phoneNumberErrorText(context, phoneNumber ?? ''),
             );
           },
         ),
+        if (members.isNotEmpty) Space(),
         for (final member in members)
           ListTile(
             visualDensity: VisualDensity.compact,
@@ -137,12 +140,16 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
       ],
       cta: [
         OutlinedButton.icon(
+          onPressed: importContacts,
+          icon: const Icon(Icons.upload),
+          label: Text('Import file'.hardcoded),
+        ),
+        OutlinedButton.icon(
           onPressed: shareInviteLink,
           icon: const Icon(Icons.link),
           label: Text('Share invite link'.hardcoded),
         ),
-        LoadingElevatedButton(
-          // loading: state.isLoading,
+        ElevatedButton(
           onPressed: submit,
           child: Text('Create workspace'.hardcoded),
         ),

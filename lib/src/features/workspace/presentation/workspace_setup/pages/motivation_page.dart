@@ -1,23 +1,26 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:kfazer3/src/common_widgets/loading_button.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/setup_layout.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/constants/test_workspaces.dart';
+import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_edit_screen_controller.dart';
+import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/workspace_setup_controller.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
-class MotivationPage extends StatefulWidget {
+class MotivationPage extends ConsumerStatefulWidget {
   final VoidCallback? onSuccess;
   const MotivationPage({super.key, required this.onSuccess});
 
   @override
-  State<MotivationPage> createState() => _MotivationPageState();
+  ConsumerState<MotivationPage> createState() => _MotivationPageState();
 }
 
-class _MotivationPageState extends State<MotivationPage> {
+class _MotivationPageState extends ConsumerState<MotivationPage> {
   final formKey = GlobalKey<FormState>();
   List<FocusNode>? messageNodes;
   List<TextEditingController>? messageControllers;
@@ -27,18 +30,12 @@ class _MotivationPageState extends State<MotivationPage> {
   List<String> get messages =>
       messageControllers!.map((controller) => controller.text).toList();
 
-  // local variable used to apply AutovalidateMode.onUserInteraction and show
-  // error hints only when the form has been submitted
-  // For more details on how this is implemented, see:
-  // https://codewithandrea.com/articles/flutter-text-field-form-validation/
-  var submitted = false;
-
   void init() {
     if (messageControllers != null) return;
 
     messageControllers = [];
     messageNodes = [];
-    //!
+    //TODO get workpsace default messages
     for (final message in kMotivationalMessages) {
       messageControllers!.add(TextEditingController(text: message));
       messageNodes!.add(FocusNode());
@@ -58,6 +55,11 @@ class _MotivationPageState extends State<MotivationPage> {
         messageNodes!.removeAt(i);
       });
 
+  void clear() => setState(() {
+        messageControllers!.clear();
+        messageNodes!.clear();
+      });
+
   void add() async {
     setState(() {
       messageControllers!.add(TextEditingController());
@@ -69,23 +71,21 @@ class _MotivationPageState extends State<MotivationPage> {
   }
 
   void submit() async {
-    messageNodes!.last
-      ..requestFocus()
-      ..nextFocus()
-      ..unfocus();
-
-    setState(() => submitted = true);
+    if (messageNodes!.isNotEmpty) {
+      messageNodes!.last
+        ..requestFocus()
+        ..nextFocus()
+        ..unfocus();
+    }
     if (!formKey.currentState!.validate()) return;
 
-    // final controller = ref.read(signInControllerProvider.notifier);
-    // final success = await controller.submit();
-    // if (success)
+    final controller = ref.read(workspaceSetupControllerProvider.notifier);
+    controller.saveMessages(messages);
     widget.onSuccess?.call();
   }
 
   @override
   Widget build(BuildContext context) {
-    // final state = ref.watch(signInControllerProvider);
     init();
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -131,36 +131,35 @@ class _MotivationPageState extends State<MotivationPage> {
                               icon: const Icon(Icons.clear),
                             ),
                           ),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (message) {
-                            return null;
-                            // if (!submitted) return null;
-                            // return ref
-                            //     .read(motivationEditScreenControllerProvider
-                            //         .notifier)
-                            //     .messageErrorText(context, message ?? '');
-                          },
+                          validator: (message) => ref
+                              .read(workspaceSetupControllerProvider.notifier)
+                              .messageErrorText(context, message ?? ''),
                         ),
                       )
                       .expandIndexed((i, textField) => [
                             textField,
-                            if (i < messageControllers!.length - 1)
-                              const Divider(),
+                            const Divider(),
                           ]),
+                  if (messageControllers!.length > 1)
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        primary: context.colorScheme.error,
+                      ),
+                      onPressed: clear,
+                      child: const Text('Clear all'),
+                    ),
                 ],
               ),
             ),
           ],
           cta: [
-            LoadingOutlinedButton(
-              // loading: smsCodeController.isLoading,
+            OutlinedButton(
               onPressed: add,
               child: Text('Add new message'.hardcoded),
             ),
-            LoadingElevatedButton(
-              // loading: state.isLoading,
+            ElevatedButton(
               onPressed: submit,
-              child: Text(context.loc.next), //!
+              child: Text(context.loc.next),
             ),
           ],
         );
