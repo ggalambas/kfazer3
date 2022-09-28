@@ -22,6 +22,8 @@ import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/wor
 import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/workspace_setup_screen.dart';
 import 'package:kfazer3/src/routing/not_found_screen.dart';
 
+import 'refresh_stream.dart';
+
 enum AppRoute {
   signIn,
   signInPage,
@@ -49,7 +51,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     initialLocation: '/',
     debugLogDiagnostics: false,
-    redirect: (state) {
+    redirect: (context, state) {
       final isLoggedIn = authRepository.currentUser != null;
       if (isLoggedIn) {
         if (state.location.contains('/sign-in')) return '/';
@@ -58,18 +60,18 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       }
       return null;
     },
-    refreshListenable: GoRouterRefreshStream(authRepository.authStateChanges()),
+    refreshListenable: RefreshStream(authRepository.authStateChanges()),
     routes: [
       GoRoute(
         path: '/sign-in',
         name: AppRoute.signIn.name,
-        redirect: (state) =>
+        redirect: (context, state) =>
             '${state.location}/${SignInPage.values.first.name}',
       ),
       GoRoute(
         path: '/sign-in/:page',
         name: AppRoute.signInPage.name,
-        redirect: (state) {
+        redirect: (context, state) {
           final pageName = state.params['page']!;
           final phoneNumber =
               ref.read(signInControllerProvider.notifier).phoneNumber;
@@ -126,13 +128,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: 'setup',
             name: AppRoute.workspaceSetup.name,
-            redirect: (state) =>
+            redirect: (context, state) =>
                 '${state.location}/${WorkspaceSetupPage.values.first.name}',
           ),
           GoRoute(
             path: 'setup/:page',
             name: AppRoute.workspaceSetupPage.name,
-            redirect: (state) {
+            redirect: (context, state) {
               //! workspace setup auto reset
               // final pageName = state.params['page']!;
               // final workspaceId = ref
@@ -157,7 +159,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
               );
             },
           ),
-          GoRoute(path: 'w', redirect: (state) => '/'),
+          GoRoute(path: 'w', redirect: (context, state) => '/'),
           GoRoute(
             path: 'w/:workspaceId',
             name: AppRoute.workspace.name,
@@ -180,7 +182,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: 't',
-                redirect: (state) {
+                redirect: (context, state) {
                   final path = state.location;
                   return path.substring(0, path.length - 2);
                 },

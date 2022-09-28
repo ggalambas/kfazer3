@@ -19,14 +19,12 @@ class MyApp extends ConsumerWidget {
     final darkTheme = ref.watch(themeProvider(Brightness.dark));
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
+      restorationScopeId: 'app',
+      onGenerateTitle: (context) => context.loc.appTitle,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: locale,
-      routerDelegate: goRouter.routerDelegate,
-      routeInformationParser: goRouter.routeInformationParser,
-      routeInformationProvider: goRouter.routeInformationProvider,
-      restorationScopeId: 'app',
-      onGenerateTitle: (context) => context.loc.appTitle,
+      routerConfig: goRouter,
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: themeMode,
