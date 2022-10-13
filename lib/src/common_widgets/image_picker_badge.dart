@@ -81,7 +81,7 @@ class ImagePickerBadge extends StatelessWidget {
         LoadingElevatedButton(
           loading: loading,
           style: ElevatedButton.styleFrom(
-            primary: context.colorScheme.surface,
+            backgroundColor: context.colorScheme.surface,
             shape: const CircleBorder(),
             minimumSize: const Size.square(kMinInteractiveDimension),
             padding: EdgeInsets.zero,
@@ -115,7 +115,7 @@ class ImagePickerDialog extends StatelessWidget {
                 OutlinedButton(
                   style: ElevatedButton.styleFrom(
                     shape: const CircleBorder(),
-                    onPrimary: option == ImagePickerOption.delete
+                    foregroundColor: option == ImagePickerOption.delete
                         ? context.colorScheme.error
                         : null,
                     side: BorderSide(color: context.theme.dividerColor),

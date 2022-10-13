@@ -143,7 +143,7 @@ class _MotivationPageState extends ConsumerState<MotivationPage> {
                   if (messageControllers!.length > 1)
                     TextButton(
                       style: TextButton.styleFrom(
-                        primary: context.colorScheme.error,
+                        foregroundColor: context.colorScheme.error,
                       ),
                       onPressed: clear,
                       child: const Text('Clear all'),

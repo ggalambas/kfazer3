@@ -152,7 +152,7 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
                       if (messageControllers!.length > 1)
                         TextButton(
                           style: TextButton.styleFrom(
-                            primary: context.colorScheme.error,
+                            foregroundColor: context.colorScheme.error,
                           ),
                           onPressed: clear,
                           child: const Text('Clear all'),
