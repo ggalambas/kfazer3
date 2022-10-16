@@ -25,6 +25,7 @@ class NotificationsListScreen extends ConsumerWidget {
       .read(notificationsRepositoryProvider)
       .setNotification(notification.markAsRead());
 
+  // TODO it's marking just the loaded ones
   void markAllAsRead(WidgetRef ref, List<Notification> notificationList) {
     for (var notification in notificationList) {
       markAsRead(ref, notification);
