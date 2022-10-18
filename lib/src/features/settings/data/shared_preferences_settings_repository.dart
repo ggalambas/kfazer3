@@ -1,14 +1,15 @@
 import 'package:kfazer3/src/features/settings/data/settings_repository.dart';
 import 'package:kfazer3/src/localization/language.dart';
-import 'package:kfazer3/src/theme/loc_theme_mode.dart';
+import 'package:kfazer3/src/theme/app_theme_mode.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 class SharedPreferencesSettingsRepository implements SettingsRepository {
   late final StreamingSharedPreferences prefs;
 
-  @override
-  Future<void> init() async {
-    prefs = await StreamingSharedPreferences.instance;
+  SharedPreferencesSettingsRepository() {
+    StreamingSharedPreferences.instance.then(
+      (preferences) => prefs = preferences,
+    );
   }
 
   final openOnStartKey = 'openOnStart';
@@ -17,9 +18,9 @@ class SharedPreferencesSettingsRepository implements SettingsRepository {
   final lastWorkspaceKey = 'lastWorkspaceKey';
 
   @override
-  LocThemeMode getThemeMode() {
+  AppThemeMode getThemeMode() {
     final i = prefs.getInt(themeModeKey, defaultValue: 0).getValue();
-    return LocThemeMode.values[i];
+    return AppThemeMode.values[i];
   }
 
   @override
@@ -29,16 +30,16 @@ class SharedPreferencesSettingsRepository implements SettingsRepository {
   }
 
   @override
-  Stream<LocThemeMode> watchThemeMode() => prefs
+  Stream<AppThemeMode> watchThemeMode() => prefs
       .getInt(themeModeKey, defaultValue: 0)
-      .map((i) => LocThemeMode.values[i]);
+      .map((i) => AppThemeMode.values[i]);
 
   @override
   Stream<Language> watchLanguage() =>
       prefs.getInt(languageKey, defaultValue: 0).map((i) => Language.values[i]);
 
   @override
-  void setThemeMode(LocThemeMode themeMode) =>
+  void setThemeMode(AppThemeMode themeMode) =>
       prefs.setInt(themeModeKey, themeMode.index);
 
   @override
