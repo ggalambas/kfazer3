@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 
+const kDialogDefaultKey = Key('dialog-default-key');
+
 /// Generic function to show a Material dialog
 Future<bool?> showAlertDialog({
   required BuildContext context,
@@ -21,6 +23,7 @@ Future<bool?> showAlertDialog({
               onPressed: () => Navigator.of(context).pop(false),
             ),
           TextButton(
+            key: kDialogDefaultKey,
             child: Text(defaultActionText ?? context.loc.ok),
             onPressed: () => Navigator.of(context).pop(true),
           ),
