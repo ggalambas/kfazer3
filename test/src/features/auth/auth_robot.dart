@@ -40,11 +40,11 @@ class AuthRobot {
     await tester.pump();
   }
 
-  Future<void> tapDialogSignOutButton() async {
+  Future<void> tapDialogSignOutButton({bool skipLoading = true}) async {
     final signOutButton = find.byKey(kDialogDefaultKey);
     expect(signOutButton, findsOneWidget);
     await tester.tap(signOutButton);
-    await tester.pumpAndSettle();
+    skipLoading ? await tester.pumpAndSettle() : await tester.pump();
   }
 
   void expectSignOutDialogFound() {
@@ -65,5 +65,10 @@ class AuthRobot {
   void expectErrorAlertNotFound() {
     final error = find.text('Error');
     expect(error, findsNothing);
+  }
+
+  void expectCircularProgressIndicatorFound() {
+    final loading = find.byType(CircularProgressIndicator);
+    expect(loading, findsOneWidget);
   }
 }
