@@ -3,15 +3,44 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
+import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/account_details_screen.dart';
+import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 
 class AuthRobot {
   final WidgetTester tester;
   AuthRobot(this.tester);
 
-  Future<void> pumpAccountScreen({AuthRepository? authRepository}) async {
-    await tester.pumpWidget(
+  Future<void> pumpSignInScreen({
+    required AuthRepository authRepository,
+    required SignInPage page,
+    VoidCallback? onSignedIn,
+  }) {
+    return tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          authRepositoryProvider.overrideWithValue(authRepository),
+        ],
+        child: MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: SignInScreen(page: page),
+        ),
+      ),
+      const Duration(seconds: 10),
+    );
+  }
+
+  Future<void> tapSignInSubmitButton() async {
+    final button = find.byType(LoadingElevatedButton);
+    expect(button, findsOneWidget);
+    await tester.tap(button);
+    await tester.pump();
+  }
+
+  Future<void> pumpAccountScreen({AuthRepository? authRepository}) {
+    return tester.pumpWidget(
       ProviderScope(
         overrides: [
           if (authRepository != null)
