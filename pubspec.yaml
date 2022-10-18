@@ -56,6 +56,13 @@ flutter:
 
   # Enable generation of localized Strings from arb files.
   generate: true
+
+  fonts:
+    # Used for Golden Image tests
+    - family: Roboto
+      fonts:
+        - asset: assests/fonts/Roboto-Regular.ttf
+        
   # assets:
   # Add assets from the images directory to the application.
   # - assets/

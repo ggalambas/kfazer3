@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kfazer3/src/features/settings/data/settings_repository.dart';
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 import 'src/app.dart';
 import 'src/localization/string_hardcoded.dart';
@@ -17,7 +17,7 @@ void main() async {
     // Turn off the # in the URLs on the web
     GoRouter.setUrlPathStrategy(UrlPathStrategy.path);
     // Load app settings
-    await providerContainer.read(settingsRepositoryProvider).init();
+    await StreamingSharedPreferences.instance;
 
     //* Entry point of the app
     runApp(UncontrolledProviderScope(

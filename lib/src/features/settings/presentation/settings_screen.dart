@@ -11,7 +11,7 @@ import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/language.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/routing/website.dart';
-import 'package:kfazer3/src/theme/loc_theme_mode.dart';
+import 'package:kfazer3/src/theme/app_theme_mode.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -33,11 +33,11 @@ class SettingsScreen extends ConsumerWidget {
             ),
             const Divider(),
             Consumer(
-              builder: (context, ref, _) => SelectionSettingTile<LocThemeMode>(
+              builder: (context, ref, _) => SelectionSettingTile<AppThemeMode>(
                 selected: ref.watch(themeModeStateProvider),
                 onChanged: (value) =>
                     ref.read(settingsRepositoryProvider).setThemeMode(value),
-                options: LocThemeMode.values,
+                options: AppThemeMode.values,
                 icon: Icons.brightness_4,
                 title: context.loc.theme,
               ),

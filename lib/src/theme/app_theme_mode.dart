@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/localized_enum.dart';
 
-enum LocThemeMode with LocalizedEnum {
+enum AppThemeMode with LocalizedEnum {
   system(ThemeMode.system),
   light(ThemeMode.light),
   dark(ThemeMode.dark);
 
   final ThemeMode mode;
-  const LocThemeMode(this.mode);
+  const AppThemeMode(this.mode);
 
   @override
   String locName(BuildContext context) {
