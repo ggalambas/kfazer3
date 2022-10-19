@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
+import 'package:kfazer3/src/features/auth/data/country_repository.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/account_details_screen.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 
@@ -14,6 +15,7 @@ class AuthRobot {
 
   Future<void> pumpSignInScreen({
     required AuthRepository authRepository,
+    required CountryRepository countryRepository,
     required SignInPage page,
     VoidCallback? onSignedIn,
   }) {
@@ -21,6 +23,7 @@ class AuthRobot {
       ProviderScope(
         overrides: [
           authRepositoryProvider.overrideWithValue(authRepository),
+          countryRepositoryProvider.overrideWithValue(countryRepository),
         ],
         child: MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -28,7 +31,6 @@ class AuthRobot {
           home: SignInScreen(page: page),
         ),
       ),
-      const Duration(seconds: 10),
     );
   }
 

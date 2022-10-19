@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 class Country extends Equatable {
   final String code;
   final String name;
+  // inlcudes the + sign, for example: '+351'
   final String phoneCode;
   final String flagUrl;
 

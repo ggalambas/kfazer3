@@ -61,7 +61,7 @@ flutter:
     # Used for Golden Image tests
     - family: Roboto
       fonts:
-        - asset: assests/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto-Regular.ttf
         
   # assets:
   # Add assets from the images directory to the application.
