@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kfazer3/src/constants/test.dart';
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 
 import 'fake_users_repository.dart';
@@ -10,7 +11,7 @@ abstract class UsersRepository {
 
 final usersRepositoryProvider = Provider<UsersRepository>(
   (ref) {
-    final repository = FakeUsersRepository();
+    final repository = FakeUsersRepository(addDelay: addRepositoryDelay);
     ref.onDispose(() => repository.dispose());
     return repository;
   },

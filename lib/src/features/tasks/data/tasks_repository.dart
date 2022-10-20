@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kfazer3/src/constants/test.dart';
 import 'package:kfazer3/src/features/tasks/domain/task.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 
@@ -6,7 +7,7 @@ import 'fake_tasks_repository.dart';
 
 final tasksRepositoryProvider = Provider<FakeTasksRepository>(
   (ref) {
-    final repository = FakeTasksRepository();
+    final repository = FakeTasksRepository(addDelay: addRepositoryDelay);
     ref.onDispose(() => repository.dispose());
     return repository;
   },

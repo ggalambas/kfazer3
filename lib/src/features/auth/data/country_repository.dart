@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:kfazer3/src/features/auth/domain/country.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 
+//TODO separate http country repository from this file
+//TODO test country repository
 final countryRepositoryProvider = Provider<CountryRepository>(
   (ref) => HttpCountryRepository(),
 );

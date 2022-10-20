@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kfazer3/src/constants/test.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/workspace/domain/preferences.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
@@ -7,7 +8,7 @@ import 'fake_workspaces_repository.dart';
 
 final workspaceRepositoryProvider = Provider<WorkspaceRepository>(
   (ref) {
-    final repository = FakeWorkspaceRepository();
+    final repository = FakeWorkspaceRepository(addDelay: addRepositoryDelay);
     ref.onDispose(() => repository.dispose());
     return repository;
   },

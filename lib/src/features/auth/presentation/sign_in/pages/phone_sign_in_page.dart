@@ -20,6 +20,8 @@ class PhoneSignInPage extends ConsumerStatefulWidget {
   final VoidCallback? onSuccess;
   const PhoneSignInPage({super.key, this.onSuccess});
 
+  static const phoneKey = Key('phone');
+
   @override
   ConsumerState<PhoneSignInPage> createState() => _PhoneSignInPageState();
 }
@@ -72,14 +74,14 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
         text: context.loc.welcomeDescription,
         children: [
           TextSpan(
-            text: context.loc.termsOfService,
+            text: ' ${context.loc.termsOfService} ',
             style: TextStyle(color: context.colorScheme.primary),
             recognizer: TapGestureRecognizer()
               ..onTap = () => launchUrl(Website.terms),
           ),
-          TextSpan(text: ' ${context.loc.and} '),
+          TextSpan(text: context.loc.and),
           TextSpan(
-            text: context.loc.privacyPolicy,
+            text: ' ${context.loc.privacyPolicy}',
             style: TextStyle(color: context.colorScheme.primary),
             recognizer: TapGestureRecognizer()
               ..onTap = () => launchUrl(Website.privacy),
@@ -95,6 +97,7 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
               countryList,
             );
             return TextFormField(
+              key: PhoneSignInPage.phoneKey,
               focusNode: phoneNumberNode,
               controller: phoneNumberController,
               keyboardType: TextInputType.phone,

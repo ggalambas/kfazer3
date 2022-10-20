@@ -1,11 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kfazer3/src/constants/test.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
 
 import 'fake_notifications_repository.dart';
 
 final notificationsRepositoryProvider = Provider<NotificationsRepository>(
   (ref) {
-    final repository = FakeNotificationsRepository();
+    final repository =
+        FakeNotificationsRepository(addDelay: addRepositoryDelay);
     ref.onDispose(() => repository.dispose());
     return repository;
   },
