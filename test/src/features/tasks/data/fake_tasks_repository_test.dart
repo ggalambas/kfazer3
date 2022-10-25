@@ -18,7 +18,7 @@ void main() {
       );
     });
     test('watchTaskListFilteredBy emits filtered list', () {
-      const state = TaskState.active;
+      const state = TaskState.ongoing;
       expect(
         workspaceRepository.watchTaskListFilteredBy(state),
         emits(kTestTasks.where((task) => task.state == state)),

@@ -1,0 +1,1 @@
+enum TaskScreenTab { details, comments }

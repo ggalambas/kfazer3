@@ -17,7 +17,7 @@ class ArchivedTasksScreen extends StatelessWidget {
           ResponsiveSliverCenter(
             padding: EdgeInsets.all(kSpace),
             child: const TaskGrid(
-              taskState: TaskState.archived,
+              taskState: TaskState.completed,
             ),
           ),
         ],

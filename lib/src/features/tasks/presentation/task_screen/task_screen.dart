@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
-import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/features/tasks/data/tasks_repository.dart';
 import 'package:kfazer3/src/features/tasks/domain/task.dart';
+import 'package:kfazer3/src/features/tasks/domain/task_screen_tab.dart';
+import 'package:kfazer3/src/features/tasks/presentation/task_screen/header/sliver_task_header.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_screen/not_found_task.dart';
+import 'package:kfazer3/src/features/tasks/presentation/task_screen/sliver_task_details.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
-import 'package:smart_space/smart_space.dart';
 
-import 'task_details.dart';
+import 'header/sliver_task_bar.dart';
+import 'task_tab_bar.dart';
 
-/// Shows the task page for a given task ID.
+//TODO task screen web
+
+/// Shows the task page for a given task ID along with actions to:
+/// - delegate
+/// - split
+/// - reject
+/// - mark as completed
 class TaskScreen extends ConsumerWidget {
   final String taskId;
   const TaskScreen({super.key, required this.taskId});
@@ -23,18 +32,24 @@ class TaskScreen extends ConsumerWidget {
       data: (task) {
         if (task == null) return const NotFoundTask();
         return Scaffold(
-          appBar: AppBar(),
-          body: CustomScrollView(
-            slivers: [
-              ResponsiveSliverCenter(
-                padding: EdgeInsets.all(kSpace),
-                child: TaskDetails(task: task),
-              ),
-            ],
+          body: DefaultTabController(
+            length: TaskScreenTab.values.length,
+            child: CustomScrollView(
+              slivers: [
+                SliverTaskBar(task: task),
+                SliverTaskHeader(task: task),
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: TaskTabBar(),
+                ),
+                SliverTaskDetails(task: task),
+              ],
+            ),
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
           floatingActionButton: FloatingActionButton(
-            onPressed: () {}, //TODO Mark as completed
+            onPressed: () => showNotImplementedAlertDialog(
+                context: context), //TODO Mark as completed
             child: const Icon(Icons.check),
           ),
           bottomNavigationBar: BottomAppBar(
@@ -42,17 +57,20 @@ class TaskScreen extends ConsumerWidget {
               children: [
                 IconButton(
                   tooltip: 'Delegate'.hardcoded,
-                  onPressed: () {}, //TODO Delegate task
+                  onPressed: () => showNotImplementedAlertDialog(
+                      context: context), //TODO Delegate task
                   icon: const Icon(Icons.double_arrow),
                 ),
                 IconButton(
                   tooltip: 'Split'.hardcoded,
-                  onPressed: () {}, //TODO Split task
+                  onPressed: () => showNotImplementedAlertDialog(
+                      context: context), //TODO Split task
                   icon: const Icon(Icons.view_stream),
                 ),
                 IconButton(
                   tooltip: 'Deny'.hardcoded,
-                  onPressed: () {}, //TODO Deny task
+                  onPressed: () => showNotImplementedAlertDialog(
+                      context: context), //TODO Deny task
                   icon: const Icon(Icons.cancel),
                 ),
               ],

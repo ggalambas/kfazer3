@@ -37,7 +37,7 @@ class TaskListPage extends StatefulWidget {
 /// Use the [AutomaticKeepAliveClientMixin] to keep the state.
 class _TaskListPageState extends State<TaskListPage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  late var taskState = widget.taskState ?? TaskState.active;
+  late var taskState = widget.taskState ?? TaskState.ongoing;
   late final controller = TabController(
     initialIndex: taskState.index,
     length: TaskState.tabs.length,
