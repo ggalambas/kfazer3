@@ -3,6 +3,7 @@ import 'package:kfazer3/src/localization/language.dart';
 import 'package:kfazer3/src/theme/app_theme_mode.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
+// TODO test shared preferences with mock values
 class SharedPreferencesSettingsRepository implements SettingsRepository {
   late final StreamingSharedPreferences prefs;
 

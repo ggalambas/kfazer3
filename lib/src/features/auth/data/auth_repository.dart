@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kfazer3/src/constants/test.dart';
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/utils/stream_notifier.dart';
@@ -9,7 +10,7 @@ import 'fake_auth_repository.dart';
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   // const isFake = String.fromEnvironment('useFakeRepos') == 'true';
   // if (isFake) {
-  final repository = FakeAuthRepository();
+  final repository = FakeAuthRepository(addDelay: addRepositoryDelay);
   ref.onDispose(() => repository.dispose());
   return repository;
   // }

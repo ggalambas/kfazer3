@@ -1,11 +1,12 @@
 import 'dart:typed_data';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kfazer3/src/constants/test.dart';
 
 import 'fake_storage_repository.dart';
 
 final storageRepositoryProvider = Provider<StorageRepository>(
-  (ref) => FakeStorageRepository(),
+  (ref) => FakeStorageRepository(addDelay: addRepositoryDelay),
 );
 
 abstract class StorageRepository {
