@@ -6,6 +6,8 @@ import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 
+//TODO task activity screen web
+
 class TaskActivityScreen extends ConsumerWidget {
   final String taskId;
   const TaskActivityScreen({super.key, required this.taskId});

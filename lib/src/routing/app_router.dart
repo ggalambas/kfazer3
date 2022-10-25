@@ -183,35 +183,6 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             },
             routes: [
               GoRoute(
-                path: 't',
-                redirect: (context, state) {
-                  final path = state.location;
-                  return path.substring(0, path.length - 2);
-                },
-              ),
-              GoRoute(
-                path: 't/:taskId',
-                name: AppRoute.task.name,
-                builder: (_, state) {
-                  final taskId = state.params['taskId']!;
-                  return TaskScreen(taskId: taskId);
-                },
-                routes: [
-                  GoRoute(
-                    path: 'activity',
-                    name: AppRoute.taskActivity.name,
-                    pageBuilder: (_, state) {
-                      final taskId = state.params['taskId']!;
-                      return MaterialPage(
-                        key: state.pageKey,
-                        fullscreenDialog: true,
-                        child: TaskActivityScreen(taskId: taskId),
-                      );
-                    },
-                  ),
-                ],
-              ),
-              GoRoute(
                 path: 'preferences',
                 name: AppRoute.workspacePreferences.name,
                 pageBuilder: (_, state) {
@@ -257,6 +228,36 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                     key: state.pageKey,
                     fullscreenDialog: true,
                     child: const ArchivedTasksScreen(),
+                  );
+                },
+              ),
+            ],
+          ),
+          GoRoute(
+            path: 't',
+            redirect: (context, state) {
+              final path = state.location;
+              final tIndex = path.lastIndexOf('t');
+              return path.substring(0, tIndex);
+            },
+          ),
+          GoRoute(
+            path: 't/:taskId',
+            name: AppRoute.task.name,
+            builder: (_, state) {
+              final taskId = state.params['taskId']!;
+              return TaskScreen(taskId: taskId);
+            },
+            routes: [
+              GoRoute(
+                path: 'activity',
+                name: AppRoute.taskActivity.name,
+                pageBuilder: (_, state) {
+                  final taskId = state.params['taskId']!;
+                  return MaterialPage(
+                    key: state.pageKey,
+                    fullscreenDialog: true,
+                    child: TaskActivityScreen(taskId: taskId),
                   );
                 },
               ),

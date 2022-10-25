@@ -1,1 +1,0 @@
-enum TaskScreenTab { details, comments }

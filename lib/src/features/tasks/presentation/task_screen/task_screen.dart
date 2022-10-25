@@ -1,32 +1,96 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/features/tasks/data/tasks_repository.dart';
 import 'package:kfazer3/src/features/tasks/domain/task.dart';
-import 'package:kfazer3/src/features/tasks/domain/task_screen_tab.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_screen/header/sliver_task_header.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_screen/not_found_task.dart';
-import 'package:kfazer3/src/features/tasks/presentation/task_screen/sliver_task_details.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/features/tasks/presentation/task_screen/task_comments.dart';
+import 'package:kfazer3/src/features/tasks/presentation/task_screen/task_details.dart';
+import 'package:kfazer3/src/routing/app_router.dart';
 
 import 'header/sliver_task_bar.dart';
 import 'header/sliver_task_tab_bar.dart';
 
 //TODO task screen web
 
-/// Shows the task page for a given task ID along with actions to:
+/// Shows the task page for a given task ID, along with actions to:
 /// - delegate
 /// - split
 /// - reject
 /// - mark as completed
-class TaskScreen extends ConsumerWidget {
+///
+/// The screen is composed of the following tabs:
+/// 1. Details
+/// 2. Comments
+///
+/// The correct tab is displayed (and updated)
+/// based on the selected tab
+///! The logic for the entire screen is implemented in the
+///! [TaskScreenController],
+/// while UI updates are handled by a [PageController].
+class TaskScreen extends ConsumerStatefulWidget {
   final String taskId;
-  const TaskScreen({super.key, required this.taskId});
+  final TaskScreenTab? tab;
+  const TaskScreen({super.key, required this.taskId, this.tab});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final taskValue = ref.watch(taskProvider(taskId));
+  ConsumerState<TaskScreen> createState() => _TaskScreenState();
+}
+
+/// Use the [AutomaticKeepAliveClientMixin] to keep the state.
+class _TaskScreenState extends ConsumerState<TaskScreen>
+    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+  late var tab = widget.tab ?? TaskScreenTab.details;
+  late final tabController = TabController(
+    initialIndex: tab.index,
+    length: TaskScreenTab.values.length,
+    vsync: this,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    tabController.addListener(() => goToTab(tabController.index));
+  }
+
+  // override `wantKeepAlive` when using `AutomaticKeepAliveClientMixin`
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(TaskScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.tab != null) {
+      tab = widget.tab!;
+      tabController.animateTo(tab.index);
+    }
+  }
+
+  void goToTab(int i) {
+    if (i != tab.index) {
+      //TODO should we always call replace on cases like this one?
+      context.replaceNamed(
+        AppRoute.task.name,
+        params: {'taskId': widget.taskId},
+        queryParams: {'view': TaskScreenTab.values[i].name},
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // call `super.build` when using `AutomaticKeepAliveClientMixin`
+    super.build(context);
+
+    final taskValue = ref.watch(taskProvider(widget.taskId));
     return AsyncValueWidget<Task?>(
       value: taskValue,
       data: (task) {
@@ -34,43 +98,20 @@ class TaskScreen extends ConsumerWidget {
         return Scaffold(
           body: DefaultTabController(
             length: TaskScreenTab.values.length,
-            child: CustomScrollView(
-              slivers: [
+            child: NestedScrollView(
+              headerSliverBuilder: (context, _) => [
                 SliverTaskBar(task: task),
                 SliverTaskHeader(task: task),
-                const SliverTaskTabBar(),
-                SliverTaskDetails(task: task),
+                SliverTaskTabBar(controller: tabController, onTap: goToTab),
               ],
-            ),
-          ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-          floatingActionButton: FloatingActionButton(
-            onPressed: () => showNotImplementedAlertDialog(
-                context: context), //TODO Mark as completed
-            child: const Icon(Icons.check),
-          ),
-          bottomNavigationBar: BottomAppBar(
-            child: Row(
-              children: [
-                IconButton(
-                  tooltip: 'Delegate'.hardcoded,
-                  onPressed: () => showNotImplementedAlertDialog(
-                      context: context), //TODO Delegate task
-                  icon: const Icon(Icons.double_arrow),
-                ),
-                IconButton(
-                  tooltip: 'Split'.hardcoded,
-                  onPressed: () => showNotImplementedAlertDialog(
-                      context: context), //TODO Split task
-                  icon: const Icon(Icons.view_stream),
-                ),
-                IconButton(
-                  tooltip: 'Deny'.hardcoded,
-                  onPressed: () => showNotImplementedAlertDialog(
-                      context: context), //TODO Deny task
-                  icon: const Icon(Icons.cancel),
-                ),
-              ],
+              //TODO nested scroll view causes body to have full heigh
+              body: TabBarView(
+                controller: tabController,
+                children: [
+                  TaskDetails(task: task),
+                  TaskComments(task: task),
+                ],
+              ),
             ),
           ),
         );

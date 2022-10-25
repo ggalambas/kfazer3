@@ -11,9 +11,9 @@ import 'package:smart_space/smart_space.dart';
 
 /// This is the root widget of the tasks page,
 /// which is composed of the following tabs:
-/// 1. Active tab
-/// 2. Pending tab
-/// 3. Scheduled tab
+/// 1. Ongoing
+/// 2. Delegated
+/// 3. Scheduled
 ///
 /// The correct tab is displayed (and updated)
 /// based on the selected tab
@@ -23,12 +23,7 @@ import 'package:smart_space/smart_space.dart';
 class TaskListPage extends StatefulWidget {
   final String workspaceId;
   final TaskState? taskState;
-
-  const TaskListPage({
-    super.key,
-    required this.workspaceId,
-    this.taskState,
-  });
+  const TaskListPage({super.key, required this.workspaceId, this.taskState});
 
   @override
   State<TaskListPage> createState() => _TaskListPageState();
