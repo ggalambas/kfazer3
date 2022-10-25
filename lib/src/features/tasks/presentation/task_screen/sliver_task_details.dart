@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/tasks/domain/task.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
+import 'package:kfazer3/src/features/workspace/data/workspace_repository.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/routing/app_router.dart';
 
 /// Shows all the task details
 class SliverTaskDetails extends ConsumerWidget {
@@ -53,8 +56,10 @@ class SliverTaskDetails extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //TODO get users in the responsability chain
+    //TODO get participanting users
     final user = ref.watch(currentUserStateProvider);
+    final workspace =
+        ref.watch(workspaceStreamProvider(task.workspaceId)).valueOrNull;
     return SliverList(
       delegate: SliverChildListDelegate([
         ListTile(
@@ -64,9 +69,9 @@ class SliverTaskDetails extends ConsumerWidget {
           iconColor: dateStateColor,
           textColor: dateStateColor,
         ),
-        const ListTile(
-          leading: Icon(Icons.people),
-          title: Text('Chain of responsability'),
+        ListTile(
+          leading: const Icon(Icons.people),
+          title: Text('Participants'.hardcoded),
         ),
         for (var i = 0; i < 3; i++)
           ListTile(
@@ -81,13 +86,15 @@ class SliverTaskDetails extends ConsumerWidget {
           leading: const Icon(Icons.segment),
           title: Text('Subtasks'.hardcoded),
         ),
-        ListTile(
-          //TODO navigate to workspace?
-          onTap: () => showNotImplementedAlertDialog(context: context),
-          //TODO maybe use the workspace avatar?
-          leading: const Icon(Icons.workspaces),
-          title: Text('Workspace 1'.hardcoded),
-        ),
+        if (workspace != null)
+          ListTile(
+            onTap: () => context.goNamed(
+              AppRoute.workspace.name,
+              params: {'workspaceId': workspace.id},
+            ),
+            leading: Avatar.fromWorkspace(workspace, radius: 16),
+            title: Text(workspace.title),
+          ),
       ]),
     );
   }

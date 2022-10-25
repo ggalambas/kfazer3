@@ -21,6 +21,7 @@ class TaskGrid extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    //TODO filter tasks by workspace as well
     final taskListValue = ref.watch(filteredTaskListStreamProvider(taskState));
     return AsyncValueWidget<List<Task>>(
       value: taskListValue,

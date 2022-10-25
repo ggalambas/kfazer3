@@ -11,7 +11,7 @@ import 'package:kfazer3/src/features/tasks/presentation/task_screen/sliver_task_
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 
 import 'header/sliver_task_bar.dart';
-import 'task_tab_bar.dart';
+import 'header/sliver_task_tab_bar.dart';
 
 //TODO task screen web
 
@@ -38,10 +38,7 @@ class TaskScreen extends ConsumerWidget {
               slivers: [
                 SliverTaskBar(task: task),
                 SliverTaskHeader(task: task),
-                SliverPersistentHeader(
-                  pinned: true,
-                  delegate: TaskTabBar(),
-                ),
+                const SliverTaskTabBar(),
                 SliverTaskDetails(task: task),
               ],
             ),

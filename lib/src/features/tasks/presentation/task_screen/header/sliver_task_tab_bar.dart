@@ -3,7 +3,19 @@ import 'package:kfazer3/src/features/tasks/domain/task_screen_tab.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 
-class TaskTabBar extends SliverPersistentHeaderDelegate {
+class SliverTaskTabBar extends StatelessWidget {
+  const SliverTaskTabBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverPersistentHeader(
+      pinned: true,
+      delegate: SliverTaskTabBarDelegate(),
+    );
+  }
+}
+
+class SliverTaskTabBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   double get maxExtent => kTextTabBarHeight;
   @override

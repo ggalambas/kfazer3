@@ -10,6 +10,7 @@ import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.da
 import 'package:kfazer3/src/features/notifications/presentation/notification_list_screen.dart';
 import 'package:kfazer3/src/features/settings/presentation/settings_screen.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
+import 'package:kfazer3/src/features/tasks/presentation/activity/task_activity_screen.dart';
 import 'package:kfazer3/src/features/tasks/presentation/archive/archived_tasks_screen.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_screen/task_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_details_screen.dart';
@@ -40,6 +41,7 @@ enum AppRoute {
   workspaceArchive, //! fullscreenDialog
 
   task,
+  taskActivity, //! fullscreenDialog
 
   notifications, //! fullscreenDialog
   settings, //! fullscreenDialog
@@ -194,6 +196,20 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                   final taskId = state.params['taskId']!;
                   return TaskScreen(taskId: taskId);
                 },
+                routes: [
+                  GoRoute(
+                    path: 'activity',
+                    name: AppRoute.taskActivity.name,
+                    pageBuilder: (_, state) {
+                      final taskId = state.params['taskId']!;
+                      return MaterialPage(
+                        key: state.pageKey,
+                        fullscreenDialog: true,
+                        child: TaskActivityScreen(taskId: taskId),
+                      );
+                    },
+                  ),
+                ],
               ),
               GoRoute(
                 path: 'preferences',

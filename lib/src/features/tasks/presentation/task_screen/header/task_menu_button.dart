@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/features/tasks/domain/task.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/localized_enum.dart';
+import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 
 enum TaskMenuOption with LocalizedEnum {
@@ -48,8 +50,13 @@ class _TaskMenuButtonState extends ConsumerState<TaskMenuButton> {
       onSelected: (option) {
         switch (option) {
           case TaskMenuOption.activity:
-            //TODO show task activity
-            showNotImplementedAlertDialog(context: context);
+            context.goNamed(
+              AppRoute.taskActivity.name,
+              params: {
+                'workspaceId': widget.task.workspaceId,
+                'taskId': widget.task.id,
+              },
+            );
             break;
           case TaskMenuOption.delete:
             //TODO delete task
