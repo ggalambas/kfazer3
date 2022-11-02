@@ -31,9 +31,16 @@ import 'header/sliver_task_tab_bar.dart';
 ///! [TaskScreenController],
 /// while UI updates are handled by a [PageController].
 class TaskScreen extends ConsumerStatefulWidget {
+  final String workspaceId;
   final String taskId;
   final TaskScreenTab? tab;
-  const TaskScreen({super.key, required this.taskId, this.tab});
+
+  const TaskScreen({
+    super.key,
+    required this.workspaceId,
+    required this.taskId,
+    this.tab,
+  });
 
   @override
   ConsumerState<TaskScreen> createState() => _TaskScreenState();
@@ -79,8 +86,13 @@ class _TaskScreenState extends ConsumerState<TaskScreen>
       //TODO should we always call replace on cases like this one?
       context.replaceNamed(
         AppRoute.task.name,
-        params: {'taskId': widget.taskId},
-        queryParams: {'view': TaskScreenTab.values[i].name},
+        params: {
+          'workspaceId': widget.workspaceId,
+          'taskId': widget.taskId,
+        },
+        queryParams: {
+          'view': TaskScreenTab.values[i].name,
+        },
       );
     }
   }
