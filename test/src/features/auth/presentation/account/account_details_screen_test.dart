@@ -39,15 +39,14 @@ void main() {
     await r.tapDialogSignOutButton();
     r.expectErrorAlertFound();
   });
-  //TODO test confirm logout, loading
-  // testWidgets('confirm logout, loading', (tester) async {
-  //   final r = AuthRobot(tester);
-  //   await tester.runAsync(() async {
-  //     await r.pumpAccountScreen();
-  //     await r.tapSignOutButton();
-  //     r.expectSignOutDialogFound();
-  //     await r.tapDialogSignOutButton(skipLoading: false);
-  //   });
-  //   r.expectCircularProgressIndicatorFound();
-  // });
+  testWidgets('confirm logout, loading', (tester) async {
+    final r = AuthRobot(tester);
+    await tester.runAsync(() async {
+      await r.pumpAccountScreen();
+      await r.tapSignOutButton();
+      r.expectSignOutDialogFound();
+      await r.tapDialogSignOutButton(skipLoading: false);
+    });
+    r.expectCircularProgressIndicatorFound();
+  });
 }
