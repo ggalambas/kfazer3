@@ -10,7 +10,8 @@ import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.da
 import 'package:kfazer3/src/features/notifications/presentation/notification_list_screen.dart';
 import 'package:kfazer3/src/features/settings/presentation/settings_screen.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
-import 'package:kfazer3/src/features/tasks/presentation/archive/archived_tasks_screen.dart';
+import 'package:kfazer3/src/features/tasks/presentation/task_list/archived_tasks_screen.dart';
+import 'package:kfazer3/src/features/tasks/presentation/task_screen/task_activity_screen.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_screen/task_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_details_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_edit_screen.dart';
@@ -40,6 +41,7 @@ enum AppRoute {
   workspaceArchive, //! fullscreenDialog
 
   task,
+  taskActivity, //! fullscreenDialog
 
   notifications, //! fullscreenDialog
   settings, //! fullscreenDialog
@@ -181,21 +183,6 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             },
             routes: [
               GoRoute(
-                path: 't',
-                redirect: (context, state) {
-                  final path = state.location;
-                  return path.substring(0, path.length - 2);
-                },
-              ),
-              GoRoute(
-                path: 't/:taskId',
-                name: AppRoute.task.name,
-                builder: (_, state) {
-                  final taskId = state.params['taskId']!;
-                  return TaskScreen(taskId: taskId);
-                },
-              ),
-              GoRoute(
                 path: 'preferences',
                 name: AppRoute.workspacePreferences.name,
                 pageBuilder: (_, state) {
@@ -241,6 +228,36 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                     key: state.pageKey,
                     fullscreenDialog: true,
                     child: const ArchivedTasksScreen(),
+                  );
+                },
+              ),
+            ],
+          ),
+          GoRoute(
+            path: 't',
+            redirect: (context, state) {
+              final path = state.location;
+              final tIndex = path.lastIndexOf('t');
+              return path.substring(0, tIndex);
+            },
+          ),
+          GoRoute(
+            path: 't/:taskId',
+            name: AppRoute.task.name,
+            builder: (_, state) {
+              final taskId = state.params['taskId']!;
+              return TaskScreen(taskId: taskId);
+            },
+            routes: [
+              GoRoute(
+                path: 'activity',
+                name: AppRoute.taskActivity.name,
+                pageBuilder: (_, state) {
+                  final taskId = state.params['taskId']!;
+                  return MaterialPage(
+                    key: state.pageKey,
+                    fullscreenDialog: true,
+                    child: TaskActivityScreen(taskId: taskId),
                   );
                 },
               ),

@@ -11,24 +11,24 @@ class Task with TaskStateMixin {
   final WorkspaceId workspaceId;
   final String description;
 
-  // final DateTime startDate;
-  // final DateTime dueDate;
-  // final DateTime conclusionDate;
+  final DateTime startDate;
+  final DateTime? dueDate;
+  final DateTime? conclusionDate;
   // final String assigneeId;
   // final bool isPriority;
 
   @override
   final TaskState state;
 
-  const Task({
+  Task({
     required this.id,
     required this.workspaceId,
     required this.description,
-    // required this.startDate,
-    // required this.dueDate,
-    // required this.conclusionDate,
+    startDate,
+    this.dueDate,
+    this.conclusionDate,
     // required this.assigneeId,
     // required this.isPriority,
     required this.state,
-  });
+  }) : startDate = startDate ?? DateTime.now();
 }

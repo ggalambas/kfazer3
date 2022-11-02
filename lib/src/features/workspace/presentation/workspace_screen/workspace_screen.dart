@@ -132,11 +132,11 @@ class _WorkspaceScreenState extends ConsumerState<WorkspaceScreen>
             //? height: kBottomNavigationBarHeight,
             destinations: [
               NavigationDestination(
-                icon: const Icon(Icons.check),
+                icon: const Icon(Icons.upcoming),
                 label: context.loc.tasks,
               ),
               NavigationDestination(
-                icon: const Icon(Icons.people_alt),
+                icon: const Icon(Icons.people),
                 label: context.loc.team,
               ),
               NavigationDestination(
