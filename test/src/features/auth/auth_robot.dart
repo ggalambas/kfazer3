@@ -7,6 +7,7 @@ import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/data/country_repository.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/account_details_screen.dart';
+import 'package:kfazer3/src/features/auth/presentation/sign_in/pages/phone_sign_in_page.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 
 class AuthRobot {
@@ -38,6 +39,30 @@ class AuthRobot {
     final button = find.byType(LoadingElevatedButton);
     expect(button, findsOneWidget);
     await tester.tap(button);
+    await tester.pumpAndSettle();
+  }
+
+  // Future<void> enterPhoneCode(String code) async {
+  //   // open country picker dialog
+  //   final button = find.byType(PhoneCodeDropdownButton);
+  //   expect(button, findsOneWidget);
+  //   await tester.tap(button);
+  //   await tester.pump();
+  //   // search the code
+  //   final countrySearchField = find.byType(CountrySearchField);
+  //   expect(countrySearchField, findsOneWidget);
+  //   await tester.enterText(countrySearchField, code);
+  //   // tap on the correspondent country
+  //   final country = find.text('Portugal');
+  //   expect(country, findsOneWidget);
+  //   await tester.tap(country);
+  //   await tester.pump();
+  // }
+
+  Future<void> enterPhoneNumber(String number) async {
+    final phoneField = find.byKey(PhoneSignInPage.phoneKey);
+    expect(phoneField, findsOneWidget);
+    await tester.enterText(phoneField, number);
     await tester.pump();
   }
 
