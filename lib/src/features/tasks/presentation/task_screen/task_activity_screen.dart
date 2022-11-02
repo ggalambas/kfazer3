@@ -22,6 +22,7 @@ class TaskActivityScreen extends ConsumerWidget {
         children: [
           for (var i = 0; i < 3; i++)
             ListTile(
+              dense: true,
               leading: Avatar.fromUser(user),
               title: Text(
                 user.name,

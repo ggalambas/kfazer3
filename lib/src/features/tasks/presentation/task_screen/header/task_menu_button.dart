@@ -52,10 +52,7 @@ class _TaskMenuButtonState extends ConsumerState<TaskMenuButton> {
           case TaskMenuOption.activity:
             context.goNamed(
               AppRoute.taskActivity.name,
-              params: {
-                'workspaceId': widget.task.workspaceId,
-                'taskId': widget.task.id,
-              },
+              params: {'taskId': widget.task.id},
             );
             break;
           case TaskMenuOption.delete:

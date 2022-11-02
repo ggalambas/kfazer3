@@ -10,8 +10,8 @@ import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.da
 import 'package:kfazer3/src/features/notifications/presentation/notification_list_screen.dart';
 import 'package:kfazer3/src/features/settings/presentation/settings_screen.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
-import 'package:kfazer3/src/features/tasks/presentation/activity/task_activity_screen.dart';
-import 'package:kfazer3/src/features/tasks/presentation/archive/archived_tasks_screen.dart';
+import 'package:kfazer3/src/features/tasks/presentation/task_list/archived_tasks_screen.dart';
+import 'package:kfazer3/src/features/tasks/presentation/task_screen/task_activity_screen.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_screen/task_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_details_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_edit_screen.dart';

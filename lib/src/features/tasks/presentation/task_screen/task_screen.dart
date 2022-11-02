@@ -96,22 +96,19 @@ class _TaskScreenState extends ConsumerState<TaskScreen>
       data: (task) {
         if (task == null) return const NotFoundTask();
         return Scaffold(
-          body: DefaultTabController(
-            length: TaskScreenTab.values.length,
-            child: NestedScrollView(
-              headerSliverBuilder: (context, _) => [
-                SliverTaskBar(task: task),
-                SliverTaskHeader(task: task),
-                SliverTaskTabBar(controller: tabController, onTap: goToTab),
+          body: NestedScrollView(
+            headerSliverBuilder: (context, _) => [
+              SliverTaskBar(task: task),
+              SliverTaskHeader(task: task),
+              SliverTaskTabBar(controller: tabController, onTap: goToTab),
+            ],
+            //TODO nested scroll view causes body to have full height
+            body: TabBarView(
+              controller: tabController,
+              children: [
+                TaskDetails(task: task),
+                TaskComments(task: task),
               ],
-              //TODO nested scroll view causes body to have full heigh
-              body: TabBarView(
-                controller: tabController,
-                children: [
-                  TaskDetails(task: task),
-                  TaskComments(task: task),
-                ],
-              ),
             ),
           ),
         );
