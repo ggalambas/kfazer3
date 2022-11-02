@@ -41,7 +41,10 @@ class TaskGrid extends ConsumerWidget {
                   onPressed: () {
                     context.pushNamed(
                       AppRoute.task.name,
-                      params: {'taskId': task.id},
+                      params: {
+                        'workspaceId': task.workspaceId,
+                        'taskId': task.id,
+                      },
                     );
                   },
                 );
