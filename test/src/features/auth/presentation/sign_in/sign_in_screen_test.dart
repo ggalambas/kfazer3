@@ -8,11 +8,17 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks.dart';
 import '../../auth_robot.dart';
 
+//TODO finish this page tests
+//
+// example
+// client side validation for phone number
+// sign in failure
+
 void main() {
   final testUser = kTestUsers.first;
   const testCountry =
       Country(code: 'PT', name: 'Portugal', phoneCode: '+351', flagUrl: '');
-  final testPhoneNumber = PhoneNumber(testCountry.code, '912345678');
+  final testPhoneNumber = PhoneNumber(testCountry.phoneCode, '912345678');
   late MockAuthRepository authRepository;
   late MockCountryRepository countryRepository;
 
@@ -23,7 +29,6 @@ void main() {
   });
 
   group('sign in', () {
-    //TODO this is giving constraints error (7. Automated Testing > 9)
     testWidgets('''
     Given page is phone
     When tap on submit button
@@ -42,6 +47,35 @@ void main() {
       await tester.pumpAndSettle();
       await r.tapSignInSubmitButton();
       verifyNever(() => authRepository.sendSmsCode(any()));
+    });
+    testWidgets('''
+    Given page is phone
+    When enter valid phone number
+    And tap on submit button
+    Then sendSmsCode is called
+    And onSuccess callback is called
+    And error alert is not shown
+    ''', (tester) async {
+      var didSignIn = false;
+      final r = AuthRobot(tester);
+      when(() => authRepository.sendSmsCode(testPhoneNumber))
+          .thenAnswer((_) => Future.value());
+
+      when(countryRepository.fetchCountryList)
+          .thenAnswer((_) async => [testCountry]);
+
+      await r.pumpSignInScreen(
+        authRepository: authRepository,
+        countryRepository: countryRepository,
+        onSignedIn: () => didSignIn = true,
+        page: SignInPage.phone,
+      );
+      await tester.pumpAndSettle();
+      await r.enterPhoneNumber(testPhoneNumber.number);
+      await r.tapSignInSubmitButton();
+      verify(() => authRepository.sendSmsCode(testPhoneNumber)).called(1);
+      r.expectErrorAlertNotFound();
+      expect(didSignIn, true);
     });
   });
 }

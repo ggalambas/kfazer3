@@ -5,6 +5,8 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks.dart';
 import '../../auth_robot.dart';
 
+//TODO test other account screen actions
+
 void main() {
   testWidgets('cancel logout', (tester) async {
     final r = AuthRobot(tester);
