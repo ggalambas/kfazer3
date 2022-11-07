@@ -26,7 +26,8 @@ class PhoneSignInPage extends ConsumerStatefulWidget {
   ConsumerState<PhoneSignInPage> createState() => _PhoneSignInPageState();
 }
 
-class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
+class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage>
+    with AutomaticKeepAliveClientMixin {
   final formKey = GlobalKey<FormState>();
   final phoneNumberNode = FocusNode();
   final phoneNumberController = TextEditingController();
@@ -40,6 +41,10 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
   // For more details on how this is implemented, see:
   // https://codewithandrea.com/articles/flutter-text-field-form-validation/
   var submitted = false;
+
+  // override `wantKeepAlive` when using `AutomaticKeepAliveClientMixin`
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void dispose() {
@@ -65,6 +70,9 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    // call `super.build` when using `AutomaticKeepAliveClientMixin`
+    super.build(context);
+
     final state = ref.watch(signInControllerProvider);
     final countryListValue = ref.watch(countryListFutureProvider);
     return SetupLayout(
