@@ -9,6 +9,6 @@ void main() {
     final r = Robot(tester);
     await r.pumpMyApp();
     r.expectWelcomeFound();
-    // r.auth.signInWithPhoneNumber();
+    r.auth.signInWithPhoneNumber();
   });
 }

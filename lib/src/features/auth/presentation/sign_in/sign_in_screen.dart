@@ -27,6 +27,7 @@ class SignInScreen extends ConsumerStatefulWidget {
   ConsumerState<SignInScreen> createState() => _SignInScreenState();
 }
 
+/// Use the [AutomaticKeepAliveClientMixin] to keep the state.
 class _SignInScreenState extends ConsumerState<SignInScreen> {
   late final controller = PageController(initialPage: widget.page.index);
 
