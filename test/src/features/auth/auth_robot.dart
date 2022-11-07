@@ -8,7 +8,6 @@ import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/data/country_repository.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/account_details_screen.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/pages/phone_sign_in_page.dart';
-import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 
 class AuthRobot {
   final WidgetTester tester;
@@ -17,10 +16,9 @@ class AuthRobot {
   Future<void> pumpSignInScreen({
     required AuthRepository authRepository,
     required CountryRepository countryRepository,
-    required SignInPage page,
     VoidCallback? onSignedIn,
-  }) {
-    return tester.pumpWidget(
+  }) async {
+    await tester.pumpWidget(
       ProviderScope(
         overrides: [
           authRepositoryProvider.overrideWithValue(authRepository),
@@ -29,17 +27,20 @@ class AuthRobot {
         child: MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          home: SignInScreen(page: page),
+          home: Scaffold(
+            body: PhoneSignInPage(onSuccess: onSignedIn),
+          ),
         ),
       ),
     );
+    await tester.pumpAndSettle();
   }
 
   Future<void> tapSignInSubmitButton() async {
     final button = find.byType(LoadingElevatedButton);
     expect(button, findsOneWidget);
     await tester.tap(button);
-    await tester.pumpAndSettle();
+    await tester.pump();
   }
 
   // Future<void> enterPhoneCode(String code) async {
@@ -60,10 +61,25 @@ class AuthRobot {
   // }
 
   Future<void> enterPhoneNumber(String number) async {
-    final phoneField = find.byKey(PhoneSignInPage.phoneKey);
+    final phoneField = find.byType(TextFormField);
     expect(phoneField, findsOneWidget);
     await tester.enterText(phoneField, number);
     await tester.pump();
+  }
+
+  Future<void> signInWithPhoneNumber() async {
+    await enterPhoneNumber('912345678');
+    await tapSignInSubmitButton();
+  }
+
+  void expectRequiredTextFound() {
+    final requiredText = find.textContaining('required');
+    expect(requiredText, findsOneWidget);
+  }
+
+  void expectNumbersTextFound() {
+    final numbersText = find.textContaining('numbers');
+    expect(numbersText, findsOneWidget);
   }
 
   Future<void> pumpAccountScreen({AuthRepository? authRepository}) {
@@ -96,11 +112,11 @@ class AuthRobot {
     await tester.pump();
   }
 
-  Future<void> tapDialogSignOutButton({bool skipLoading = true}) async {
+  Future<void> tapDialogSignOutButton() async {
     final signOutButton = find.byKey(kDialogDefaultKey);
     expect(signOutButton, findsOneWidget);
     await tester.tap(signOutButton);
-    skipLoading ? await tester.pumpAndSettle() : await tester.pump();
+    await tester.pump();
   }
 
   void expectSignOutDialogFound() {
@@ -121,10 +137,5 @@ class AuthRobot {
   void expectErrorAlertNotFound() {
     final error = find.text('Error');
     expect(error, findsNothing);
-  }
-
-  void expectCircularProgressIndicatorFound() {
-    final loading = find.byType(CircularProgressIndicator);
-    expect(loading, findsOneWidget);
   }
 }

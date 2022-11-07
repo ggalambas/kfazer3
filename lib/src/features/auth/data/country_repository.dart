@@ -12,11 +12,11 @@ final countryRepositoryProvider = Provider<CountryRepository>(
   (ref) => HttpCountryRepository(),
 );
 
-final countryListFutureProvider = FutureProvider.autoDispose<List<Country>>(
+// TODO auto dispose delay
+final countryListFutureProvider = FutureProvider<List<Country>>(
   (ref) async {
     final countryRepository = ref.watch(countryRepositoryProvider);
     final countryList = await countryRepository.fetchCountryList();
-    ref.keepAlive();
     return countryList;
   },
 );

@@ -7,20 +7,19 @@ import 'package:kfazer3/src/common_widgets/setup_layout.dart';
 import 'package:kfazer3/src/features/auth/data/country_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/country.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
-import 'package:kfazer3/src/features/auth/presentation/account/account_edit_screen_controller.dart';
+import 'package:kfazer3/src/features/auth/presentation/auth_validators.dart';
 import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code_dropdown_button.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/website.dart';
+import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PhoneSignInPage extends ConsumerStatefulWidget {
   final VoidCallback? onSuccess;
   const PhoneSignInPage({super.key, this.onSuccess});
-
-  static const phoneKey = Key('phone');
 
   @override
   ConsumerState<PhoneSignInPage> createState() => _PhoneSignInPageState();
@@ -65,6 +64,10 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<AsyncValue>(
+      signInControllerProvider,
+      (_, state) => state.showAlertDialogOnError(context),
+    );
     final state = ref.watch(signInControllerProvider);
     final countryListValue = ref.watch(countryListFutureProvider);
     return SetupLayout(
@@ -97,7 +100,6 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage> {
               countryList,
             );
             return TextFormField(
-              key: PhoneSignInPage.phoneKey,
               focusNode: phoneNumberNode,
               controller: phoneNumberController,
               keyboardType: TextInputType.phone,

@@ -4,10 +4,12 @@ import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/common_widgets/setup_layout.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
+import 'package:kfazer3/src/features/auth/presentation/auth_validators.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sms_code_controller.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
+import 'package:kfazer3/src/utils/async_value_ui.dart';
 
 class PhoneVerificationPage extends ConsumerStatefulWidget {
   final VoidCallback? onSuccess;
@@ -56,6 +58,10 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<AsyncValue>(
+      signInControllerProvider,
+      (_, state) => state.showAlertDialogOnError(context),
+    );
     final state = ref.watch(signInControllerProvider);
     final phoneNumber =
         ref.watch(signInControllerProvider.notifier).phoneNumber!;

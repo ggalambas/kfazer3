@@ -8,12 +8,13 @@ import 'package:kfazer3/src/utils/in_memory_store.dart';
 import 'auth_repository.dart';
 
 class FakeAuthRepository implements AuthRepository {
-  // final _authState = InMemoryStore<AppUser?>(null);
-  final _authState = InMemoryStore<AppUser?>(kTestUsers.first);
-  void dispose() => _authState.close();
-
+  late final InMemoryStore<AppUser?> _authState;
   final bool addDelay;
-  FakeAuthRepository({this.addDelay = true});
+
+  FakeAuthRepository({this.addDelay = true, bool startSignedIn = true})
+      : _authState = InMemoryStore(startSignedIn ? kTestUsers.first : null);
+
+  void dispose() => _authState.close();
 
   @override
   Stream<AppUser?> authStateChanges() => _authState.stream;

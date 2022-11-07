@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
-import 'package:kfazer3/src/features/auth/presentation/account/account_edit_screen_controller.dart';
+import 'package:kfazer3/src/features/auth/presentation/auth_validators.dart';
 import 'package:kfazer3/src/features/workspace/data/workspace_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/preferences.dart';
 import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_edit_screen_controller.dart';
@@ -15,7 +15,7 @@ final workspaceSetupControllerProvider = StateNotifierProvider.autoDispose<
 );
 
 class WorkspaceSetupController extends StateNotifier<AsyncValue<String?>>
-    with WorkspaceValidators, MotivationValidators, AccountValidators {
+    with WorkspaceValidators, MotivationValidators, AuthValidators {
   final WorkspaceRepository workspaceRepository;
 
   WorkspaceSetupController({required this.workspaceRepository})

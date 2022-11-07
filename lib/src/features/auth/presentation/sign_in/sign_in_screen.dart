@@ -3,9 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/tap_to_unfocus.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
-import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
-import 'package:kfazer3/src/utils/async_value_ui.dart';
 
 import 'pages/account_setup_page.dart';
 import 'pages/phone_sign_in_page.dart';
@@ -53,10 +51,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<AsyncValue>(
-      signInControllerProvider,
-      (_, state) => state.showAlertDialogOnError(context),
-    );
     // Return a Scaffold with a PageView containing the 3 pages.
     // This allows for a nice scroll animation when switching between pages.
     // Note: only the currently active page will be visible.

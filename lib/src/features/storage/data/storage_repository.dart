@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kfazer3/src/constants/test.dart';
+import 'package:kfazer3/src/constants/fake_repositories_delay.dart';
 
 import 'fake_storage_repository.dart';
 

@@ -1,13 +1,8 @@
-import 'package:collection/collection.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
-import 'package:kfazer3/src/features/auth/presentation/account/account_edit_screen_controller.dart';
+import 'package:kfazer3/src/features/auth/presentation/auth_validators.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sms_code_controller.dart';
-import 'package:kfazer3/src/localization/app_localizations_context.dart';
-import 'package:kfazer3/src/utils/string_validator.dart';
 
 import 'sign_in_screen.dart';
 
@@ -23,8 +18,7 @@ final signInControllerProvider =
   },
 );
 
-class SignInController extends StateNotifier<AsyncValue>
-    with SignInValidators, AccountValidators {
+class SignInController extends StateNotifier<AsyncValue> with AuthValidators {
   final AuthRepository authRepository;
   final SmsCodeController Function(PhoneNumber phoneNumber) smsCodeController;
 
@@ -53,20 +47,4 @@ class SignInController extends StateNotifier<AsyncValue>
     if (page == SignInPage.phone && !state.hasError) phoneNumber = value;
     return !state.hasError;
   }
-}
-
-mixin SignInValidators {
-  List<StringValidator> codeSubmitValidators(BuildContext context) => [
-        ExactLengthStringValidator(
-          context.loc.invalidCodeLength(kCodeLength),
-          length: kCodeLength,
-        ),
-      ];
-}
-
-extension SignInValidatorsText on SignInValidators {
-  String? codeErrorText(BuildContext context, String code) =>
-      codeSubmitValidators(context)
-          .firstWhereOrNull((validator) => !validator.isValid(code))
-          ?.errorText;
 }
