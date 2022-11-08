@@ -17,6 +17,9 @@ import 'package:url_launcher/url_launcher.dart';
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
+  // * keys for testing using find.byKey()
+  static const accountDetailsKey = Key('accountDetails');
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(currentUserStateProvider);
@@ -26,6 +29,7 @@ class SettingsScreen extends ConsumerWidget {
         child: ListView(
           children: [
             ListTile(
+              key: accountDetailsKey,
               onTap: () => context.goNamed(AppRoute.accountDetails.name),
               leading: Avatar.fromUser(user),
               title: Text(user.name),

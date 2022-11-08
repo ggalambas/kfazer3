@@ -17,6 +17,7 @@ class SingleChildMenuButton extends StatelessWidget {
     return PopupMenuButton(
       enabled: enabled,
       onSelected: (_) => onSelected?.call(),
+      //? why the unique key?
       itemBuilder: (_) => [PopupMenuItem(value: UniqueKey(), child: child)],
     );
   }

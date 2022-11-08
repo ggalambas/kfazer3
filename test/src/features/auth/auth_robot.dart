@@ -40,7 +40,7 @@ class AuthRobot {
     final button = find.byType(LoadingElevatedButton);
     expect(button, findsOneWidget);
     await tester.tap(button);
-    await tester.pump();
+    await tester.pumpAndSettle();
   }
 
   // Future<void> enterPhoneCode(String code) async {
@@ -67,8 +67,26 @@ class AuthRobot {
     await tester.pump();
   }
 
+  Future<void> enterCode(String code) async {
+    final codeField = find.byType(TextFormField);
+    expect(codeField, findsOneWidget);
+    await tester.enterText(codeField, code);
+    await tester.pump();
+  }
+
+  Future<void> enterDisplayName(String name) async {
+    final nameField = find.byType(TextFormField);
+    expect(nameField, findsOneWidget);
+    await tester.enterText(nameField, name);
+    await tester.pump();
+  }
+
   Future<void> signInWithPhoneNumber() async {
     await enterPhoneNumber('912345678');
+    await tapSignInSubmitButton();
+    await enterCode('123456');
+    await tapSignInSubmitButton();
+    await enterDisplayName('Display Name');
     await tapSignInSubmitButton();
   }
 
@@ -102,21 +120,21 @@ class AuthRobot {
     final signOutButton = find.text('Sign Out');
     expect(signOutButton, findsOneWidget);
     await tester.tap(signOutButton);
-    await tester.pump();
+    await tester.pumpAndSettle();
   }
 
   Future<void> tapCancelButton() async {
     final cancelButton = find.text('Cancel');
     expect(cancelButton, findsOneWidget);
     await tester.tap(cancelButton);
-    await tester.pump();
+    await tester.pumpAndSettle();
   }
 
   Future<void> tapDialogSignOutButton() async {
     final signOutButton = find.byKey(kDialogDefaultKey);
     expect(signOutButton, findsOneWidget);
     await tester.tap(signOutButton);
-    await tester.pump();
+    await tester.pumpAndSettle();
   }
 
   void expectSignOutDialogFound() {

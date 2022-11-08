@@ -8,7 +8,14 @@ void main() {
   testWidgets('Sign in and sign out flow', (tester) async {
     final r = Robot(tester);
     await r.pumpMyApp();
-    r.expectWelcomeFound();
-    r.auth.signInWithPhoneNumber();
+    r.expectFindWelcomeMessage();
+    await r.auth.signInWithPhoneNumber();
+    r.expectFindAllWorkspaceCards();
+    await r.openPopupMenu();
+    await r.openSettingsScreen();
+    await r.openAccountDetails();
+    await r.auth.tapSignOutButton();
+    await r.auth.tapDialogSignOutButton();
+    r.expectFindWelcomeMessage();
   });
 }
