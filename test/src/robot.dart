@@ -8,6 +8,8 @@ import 'package:kfazer3/src/features/auth/data/country_repository.dart';
 import 'package:kfazer3/src/features/auth/data/fake_auth_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/country.dart';
 import 'package:kfazer3/src/features/settings/presentation/settings_screen.dart';
+import 'package:kfazer3/src/features/workspace/data/fake_workspaces_repository.dart';
+import 'package:kfazer3/src/features/workspace/data/workspace_repository.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_list/workspace_card.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -24,6 +26,9 @@ class Robot {
       addDelay: false,
       startSignedIn: false,
     );
+    final workspaceRepository = FakeWorkspaceRepository(
+      addDelay: false,
+    );
     final countryRepository = MockCountryRepository();
     const testCountry = Country(
       code: 'PT',
@@ -37,6 +42,7 @@ class Robot {
       ProviderScope(
         overrides: [
           authRepositoryProvider.overrideWithValue(authRepository),
+          workspaceRepositoryProvider.overrideWithValue(workspaceRepository),
           countryRepositoryProvider.overrideWithValue(countryRepository),
         ],
         child: const MyApp(),
