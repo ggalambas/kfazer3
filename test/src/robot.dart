@@ -7,6 +7,8 @@ import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/data/country_repository.dart';
 import 'package:kfazer3/src/features/auth/data/fake_auth_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/country.dart';
+import 'package:kfazer3/src/features/notifications/data/fake_notifications_repository.dart';
+import 'package:kfazer3/src/features/notifications/data/notifications_repository.dart';
 import 'package:kfazer3/src/features/settings/presentation/settings_screen.dart';
 import 'package:kfazer3/src/features/workspace/data/fake_workspaces_repository.dart';
 import 'package:kfazer3/src/features/workspace/data/workspace_repository.dart';
@@ -14,19 +16,27 @@ import 'package:kfazer3/src/features/workspace/presentation/workspace_list/works
 import 'package:mocktail/mocktail.dart';
 
 import 'features/auth/auth_robot.dart';
+import 'goldens/golden_robot.dart';
 import 'mocks.dart';
 
 class Robot {
   final WidgetTester tester;
   final AuthRobot auth;
-  Robot(this.tester) : auth = AuthRobot(tester);
+  final GoldenRobot golden;
 
-  Future<void> pumpMyApp() async {
+  Robot(this.tester)
+      : auth = AuthRobot(tester),
+        golden = GoldenRobot(tester);
+
+  Future<void> pumpMyApp({bool startSignedIn = false}) async {
     final authRepository = FakeAuthRepository(
       addDelay: false,
-      startSignedIn: false,
+      startSignedIn: startSignedIn,
     );
     final workspaceRepository = FakeWorkspaceRepository(
+      addDelay: false,
+    );
+    final notificationsRepository = FakeNotificationsRepository(
       addDelay: false,
     );
     final countryRepository = MockCountryRepository();
@@ -43,6 +53,8 @@ class Robot {
         overrides: [
           authRepositoryProvider.overrideWithValue(authRepository),
           workspaceRepositoryProvider.overrideWithValue(workspaceRepository),
+          notificationsRepositoryProvider
+              .overrideWithValue(notificationsRepository),
           countryRepositoryProvider.overrideWithValue(countryRepository),
         ],
         child: const MyApp(),
