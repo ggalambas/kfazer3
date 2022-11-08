@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 
@@ -39,15 +38,7 @@ class Avatar extends StatelessWidget {
     return parts.join('').toUpperCase();
   }
 
-  /// Circle avatar with the user photo and initials.
-  factory Avatar.fromUser(AppUser? user, {double radius = 16}) => Avatar(
-        text: user?.name,
-        radius: radius,
-        foregroundImage:
-            user?.photoUrl == null ? null : NetworkImage(user!.photoUrl!),
-      );
-
-  /// Squircle avatar with the workspace image and initials.
+  /// Rounded rectangle avatar with the workspace image and initials.
   factory Avatar.fromWorkspace(Workspace workspace, {double radius = 20}) =>
       Avatar(
         text: workspace.title,

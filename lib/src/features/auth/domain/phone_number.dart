@@ -5,7 +5,7 @@ class PhoneNumber with EquatableMixin {
   final String number;
   PhoneNumber(this.code, this.number);
 
-  String entire() => '$code$number';
+  String get full => '$code$number';
 
   @override
   String toString() => '$code $number';

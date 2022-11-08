@@ -2,8 +2,8 @@ import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kfazer3/src/common_widgets/avatar.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
+import 'package:kfazer3/src/common_widgets/user_avatar.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/settings/data/settings_repository.dart';
 import 'package:kfazer3/src/features/settings/presentation/selection_setting_tile.dart';
@@ -31,7 +31,7 @@ class SettingsScreen extends ConsumerWidget {
             ListTile(
               key: accountDetailsKey,
               onTap: () => context.goNamed(AppRoute.accountDetails.name),
-              leading: Avatar.fromUser(user),
+              leading: UserAvatar(user),
               title: Text(user.name),
               subtitle: Text(user.phoneNumber.number),
             ),

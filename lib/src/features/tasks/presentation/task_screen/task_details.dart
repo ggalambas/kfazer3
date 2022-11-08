@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
+import 'package:kfazer3/src/common_widgets/user_avatar.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/tasks/domain/task.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
@@ -80,7 +81,7 @@ class TaskDetails extends ConsumerWidget {
           for (var i = 0; i < 3; i++)
             ListTile(
               contentPadding: secondLevelPadding,
-              leading: Avatar.fromUser(user),
+              leading: UserAvatar(user),
               title: Text(user.name),
             ),
           ListTile(

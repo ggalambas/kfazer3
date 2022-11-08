@@ -20,13 +20,13 @@ Future<bool?> showAlertDialog({
         actions: [
           if (cancelActionText != null)
             TextButton(
-              child: Text(cancelActionText),
               onPressed: () => Navigator.of(context).pop(false),
+              child: Text(cancelActionText),
             ),
           TextButton(
             key: kDialogDefaultKey,
-            child: Text(defaultActionText ?? context.loc.ok),
             onPressed: () => Navigator.of(context).pop(true),
+            child: Text(defaultActionText ?? context.loc.ok),
           ),
         ],
       ),

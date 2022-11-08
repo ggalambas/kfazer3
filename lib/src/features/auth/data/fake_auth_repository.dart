@@ -39,7 +39,7 @@ class FakeAuthRepository implements AuthRepository {
   Future<void> createUser(PhoneNumber phoneNumber, String displayName) async {
     await delay(addDelay);
     _authState.value = AppUser(
-      id: phoneNumber.entire(),
+      id: phoneNumber.full,
       name: displayName,
       phoneNumber: phoneNumber,
     );
