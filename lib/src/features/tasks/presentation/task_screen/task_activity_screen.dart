@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kfazer3/src/common_widgets/avatar.dart';
+import 'package:kfazer3/src/common_widgets/user_avatar.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
@@ -23,7 +23,7 @@ class TaskActivityScreen extends ConsumerWidget {
           for (var i = 0; i < 3; i++)
             ListTile(
               dense: true,
-              leading: Avatar.fromUser(user),
+              leading: UserAvatar(user),
               title: Text(
                 user.name,
                 style: context.textTheme.bodySmall,

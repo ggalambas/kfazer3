@@ -8,7 +8,7 @@ final _kTestUsers = List.generate(
   (i) {
     final phoneNumber = PhoneNumber('+351', (900000000 + i).toString());
     return AppUser(
-      id: phoneNumber.entire(),
+      id: phoneNumber.full,
       name: 'User $i',
       phoneNumber: phoneNumber,
     );

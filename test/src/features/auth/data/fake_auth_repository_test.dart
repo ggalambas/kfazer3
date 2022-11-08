@@ -11,7 +11,7 @@ void main() {
   final testPhoneNumber = PhoneNumber('+351', '912345678');
   const testName = 'Jimmy Hawkins';
   final testUser = AppUser(
-    id: testPhoneNumber.entire(),
+    id: testPhoneNumber.full,
     phoneNumber: testPhoneNumber,
     name: testName,
   );
