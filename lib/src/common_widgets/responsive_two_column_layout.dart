@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
 
-/// Responsive layout that shows two child widgets side by side if there is
-/// enough space, or vertically stacked if there is not enough space.
+/// Responsive layout that shows
+/// two child widgets side by side if there is enough space,
+/// or vertically stacked if there is not enough space.
 class ResponsiveTwoColumnLayout extends StatelessWidget {
   final Widget startContent;
   final Widget endContent;

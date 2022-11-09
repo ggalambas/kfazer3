@@ -23,12 +23,13 @@
   "countryListLoadFailed": "Error al cargar la lista de países",
 
   "account": "Cuenta",
-  "deleteAccount": "Borrar cuenta",
+  "editAccount": "Editar cuenta",
+  "deleteAccount": "Eliminar cuenta",
   "signOut": "Desconectar",
   "profilePhoto": "Foto de perfil",
   "imagePickerCamera": "Cámara",
   "imagePickerGallery": "Galería",
-  "imagePickerDelete": "Borrar",
+  "imagePickerDelete": "Eliminar",
 
   "invalidPhoneNumberEmpty": "Se require el número de teléfono",
   "invalidPhoneNumberOnlyNumbers": "El número de teléfono solo puede contener números",
@@ -82,7 +83,7 @@
   "motivationalMessages": "Mensajes motivacionales",
   "motivationalMessagesDescription": "Mensajes que se muestran al completar una tarea",
   "workspace": "Espacio de trabajo",
-  "deleteWorkspace": "Borrar espacio de trabajo",
+  "deleteWorkspace": "Eliminar espacio de trabajo",
   "title": "Título",
   "description": "Descripción",
   "workspaceCreateFirst": "¡Crea tu primer espacio de trabajo!",
@@ -107,7 +108,7 @@
   
   "ok": "OK",
   "edit": "Editar",
-  "delete": "Borrar",
+  "delete": "Eliminar",
   "save": "Ahorrar",
   "clearAll": "Limpiar todo",
   "remove": "Remover",

@@ -12,6 +12,7 @@ environment:
 # dependencies with # need configuration in the giveen platforms
 dependencies:
   app_settings: ^4.1.8
+  auto_size_text: ^3.0.0
   badges: ^2.0.3
   collection: ^1.16.0
   equatable: ^2.0.3

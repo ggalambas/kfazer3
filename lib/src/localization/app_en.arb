@@ -23,6 +23,7 @@
   "countryListLoadFailed": "Failed to load list of countries",
 
   "account": "Account",
+  "editAccount": "Edit account",
   "deleteAccount": "Delete account",
   "signOut": "Sign Out",
   "profilePhoto": "Profile photo",

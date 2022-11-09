@@ -2,21 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
+import 'package:kfazer3/src/common_widgets/details_bar.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
-import 'package:kfazer3/src/common_widgets/responsive_center.dart';
+import 'package:kfazer3/src/common_widgets/responsive_scaffold.dart';
+import 'package:kfazer3/src/common_widgets/trail.dart';
 import 'package:kfazer3/src/common_widgets/user_avatar.dart';
-import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/account_details_screen_controller.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
+import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
-
-import '../../../../common_widgets/details_bar.dart';
 
 class AccountDetailsScreen extends ConsumerWidget {
   const AccountDetailsScreen({super.key});
+
+  void editAccount(BuildContext context) {
+    context.goNamed(
+      AppRoute.accountDetails.name,
+      queryParams: {'editing': 'true'},
+    );
+  }
 
   void deleteAccount(BuildContext context, Reader read) async {
     final delete = await showAlertDialog(
@@ -51,51 +58,60 @@ class AccountDetailsScreen extends ConsumerWidget {
 
     final user = ref.watch(currentUserStateProvider);
     final state = ref.watch(accountDetailsScreenControllerProvider);
-    return Scaffold(
+    return ResponsiveScaffold(
       appBar: DetailsBar(
         loading: state.isLoading,
         title: context.loc.account,
-        onEdit: () => context.goNamed(
-          AppRoute.accountDetails.name,
-          queryParams: {'editing': 'true'},
-        ),
+        onEdit: () => editAccount(context),
         deleteText: context.loc.deleteAccount,
         onDelete: () => deleteAccount(context, ref.read),
       ),
-      body: SingleChildScrollView(
-        child: ResponsiveCenter(
-          maxContentWidth: Breakpoint.tablet,
-          padding: EdgeInsets.all(kSpace * 2),
-          child: Column(
-            children: [
-              UserAvatar(user, radius: kSpace * 10),
-              Space(4),
-              TextFormField(
-                enabled: false,
-                initialValue: user.name,
-                decoration: InputDecoration(
-                  labelText: context.loc.displayName,
-                ),
-              ),
-              Space(),
-              TextFormField(
-                enabled: false,
-                initialValue: user.phoneNumber.toString(),
-                decoration: InputDecoration(
-                  labelText: context.loc.phoneNumber,
-                ),
-              ),
-              Space(2),
-              Align(
-                alignment: Alignment.centerRight,
-                child: LoadingElevatedButton(
-                  loading: state.isLoading,
-                  onPressed: () => signOut(context, ref.read),
-                  child: Text(context.loc.signOut),
-                ),
-              ),
-            ],
+      rail: Trail(
+        title: context.loc.account,
+        actions: [
+          TextButton(
+            onPressed: () => editAccount(context),
+            child: Text(context.loc.editAccount),
           ),
+          TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: context.colorScheme.error,
+            ),
+            onPressed: () => deleteAccount(context, ref.read),
+            child: Text(context.loc.deleteAccount),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            UserAvatar(user, radius: kSpace * 10),
+            Space(4),
+            TextFormField(
+              enabled: false,
+              initialValue: user.name,
+              decoration: InputDecoration(
+                labelText: context.loc.displayName,
+              ),
+            ),
+            Space(),
+            TextFormField(
+              enabled: false,
+              initialValue: user.phoneNumber.toString(),
+              decoration: InputDecoration(
+                labelText: context.loc.phoneNumber,
+              ),
+            ),
+            Space(2),
+            Align(
+              alignment: Alignment.centerRight,
+              child: LoadingElevatedButton(
+                loading: state.isLoading,
+                onPressed: () => signOut(context, ref.read),
+                child: Text(context.loc.signOut),
+              ),
+            ),
+          ],
         ),
       ),
     );

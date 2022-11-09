@@ -23,6 +23,7 @@
   "countryListLoadFailed": "Erro ao ler a lista de países",
 
   "account": "Conta",
+  "editAccount": "Editar conta",
   "deleteAccount": "Eliminar conta",
   "signOut": "Terminar sessão",
   "profilePhoto": "Foto de perfil",
