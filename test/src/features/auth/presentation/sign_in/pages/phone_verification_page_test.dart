@@ -1,5 +1,3 @@
-@Timeout(Duration(milliseconds: 500))
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
@@ -8,9 +6,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../../mocks.dart';
 import '../../../auth_robot.dart';
 
-//TODO resend sms code
-//TODO resend sms flow
-
+//TODO resend sms code test
 void main() {
   const testCode = '123456';
   final testPhoneNumber = PhoneNumber('+351', '912345678');

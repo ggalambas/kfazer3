@@ -98,6 +98,13 @@ class AuthRobot {
     await tester.pump();
   }
 
+  Future<void> tapResendSmsButton() async {
+    final button = find.byType(LoadingOutlinedButton);
+    expect(button, findsOneWidget);
+    await tester.tap(button);
+    await tester.pumpAndSettle();
+  }
+
   void expectCharactersTextFound() {
     final charactersText = find.textContaining('characters');
     expect(charactersText, findsOneWidget);

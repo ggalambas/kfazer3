@@ -22,12 +22,12 @@ class SmsCodeController extends StateNotifier<AsyncValue<int>> {
 
   SmsCodeController(this.phoneNumber, {required this.authRepository})
       : super(const AsyncValue.data(0)) {
-    _initTimer();
+    initTimer();
   }
 
   bool get isTicking => (state.valueOrNull ?? 0) != 0;
 
-  void _initTimer() {
+  void initTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (isTicking) state = AsyncValue.data(state.value! - 1);
     });
