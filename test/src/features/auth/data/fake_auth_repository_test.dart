@@ -4,8 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kfazer3/src/constants/test_users.dart';
 import 'package:kfazer3/src/features/auth/data/fake_auth_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
+import 'package:kfazer3/src/features/auth/domain/mutable_app_user.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
-import 'package:kfazer3/src/features/auth/domain/updatable_app_user.dart';
 
 void main() {
   final testPhoneNumber = PhoneNumber('+351', '912345678');
