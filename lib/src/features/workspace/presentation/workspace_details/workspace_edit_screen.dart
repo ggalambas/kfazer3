@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
 import 'package:kfazer3/src/common_widgets/image_picker_badge.dart';
+import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/common_widgets/tap_to_unfocus.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
@@ -21,7 +22,6 @@ import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
 
-import '../../../../common_widgets/details_bar.dart';
 import 'workspace_edit_screen_controller.dart';
 
 class WorkspaceEditScreen extends ConsumerStatefulWidget {
@@ -116,11 +116,18 @@ class _WorkspaceEditScreenState extends ConsumerState<WorkspaceEditScreen> {
           init(workspace);
           return TapToUnfocus(
             child: Scaffold(
-              appBar: EditingBar(
-                loading: state.isLoading,
-                title: context.loc.workspace,
-                onCancel: goBack,
-                onSave: imageState.isLoading ? null : () => save(workspace),
+              appBar: AppBar(
+                leading: CloseButton(
+                  onPressed: state.isLoading ? null : goBack,
+                ),
+                title: Text(context.loc.workspace),
+                actions: [
+                  LoadingTextButton(
+                    loading: state.isLoading,
+                    onPressed: () => save(workspace),
+                    child: Text(context.loc.save),
+                  ),
+                ],
               ),
               body: SingleChildScrollView(
                 child: ResponsiveCenter(

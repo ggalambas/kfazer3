@@ -5,12 +5,14 @@ import 'package:smart_space/smart_space.dart';
 
 class Trail extends StatelessWidget {
   final bool automaticallyImplyLeading;
+  final Widget? leading;
   final String? title;
   final List<Widget> actions;
 
   const Trail({
     super.key,
     this.automaticallyImplyLeading = true,
+    this.leading,
     this.title,
     this.actions = const [],
   });
@@ -27,7 +29,9 @@ class Trail extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (automaticallyImplyLeading && (canPop || impliesDismissal))
+        if (leading != null)
+          leading!
+        else if (automaticallyImplyLeading && (canPop || impliesDismissal))
           useCloseButton ? const CloseButton() : const BackButton(),
         if (title != null)
           AutoSizeText(

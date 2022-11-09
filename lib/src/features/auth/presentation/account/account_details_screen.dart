@@ -18,14 +18,14 @@ import 'package:smart_space/smart_space.dart';
 class AccountDetailsScreen extends ConsumerWidget {
   const AccountDetailsScreen({super.key});
 
-  void editAccount(BuildContext context) {
+  void edit(BuildContext context) {
     context.goNamed(
       AppRoute.accountDetails.name,
       queryParams: {'editing': 'true'},
     );
   }
 
-  void deleteAccount(BuildContext context, Reader read) async {
+  void delete(BuildContext context, Reader read) async {
     final delete = await showAlertDialog(
       context: context,
       title: context.loc.areYouSure,
@@ -58,26 +58,30 @@ class AccountDetailsScreen extends ConsumerWidget {
 
     final user = ref.watch(currentUserStateProvider);
     final state = ref.watch(accountDetailsScreenControllerProvider);
+    final maybeEdit = state.isLoading ? null : () => edit(context);
+    final maybeDelete =
+        state.isLoading ? null : () => delete(context, ref.read);
+
     return ResponsiveScaffold(
       appBar: DetailsBar(
         loading: state.isLoading,
         title: context.loc.account,
-        onEdit: () => editAccount(context),
+        onEdit: () => edit(context),
         deleteText: context.loc.deleteAccount,
-        onDelete: () => deleteAccount(context, ref.read),
+        onDelete: () => delete(context, ref.read),
       ),
       rail: Trail(
         title: context.loc.account,
         actions: [
           TextButton(
-            onPressed: () => editAccount(context),
+            onPressed: maybeEdit,
             child: Text(context.loc.editAccount),
           ),
           TextButton(
             style: TextButton.styleFrom(
               foregroundColor: context.colorScheme.error,
             ),
-            onPressed: () => deleteAccount(context, ref.read),
+            onPressed: maybeDelete,
             child: Text(context.loc.deleteAccount),
           ),
         ],
@@ -85,7 +89,7 @@ class AccountDetailsScreen extends ConsumerWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            UserAvatar(user, radius: kSpace * 10),
+            UserAvatar(user, radius: kSpace * 10, dialogOnTap: false),
             Space(4),
             TextFormField(
               enabled: false,
