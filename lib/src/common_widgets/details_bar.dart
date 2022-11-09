@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/common_widgets/single_child_menu_button.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 
-class DetailsBar extends ConsumerWidget with PreferredSizeWidget {
+class DetailsBar extends StatelessWidget with PreferredSizeWidget {
   final bool loading;
   final String? title;
   final VoidCallback? onEdit;
@@ -22,7 +20,7 @@ class DetailsBar extends ConsumerWidget with PreferredSizeWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return AppBar(
       title: title == null ? null : Text(title!),
       actions: [
@@ -38,42 +36,6 @@ class DetailsBar extends ConsumerWidget with PreferredSizeWidget {
             deleteText ?? context.loc.delete,
             style: TextStyle(color: context.colorScheme.error),
           ),
-        ),
-      ],
-    );
-  }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-}
-
-class EditingBar extends ConsumerWidget with PreferredSizeWidget {
-  final bool loading;
-  final String? title;
-  final VoidCallback? onCancel;
-  final VoidCallback? onSave;
-
-  const EditingBar({
-    super.key,
-    this.loading = false,
-    this.title,
-    required this.onCancel,
-    required this.onSave,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return AppBar(
-      leading: IconButton(
-        onPressed: loading ? null : onCancel,
-        icon: const Icon(Icons.close),
-      ),
-      title: title == null ? null : Text(title!),
-      actions: [
-        LoadingTextButton(
-          loading: loading,
-          onPressed: onSave,
-          child: Text(context.loc.save),
         ),
       ],
     );

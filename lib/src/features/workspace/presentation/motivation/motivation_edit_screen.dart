@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
-import 'package:kfazer3/src/common_widgets/details_bar.dart';
+import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/constants/constants.dart';
@@ -100,11 +100,16 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
           if (workspace == null) return const NotFoundWorkspace();
           init(workspace);
           return Scaffold(
-            appBar: EditingBar(
-              loading: state.isLoading,
-              title: context.loc.motivation,
-              onCancel: goBack,
-              onSave: () => save(workspace),
+            appBar: AppBar(
+              leading: CloseButton(onPressed: state.isLoading ? null : goBack),
+              title: Text(context.loc.motivation),
+              actions: [
+                LoadingTextButton(
+                  loading: state.isLoading,
+                  onPressed: () => save(workspace),
+                  child: Text(context.loc.save),
+                ),
+              ],
             ),
             body: ResponsiveCenter(
               maxContentWidth: Breakpoint.tablet,

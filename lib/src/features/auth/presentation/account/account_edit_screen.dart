@@ -6,9 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
 import 'package:kfazer3/src/common_widgets/image_picker_badge.dart';
-import 'package:kfazer3/src/common_widgets/responsive_center.dart';
+import 'package:kfazer3/src/common_widgets/loading_button.dart';
+import 'package:kfazer3/src/common_widgets/responsive_scaffold.dart';
 import 'package:kfazer3/src/common_widgets/tap_to_unfocus.dart';
-import 'package:kfazer3/src/constants/breakpoints.dart';
+import 'package:kfazer3/src/common_widgets/trail.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
@@ -21,7 +22,6 @@ import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
 
-import '../../../../common_widgets/details_bar.dart';
 import 'account_edit_screen_controller.dart';
 
 class AccountEditScreen extends ConsumerStatefulWidget {
@@ -103,77 +103,91 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
 
     final state = ref.watch(accountEditScreenControllerProvider);
     final imageState = ref.watch(imageEditingControllerProvider);
+    final maybeSave = imageState.isLoading ? null : save;
+    final maybeCancel = state.isLoading ? null : goBack;
+
     return TapToUnfocus(
-      child: Scaffold(
-        appBar: EditingBar(
+      child: ResponsiveScaffold(
+        appBar: AppBar(
+          leading: CloseButton(onPressed: maybeCancel),
+          title: Text(context.loc.account),
+          actions: [
+            LoadingTextButton(
+              loading: state.isLoading,
+              onPressed: save,
+              child: Text(context.loc.save),
+            ),
+          ],
+        ),
+        rail: Trail(
+          leading: CloseButton(onPressed: maybeCancel),
           title: context.loc.account,
-          loading: state.isLoading,
-          onCancel: goBack,
-          onSave: imageState.isLoading ? null : () => save(),
+          actions: [
+            TextButton(
+              onPressed: maybeSave,
+              child: Text(context.loc.save),
+            ),
+          ],
         ),
         body: SingleChildScrollView(
-          child: ResponsiveCenter(
-            maxContentWidth: Breakpoint.tablet,
-            padding: EdgeInsets.all(kSpace * 2),
-            child: Form(
-              key: formKey,
-              child: Column(
-                children: [
-                  ValueListenableBuilder(
-                    valueListenable: nameController,
-                    builder: (context, _, __) {
-                      return ImagePickerBadge(
-                        loading: imageState.isLoading,
-                        disabled: state.isLoading,
-                        onImagePicked: applyImage,
-                        showDeleteOption: image != null,
-                        child: Avatar(
-                          radius: kSpace * 10,
-                          foregroundImage: image,
-                          text: name,
-                        ),
-                      );
-                    },
-                  ),
-                  Space(4),
-                  TextFormField(
-                    controller: nameController,
-                    keyboardType: TextInputType.name,
-                    textInputAction: TextInputAction.next,
-                    maxLength: kNameLength,
-                    decoration: InputDecoration(
-                      counterText: '',
-                      labelText: context.loc.displayName,
-                    ),
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (name) {
-                      if (!submitted) return null;
-                      return ref
-                          .read(accountEditScreenControllerProvider.notifier)
-                          .nameErrorText(context, name ?? '');
-                    },
-                  ),
-                  Space(),
-                  TextFormField(
-                    controller: phoneNumberController,
-                    keyboardType: TextInputType.phone,
-                    textInputAction: TextInputAction.done,
-                    decoration: InputDecoration(
-                      labelText: context.loc.phoneNumber,
-                      prefix: PhoneCodeDropdownPrefix(
-                        controller: phoneCodeController,
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: [
+                ValueListenableBuilder(
+                  valueListenable: nameController,
+                  builder: (context, _, __) {
+                    return ImagePickerBadge(
+                      loading: imageState.isLoading,
+                      disabled: state.isLoading,
+                      onImagePicked: applyImage,
+                      showDeleteOption: image != null,
+                      child: Avatar(
+                        radius: kSpace * 10,
+                        foregroundImage: image,
+                        text: name,
                       ),
-                    ),
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (phoneNumber) {
-                      if (!submitted) return null;
-                      return ref
-                          .read(accountEditScreenControllerProvider.notifier)
-                          .phoneNumberErrorText(context, phoneNumber ?? '');
-                    },
+                    );
+                  },
+                ),
+                Space(4),
+                TextFormField(
+                  controller: nameController,
+                  keyboardType: TextInputType.name,
+                  textInputAction: TextInputAction.next,
+                  maxLength: kNameLength,
+                  decoration: InputDecoration(
+                    counterText: '',
+                    labelText: context.loc.displayName,
                   ),
-                ],
-              ),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (name) {
+                    if (!submitted) return null;
+                    return ref
+                        .read(accountEditScreenControllerProvider.notifier)
+                        .nameErrorText(context, name ?? '');
+                  },
+                ),
+                Space(),
+                TextFormField(
+                  controller: phoneNumberController,
+                  keyboardType: TextInputType.phone,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                    labelText: context.loc.phoneNumber,
+                    prefix: PhoneCodeDropdownPrefix(
+                      controller: phoneCodeController,
+                    ),
+                  ),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (phoneNumber) {
+                    if (!submitted) return null;
+                    return ref
+                        .read(accountEditScreenControllerProvider.notifier)
+                        .phoneNumberErrorText(context, phoneNumber ?? '');
+                  },
+                ),
+              ],
             ),
           ),
         ),
