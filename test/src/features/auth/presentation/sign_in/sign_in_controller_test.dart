@@ -17,14 +17,12 @@ void main() {
   late MockAuthRepository authRepository;
   late SmsCodeController smsCodeController;
   late SignInController controller;
+  late SignInPayload payload;
 
-  setUpAll(() {
+  setUp(() {
     authRepository = MockAuthRepository();
     smsCodeController = MockSmsCodeController();
-    controller = SignInController(
-      authRepository: authRepository,
-      smsCodeController: (_) => smsCodeController,
-    );
+    payload = SignInPayload();
   });
 
   Future<void> testSuccess(
@@ -74,57 +72,97 @@ void main() {
 
   group('SignInController', () {
     test('initial state is AsyncValue.data', () {
+      controller = SignInController(
+        payload: payload,
+        authRepository: authRepository,
+        smsCodeController: (_) => smsCodeController,
+      );
       expect(controller.debugState, const AsyncData<dynamic>(null));
     });
     group('sendSmsCode', () {
+      setUp(() {
+        controller = SignInController(
+          payload: payload,
+          authRepository: authRepository,
+          smsCodeController: (_) => smsCodeController,
+        );
+      });
       test(
         'Given signInPage is phone'
         'When sendSmsCode succeeds'
         'Then return true'
         'And state is AsyncData',
-        () => testSuccess(
-          SignInPage.phone,
-          () => smsCodeController.sendSmsCode(throwError: true),
-          testPhoneNumber,
-        ),
+        () async {
+          await testSuccess(
+            SignInPage.phone,
+            () => smsCodeController.sendSmsCode(throwError: true),
+            testPhoneNumber,
+          );
+          expect(payload.phoneNumber, testPhoneNumber);
+        },
       );
       test(
         'Given signInPage is phone'
         'When sendSmsCode fails'
         'Then return false'
         'And state is AsyncError',
-        () => testFailure(
-          SignInPage.phone,
-          () => smsCodeController.sendSmsCode(throwError: true),
-          testPhoneNumber,
-        ),
+        () async {
+          await testFailure(
+            SignInPage.phone,
+            () => smsCodeController.sendSmsCode(throwError: true),
+            testPhoneNumber,
+          );
+          expect(payload.phoneNumber, null);
+        },
       );
     });
     group('verifySmsCode', () {
+      setUp(() {
+        controller = SignInController(
+          payload: payload..phoneNumber = testPhoneNumber,
+          authRepository: authRepository,
+          smsCodeController: (_) => smsCodeController,
+        );
+      });
       test(
         'Given signInPage is verification'
         'When verifySmsCode succeeds'
         'Then return true'
         'And state is AsyncData',
-        () => testSuccess(
-          SignInPage.verification,
-          () => authRepository.verifySmsCode(testPhoneNumber, testCode),
-          testCode,
-        ),
+        () async {
+          await testSuccess(
+            SignInPage.verification,
+            () => authRepository.verifySmsCode(testPhoneNumber, testCode),
+            testCode,
+          );
+          expect(payload.isCodeValid, true);
+        },
       );
       test(
         'Given signInPage is verification'
         'When verifySmsCode fails'
         'Then return false'
         'And state is AsyncError',
-        () => testFailure(
-          SignInPage.verification,
-          () => authRepository.verifySmsCode(testPhoneNumber, testCode),
-          testCode,
-        ),
+        () async {
+          await testFailure(
+            SignInPage.verification,
+            () => authRepository.verifySmsCode(testPhoneNumber, testCode),
+            testCode,
+          );
+          expect(payload.isCodeValid, false);
+        },
       );
     });
     group('createUser', () {
+      setUp(() {
+        controller = SignInController(
+          payload: payload
+            ..phoneNumber = testPhoneNumber
+            ..isCodeValid = true,
+          authRepository: authRepository,
+          smsCodeController: (_) => smsCodeController,
+        );
+      });
       test(
         'Given signInPage is account'
         'When createUser succeeds'

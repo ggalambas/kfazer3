@@ -75,11 +75,15 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         name: AppRoute.signInPage.name,
         redirect: (context, state) {
           final pageName = state.params['page']!;
-          final phoneNumber =
-              ref.read(signInControllerProvider.notifier).phoneNumber;
-          final resetLoginFlow =
-              pageName != SignInPage.phone.name && phoneNumber == null;
-          if (resetLoginFlow) return '/signIn';
+          final payload = ref.read(signInPayloadProvider);
+          if (pageName == SignInPage.verification.name) {
+            if (payload.phoneNumber == null) return '/signIn';
+          } else if (pageName == SignInPage.account.name) {
+            if (payload.phoneNumber == null) return '/signIn';
+            if (!payload.isCodeValid) {
+              return '/signIn/${SignInPage.verification.name}';
+            }
+          }
           return null;
         },
         builder: (_, state) {

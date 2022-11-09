@@ -7,13 +7,16 @@ import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/data/country_repository.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/account_details_screen.dart';
+import 'package:kfazer3/src/features/auth/presentation/sign_in/pages/account_setup_page.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/pages/phone_sign_in_page.dart';
+import 'package:kfazer3/src/features/auth/presentation/sign_in/pages/phone_verification_page.dart';
+import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 
 class AuthRobot {
   final WidgetTester tester;
   AuthRobot(this.tester);
 
-  Future<void> pumpSignInScreen({
+  Future<void> pumpPhoneSignInPage({
     required AuthRepository authRepository,
     required CountryRepository countryRepository,
     VoidCallback? onSignedIn,
@@ -33,13 +36,6 @@ class AuthRobot {
         ),
       ),
     );
-    await tester.pumpAndSettle();
-  }
-
-  Future<void> tapSignInSubmitButton() async {
-    final button = find.byType(LoadingElevatedButton);
-    expect(button, findsOneWidget);
-    await tester.tap(button);
     await tester.pumpAndSettle();
   }
 
@@ -67,11 +63,66 @@ class AuthRobot {
     await tester.pump();
   }
 
+  void expectNumbersTextFound() {
+    final numbersText = find.textContaining('numbers');
+    expect(numbersText, findsOneWidget);
+  }
+
+  Future<void> pumpPhoneVerificationPage({
+    required AuthRepository authRepository,
+    required SignInPayload payload,
+    VoidCallback? onVerified,
+  }) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          signInPayloadProvider.overrideWithValue(payload),
+          authRepositoryProvider.overrideWithValue(authRepository),
+        ],
+        child: MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: PhoneVerificationPage(onSuccess: onVerified),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+  }
+
   Future<void> enterCode(String code) async {
     final codeField = find.byType(TextFormField);
     expect(codeField, findsOneWidget);
     await tester.enterText(codeField, code);
     await tester.pump();
+  }
+
+  void expectCharactersTextFound() {
+    final charactersText = find.textContaining('characters');
+    expect(charactersText, findsOneWidget);
+  }
+
+  Future<void> pumpAccountSetupPage({
+    required AuthRepository authRepository,
+    required SignInPayload payload,
+  }) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          signInPayloadProvider.overrideWithValue(payload),
+          authRepositoryProvider.overrideWithValue(authRepository),
+        ],
+        child: const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: AccountSetupPage(),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
   }
 
   Future<void> enterDisplayName(String name) async {
@@ -81,6 +132,18 @@ class AuthRobot {
     await tester.pump();
   }
 
+  void expectRequiredTextFound() {
+    final requiredText = find.textContaining('required');
+    expect(requiredText, findsOneWidget);
+  }
+
+  Future<void> tapSignInSubmitButton() async {
+    final button = find.byType(LoadingElevatedButton);
+    expect(button, findsOneWidget);
+    await tester.tap(button);
+    await tester.pumpAndSettle();
+  }
+
   Future<void> signInWithPhoneNumber() async {
     await enterPhoneNumber('912345678');
     await tapSignInSubmitButton();
@@ -88,16 +151,6 @@ class AuthRobot {
     await tapSignInSubmitButton();
     await enterDisplayName('Display Name');
     await tapSignInSubmitButton();
-  }
-
-  void expectRequiredTextFound() {
-    final requiredText = find.textContaining('required');
-    expect(requiredText, findsOneWidget);
-  }
-
-  void expectNumbersTextFound() {
-    final numbersText = find.textContaining('numbers');
-    expect(numbersText, findsOneWidget);
   }
 
   Future<void> pumpAccountScreen({AuthRepository? authRepository}) {

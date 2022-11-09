@@ -63,8 +63,7 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
       (_, state) => state.showAlertDialogOnError(context),
     );
     final state = ref.watch(signInControllerProvider);
-    final phoneNumber =
-        ref.watch(signInControllerProvider.notifier).phoneNumber!;
+    final phoneNumber = ref.watch(signInPayloadProvider).phoneNumber!;
     return SetupLayout(
       formKey: formKey,
       title: context.loc.phoneNumberVerification,
