@@ -11,6 +11,7 @@ import 'package:kfazer3/src/features/auth/presentation/sign_in/pages/account_set
 import 'package:kfazer3/src/features/auth/presentation/sign_in/pages/phone_sign_in_page.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/pages/phone_verification_page.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
+import 'package:kfazer3/src/features/auth/presentation/sign_in/sms_code_controller.dart';
 
 class AuthRobot {
   final WidgetTester tester;
@@ -71,6 +72,7 @@ class AuthRobot {
   Future<void> pumpPhoneVerificationPage({
     required AuthRepository authRepository,
     required SignInPayload payload,
+    SmsCodeController? smsCodeController,
     VoidCallback? onVerified,
   }) async {
     await tester.pumpWidget(
@@ -78,6 +80,9 @@ class AuthRobot {
         overrides: [
           signInPayloadProvider.overrideWithValue(payload),
           authRepositoryProvider.overrideWithValue(authRepository),
+          if (smsCodeController != null)
+            smsCodeControllerProvider(smsCodeController.phoneNumber)
+                .overrideWithValue(smsCodeController),
         ],
         child: MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -151,9 +156,13 @@ class AuthRobot {
     await tester.pumpAndSettle();
   }
 
-  Future<void> signInWithPhoneNumber() async {
+  Future<void> submitPhoneNumber() async {
     await enterPhoneNumber('912345678');
     await tapSignInSubmitButton();
+  }
+
+  Future<void> signInWithPhoneNumber() async {
+    await submitPhoneNumber();
     await enterCode('123456');
     await tapSignInSubmitButton();
     await enterDisplayName('Display Name');

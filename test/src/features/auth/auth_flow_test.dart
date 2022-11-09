@@ -4,7 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../robot.dart';
 
-//TODO resend sms code flow test
 void main() {
   testWidgets('Sign in and sign out flow', (tester) async {
     final r = Robot(tester);

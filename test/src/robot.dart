@@ -63,6 +63,11 @@ class Robot {
     await tester.pumpAndSettle();
   }
 
+  void expectFindVerifyMessage() {
+    final verify = find.textContaining('verify');
+    expect(verify, findsOneWidget);
+  }
+
   void expectFindWelcomeMessage() {
     final welcome = find.textContaining('Welcome');
     expect(welcome, findsOneWidget);
