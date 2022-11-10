@@ -3,8 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
-import 'package:kfazer3/src/features/workspace/data/workspace_repository.dart';
-import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
+import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
@@ -18,13 +17,12 @@ class GroupListScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final groupListValue = ref.watch(workspaceListStreamProvider); //!
+    final groupListValue = ref.watch(groupListStreamProvider); //!
     return Scaffold(
       appBar: const HomeBar(),
       body: ResponsiveCenter(
         padding: EdgeInsets.all(kSpace),
-        child: AsyncValueWidget<List<Workspace>>(
-          //!
+        child: AsyncValueWidget<List<Group>>(
           value: groupListValue,
           data: (groupList) => groupList.isEmpty
               ? const GroupEmptyList()

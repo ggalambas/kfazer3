@@ -10,7 +10,7 @@ import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
-import '../../../group/presentation/group_list/home_bar.dart';
+import '../../../groups/presentation/group_list/home_bar.dart';
 import 'workspace_card.dart';
 
 class WorkspaceListScreen extends ConsumerWidget {
