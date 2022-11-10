@@ -14,10 +14,10 @@ class MockCountryRepository extends Mock implements CountryRepository {}
 class MockNotificationsRepository extends Mock
     implements NotificationsRepository {}
 
+class MockGroupsRepository extends Mock implements GroupsRepository {}
+
 //TODO remove this mock
 class MockWorkspaceRepository extends Mock implements WorkspaceRepository {}
-
-class MockGroupsRepository extends Mock implements GroupsRepository {}
 
 class MockSmsCodeController extends Mock implements SmsCodeController {}
 

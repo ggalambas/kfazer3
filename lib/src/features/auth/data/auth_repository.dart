@@ -30,7 +30,7 @@ abstract class AuthRepository {
 
 //* Providers
 
-final authStateChangesProvider = StreamProvider.autoDispose<AppUser?>(
+final authStateChangesProvider = StreamProvider<AppUser?>(
   (ref) => ref.watch(authRepositoryProvider).authStateChanges(),
 );
 

@@ -20,7 +20,7 @@ class GroupPreferencesScreen extends ConsumerWidget {
 
   void changePlan(Reader read, Group group, GroupPlan plan) {
     final newGroup = group.updatePlan(plan);
-    read(groupRepositoryProvider).updateGroup(newGroup);
+    read(groupsRepositoryProvider).updateGroup(newGroup);
   }
 
   @override

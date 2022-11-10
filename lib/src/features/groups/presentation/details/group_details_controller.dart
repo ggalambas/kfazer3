@@ -5,7 +5,7 @@ import 'package:kfazer3/src/features/groups/domain/group.dart';
 final groupDetailsControllerProvider =
     StateNotifierProvider.autoDispose<GroupDetailsController, AsyncValue>(
   (ref) {
-    final repository = ref.read(groupRepositoryProvider);
+    final repository = ref.read(groupsRepositoryProvider);
     return GroupDetailsController(groupsRepository: repository);
   },
 );

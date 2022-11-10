@@ -11,7 +11,7 @@ import 'package:kfazer3/src/utils/string_validator.dart';
 final groupEditControllerProvider =
     StateNotifierProvider.autoDispose<GroupEditController, AsyncValue>(
   (ref) {
-    final repository = ref.read(groupRepositoryProvider);
+    final repository = ref.read(groupsRepositoryProvider);
     return GroupEditController(groupsRepository: repository);
   },
 );
