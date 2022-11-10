@@ -12,7 +12,7 @@ void main() {
     await r.pumpMyApp();
     r.expectFindWelcomeMessage();
     await r.auth.signInWithPhoneNumber();
-    r.expectFindAllWorkspaceCards();
+    r.expectFindAllGroupCards();
     await r.openPopupMenu();
     await r.openSettingsScreen();
     await r.openAccountDetails();

@@ -7,12 +7,12 @@ import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/data/country_repository.dart';
 import 'package:kfazer3/src/features/auth/data/fake_auth_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/country.dart';
+import 'package:kfazer3/src/features/groups/presentation/group_list/group_card.dart';
 import 'package:kfazer3/src/features/notifications/data/fake_notifications_repository.dart';
 import 'package:kfazer3/src/features/notifications/data/notifications_repository.dart';
 import 'package:kfazer3/src/features/settings/presentation/settings_screen.dart';
 import 'package:kfazer3/src/features/workspace/data/fake_workspaces_repository.dart';
 import 'package:kfazer3/src/features/workspace/data/workspace_repository.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_list/workspace_card.dart';
 import 'package:mocktail/mocktail.dart';
 
 import 'features/auth/auth_robot.dart';
@@ -73,8 +73,8 @@ class Robot {
     expect(welcome, findsOneWidget);
   }
 
-  void expectFindAllWorkspaceCards() {
-    final cards = find.byType(WorkspaceCard);
+  void expectFindAllGroupCards() {
+    final cards = find.byType(GroupCard);
     expect(cards, findsNWidgets(kTestWorkspaces.length));
   }
 

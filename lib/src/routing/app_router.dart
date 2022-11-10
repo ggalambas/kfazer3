@@ -33,7 +33,6 @@ enum AppRoute {
   workspaceSetup, //! fullscreenDialog
   workspaceSetupPage,
 
-  group,
   workspaceMenu,
   groupPreferences, //! fullscreenDialog
   groupDetails,
@@ -166,11 +165,52 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             },
           ),
           GoRoute(path: 'g', redirect: (context, state) => '/'),
+          GoRoute(path: 'g/:groupId', redirect: (context, state) => '/'),
           GoRoute(
-            path: 'g/:groupId',
-            name: AppRoute.group.name,
-            builder: (_, state) {
+            path: 'g/:groupId/preferences',
+            name: AppRoute.groupPreferences.name,
+            pageBuilder: (_, state) {
               final groupId = state.params['groupId']!;
+              return MaterialPage(
+                key: state.pageKey,
+                fullscreenDialog: true,
+                child: GroupPreferencesScreen(groupId: groupId),
+              );
+            },
+            routes: [
+              GoRoute(
+                path: 'details',
+                name: AppRoute.groupDetails.name,
+                builder: (_, state) {
+                  final groupId = state.params['groupId']!;
+                  final editingParam = state.queryParams['editing'];
+                  final editing = editingParam == 'true';
+                  return editing
+                      ? GroupEditScreen(groupId: groupId)
+                      : GroupDetailsScreen(groupId: groupId);
+                },
+              ),
+              GoRoute(
+                path: 'motivational-messages',
+                name: AppRoute.motivation.name,
+                builder: (_, state) {
+                  final workspaceId = state.params['groupId']!;
+                  final editingParam = state.queryParams['editing'];
+                  final editing = editingParam == 'true';
+                  return editing
+                      ? MotivationEditScreen(workspaceId: workspaceId)
+                      : MotivationDetailsScreen(workspaceId: workspaceId);
+                },
+              ),
+            ],
+          ),
+          //TODO project route
+          GoRoute(path: 'p', redirect: (context, state) => '/'),
+          GoRoute(
+            path: 'p/:projectId',
+            // name: AppRoute.group.name,
+            builder: (_, state) {
+              final projectId = state.params['projectId']!;
               final menuName = state.queryParams['menu'];
               final menu = WorkspaceMenu.values.firstWhereOrNull(
                 (menu) => menu.name == menuName,
@@ -180,7 +220,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 (taskState) => taskState.name == taskStateName,
               );
               return WorkspaceScreen(
-                workspaceId: groupId,
+                workspaceId: projectId,
                 menu: menu,
                 taskState: taskState,
               );
@@ -216,44 +256,6 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                         fullscreenDialog: true,
                         child: TaskActivityScreen(taskId: taskId),
                       );
-                    },
-                  ),
-                ],
-              ),
-              GoRoute(
-                path: 'preferences',
-                name: AppRoute.groupPreferences.name,
-                pageBuilder: (_, state) {
-                  final groupId = state.params['groupId']!;
-                  return MaterialPage(
-                    key: state.pageKey,
-                    fullscreenDialog: true,
-                    child: GroupPreferencesScreen(groupId: groupId),
-                  );
-                },
-                routes: [
-                  GoRoute(
-                    path: 'details',
-                    name: AppRoute.groupDetails.name,
-                    builder: (_, state) {
-                      final groupId = state.params['groupId']!;
-                      final editingParam = state.queryParams['editing'];
-                      final editing = editingParam == 'true';
-                      return editing
-                          ? GroupEditScreen(groupId: groupId)
-                          : GroupDetailsScreen(groupId: groupId);
-                    },
-                  ),
-                  GoRoute(
-                    path: 'motivational-messages',
-                    name: AppRoute.motivation.name,
-                    builder: (_, state) {
-                      final workspaceId = state.params['groupId']!;
-                      final editingParam = state.queryParams['editing'];
-                      final editing = editingParam == 'true';
-                      return editing
-                          ? MotivationEditScreen(workspaceId: workspaceId)
-                          : MotivationDetailsScreen(workspaceId: workspaceId);
                     },
                   ),
                 ],

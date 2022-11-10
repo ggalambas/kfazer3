@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/common_widgets/setup_layout.dart';
@@ -13,7 +12,6 @@ import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code
 import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/workspace_setup_controller.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
-import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:smart_space/smart_space.dart';
 
@@ -71,10 +69,11 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
     final success = await controller.createWorkspace();
     if (success && mounted) {
       final workspaceId = ref.read(workspaceSetupControllerProvider).value!;
-      context.goNamed(
-        AppRoute.group.name,
-        params: {'groupId': workspaceId},
-      );
+      //!
+      // context.goNamed(
+      //   AppRoute.group.name,
+      //   params: {'groupId': workspaceId},
+      // );
     }
   }
 
