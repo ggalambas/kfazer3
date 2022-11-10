@@ -2,9 +2,11 @@ import 'package:kfazer3/src/features/groups/domain/group_plan.dart';
 
 import 'group.dart';
 
-//TODO tests
+// TODO comments
+// TODO tests
+// TODO add/remove member method
 
-/// Helper extension used to mark a workspace as read
+/// Helper extension used to change workspace details
 extension MutableGroup on Group {
   Group updateTitle(String title) => copyWith(title: title);
 
@@ -22,6 +24,7 @@ extension MutableGroup on Group {
     String? photoUrl,
     List<String>? motivationalMessages,
     GroupPlan? plan,
+    List<String>? memberIds,
   }) =>
       Group(
         id: id,
@@ -30,5 +33,6 @@ extension MutableGroup on Group {
         photoUrl: photoUrl ?? this.photoUrl,
         motivationalMessages: motivationalMessages ?? this.motivationalMessages,
         plan: plan ?? this.plan,
+        memberIds: memberIds ?? this.memberIds,
       );
 }

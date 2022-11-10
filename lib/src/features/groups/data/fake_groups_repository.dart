@@ -18,7 +18,11 @@ class FakeGroupsRepository implements GroupsRepository {
   @override
   Stream<List<Group>> watchGroupList(String uid) async* {
     await delay(addDelay);
-    yield* _groups.stream;
+    yield* _groups.stream.map(
+      (groups) => groups.where((group) {
+        return group.memberIds.contains(uid);
+      }).toList(),
+    );
   }
 
   @override

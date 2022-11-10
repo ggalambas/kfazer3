@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:kfazer3/src/constants/test_users.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/domain/group_plan.dart';
 
@@ -12,6 +15,10 @@ final _kTestGroups = List.generate(
         'A group made by him for the company x in the center of the world.',
     motivationalMessages: [...kMotivationalMessages],
     plan: GroupPlan.family,
+    memberIds: kTestUsers
+        .where((_) => Random().nextBool())
+        .map((user) => user.id)
+        .toList(),
   ),
 );
 

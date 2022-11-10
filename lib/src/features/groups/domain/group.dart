@@ -1,10 +1,9 @@
 import 'package:equatable/equatable.dart';
-import 'package:kfazer3/src/constants/test_workspaces.dart';
 
 import 'group_plan.dart';
 
 // TODO move default motivational messages to another file
-// TODO member list
+// TODO [GUI] check member list
 
 /// * The group identifier is an important concept and can have its own type.
 typedef GroupId = String;
@@ -17,16 +16,17 @@ class Group with EquatableMixin {
   final String? description;
   final String? photoUrl;
   final List<String> motivationalMessages;
-
   final GroupPlan plan;
+  final List<String> memberIds;
 
   const Group({
     required this.id,
     required this.title,
     this.description,
     this.photoUrl,
-    this.motivationalMessages = kMotivationalMessages, //?
+    this.motivationalMessages = const [], //? it was required for what reason
     required this.plan,
+    required this.memberIds,
   });
 
   @override
