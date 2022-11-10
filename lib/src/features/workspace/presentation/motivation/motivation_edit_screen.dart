@@ -7,11 +7,11 @@ import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/constants/constants.dart';
+import 'package:kfazer3/src/features/groups/presentation/not_found_group.dart';
 import 'package:kfazer3/src/features/workspace/data/workspace_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/updatable_workspace.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_edit_screen_controller.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/not_found_workspace.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
@@ -97,7 +97,7 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
     return AsyncValueWidget<Workspace?>(
         value: workspaceValue,
         data: (workspace) {
-          if (workspace == null) return const NotFoundWorkspace();
+          if (workspace == null) return const NotFoundGroup();
           init(workspace);
           return Scaffold(
             appBar: AppBar(

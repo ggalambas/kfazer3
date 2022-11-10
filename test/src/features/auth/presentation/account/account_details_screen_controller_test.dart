@@ -2,21 +2,21 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kfazer3/src/features/auth/presentation/account/account_details_screen_controller.dart';
+import 'package:kfazer3/src/features/auth/presentation/account/account_details_controller.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks.dart';
 
 void main() {
   late MockAuthRepository authRepository;
-  late AccountDetailsScreenController controller;
+  late AccountDetailsController controller;
   setUp(() {
     authRepository = MockAuthRepository();
-    controller = AccountDetailsScreenController(
+    controller = AccountDetailsController(
       authRepository: authRepository,
     );
   });
-  group('AccountDetailsScreenController', () {
+  group('AccountDetailsController', () {
     test('initial state is AsyncValue.data', () {
       verifyNever(authRepository.signOut);
       verifyNever(authRepository.deleteUser);

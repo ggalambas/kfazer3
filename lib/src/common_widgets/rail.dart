@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
-class Trail extends StatelessWidget {
+class Rail extends StatelessWidget {
   final bool automaticallyImplyLeading;
   final Widget? leading;
   final String? title;
   final List<Widget> actions;
 
-  const Trail({
+  const Rail({
     super.key,
     this.automaticallyImplyLeading = true,
     this.leading,

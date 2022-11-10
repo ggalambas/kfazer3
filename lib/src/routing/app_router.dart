@@ -7,7 +7,10 @@ import 'package:kfazer3/src/features/auth/presentation/account/account_details_s
 import 'package:kfazer3/src/features/auth/presentation/account/account_edit_screen.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
+import 'package:kfazer3/src/features/groups/presentation/details/group_details_screen.dart';
+import 'package:kfazer3/src/features/groups/presentation/details/group_edit_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_list/group_list_screen.dart';
+import 'package:kfazer3/src/features/groups/presentation/preferences/group_preferences_screen.dart';
 import 'package:kfazer3/src/features/notifications/presentation/notification_list_screen.dart';
 import 'package:kfazer3/src/features/settings/presentation/settings_screen.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
@@ -16,9 +19,6 @@ import 'package:kfazer3/src/features/tasks/presentation/task_screen/task_activit
 import 'package:kfazer3/src/features/tasks/presentation/task_screen/task_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_details_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_edit_screen.dart';
-import 'package:kfazer3/src/features/workspace/presentation/preferences/workspace_preferences_screen.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_details/workspace_details_screen.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_details/workspace_edit_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/workspace_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/workspace_setup_screen.dart';
 import 'package:kfazer3/src/routing/not_found_screen.dart';
@@ -35,8 +35,8 @@ enum AppRoute {
 
   group,
   workspaceMenu,
-  workspacePreferences, //! fullscreenDialog
-  workspaceDetails,
+  groupPreferences, //! fullscreenDialog
+  groupDetails,
   motivation,
   workspaceArchive, //! fullscreenDialog
 
@@ -165,9 +165,9 @@ final goRouterProvider = Provider<GoRouter>((ref) {
               );
             },
           ),
-          GoRoute(path: 'w', redirect: (context, state) => '/'),
+          GoRoute(path: 'g', redirect: (context, state) => '/'),
           GoRoute(
-            path: 'w/:groupId',
+            path: 'g/:groupId',
             name: AppRoute.group.name,
             builder: (_, state) {
               final groupId = state.params['groupId']!;
@@ -222,26 +222,26 @@ final goRouterProvider = Provider<GoRouter>((ref) {
               ),
               GoRoute(
                 path: 'preferences',
-                name: AppRoute.workspacePreferences.name,
+                name: AppRoute.groupPreferences.name,
                 pageBuilder: (_, state) {
-                  final workspaceId = state.params['groupId']!;
+                  final groupId = state.params['groupId']!;
                   return MaterialPage(
                     key: state.pageKey,
                     fullscreenDialog: true,
-                    child: WorkspacePreferencesScreen(workspaceId: workspaceId),
+                    child: GroupPreferencesScreen(groupId: groupId),
                   );
                 },
                 routes: [
                   GoRoute(
                     path: 'details',
-                    name: AppRoute.workspaceDetails.name,
+                    name: AppRoute.groupDetails.name,
                     builder: (_, state) {
-                      final workspaceId = state.params['groupId']!;
+                      final groupId = state.params['groupId']!;
                       final editingParam = state.queryParams['editing'];
                       final editing = editingParam == 'true';
                       return editing
-                          ? WorkspaceEditScreen(workspaceId: workspaceId)
-                          : WorkspaceDetailsScreen(workspaceId: workspaceId);
+                          ? GroupEditScreen(groupId: groupId)
+                          : GroupDetailsScreen(groupId: groupId);
                     },
                   ),
                   GoRoute(

@@ -3,42 +3,42 @@ import 'dart:typed_data';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kfazer3/src/features/workspace/data/workspace_repository.dart';
-import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
+import 'package:kfazer3/src/features/groups/data/groups_repository.dart';
+import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/utils/string_validator.dart';
 
-final workspaceEditScreenControllerProvider = StateNotifierProvider.autoDispose<
-    WorkspaceEditScreenController, AsyncValue>(
+final groupEditControllerProvider =
+    StateNotifierProvider.autoDispose<GroupEditController, AsyncValue>(
   (ref) {
-    final repository = ref.read(workspaceRepositoryProvider);
-    return WorkspaceEditScreenController(workspaceRepository: repository);
+    final repository = ref.read(groupRepositoryProvider);
+    return GroupEditController(groupsRepository: repository);
   },
 );
 
-class WorkspaceEditScreenController extends StateNotifier<AsyncValue>
-    with WorkspaceValidators {
-  final WorkspaceRepository workspaceRepository;
+class GroupEditController extends StateNotifier<AsyncValue>
+    with GroupValidators {
+  final GroupsRepository groupsRepository;
 
-  WorkspaceEditScreenController({required this.workspaceRepository})
+  GroupEditController({required this.groupsRepository})
       : super(const AsyncValue.data(null));
 
-  Future<void> save(Workspace workspace, Uint8List? imageBytes) async {
+  Future<void> save(Group group, Uint8List? imageBytes) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(
-      () => workspaceRepository.updateWorkspace(workspace),
+      () => groupsRepository.updateGroup(group),
     );
-    //TODO save workspace image
+    //TODO save group image
 
     // save image into storage
     // get image url
-    // update workspace photoUrl
-    // update workspace
+    // update group photoUrl
+    // update group
     //! update tests
   }
 }
 
-mixin WorkspaceValidators {
+mixin GroupValidators {
   List<StringValidator> titleSubmitValidators(BuildContext context) => [
         NonEmptyStringValidator(context.loc.invalidTitleEmpty),
       ];
@@ -46,7 +46,7 @@ mixin WorkspaceValidators {
   List<StringValidator> descriptionSubmitValidators(BuildContext context) => [];
 }
 
-extension WorkspaceValidatorsText on WorkspaceValidators {
+extension GroupValidatorsText on GroupValidators {
   String? titleErrorText(BuildContext context, String name) =>
       titleSubmitValidators(context)
           .firstWhereOrNull((validator) => !validator.isValid(name))

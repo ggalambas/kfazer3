@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/features/dashboard/presentation/dashboard_page.dart';
+import 'package:kfazer3/src/features/groups/presentation/not_found_group.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_list/task_list_page.dart';
 import 'package:kfazer3/src/features/team/presentation/team_page.dart';
@@ -13,7 +14,6 @@ import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 
-import 'not_found_workspace.dart';
 import 'workspace_screen_controller.dart';
 
 /// The three sub-routes that are presented as part of the workspace screen.
@@ -111,7 +111,7 @@ class _WorkspaceScreenState extends ConsumerState<WorkspaceScreen>
     return AsyncValueWidget<Workspace?>(
       value: workspaceValue,
       data: (workspace) {
-        if (workspace == null) return const NotFoundWorkspace();
+        if (workspace == null) return const NotFoundGroup();
         return Scaffold(
           appBar: WorkspaceBar(workspace: workspace),
           body: PageView(

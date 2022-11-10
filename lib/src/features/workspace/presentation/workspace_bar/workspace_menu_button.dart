@@ -73,12 +73,12 @@ class _WorkspaceMenuButtonState extends ConsumerState<WorkspaceMenuButton> {
             );
             break;
           //TODO only show for admins
-          case WorkspaceMenuOption.preferences:
-            context.pushNamed(
-              AppRoute.workspacePreferences.name,
-              params: {'groupId': widget.workspace.id},
-            );
-            break;
+          // case WorkspaceMenuOption.preferences:
+          //   context.pushNamed(
+          //     AppRoute.workspacePreferences.name,
+          //     params: {'groupId': widget.workspace.id},
+          //   );
+          //   break;
           case WorkspaceMenuOption.members:
             //TODO go to members screen
             showNotImplementedAlertDialog(context: context);

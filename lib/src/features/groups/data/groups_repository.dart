@@ -1,4 +1,6 @@
+import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kfazer3/src/constants/test_groups.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 
 final groupRepositoryProvider = Provider<GroupsRepository>(
@@ -22,16 +24,20 @@ abstract class GroupsRepository {
 
 //* Providers
 
-// final groupListStreamProvider = StreamProvider.autoDispose<List<Group>>(
-//   (ref) {
-//     final groupRepository = ref.watch(groupRepositoryProvider);
-//     return groupRepository.watchGroupList();
-//   },
-// );
+final groupListStreamProvider = StreamProvider.autoDispose<List<Group>>(
+  (ref) {
+    return Stream.value(kTestGroups);
+    // final groupRepository = ref.watch(groupRepositoryProvider);
+    // return groupRepository.watchGroupList();
+  },
+);
 
-// final groupStreamProvider = StreamProvider.autoDispose.family<Group?, GroupId>(
-//   (ref, id) {
-//     final groupRepository = ref.watch(groupRepositoryProvider);
-//     return groupRepository.watchGroup(id);
-//   },
-// );
+final groupStreamProvider = StreamProvider.autoDispose.family<Group?, GroupId>(
+  (ref, id) {
+    return Stream.value(
+      kTestGroups.firstWhereOrNull((group) => group.id == id),
+    );
+    // final groupRepository = ref.watch(groupRepositoryProvider);
+    // return groupRepository.watchGroup(id);
+  },
+);

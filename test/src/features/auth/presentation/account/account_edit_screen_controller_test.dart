@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
-import 'package:kfazer3/src/features/auth/presentation/account/account_edit_screen_controller.dart';
+import 'package:kfazer3/src/features/auth/presentation/account/account_edit_controller.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks.dart';
@@ -18,14 +18,14 @@ void main() {
     name: testName,
   );
   late MockAuthRepository authRepository;
-  late AccountEditScreenController controller;
+  late AccountEditController controller;
   setUp(() {
     authRepository = MockAuthRepository();
-    controller = AccountEditScreenController(
+    controller = AccountEditController(
       authRepository: authRepository,
     );
   });
-  group('AccountEditScreenController', () {
+  group('AccountEditController', () {
     test('initial state is AsyncValue.data', () {
       verifyNever(() => authRepository.updateUser(testUser));
       expect(controller.debugState, const AsyncData<dynamic>(null));

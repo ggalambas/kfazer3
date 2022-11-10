@@ -3,7 +3,7 @@ import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/group_avatar.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_list/group_menu_button.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:smart_space/smart_space.dart';
 
 /// Used to show a single group inside a card.
@@ -26,6 +26,7 @@ class GroupCard extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(kSpace),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ListTile(
                 contentPadding: EdgeInsets.zero,
@@ -38,7 +39,7 @@ class GroupCard extends StatelessWidget {
                 onPressed: () =>
                     showNotImplementedAlertDialog(context: context),
                 icon: const Icon(Icons.add),
-                label: Text('New project'.hardcoded),
+                label: Text(context.loc.newProject),
               ),
             ],
           ),

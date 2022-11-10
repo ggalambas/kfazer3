@@ -7,9 +7,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
 import 'package:kfazer3/src/common_widgets/image_picker_badge.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
+import 'package:kfazer3/src/common_widgets/rail.dart';
 import 'package:kfazer3/src/common_widgets/responsive_scaffold.dart';
 import 'package:kfazer3/src/common_widgets/tap_to_unfocus.dart';
-import 'package:kfazer3/src/common_widgets/trail.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/mutable_app_user.dart';
@@ -22,7 +22,7 @@ import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
 
-import 'account_edit_screen_controller.dart';
+import 'account_edit_controller.dart';
 
 class AccountEditScreen extends ConsumerStatefulWidget {
   const AccountEditScreen({super.key});
@@ -73,7 +73,7 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
     setState(() => submitted = true);
     if (!formKey.currentState!.validate()) return;
     final phoneNumber = PhoneNumber(phoneCode, this.phoneNumber);
-    await ref.read(accountEditScreenControllerProvider.notifier).save(
+    await ref.read(accountEditControllerProvider.notifier).save(
           user.updateName(name).updatePhoneNumber(phoneNumber),
           _imageBytes,
         );
@@ -93,7 +93,7 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
   @override
   Widget build(BuildContext context) {
     ref.listen<AsyncValue>(
-      accountEditScreenControllerProvider,
+      accountEditControllerProvider,
       (_, state) => state.showAlertDialogOnError(context),
     );
     ref.listen<AsyncValue>(
@@ -101,13 +101,14 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
       (_, state) => state.showAlertDialogOnError(context),
     );
 
-    final state = ref.watch(accountEditScreenControllerProvider);
+    final state = ref.watch(accountEditControllerProvider);
     final imageState = ref.watch(imageEditingControllerProvider);
     final maybeSave = imageState.isLoading ? null : save;
     final maybeCancel = state.isLoading ? null : goBack;
 
     return TapToUnfocus(
       child: ResponsiveScaffold(
+        padding: EdgeInsets.all(kSpace * 2),
         appBar: AppBar(
           leading: CloseButton(onPressed: maybeCancel),
           title: Text(context.loc.account),
@@ -119,7 +120,7 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
             ),
           ],
         ),
-        rail: Trail(
+        rail: Rail(
           leading: CloseButton(onPressed: maybeCancel),
           title: context.loc.account,
           actions: [
@@ -164,7 +165,7 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
                   validator: (name) {
                     if (!submitted) return null;
                     return ref
-                        .read(accountEditScreenControllerProvider.notifier)
+                        .read(accountEditControllerProvider.notifier)
                         .nameErrorText(context, name ?? '');
                   },
                 ),
@@ -183,7 +184,7 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
                   validator: (phoneNumber) {
                     if (!submitted) return null;
                     return ref
-                        .read(accountEditScreenControllerProvider.notifier)
+                        .read(accountEditControllerProvider.notifier)
                         .phoneNumberErrorText(context, phoneNumber ?? '');
                   },
                 ),

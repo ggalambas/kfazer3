@@ -7,14 +7,16 @@ import 'package:smart_space/smart_space.dart';
 /// two the appbar and the body side by side if there is enough space,
 /// or the standard scaffold if there is not enough space.
 class ResponsiveScaffold extends StatelessWidget {
+  final double maxContentWidth;
+  final EdgeInsetsGeometry padding;
   final PreferredSizeWidget? appBar;
   final Widget? rail;
   final Widget body;
-  final double breakpoint;
 
   const ResponsiveScaffold({
     super.key,
-    this.breakpoint = Breakpoint.tablet,
+    this.maxContentWidth = Breakpoint.tablet,
+    this.padding = EdgeInsets.zero,
     this.appBar,
     this.rail,
     required this.body,
@@ -23,7 +25,7 @@ class ResponsiveScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth >= breakpoint) {
+      if (constraints.maxWidth >= maxContentWidth) {
         return Scaffold(
           body: ResponsiveCenter(
             maxContentWidth: Breakpoint.desktop,
@@ -42,7 +44,7 @@ class ResponsiveScaffold extends StatelessWidget {
         return Scaffold(
           appBar: appBar,
           body: ResponsiveCenter(
-            padding: EdgeInsets.all(kSpace * 2),
+            padding: padding,
             child: body,
           ),
         );

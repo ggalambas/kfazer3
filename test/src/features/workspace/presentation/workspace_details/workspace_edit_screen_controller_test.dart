@@ -2,37 +2,37 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kfazer3/src/features/workspace/domain/preferences.dart';
-import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_details/workspace_edit_screen_controller.dart';
+import 'package:kfazer3/src/features/groups/domain/group.dart';
+import 'package:kfazer3/src/features/groups/domain/group_plan.dart';
+import 'package:kfazer3/src/features/groups/presentation/details/group_edit_controller.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks.dart';
 
 void main() {
-  const testWorkspace = Workspace(
+  const testGroup = Group(
     id: 'id',
     title: 'title',
-    motivationalMessages: [],
-    plan: WorkspacePlan.family,
+    plan: GroupPlan.family,
+    memberIds: [],
   );
-  late MockWorkspaceRepository workspaceRepository;
-  late WorkspaceEditScreenController controller;
+  late MockGroupsRepository groupsRepository;
+  late GroupEditController controller;
   setUp(() {
-    workspaceRepository = MockWorkspaceRepository();
-    controller = WorkspaceEditScreenController(
-      workspaceRepository: workspaceRepository,
+    groupsRepository = MockGroupsRepository();
+    controller = GroupEditController(
+      groupsRepository: groupsRepository,
     );
   });
-  group('WorkspaceEditScreenController', () {
+  group('GroupEditController', () {
     test('initial state is AsyncValue.data', () {
-      verifyNever(() => workspaceRepository.updateWorkspace(testWorkspace));
+      verifyNever(() => groupsRepository.updateGroup(testGroup));
       expect(controller.debugState, const AsyncData<dynamic>(null));
     });
     group('save', () {
       test('save success', () async {
         // setup
-        when(() => workspaceRepository.updateWorkspace(testWorkspace))
+        when(() => groupsRepository.updateGroup(testGroup))
             .thenAnswer((_) => Future.value());
         // expect later
         expectLater(
@@ -43,15 +43,14 @@ void main() {
           ]),
         );
         // run
-        await controller.save(testWorkspace, null);
+        await controller.save(testGroup, null);
         // verify
-        verify(() => workspaceRepository.updateWorkspace(testWorkspace))
-            .called(1);
+        verify(() => groupsRepository.updateGroup(testGroup)).called(1);
       });
       test('save failure', () async {
         // setup
         final exception = Exception('Connection failed');
-        when(() => workspaceRepository.updateWorkspace(testWorkspace))
+        when(() => groupsRepository.updateGroup(testGroup))
             .thenThrow(exception);
         // expect later
         expectLater(
@@ -62,10 +61,9 @@ void main() {
           ]),
         );
         // run
-        await controller.save(testWorkspace, null);
+        await controller.save(testGroup, null);
         // verify
-        verify(() => workspaceRepository.updateWorkspace(testWorkspace))
-            .called(1);
+        verify(() => groupsRepository.updateGroup(testGroup)).called(1);
       });
     });
   });

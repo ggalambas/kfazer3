@@ -1,18 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 
-final accountDetailsScreenControllerProvider = StateNotifierProvider
-    .autoDispose<AccountDetailsScreenController, AsyncValue>(
+final accountDetailsControllerProvider =
+    StateNotifierProvider.autoDispose<AccountDetailsController, AsyncValue>(
   (ref) {
     final repository = ref.read(authRepositoryProvider);
-    return AccountDetailsScreenController(authRepository: repository);
+    return AccountDetailsController(authRepository: repository);
   },
 );
 
-class AccountDetailsScreenController extends StateNotifier<AsyncValue> {
+class AccountDetailsController extends StateNotifier<AsyncValue> {
   final AuthRepository authRepository;
 
-  AccountDetailsScreenController({required this.authRepository})
+  AccountDetailsController({required this.authRepository})
       : super(const AsyncValue.data(null));
 
   Future<void> signOut() async {

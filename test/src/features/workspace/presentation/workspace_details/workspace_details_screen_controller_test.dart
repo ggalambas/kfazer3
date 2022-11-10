@@ -2,30 +2,30 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_details/workspace_details_screen_controller.dart';
+import 'package:kfazer3/src/features/groups/presentation/details/group_details_controller.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks.dart';
 
 void main() {
   const testWorkspaceId = 'id';
-  late MockWorkspaceRepository workspaceRepository;
-  late WorkspaceDetailsScreenController controller;
+  late MockGroupsRepository groupRepository;
+  late GroupDetailsController controller;
   setUp(() {
-    workspaceRepository = MockWorkspaceRepository();
-    controller = WorkspaceDetailsScreenController(
-      workspaceRepository: workspaceRepository,
+    groupRepository = MockGroupsRepository();
+    controller = GroupDetailsController(
+      groupsRepository: groupRepository,
     );
   });
-  group('WorkspaceDetailsScreenController', () {
+  group('GroupDetailsController', () {
     test('initial state is AsyncValue.data', () {
-      verifyNever(() => workspaceRepository.deleteWorkspace(testWorkspaceId));
+      verifyNever(() => groupRepository.deleteGroup(testWorkspaceId));
       expect(controller.debugState, const AsyncData<dynamic>(null));
     });
     group('deleteWorkspace', () {
       test('deleteWorkspace success', () async {
         // setup
-        when(() => workspaceRepository.deleteWorkspace(testWorkspaceId))
+        when(() => groupRepository.deleteGroup(testWorkspaceId))
             .thenAnswer((_) => Future.value());
         // expect later
         expectLater(
@@ -36,15 +36,14 @@ void main() {
           ]),
         );
         // run
-        await controller.deleteWorkspace(testWorkspaceId);
+        await controller.deleteGroup(testWorkspaceId);
         // verify
-        verify(() => workspaceRepository.deleteWorkspace(testWorkspaceId))
-            .called(1);
+        verify(() => groupRepository.deleteGroup(testWorkspaceId)).called(1);
       });
       test('deleteWorkspace failure', () async {
         // setup
         final exception = Exception('Connection failed');
-        when(() => workspaceRepository.deleteWorkspace(testWorkspaceId))
+        when(() => groupRepository.deleteGroup(testWorkspaceId))
             .thenThrow(exception);
         // expect later
         expectLater(
@@ -55,10 +54,9 @@ void main() {
           ]),
         );
         // run
-        await controller.deleteWorkspace(testWorkspaceId);
+        await controller.deleteGroup(testWorkspaceId);
         // verify
-        verify(() => workspaceRepository.deleteWorkspace(testWorkspaceId))
-            .called(1);
+        verify(() => groupRepository.deleteGroup(testWorkspaceId)).called(1);
       });
     });
   });

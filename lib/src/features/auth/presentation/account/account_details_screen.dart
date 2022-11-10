@@ -4,11 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/details_bar.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
+import 'package:kfazer3/src/common_widgets/rail.dart';
 import 'package:kfazer3/src/common_widgets/responsive_scaffold.dart';
-import 'package:kfazer3/src/common_widgets/trail.dart';
 import 'package:kfazer3/src/common_widgets/user_avatar.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
-import 'package:kfazer3/src/features/auth/presentation/account/account_details_screen_controller.dart';
+import 'package:kfazer3/src/features/auth/presentation/account/account_details_controller.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
@@ -33,7 +33,7 @@ class AccountDetailsScreen extends ConsumerWidget {
       defaultActionText: context.loc.delete,
     );
     if (delete == true) {
-      read(accountDetailsScreenControllerProvider.notifier).deleteUser();
+      read(accountDetailsControllerProvider.notifier).deleteUser();
     }
   }
 
@@ -45,24 +45,25 @@ class AccountDetailsScreen extends ConsumerWidget {
       defaultActionText: context.loc.signOut,
     );
     if (logout == true) {
-      read(accountDetailsScreenControllerProvider.notifier).signOut();
+      read(accountDetailsControllerProvider.notifier).signOut();
     }
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen<AsyncValue>(
-      accountDetailsScreenControllerProvider,
+      accountDetailsControllerProvider,
       (_, state) => state.showAlertDialogOnError(context),
     );
 
     final user = ref.watch(currentUserStateProvider);
-    final state = ref.watch(accountDetailsScreenControllerProvider);
+    final state = ref.watch(accountDetailsControllerProvider);
     final maybeEdit = state.isLoading ? null : () => edit(context);
     final maybeDelete =
         state.isLoading ? null : () => delete(context, ref.read);
 
     return ResponsiveScaffold(
+      padding: EdgeInsets.all(kSpace * 2),
       appBar: DetailsBar(
         loading: state.isLoading,
         title: context.loc.account,
@@ -70,7 +71,7 @@ class AccountDetailsScreen extends ConsumerWidget {
         deleteText: context.loc.deleteAccount,
         onDelete: () => delete(context, ref.read),
       ),
-      rail: Trail(
+      rail: Rail(
         title: context.loc.account,
         actions: [
           TextButton(
