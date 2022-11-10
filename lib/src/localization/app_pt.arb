@@ -86,8 +86,8 @@
   "deleteWorkspace": "ELiminar espaço de trabalho",
   "title": "Título",
   "description": "Descrição",
-  "workspaceCreateFirst": "Cria o teu primeiro espaço de trabalho!",
-  "workspaceCreateFirstDescription": "Um espaço de trabalho é onde podes estruturar uma equipa e gerir as tuas tarefas.",
+  "groupCreateFirst": "Cria o teu primeiro espaço de trabalho!",
+  "groupCreateFirstDescription": "Um espaço de trabalho é onde podes estruturar uma equipa e gerir as tuas tarefas.",
   "workspaceNoAccess": "Não tens acesso a este espaço de trabalho. Pro favor contacta um membro para seres adicionado à sua equipa",
 
   "tasks": "Tarefas",

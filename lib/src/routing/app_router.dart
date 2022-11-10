@@ -33,7 +33,7 @@ enum AppRoute {
   workspaceSetup, //! fullscreenDialog
   workspaceSetupPage,
 
-  workspace,
+  group,
   workspaceMenu,
   workspacePreferences, //! fullscreenDialog
   workspaceDetails,
@@ -167,10 +167,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           ),
           GoRoute(path: 'w', redirect: (context, state) => '/'),
           GoRoute(
-            path: 'w/:workspaceId',
-            name: AppRoute.workspace.name,
+            path: 'w/:groupId',
+            name: AppRoute.group.name,
             builder: (_, state) {
-              final workspaceId = state.params['workspaceId']!;
+              final groupId = state.params['groupId']!;
               final menuName = state.queryParams['menu'];
               final menu = WorkspaceMenu.values.firstWhereOrNull(
                 (menu) => menu.name == menuName,
@@ -180,7 +180,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 (taskState) => taskState.name == taskStateName,
               );
               return WorkspaceScreen(
-                workspaceId: workspaceId,
+                workspaceId: groupId,
                 menu: menu,
                 taskState: taskState,
               );

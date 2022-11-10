@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
+import 'package:kfazer3/src/features/notifications/presentation/notifications_icon.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_bar/notifications_icon.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_bar/workspace_menu_button.dart';
 
 /// Custom [AppBar] widget that is used by the [WorkspaceScreen].

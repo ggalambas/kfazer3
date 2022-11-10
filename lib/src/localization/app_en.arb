@@ -86,8 +86,8 @@
   "deleteWorkspace": "Delete workspace",
   "title": "Title",
   "description": "Description",
-  "workspaceCreateFirst": "Create your first workspace!",
-  "workspaceCreateFirstDescription": "A workspace is where you can structure a team and manage your tasks.",
+  "groupCreateFirst": "Create your first workspace!",
+  "groupCreateFirstDescription": "A workspace is where you can structure a team and manage your tasks.",
   "workspaceNoAccess": "You do not have access to this workspace. Please contact a member to add you to their team",
 
   "tasks": "Tasks",
