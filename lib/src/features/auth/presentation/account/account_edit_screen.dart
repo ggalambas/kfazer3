@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -41,19 +39,12 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
   late final phoneCodeController = PhoneCodeController(
     code: user.phoneNumber.code,
   );
-
-  Uint8List? _imageBytes;
-  set imageBytes(Uint8List? bytes) {
-    _imageBytes = bytes;
-    image = bytes == null ? null : MemoryImage(bytes);
-  }
-
-  late ImageProvider? image =
-      user.photoUrl == null ? null : NetworkImage(user.photoUrl!);
+  late final imageController = ImageController(url: user.photoUrl);
 
   String get name => nameController.text;
   String get phoneNumber => phoneNumberController.text;
   String get phoneCode => phoneCodeController.code;
+  ImageProvider? get image => imageController.image;
 
   // local variable used to apply AutovalidateMode.onUserInteraction and show
   // error hints only when the form has been submitted
@@ -72,20 +63,25 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
   Future<void> save() async {
     setState(() => submitted = true);
     if (!formKey.currentState!.validate()) return;
+
     final phoneNumber = PhoneNumber(phoneCode, this.phoneNumber);
-    await ref.read(accountEditControllerProvider.notifier).save(
-          user.updateName(name).updatePhoneNumber(phoneNumber),
-          _imageBytes,
-        );
+    final updatedUser = user.updateName(name).updatePhoneNumber(phoneNumber);
+
+    await ref
+        .read(accountEditControllerProvider.notifier)
+        .save(updatedUser, imageController);
+
     if (mounted) goBack();
   }
 
-  void applyImage(XFile? file) async {
-    if (file == null) return setState(() => imageBytes = null);
+  void updateImage(XFile? file) async {
+    // photo removed
+    if (file == null) return imageController.clear();
+    // new photo uploaded
     final bytes = await ref
         .read(imageEditingControllerProvider.notifier)
         .readAsBytes(file);
-    if (bytes != null) setState(() => imageBytes = bytes);
+    if (bytes != null) imageController.bytes = bytes;
   }
 
   void goBack() => context.goNamed(AppRoute.accountDetails.name);
@@ -136,18 +132,22 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
             child: Column(
               children: [
                 ValueListenableBuilder(
-                  valueListenable: nameController,
+                  valueListenable: imageController,
                   builder: (context, _, __) {
                     return ImagePickerBadge(
                       loading: imageState.isLoading,
                       disabled: state.isLoading,
-                      onImagePicked: applyImage,
+                      onImagePicked: updateImage,
                       showDeleteOption: image != null,
-                      child: Avatar(
-                        radius: kSpace * 10,
-                        foregroundImage: image,
-                        text: name,
-                      ),
+                      child: ValueListenableBuilder(
+                          valueListenable: nameController,
+                          builder: (context, _, __) {
+                            return Avatar(
+                              radius: kSpace * 10,
+                              foregroundImage: image,
+                              text: name,
+                            );
+                          }),
                     );
                   },
                 ),

@@ -8,13 +8,17 @@ extension MutableAppUser on AppUser {
   AppUser updatePhoneNumber(PhoneNumber phoneNumber) =>
       copyWith(phoneNumber: phoneNumber);
 
+  AppUser updatePhotoUrl(String photoUrl) => copyWith(photoUrl: photoUrl);
+
   AppUser copyWith({
     String? name,
     PhoneNumber? phoneNumber,
+    String? photoUrl,
   }) =>
       AppUser(
         id: id,
         name: name ?? this.name,
         phoneNumber: phoneNumber ?? this.phoneNumber,
+        photoUrl: photoUrl ?? this.photoUrl,
       );
 }

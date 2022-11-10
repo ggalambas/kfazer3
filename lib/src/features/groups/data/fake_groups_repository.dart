@@ -16,11 +16,11 @@ class FakeGroupsRepository implements GroupsRepository {
   FakeGroupsRepository({this.addDelay = true});
 
   @override
-  Stream<List<Group>> watchGroupList(String uid) async* {
+  Stream<List<Group>> watchGroupList(String userId) async* {
     await delay(addDelay);
     yield* _groups.stream.map(
       (groups) => groups.where((group) {
-        return group.memberIds.contains(uid);
+        return group.memberIds.contains(userId);
       }).toList(),
     );
   }
