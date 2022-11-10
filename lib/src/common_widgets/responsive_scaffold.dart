@@ -3,6 +3,8 @@ import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:smart_space/smart_space.dart';
 
+export 'rail.dart';
+
 typedef BodyBuilder = Widget Function(bool);
 
 /// Responsive layout that shows
@@ -15,6 +17,7 @@ class ResponsiveScaffold extends StatelessWidget {
   final Widget? rail;
   final Widget? body;
   final BodyBuilder? builder;
+  final Widget? floatingActionButton;
 
   const ResponsiveScaffold({
     super.key,
@@ -23,6 +26,7 @@ class ResponsiveScaffold extends StatelessWidget {
     this.appBar,
     this.rail,
     required Widget this.body,
+    this.floatingActionButton,
   }) : builder = null;
 
   const ResponsiveScaffold.builder({
@@ -32,6 +36,7 @@ class ResponsiveScaffold extends StatelessWidget {
     this.appBar,
     this.rail,
     required BodyBuilder body,
+    this.floatingActionButton,
   })  : body = null,
         builder = body;
 
@@ -52,6 +57,7 @@ class ResponsiveScaffold extends StatelessWidget {
               ],
             ),
           ),
+          floatingActionButton: floatingActionButton,
         );
       } else {
         return Scaffold(
@@ -60,6 +66,7 @@ class ResponsiveScaffold extends StatelessWidget {
             padding: padding,
             child: body ?? builder!(true),
           ),
+          floatingActionButton: floatingActionButton,
         );
       }
     });

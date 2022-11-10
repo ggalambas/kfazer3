@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
-import 'package:kfazer3/src/features/notifications/presentation/notifications_icon.dart';
+import 'package:kfazer3/src/features/notifications/presentation/notifications_button.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_bar/workspace_menu_button.dart';
 
@@ -27,7 +27,7 @@ class WorkspaceBar extends StatelessWidget with PreferredSizeWidget {
       title: Text(workspace.title),
       centerTitle: screenWidth >= Breakpoint.tablet,
       actions: [
-        const NotificationsIcon(),
+        const NotificationsIconButton(),
         WorkspaceMenuButton(workspace: workspace),
       ],
     );

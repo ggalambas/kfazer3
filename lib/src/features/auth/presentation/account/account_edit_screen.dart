@@ -7,7 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
 import 'package:kfazer3/src/common_widgets/image_picker_badge.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
-import 'package:kfazer3/src/common_widgets/rail.dart';
 import 'package:kfazer3/src/common_widgets/responsive_scaffold.dart';
 import 'package:kfazer3/src/common_widgets/tap_to_unfocus.dart';
 import 'package:kfazer3/src/constants/constants.dart';

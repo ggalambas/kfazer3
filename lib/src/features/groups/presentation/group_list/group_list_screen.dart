@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
-import 'package:kfazer3/src/common_widgets/responsive_center.dart';
+import 'package:kfazer3/src/common_widgets/responsive_scaffold.dart';
 import 'package:kfazer3/src/features/groups/application/groups_service.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
+import 'package:kfazer3/src/features/groups/presentation/group_list/home_rail.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
@@ -16,23 +17,27 @@ import 'home_bar.dart';
 class GroupListScreen extends ConsumerWidget {
   const GroupListScreen({super.key});
 
+  List<Widget> groupCards(List<Group> groupList) =>
+      [for (final group in groupList) GroupCard(group: group)];
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final groupListValue = ref.watch(groupListStreamProvider);
-    return Scaffold(
+    return ResponsiveScaffold.builder(
+      padding: EdgeInsets.all(kSpace),
       appBar: const HomeBar(),
-      body: ResponsiveCenter(
-        padding: EdgeInsets.all(kSpace),
-        child: AsyncValueWidget<List<Group>>(
-          value: groupListValue,
-          data: (groupList) => groupList.isEmpty
-              ? const GroupEmptyList()
-              : ListView(
-                  children: [
-                    for (final group in groupList) GroupCard(group: group),
-                  ],
-                ),
-        ),
+      rail: const HomeRail(),
+      body: (isOneColumn) => AsyncValueWidget<List<Group>>(
+        value: groupListValue,
+        data: (groupList) => groupList.isEmpty
+            ? const GroupEmptyList()
+            : isOneColumn
+                ? ListView(children: groupCards(groupList))
+                : SingleChildScrollView(
+                    child: Column(
+                      children: groupCards(groupList),
+                    ),
+                  ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.goNamed(AppRoute.workspaceSetup.name),

@@ -5,7 +5,6 @@ import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/details_bar.dart';
 import 'package:kfazer3/src/common_widgets/group_avatar.dart';
 import 'package:kfazer3/src/common_widgets/loading_dialog.dart';
-import 'package:kfazer3/src/common_widgets/rail.dart';
 import 'package:kfazer3/src/common_widgets/responsive_scaffold.dart';
 import 'package:kfazer3/src/features/groups/data/groups_repository.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
