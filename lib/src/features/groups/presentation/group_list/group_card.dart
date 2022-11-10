@@ -1,0 +1,49 @@
+import 'package:flutter/material.dart';
+import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
+import 'package:kfazer3/src/common_widgets/group_avatar.dart';
+import 'package:kfazer3/src/features/groups/domain/group.dart';
+import 'package:kfazer3/src/features/groups/presentation/group_list/group_menu_button.dart';
+import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:smart_space/smart_space.dart';
+
+/// Used to show a single group inside a card.
+class GroupCard extends StatelessWidget {
+  final Group group;
+  final VoidCallback onPressed;
+
+  const GroupCard({
+    super.key,
+    required this.group,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      clipBehavior: Clip.hardEdge,
+      child: InkWell(
+        onTap: onPressed,
+        child: Padding(
+          padding: EdgeInsets.all(kSpace),
+          child: Column(
+            children: [
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: GroupAvatar(group),
+                title: Text(group.title),
+                trailing: GroupMenuButton(group: group),
+              ),
+              //TODO projects list
+              TextButton.icon(
+                onPressed: () =>
+                    showNotImplementedAlertDialog(context: context),
+                icon: const Icon(Icons.add),
+                label: Text('New project'.hardcoded),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -38,6 +38,7 @@ class Avatar extends StatelessWidget {
     return parts.join('').toUpperCase();
   }
 
+  //TODO eventually, delete this factory
   /// Rounded rectangle avatar with the workspace image and initials.
   factory Avatar.fromWorkspace(Workspace workspace, {double radius = 20}) =>
       Avatar(
