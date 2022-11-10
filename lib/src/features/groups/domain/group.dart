@@ -25,7 +25,7 @@ class Group with EquatableMixin {
     required this.title,
     this.description,
     this.photoUrl,
-    this.motivationalMessages = kMotivationalMessages,
+    this.motivationalMessages = kMotivationalMessages, //?
     required this.plan,
   });
 
