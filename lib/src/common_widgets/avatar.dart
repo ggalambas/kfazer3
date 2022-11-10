@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:kfazer3/src/features/groups/domain/group.dart';
+import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 
 class Avatar extends StatelessWidget {
@@ -38,14 +38,17 @@ class Avatar extends StatelessWidget {
     return parts.join('').toUpperCase();
   }
 
+  //TODO eventually, delete this factory
   /// Rounded rectangle avatar with the workspace image and initials.
-  factory Avatar.fromGroup(Group group, {double radius = 20}) => Avatar(
-        text: group.title,
+  factory Avatar.fromWorkspace(Workspace workspace, {double radius = 20}) =>
+      Avatar(
+        text: workspace.title,
         icon: Icons.workspaces,
         radius: radius,
         shape: BoxShape.rectangle,
-        foregroundImage:
-            group.photoUrl == null ? null : NetworkImage(group.photoUrl!),
+        foregroundImage: workspace.photoUrl == null
+            ? null
+            : NetworkImage(workspace.photoUrl!),
       );
 
   double get _fontSize => 0.45 * diameter;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
+import 'package:kfazer3/src/common_widgets/group_info_dialog.dart';
 import 'package:kfazer3/src/common_widgets/loading_dialog.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/workspace_screen_controller.dart';
@@ -65,10 +66,9 @@ class _GroupMenuButtonState extends ConsumerState<GroupMenuButton> {
       onSelected: (option) {
         switch (option) {
           case GroupMenuOption.about:
-            showAlertDialog(
+            showDialog(
               context: context,
-              title: widget.group.title,
-              content: widget.group.description,
+              builder: (_) => GroupInfoDialog(widget.group),
             );
             break;
           //TODO only show for admins

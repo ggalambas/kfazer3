@@ -61,12 +61,12 @@ class WorkspaceEmptyList extends StatelessWidget {
         children: [
           const Spacer(),
           Text(
-            context.loc.workspaceCreateFirst,
+            context.loc.groupCreateFirst,
             style: context.textTheme.displaySmall,
           ),
           Space(),
           Text(
-            context.loc.workspaceCreateFirstDescription,
+            context.loc.groupCreateFirstDescription,
             style: context.textTheme.labelLarge,
           ),
           const Spacer(flex: 2),
