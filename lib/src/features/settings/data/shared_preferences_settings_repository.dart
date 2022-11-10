@@ -5,12 +5,12 @@ import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 // TODO test shared preferences with mock values
 class SharedPreferencesSettingsRepository implements SettingsRepository {
-  late final StreamingSharedPreferences prefs;
+  final StreamingSharedPreferences prefs;
+  SharedPreferencesSettingsRepository(this.prefs);
 
-  SharedPreferencesSettingsRepository() {
-    StreamingSharedPreferences.instance.then(
-      (preferences) => prefs = preferences,
-    );
+  static Future<SharedPreferencesSettingsRepository> get instance async {
+    final prefs = await StreamingSharedPreferences.instance;
+    return SharedPreferencesSettingsRepository(prefs);
   }
 
   final openOnStartKey = 'openOnStart';

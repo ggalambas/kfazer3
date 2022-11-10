@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
+import 'package:kfazer3/src/features/settings/data/settings_repository.dart';
+import 'package:kfazer3/src/features/settings/data/shared_preferences_settings_repository.dart';
 
 import 'src/app.dart';
 import 'src/localization/string_hardcoded.dart';
@@ -13,15 +14,15 @@ void main() async {
   // https://docs.flutter.dev/testing/errors
   await runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
-    final providerContainer = ProviderContainer();
     // Turn off the # in the URLs on the web
     GoRouter.setUrlPathStrategy(UrlPathStrategy.path);
-    // Load app settings
-    await StreamingSharedPreferences.instance;
-
+    final settingsRepository =
+        await SharedPreferencesSettingsRepository.instance;
     //* Entry point of the app
-    runApp(UncontrolledProviderScope(
-      container: providerContainer,
+    runApp(ProviderScope(
+      overrides: [
+        settingsRepositoryProvider.overrideWithValue(settingsRepository),
+      ],
       child: const MyApp(),
     ));
 

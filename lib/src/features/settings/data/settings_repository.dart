@@ -3,10 +3,11 @@ import 'package:kfazer3/src/localization/language.dart';
 import 'package:kfazer3/src/theme/app_theme_mode.dart';
 import 'package:kfazer3/src/utils/stream_notifier.dart';
 
-import 'fake_settings_repository.dart';
-
 final settingsRepositoryProvider = Provider<SettingsRepository>(
-  (ref) => FakeSettingsRepository(),
+  (ref) {
+    // * Override this in the main method
+    throw UnimplementedError();
+  },
 );
 
 abstract class SettingsRepository {
