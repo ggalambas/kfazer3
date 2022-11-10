@@ -61,7 +61,7 @@ class _WorkspaceDetailsScreenState
             title: context.loc.workspace,
             onEdit: () => context.goNamed(
               AppRoute.workspaceDetails.name,
-              params: {'workspaceId': widget.workspaceId},
+              params: {'groupId': widget.workspaceId},
               queryParams: {'editing': 'true'},
             ),
             deleteText: context.loc.deleteWorkspace,

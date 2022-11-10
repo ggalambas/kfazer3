@@ -72,8 +72,8 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
     if (success && mounted) {
       final workspaceId = ref.read(workspaceSetupControllerProvider).value!;
       context.goNamed(
-        AppRoute.workspace.name,
-        params: {'workspaceId': workspaceId},
+        AppRoute.group.name,
+        params: {'groupId': workspaceId},
       );
     }
   }

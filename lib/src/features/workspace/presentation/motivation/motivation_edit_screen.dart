@@ -81,7 +81,7 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
 
   void goBack() => context.goNamed(
         AppRoute.motivation.name,
-        params: {'workspaceId': widget.workspaceId},
+        params: {'groupId': widget.workspaceId},
       );
 
   @override

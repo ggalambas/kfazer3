@@ -76,7 +76,7 @@ class _WorkspaceMenuButtonState extends ConsumerState<WorkspaceMenuButton> {
           case WorkspaceMenuOption.preferences:
             context.pushNamed(
               AppRoute.workspacePreferences.name,
-              params: {'workspaceId': widget.workspace.id},
+              params: {'groupId': widget.workspace.id},
             );
             break;
           case WorkspaceMenuOption.members:
@@ -86,7 +86,7 @@ class _WorkspaceMenuButtonState extends ConsumerState<WorkspaceMenuButton> {
           case WorkspaceMenuOption.archive:
             context.pushNamed(
               AppRoute.workspaceArchive.name,
-              params: {'workspaceId': widget.workspace.id},
+              params: {'groupId': widget.workspace.id},
             );
             break;
           case WorkspaceMenuOption.export:

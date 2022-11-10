@@ -37,7 +37,7 @@ class WorkspacePreferencesScreen extends ConsumerWidget {
                 ListTile(
                   onTap: () => context.goNamed(
                     AppRoute.workspaceDetails.name,
-                    params: {'workspaceId': workspace.id},
+                    params: {'groupId': workspace.id},
                   ),
                   leading: Avatar.fromWorkspace(workspace),
                   title: Text(workspace.title),
@@ -54,7 +54,7 @@ class WorkspacePreferencesScreen extends ConsumerWidget {
                 ListTile(
                   onTap: () => context.goNamed(
                     AppRoute.motivation.name,
-                    params: {'workspaceId': workspace.id},
+                    params: {'groupId': workspace.id},
                   ),
                   leading: const Icon(Icons.mark_chat_read),
                   title: Text(context.loc.motivationalMessages),
