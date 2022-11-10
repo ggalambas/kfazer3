@@ -7,6 +7,7 @@ import 'package:kfazer3/src/features/auth/presentation/account/account_details_s
 import 'package:kfazer3/src/features/auth/presentation/account/account_edit_screen.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
+import 'package:kfazer3/src/features/group/presentation/group_list/group_list_screen.dart';
 import 'package:kfazer3/src/features/notifications/presentation/notification_list_screen.dart';
 import 'package:kfazer3/src/features/settings/presentation/settings_screen.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
@@ -18,7 +19,6 @@ import 'package:kfazer3/src/features/workspace/presentation/motivation/motivatio
 import 'package:kfazer3/src/features/workspace/presentation/preferences/workspace_preferences_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_details/workspace_details_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_details/workspace_edit_screen.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_list/workspace_list_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/workspace_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/workspace_setup_screen.dart';
 import 'package:kfazer3/src/routing/not_found_screen.dart';
@@ -33,7 +33,7 @@ enum AppRoute {
   workspaceSetup, //! fullscreenDialog
   workspaceSetupPage,
 
-  workspace,
+  group,
   workspaceMenu,
   workspacePreferences, //! fullscreenDialog
   workspaceDetails,
@@ -98,7 +98,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/',
         name: AppRoute.home.name,
-        builder: (_, state) => const WorkspaceListScreen(),
+        builder: (_, state) => const GroupListScreen(),
         routes: [
           GoRoute(
             path: 'notifications',
@@ -167,10 +167,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           ),
           GoRoute(path: 'w', redirect: (context, state) => '/'),
           GoRoute(
-            path: 'w/:workspaceId',
-            name: AppRoute.workspace.name,
+            path: 'w/:groupId',
+            name: AppRoute.group.name,
             builder: (_, state) {
-              final workspaceId = state.params['workspaceId']!;
+              final groupId = state.params['groupId']!;
               final menuName = state.queryParams['menu'];
               final menu = WorkspaceMenu.values.firstWhereOrNull(
                 (menu) => menu.name == menuName,
@@ -180,7 +180,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 (taskState) => taskState.name == taskStateName,
               );
               return WorkspaceScreen(
-                workspaceId: workspaceId,
+                workspaceId: groupId,
                 menu: menu,
                 taskState: taskState,
               );
@@ -198,7 +198,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 path: 't/:taskId',
                 name: AppRoute.task.name,
                 builder: (_, state) {
-                  final workspaceId = state.params['workspaceId']!;
+                  final workspaceId = state.params['groupId']!;
                   final taskId = state.params['taskId']!;
                   return TaskScreen(
                     workspaceId: workspaceId,
@@ -224,7 +224,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 path: 'preferences',
                 name: AppRoute.workspacePreferences.name,
                 pageBuilder: (_, state) {
-                  final workspaceId = state.params['workspaceId']!;
+                  final workspaceId = state.params['groupId']!;
                   return MaterialPage(
                     key: state.pageKey,
                     fullscreenDialog: true,
@@ -236,7 +236,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                     path: 'details',
                     name: AppRoute.workspaceDetails.name,
                     builder: (_, state) {
-                      final workspaceId = state.params['workspaceId']!;
+                      final workspaceId = state.params['groupId']!;
                       final editingParam = state.queryParams['editing'];
                       final editing = editingParam == 'true';
                       return editing
@@ -248,7 +248,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                     path: 'motivational-messages',
                     name: AppRoute.motivation.name,
                     builder: (_, state) {
-                      final workspaceId = state.params['workspaceId']!;
+                      final workspaceId = state.params['groupId']!;
                       final editingParam = state.queryParams['editing'];
                       final editing = editingParam == 'true';
                       return editing

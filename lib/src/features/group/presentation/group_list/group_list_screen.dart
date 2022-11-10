@@ -10,31 +10,32 @@ import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
-import '../../../group/presentation/group_list/home_bar.dart';
-import 'workspace_card.dart';
+import 'group_card.dart';
+import 'home_bar.dart';
 
-class WorkspaceListScreen extends ConsumerWidget {
-  const WorkspaceListScreen({super.key});
+class GroupListScreen extends ConsumerWidget {
+  const GroupListScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final workspaceListValue = ref.watch(workspaceListStreamProvider);
+    final groupListValue = ref.watch(workspaceListStreamProvider); //!
     return Scaffold(
       appBar: const HomeBar(),
       body: ResponsiveCenter(
         padding: EdgeInsets.all(kSpace),
         child: AsyncValueWidget<List<Workspace>>(
-          value: workspaceListValue,
-          data: (workspaceList) => workspaceList.isEmpty
-              ? const WorkspaceEmptyList()
+          //!
+          value: groupListValue,
+          data: (groupList) => groupList.isEmpty
+              ? const GroupEmptyList()
               : ListView(
                   children: [
-                    for (final workspace in workspaceList)
-                      WorkspaceCard(
-                        workspace: workspace,
+                    for (final group in groupList)
+                      GroupCard(
+                        group: group,
                         onPressed: () => context.goNamed(
                           AppRoute.group.name,
-                          params: {'groupId': workspace.id},
+                          params: {'groupId': group.id},
                         ),
                       ),
                   ],
@@ -50,8 +51,8 @@ class WorkspaceListScreen extends ConsumerWidget {
   }
 }
 
-class WorkspaceEmptyList extends StatelessWidget {
-  const WorkspaceEmptyList({super.key});
+class GroupEmptyList extends StatelessWidget {
+  const GroupEmptyList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -61,12 +62,14 @@ class WorkspaceEmptyList extends StatelessWidget {
         children: [
           const Spacer(),
           Text(
-            context.loc.workspaceCreateFirst,
+            // context.loc.groupCreateFirst,
+            '',
             style: context.textTheme.displaySmall,
           ),
           Space(),
           Text(
-            context.loc.workspaceCreateFirstDescription,
+            // context.loc.groupCreateFirstDescription,
+            '',
             style: context.textTheme.labelLarge,
           ),
           const Spacer(flex: 2),

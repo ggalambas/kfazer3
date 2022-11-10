@@ -87,7 +87,7 @@ class _TaskScreenState extends ConsumerState<TaskScreen>
       context.replaceNamed(
         AppRoute.task.name,
         params: {
-          'workspaceId': widget.workspaceId,
+          'groupId': widget.workspaceId,
           'taskId': widget.taskId,
         },
         queryParams: {

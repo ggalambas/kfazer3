@@ -53,7 +53,7 @@ class MotivationDetailsScreen extends ConsumerWidget {
               title: context.loc.motivation,
               onEdit: () => context.goNamed(
                 AppRoute.motivation.name,
-                params: {'workspaceId': workspaceId},
+                params: {'groupId': workspaceId},
                 queryParams: {'editing': 'true'},
               ),
               deleteText: context.loc.clearAll,

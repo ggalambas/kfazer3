@@ -94,8 +94,8 @@ class TaskDetails extends ConsumerWidget {
           if (workspace != null)
             ListTile(
               onTap: () => context.goNamed(
-                AppRoute.workspace.name,
-                params: {'workspaceId': workspace.id},
+                AppRoute.group.name,
+                params: {'groupId': workspace.id},
               ),
               leading: Avatar.fromWorkspace(workspace, radius: 16),
               title: Text(workspace.title),

@@ -89,8 +89,8 @@ class _WorkspaceScreenState extends ConsumerState<WorkspaceScreen>
   void goToMenu(int i) {
     if (i != menu.index) {
       context.goNamed(
-        AppRoute.workspace.name,
-        params: {'workspaceId': widget.workspaceId},
+        AppRoute.group.name,
+        params: {'groupId': widget.workspaceId},
         queryParams: {'menu': WorkspaceMenu.values[i].name},
       );
     }

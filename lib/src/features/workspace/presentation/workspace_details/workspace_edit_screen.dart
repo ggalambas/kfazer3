@@ -90,7 +90,7 @@ class _WorkspaceEditScreenState extends ConsumerState<WorkspaceEditScreen> {
 
   void goBack() => context.goNamed(
         AppRoute.workspaceDetails.name,
-        params: {'workspaceId': widget.workspaceId},
+        params: {'groupId': widget.workspaceId},
       );
 
   @override
