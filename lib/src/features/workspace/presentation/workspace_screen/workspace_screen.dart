@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/features/dashboard/presentation/dashboard_page.dart';
 import 'package:kfazer3/src/features/groups/presentation/not_found_group.dart';
@@ -11,7 +10,6 @@ import 'package:kfazer3/src/features/workspace/data/workspace_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_bar/workspace_bar.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
-import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 
 import 'workspace_screen_controller.dart';
@@ -88,11 +86,12 @@ class _WorkspaceScreenState extends ConsumerState<WorkspaceScreen>
 
   void goToMenu(int i) {
     if (i != menu.index) {
-      context.goNamed(
-        AppRoute.group.name,
-        params: {'groupId': widget.workspaceId},
-        queryParams: {'menu': WorkspaceMenu.values[i].name},
-      );
+      //!
+      // context.goNamed(
+      //   AppRoute.group.name,
+      //   params: {'groupId': widget.workspaceId},
+      //   queryParams: {'menu': WorkspaceMenu.values[i].name},
+      // );
     }
   }
 

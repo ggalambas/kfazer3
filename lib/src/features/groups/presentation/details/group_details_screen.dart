@@ -55,11 +55,8 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
       (_, state) => state.showAlertDialogOnError(context),
     );
 
-    print(1);
     final groupValue = ref.watch(groupStreamProvider(widget.groupId));
-    print(2);
     final state = ref.watch(groupDetailsControllerProvider);
-    print(3);
 
     return AsyncValueWidget<Group?>(
       value: groupValue,

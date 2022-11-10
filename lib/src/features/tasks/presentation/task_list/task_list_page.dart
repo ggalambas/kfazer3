@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_list/task_grid.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/workspace_screen.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
-import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
@@ -66,16 +63,17 @@ class _TaskListPageState extends State<TaskListPage>
 
   void goToTab(int i) {
     if (i != taskState.index) {
-      context.goNamed(
-        AppRoute.group.name,
-        params: {
-          'groupId': widget.workspaceId,
-        },
-        queryParams: {
-          'menu': WorkspaceMenu.tasks.name,
-          'state': TaskState.tabs[i].name,
-        },
-      );
+      //!
+      // context.goNamed(
+      //   AppRoute.group.name,
+      //   params: {
+      //     'groupId': widget.workspaceId,
+      //   },
+      //   queryParams: {
+      //     'menu': WorkspaceMenu.tasks.name,
+      //     'state': TaskState.tabs[i].name,
+      //   },
+      // );
     }
   }
 

@@ -30,41 +30,46 @@ class GroupPreferencesScreen extends ConsumerWidget {
       value: groupValue,
       data: (group) {
         if (group == null) return const NotFoundGroup();
-        return ResponsiveScaffold(
+        final preferences = preferenceList(context, ref, group);
+        return ResponsiveScaffold.builder(
           appBar: AppBar(title: Text(context.loc.preferences)),
           rail: Rail(title: context.loc.preferences),
-          body: ListView(
-            children: [
-              ListTile(
-                onTap: () => context.goNamed(
-                  AppRoute.groupDetails.name,
-                  params: {'groupId': group.id},
-                ),
-                leading: GroupAvatar(group),
-                title: Text(group.title),
-              ),
-              const Divider(),
-              SelectionSettingTile<GroupPlan>(
-                selected: group.plan,
-                onChanged: (plan) => changePlan(ref.read, group, plan),
-                options: GroupPlan.values,
-                icon: Icons.auto_awesome,
-                title: context.loc.plan,
-                description: context.loc.planDescription,
-              ),
-              ListTile(
-                onTap: () => context.goNamed(
-                  AppRoute.motivation.name,
-                  params: {'groupId': group.id},
-                ),
-                leading: const Icon(Icons.mark_chat_read),
-                title: Text(context.loc.motivationalMessages),
-                subtitle: Text(context.loc.motivationalMessagesDescription),
-              ),
-            ],
-          ),
+          body: (isOneColumn) => isOneColumn
+              ? ListView(children: preferences)
+              : SingleChildScrollView(child: Column(children: preferences)),
         );
       },
     );
   }
+
+  List<Widget> preferenceList(
+          BuildContext context, WidgetRef ref, Group group) =>
+      [
+        ListTile(
+          onTap: () => context.goNamed(
+            AppRoute.groupDetails.name,
+            params: {'groupId': group.id},
+          ),
+          leading: GroupAvatar(group),
+          title: Text(group.title),
+        ),
+        const Divider(),
+        SelectionSettingTile<GroupPlan>(
+          selected: group.plan,
+          onChanged: (plan) => changePlan(ref.read, group, plan),
+          options: GroupPlan.values,
+          icon: Icons.auto_awesome,
+          title: context.loc.plan,
+          description: context.loc.planDescription,
+        ),
+        ListTile(
+          onTap: () => context.goNamed(
+            AppRoute.motivation.name,
+            params: {'groupId': group.id},
+          ),
+          leading: const Icon(Icons.mark_chat_read),
+          title: Text(context.loc.motivationalMessages),
+          subtitle: Text(context.loc.motivationalMessagesDescription),
+        ),
+      ];
 }

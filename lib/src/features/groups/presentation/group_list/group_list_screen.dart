@@ -29,14 +29,7 @@ class GroupListScreen extends ConsumerWidget {
               ? const GroupEmptyList()
               : ListView(
                   children: [
-                    for (final group in groupList)
-                      GroupCard(
-                        group: group,
-                        onPressed: () => context.goNamed(
-                          AppRoute.group.name,
-                          params: {'groupId': group.id},
-                        ),
-                      ),
+                    for (final group in groupList) GroupCard(group: group),
                   ],
                 ),
         ),

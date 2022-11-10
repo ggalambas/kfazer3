@@ -9,40 +9,30 @@ import 'package:smart_space/smart_space.dart';
 /// Used to show a single group inside a card.
 class GroupCard extends StatelessWidget {
   final Group group;
-  final VoidCallback onPressed;
-
-  const GroupCard({
-    super.key,
-    required this.group,
-    required this.onPressed,
-  });
+  const GroupCard({super.key, required this.group});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.hardEdge,
-      child: InkWell(
-        onTap: onPressed,
-        child: Padding(
-          padding: EdgeInsets.all(kSpace),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: GroupAvatar(group),
-                title: Text(group.title),
-                trailing: GroupMenuButton(group: group),
-              ),
-              //TODO projects list
-              TextButton.icon(
-                onPressed: () =>
-                    showNotImplementedAlertDialog(context: context),
-                icon: const Icon(Icons.add),
-                label: Text(context.loc.newProject),
-              ),
-            ],
-          ),
+      child: Padding(
+        padding: EdgeInsets.all(kSpace),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: GroupAvatar(group),
+              title: Text(group.title),
+              trailing: GroupMenuButton(group: group),
+            ),
+            //TODO projects list
+            TextButton.icon(
+              onPressed: () => showNotImplementedAlertDialog(context: context),
+              icon: const Icon(Icons.add),
+              label: Text(context.loc.newProject),
+            ),
+          ],
         ),
       ),
     );
