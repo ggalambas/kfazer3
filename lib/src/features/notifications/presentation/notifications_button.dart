@@ -29,7 +29,11 @@ class NotificationsTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       child: NotificationsCountBadge(
-        position: (count) => BadgePosition(end: count > 9 ? -26 : -18),
+        position: (count) {
+          if (count < 10) return const BadgePosition(end: -18);
+          if (count < 100) return const BadgePosition(end: -26);
+          return const BadgePosition(end: -34);
+        },
         child: Text(context.loc.notifications),
       ),
       onPressed: () => context.pushNamed(AppRoute.notifications.name),
