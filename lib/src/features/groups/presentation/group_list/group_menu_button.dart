@@ -5,11 +5,13 @@ import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/group_info_dialog.dart';
 import 'package:kfazer3/src/common_widgets/loading_dialog.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/workspace_screen_controller.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/localized_enum.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
+import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
+
+import 'group_menu_controller.dart';
 
 enum GroupMenuOption with LocalizedEnum {
   about,
@@ -49,6 +51,10 @@ class GroupMenuButton extends ConsumerStatefulWidget {
 class _GroupMenuButtonState extends ConsumerState<GroupMenuButton> {
   @override
   Widget build(BuildContext context) {
+    ref.listen<AsyncValue>(
+      groupMenuControllerProvider,
+      (_, state) => state.showAlertDialogOnError(context),
+    );
     return PopupMenuButton(
       itemBuilder: (context) => [
         for (final option in GroupMenuOption.values)
@@ -62,52 +68,45 @@ class _GroupMenuButtonState extends ConsumerState<GroupMenuButton> {
             ),
           ),
       ],
-      onSelected: (option) {
+      onSelected: (option) async {
         switch (option) {
           case GroupMenuOption.about:
-            showDialog(
+            return showDialog(
               context: context,
               builder: (_) => GroupInfoDialog(widget.group),
             );
-            break;
           //TODO only show for admins
           case GroupMenuOption.preferences:
-            context.pushNamed(
+            return context.pushNamed(
               AppRoute.groupPreferences.name,
               params: {'groupId': widget.group.id},
             );
-            break;
           case GroupMenuOption.members:
             //TODO go to members screen
-            showNotImplementedAlertDialog(context: context);
-            break;
+            return showNotImplementedAlertDialog(context: context);
           //TODO navigate to group archive
           case GroupMenuOption.archive:
-            context.pushNamed(
+            return context.pushNamed(
               AppRoute.workspaceArchive.name,
               params: {'groupId': widget.group.id},
             );
-            break;
           case GroupMenuOption.export:
             //TODO export group
-            showNotImplementedAlertDialog(context: context);
-            break;
+            return showNotImplementedAlertDialog(context: context);
           case GroupMenuOption.leave:
             //TODO don't show for owner
-            //TODO change logic for group
-            showLoadingDialog(
+            return showLoadingDialog(
               context: context,
               title: context.loc.areYouSure,
               cancelActionText: context.loc.cancel,
               defaultActionText: context.loc.leave,
               onDefaultAction: () async {
-                final success = await ref
-                    .read(workspaceScreenControllerProvider.notifier)
-                    .leave(widget.group.id);
-                if (mounted && success) context.goNamed(AppRoute.home.name);
+                await ref
+                    .read(groupMenuControllerProvider.notifier)
+                    .leaveGroup(widget.group);
+                if (mounted) Navigator.of(context).pop();
               },
             );
-            break;
         }
       },
     );

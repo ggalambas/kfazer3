@@ -64,7 +64,7 @@ class _LoadingDialogState extends State<LoadingDialog> {
           onPressed: () async {
             setState(() => isLoading = true);
             await widget.onDefaultAction();
-            // setState(() => isLoading = false);
+            if (mounted) setState(() => isLoading = false);
           },
           child: Text(widget.defaultActionText),
         ),

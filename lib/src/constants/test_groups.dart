@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:kfazer3/src/constants/test_users.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/domain/group_plan.dart';
@@ -16,7 +17,10 @@ final _kTestGroups = List.generate(
     motivationalMessages: [...kMotivationalMessages],
     plan: GroupPlan.family,
     memberIds: kTestUsers
-        .where((_) => Random().nextBool())
+        .whereIndexed((j, user) {
+          if (i < 2 && j == 0) return true;
+          return Random().nextBool();
+        })
         .map((user) => user.id)
         .toList(),
   ),

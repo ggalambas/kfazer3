@@ -18,6 +18,9 @@ extension MutableGroup on Group {
   Group updateMotivationalMessages(List<String> motivationalMessages) =>
       copyWith(motivationalMessages: motivationalMessages);
 
+  Group removeMember(String userId) =>
+      copyWith(memberIds: memberIds..remove(userId));
+
   Group copyWith({
     String? title,
     String? description,
