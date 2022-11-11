@@ -31,9 +31,16 @@ class AccountEditController extends StateNotifier<AsyncValue>
   Future<void> save(AppUser user, ImageController imageController) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(
-      () => imageController.imageUpdated
-          ? accountService.updateAccount(user, imageController.bytes)
-          : authRepository.updateUser(user),
+      () {
+        if (imageController.imageUpdated) {
+          return accountService.uploadPictureAndSaveUser(
+              user, imageController.bytes!);
+        } else if (imageController.imageRemoved) {
+          return accountService.removePictureAndSaveUser(user);
+        } else {
+          return authRepository.updateUser(user);
+        }
+      },
     );
   }
 }
@@ -51,9 +58,9 @@ class ImageController extends ValueNotifier<ImageProvider?> {
   final String? _startingUrl;
   String? _url;
 
-  bool get imageUpdated =>
-      _startingUrl == null && bytes != null ||
-      _startingUrl != null && (bytes != null || _url == null);
+  bool get imageRemoved =>
+      _startingUrl != null && bytes == null && _url == null;
+  bool get imageUpdated => bytes != null;
 
   Uint8List? _bytes;
   Uint8List? get bytes => _bytes;

@@ -93,16 +93,18 @@ class Avatar extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-      child: Center(
-        child: initials == null
-            ? Icon(icon, size: _fontSize)
-            : Text(
-                initials!,
-                style: context.textTheme.labelLarge!.copyWith(
-                  fontSize: _fontSize,
-                ),
-              ),
-      ),
+      child: foregroundImage == null
+          ? Center(
+              child: initials == null
+                  ? Icon(icon, size: _fontSize)
+                  : Text(
+                      initials!,
+                      style: context.textTheme.labelLarge!.copyWith(
+                        fontSize: _fontSize,
+                      ),
+                    ),
+            )
+          : null,
     );
     if (initials == null) return avatar;
     return Tooltip(message: text, child: avatar);

@@ -18,10 +18,16 @@ class AccountService {
   AccountStorageRepository get accountStorageRepository =>
       ref.read(accountStorageRepositoryProvider);
 
-  Future<void> updateAccount(AppUser user, Uint8List? imageBytes) async {
-    final photoUrl = await accountStorageRepository.uploadProfilePicture(
-        user.id, imageBytes!);
+  Future<void> uploadPictureAndSaveUser(AppUser user, Uint8List bytes) async {
+    final photoUrl =
+        await accountStorageRepository.uploadProfilePicture(user.id, bytes);
     final updatedUser = user.updatePhotoUrl(photoUrl);
+    authRepository.updateUser(updatedUser);
+  }
+
+  Future<void> removePictureAndSaveUser(AppUser user) async {
+    await accountStorageRepository.removeProfilePicture(user.id);
+    final updatedUser = user.updatePhotoUrl(null);
     authRepository.updateUser(updatedUser);
   }
 }
