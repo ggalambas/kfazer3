@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -11,10 +9,12 @@ import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/common_widgets/responsive_scaffold.dart';
 import 'package:kfazer3/src/common_widgets/tap_to_unfocus.dart';
 import 'package:kfazer3/src/constants/constants.dart';
+import 'package:kfazer3/src/features/auth/presentation/account/account_edit_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/image_editing_controller.dart';
 import 'package:kfazer3/src/features/groups/data/groups_repository.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/domain/mutable_group.dart';
+import 'package:kfazer3/src/features/groups/presentation/group_validators.dart';
 import 'package:kfazer3/src/features/groups/presentation/not_found_group.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
@@ -33,18 +33,13 @@ class GroupEditScreen extends ConsumerStatefulWidget {
 
 class GroupEditScreenState extends ConsumerState<GroupEditScreen> {
   final formKey = GlobalKey<FormState>();
-  TextEditingController? titleController;
-  TextEditingController? descriptionController;
-  ImageProvider? image;
+  late final TextEditingController titleController;
+  late final TextEditingController descriptionController;
+  late final ImageController imageController;
 
-  Uint8List? _imageBytes;
-  set imageBytes(Uint8List? bytes) {
-    _imageBytes = bytes;
-    image = bytes == null ? null : MemoryImage(bytes);
-  }
-
-  String get title => titleController!.text;
-  String get description => descriptionController!.text;
+  String get title => titleController.text;
+  String get description => descriptionController.text;
+  ImageProvider? get image => imageController.image;
 
   // local variable used to apply AutovalidateMode.onUserInteraction and show
   // error hints only when the form has been submitted
@@ -52,36 +47,44 @@ class GroupEditScreenState extends ConsumerState<GroupEditScreen> {
   // https://codewithandrea.com/articles/flutter-text-field-form-validation/
   var submitted = false;
 
+  bool initCalled = false;
   void init(Group group) {
-    titleController ??= TextEditingController(text: group.title);
-    descriptionController ??= TextEditingController(text: group.description);
-    image ??= group.photoUrl == null ? null : NetworkImage(group.photoUrl!);
+    if (initCalled) return;
+    initCalled = true;
+    titleController = TextEditingController(text: group.title);
+    descriptionController = TextEditingController(text: group.description);
+    imageController = ImageController(url: group.photoUrl);
   }
 
   @override
   void dispose() {
-    titleController?.dispose();
-    descriptionController?.dispose();
+    titleController.dispose();
+    descriptionController.dispose();
     super.dispose();
   }
 
   Future<void> save(Group group) async {
     setState(() => submitted = true);
     if (!formKey.currentState!.validate()) return;
+
     final updatedGroup =
         group.updateTitle(title).updateDescription(description);
+
     await ref
         .read(groupEditControllerProvider.notifier)
-        .save(updatedGroup, _imageBytes);
+        .save(updatedGroup, imageController);
+
     if (mounted) goBack();
   }
 
-  void applyImage(XFile? file) async {
-    if (file == null) return setState(() => imageBytes = null);
+  void updateImage(XFile? file) async {
+    // photo removed
+    if (file == null) return imageController.clear();
+    // new photo uploaded
     final bytes = await ref
         .read(imageEditingControllerProvider.notifier)
         .readAsBytes(file);
-    if (bytes != null) setState(() => imageBytes = bytes);
+    if (bytes != null) imageController.bytes = bytes;
   }
 
   void goBack() => context.goNamed(
@@ -143,20 +146,24 @@ class GroupEditScreenState extends ConsumerState<GroupEditScreen> {
                   child: Column(
                     children: [
                       ValueListenableBuilder(
-                        valueListenable: titleController!,
+                        valueListenable: imageController,
                         builder: (context, _, __) {
                           return ImagePickerBadge(
                             loading: imageState.isLoading,
                             disabled: state.isLoading,
-                            onImagePicked: applyImage,
+                            onImagePicked: updateImage,
                             showDeleteOption: image != null,
-                            child: Avatar(
-                              icon: Icons.workspaces,
-                              radius: kSpace * 10,
-                              shape: BoxShape.rectangle,
-                              foregroundImage: image,
-                              text: title,
-                            ),
+                            child: ValueListenableBuilder(
+                                valueListenable: titleController,
+                                builder: (context, _, __) {
+                                  return Avatar(
+                                    icon: Icons.workspaces,
+                                    radius: kSpace * 10,
+                                    shape: BoxShape.rectangle,
+                                    foregroundImage: image,
+                                    text: title,
+                                  );
+                                }),
                           );
                         },
                       ),

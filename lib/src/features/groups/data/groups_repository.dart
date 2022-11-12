@@ -26,6 +26,7 @@ abstract class GroupsRepository {
 
 //* Providers
 
+//? should this return null or throw an error when group not found
 final groupStreamProvider = StreamProvider.autoDispose.family<Group?, String>(
   (ref, id) {
     final repository = ref.watch(groupsRepositoryProvider);

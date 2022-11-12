@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/setup_layout.dart';
 import 'package:kfazer3/src/constants/constants.dart';
-import 'package:kfazer3/src/features/groups/presentation/details/group_edit_controller.dart';
+import 'package:kfazer3/src/features/groups/presentation/group_validators.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/workspace_setup_controller.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';

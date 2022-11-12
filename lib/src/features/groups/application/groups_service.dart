@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
+import 'package:kfazer3/src/features/groups/data/group_storage_repository.dart';
 import 'package:kfazer3/src/features/groups/data/groups_repository.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/domain/mutable_group.dart';
@@ -14,6 +17,21 @@ class GroupsService {
 
   AuthRepository get authRepository => ref.read(authRepositoryProvider);
   GroupsRepository get groupsRepository => ref.read(groupsRepositoryProvider);
+  GroupStorageRepository get accountStorageRepository =>
+      ref.read(groupStorageRepositoryProvider);
+
+  Future<void> uploadPictureAndSaveGroup(Group group, Uint8List bytes) async {
+    final photoUrl =
+        await accountStorageRepository.uploadGroupPicture(group.id, bytes);
+    final updatedGroup = group.updatePhotoUrl(photoUrl);
+    groupsRepository.updateGroup(updatedGroup);
+  }
+
+  Future<void> removePictureAndSaveGroup(Group group) async {
+    await accountStorageRepository.removeGroupPicture(group.id);
+    final updatedGroup = group.updatePhotoUrl(null);
+    groupsRepository.updateGroup(updatedGroup);
+  }
 
   Future<void> leaveGroup(Group group) async {
     final user = authRepository.currentUser!;

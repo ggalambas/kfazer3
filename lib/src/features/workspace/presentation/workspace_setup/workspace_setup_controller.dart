@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/auth/presentation/auth_validators.dart';
-import 'package:kfazer3/src/features/groups/presentation/details/group_edit_controller.dart';
+import 'package:kfazer3/src/features/groups/presentation/group_validators.dart';
 import 'package:kfazer3/src/features/workspace/data/workspace_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/preferences.dart';
 import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_edit_screen_controller.dart';

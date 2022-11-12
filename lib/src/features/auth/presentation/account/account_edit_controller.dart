@@ -8,14 +8,10 @@ import 'package:kfazer3/src/features/auth/presentation/auth_validators.dart';
 
 final accountEditControllerProvider =
     StateNotifierProvider.autoDispose<AccountEditController, AsyncValue>(
-  (ref) {
-    final service = ref.read(accountServiceProvider);
-    final repository = ref.read(authRepositoryProvider);
-    return AccountEditController(
-      accountService: service,
-      authRepository: repository,
-    );
-  },
+  (ref) => AccountEditController(
+    accountService: ref.read(accountServiceProvider),
+    authRepository: ref.read(authRepositoryProvider),
+  ),
 );
 
 class AccountEditController extends StateNotifier<AsyncValue>
@@ -28,6 +24,8 @@ class AccountEditController extends StateNotifier<AsyncValue>
     required this.authRepository,
   }) : super(const AsyncValue.data(null));
 
+  //TODO refact this logic and image controller
+  // make same changes on group edit
   Future<void> save(AppUser user, ImageController imageController) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(

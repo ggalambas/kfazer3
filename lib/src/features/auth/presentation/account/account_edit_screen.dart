@@ -30,7 +30,7 @@ class AccountEditScreen extends ConsumerStatefulWidget {
 
 class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
   final formKey = GlobalKey<FormState>();
-  late final user = ref.read(authRepositoryProvider).currentUser!;
+  late final user = ref.read(currentUserStateProvider);
   late final nameController = TextEditingController(text: user.name);
   late final phoneNumberController = TextEditingController(
     text: user.phoneNumber.number,
