@@ -20,13 +20,13 @@ class FakeGroupsRepository implements GroupsRepository {
     await delay(addDelay);
     yield* _groups.stream.map(
       (groups) => groups.where((group) {
-        return group.memberIds.contains(userId);
+        return group.memberRoles.keys.contains(userId);
       }).toList(),
     );
   }
 
   @override
-  Stream<Group?> watchGroup(GroupId id) async* {
+  Stream<Group?> watchGroup(String id) async* {
     yield* _groups.stream.map(
       (groups) => groups.firstWhereOrNull(
         (group) => group.id == id,
@@ -51,23 +51,20 @@ class FakeGroupsRepository implements GroupsRepository {
     // First, get the group list
     final groups = _groups.value;
     // Then, change the group
-    final i = groups.indexWhere((ws) => group.id == ws.id);
+    final i = groups.indexWhere((g) => group.id == g.id);
     groups[i] = group;
     // Finally, update the group list data (will emit a new value)
     _groups.value = groups;
   }
 
   @override
-  Future<void> deleteGroup(GroupId id) async {
+  Future<void> deleteGroup(String id) async {
     await delay(addDelay);
     // First, get the group list
     final groups = _groups.value;
     // Then, delete the group
-    groups.removeWhere((ws) => id == ws.id);
+    groups.removeWhere((g) => id == g.id);
     // Finally, update the group list data (will emit a new value)
     _groups.value = groups;
   }
-
-  @override
-  Future<void> leaveGroup(GroupId id) => deleteGroup(id);
 }

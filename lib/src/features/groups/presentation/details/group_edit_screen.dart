@@ -130,6 +130,7 @@ class GroupEditScreenState extends ConsumerState<GroupEditScreen> {
                 leading: CloseButton(onPressed: maybeCancel),
                 title: context.loc.group,
                 actions: [
+                  //TODO maybe use loading text button??
                   TextButton(
                     onPressed: maybeSave,
                     child: Text(context.loc.save),

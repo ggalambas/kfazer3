@@ -4,22 +4,28 @@ import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/group_info_dialog.dart';
 import 'package:kfazer3/src/common_widgets/loading_dialog.dart';
+import 'package:kfazer3/src/features/groups/application/groups_service.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/localized_enum.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
-import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 
-import 'group_menu_controller.dart';
+import 'group_list_controller.dart';
 
 enum GroupMenuOption with LocalizedEnum {
-  about,
-  preferences,
-  members,
-  archive,
-  export,
-  leave;
+  about(MemberRole.values),
+  preferences([MemberRole.owner, MemberRole.admin]),
+  members(MemberRole.values),
+  archive(MemberRole.values),
+  export(MemberRole.values),
+  leave([MemberRole.admin, MemberRole.member]);
+
+  final List<MemberRole> allowedRoles;
+  const GroupMenuOption(this.allowedRoles);
+
+  static List<GroupMenuOption> allowedValues(MemberRole role) =>
+      values.where((option) => option.allowedRoles.contains(role)).toList();
 
   @override
   String locName(BuildContext context) {
@@ -49,15 +55,15 @@ class GroupMenuButton extends ConsumerStatefulWidget {
 }
 
 class _GroupMenuButtonState extends ConsumerState<GroupMenuButton> {
+  late final menuOptions = GroupMenuOption.allowedValues(
+    ref.read(roleProvider(widget.group)),
+  );
+
   @override
   Widget build(BuildContext context) {
-    ref.listen<AsyncValue>(
-      groupMenuControllerProvider,
-      (_, state) => state.showAlertDialogOnError(context),
-    );
     return PopupMenuButton(
       itemBuilder: (context) => [
-        for (final option in GroupMenuOption.values)
+        for (final option in menuOptions)
           PopupMenuItem(
             value: option,
             child: Text(
@@ -75,7 +81,6 @@ class _GroupMenuButtonState extends ConsumerState<GroupMenuButton> {
               context: context,
               builder: (_) => GroupInfoDialog(widget.group),
             );
-          //TODO only show for admins
           case GroupMenuOption.preferences:
             return context.pushNamed(
               AppRoute.groupPreferences.name,
@@ -84,27 +89,23 @@ class _GroupMenuButtonState extends ConsumerState<GroupMenuButton> {
           case GroupMenuOption.members:
             //TODO go to members screen
             return showNotImplementedAlertDialog(context: context);
-          //TODO navigate to group archive
           case GroupMenuOption.archive:
-            return context.pushNamed(
-              AppRoute.workspaceArchive.name,
-              params: {'groupId': widget.group.id},
-            );
+            //TODO navigate to group archive (after project)
+            return showNotImplementedAlertDialog(context: context);
           case GroupMenuOption.export:
-            //TODO export group
+            //TODO export group (after export project)
             return showNotImplementedAlertDialog(context: context);
           case GroupMenuOption.leave:
-            //TODO don't show for owner
             return showLoadingDialog(
               context: context,
               title: context.loc.areYouSure,
               cancelActionText: context.loc.cancel,
               defaultActionText: context.loc.leave,
               onDefaultAction: () async {
-                await ref
-                    .read(groupMenuControllerProvider.notifier)
+                final success = await ref
+                    .read(groupListControllerProvider.notifier)
                     .leaveGroup(widget.group);
-                if (mounted) Navigator.of(context).pop();
+                if (mounted && success) Navigator.of(context).pop();
               },
             );
         }

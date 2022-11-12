@@ -32,3 +32,9 @@ final groupListStreamProvider = StreamProvider.autoDispose<List<Group>>(
     }
   },
 );
+
+final roleProvider =
+    Provider.family.autoDispose<MemberRole, Group>((ref, group) {
+  final user = ref.watch(currentUserStateProvider);
+  return group.memberRole(user.id);
+});

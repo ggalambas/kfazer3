@@ -17,16 +17,16 @@ final groupsRepositoryProvider = Provider<GroupsRepository>(
 abstract class GroupsRepository {
   // Stream<List<Group>> fetchGroupList(String uid);
   Stream<List<Group>> watchGroupList(String userId);
-  // Future<Group?> fetchGroup(GroupId id);
-  Stream<Group?> watchGroup(GroupId id);
+  // Future<Group?> fetchGroup(String id);
+  Stream<Group?> watchGroup(String id);
   Future<void> setGroup(Group group);
   Future<void> updateGroup(Group group);
-  Future<void> deleteGroup(GroupId id);
+  Future<void> deleteGroup(String id);
 }
 
 //* Providers
 
-final groupStreamProvider = StreamProvider.autoDispose.family<Group?, GroupId>(
+final groupStreamProvider = StreamProvider.autoDispose.family<Group?, String>(
   (ref, id) {
     final repository = ref.watch(groupsRepositoryProvider);
     return repository.watchGroup(id);

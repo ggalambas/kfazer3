@@ -2,23 +2,24 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/groups/application/groups_service.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 
-final groupMenuControllerProvider =
-    StateNotifierProvider.autoDispose<GroupMenuController, AsyncValue>(
+final groupListControllerProvider =
+    StateNotifierProvider.autoDispose<GroupListController, AsyncValue>(
   (ref) {
-    return GroupMenuController(
+    return GroupListController(
       groupsService: ref.watch(groupsServiceProvider),
     );
   },
 );
 
-class GroupMenuController extends StateNotifier<AsyncValue> {
+class GroupListController extends StateNotifier<AsyncValue> {
   final GroupsService groupsService;
 
-  GroupMenuController({required this.groupsService})
+  GroupListController({required this.groupsService})
       : super(const AsyncValue.data(null));
 
-  Future<void> leaveGroup(Group group) async {
+  Future<bool> leaveGroup(Group group) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() => groupsService.leaveGroup(group));
+    return !state.hasError;
   }
 }

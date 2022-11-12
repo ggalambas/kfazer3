@@ -21,7 +21,8 @@ class ResponsiveCenter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Use Center as it has *unconstrained* width (loose constraints)
-    return Center(
+    return Align(
+      alignment: const Alignment(0, -.3),
       // together with SizedBox to specify the max width (tight constraints)
       // See this thread for more info:
       // https://twitter.com/biz84/status/1445400059894542337

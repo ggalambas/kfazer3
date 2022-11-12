@@ -5,12 +5,9 @@ import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 List<AppUser> get kTestUsers => [..._kTestUsers];
 final _kTestUsers = List.generate(
   20,
-  (i) {
-    final phoneNumber = PhoneNumber('+351', (900000000 + i).toString());
-    return AppUser(
-      id: phoneNumber.full,
-      name: 'User $i',
-      phoneNumber: phoneNumber,
-    );
-  },
+  (i) => AppUser(
+    id: i.toString(),
+    name: 'User $i',
+    phoneNumber: PhoneNumber('+351', (900000000 + i).toString()),
+  ),
 );
