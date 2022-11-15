@@ -1,1 +1,1 @@
-const addRepositoryDelay = true;
+const addRepositoryDelay = false;
