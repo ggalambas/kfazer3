@@ -32,11 +32,11 @@ class GroupListScreen extends ConsumerWidget {
       padding: EdgeInsets.all(kSpace),
       appBar: const HomeBar(),
       rail: const HomeRail(),
-      body: (isOneColumn) => AsyncValueWidget<List<Group>>(
+      body: (singleColumn) => AsyncValueWidget<List<Group>>(
         value: groupListValue,
         data: (groupList) => groupList.isEmpty
             ? const GroupEmptyList()
-            : isOneColumn
+            : singleColumn
                 ? ListView(children: groupCards(groupList))
                 : SingleChildScrollView(
                     child: Column(
