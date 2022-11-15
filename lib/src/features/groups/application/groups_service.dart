@@ -38,6 +38,12 @@ class GroupsService {
     final copy = group.removeMember(user.id);
     await groupsRepository.updateGroup(copy);
   }
+
+  Future<void> joinGroup(Group group) async {
+    final user = authRepository.currentUser!;
+    final copy = group.updateMemberRole(user.id, MemberRole.member);
+    await groupsRepository.updateGroup(copy);
+  }
 }
 
 //* Providers
@@ -47,6 +53,15 @@ final groupListStreamProvider = StreamProvider.autoDispose<List<Group>>(
     final user = ref.watch(authStateChangesProvider).value;
     if (user != null) {
       yield* ref.watch(groupsRepositoryProvider).watchGroupList(user.id);
+    }
+  },
+);
+
+final pendingGroupListStreamProvider = StreamProvider.autoDispose<List<Group>>(
+  (ref) async* {
+    final user = ref.watch(authStateChangesProvider).value;
+    if (user != null) {
+      yield* ref.watch(groupsRepositoryProvider).watchPendingGroupList(user.id);
     }
   },
 );
