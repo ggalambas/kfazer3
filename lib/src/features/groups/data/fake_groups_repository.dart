@@ -16,6 +16,16 @@ class FakeGroupsRepository implements GroupsRepository {
   FakeGroupsRepository({this.addDelay = true});
 
   @override
+  Stream<List<Group>> watchAllGroupsList(String userId) async* {
+    await delay(addDelay);
+    yield* _groups.stream.map(
+      (groups) => groups.where((group) {
+        return group.memberRoles.containsKey(userId);
+      }).toList(),
+    );
+  }
+
+  @override
   Stream<List<Group>> watchGroupList(String userId) async* {
     await delay(addDelay);
     yield* _groups.stream.map(
@@ -47,7 +57,7 @@ class FakeGroupsRepository implements GroupsRepository {
   }
 
   @override
-  Future<void> setGroup(Group group) async {
+  Future<void> createGroup(Group group) async {
     await delay(addDelay);
     // First, get the group list
     final groups = _groups.value;

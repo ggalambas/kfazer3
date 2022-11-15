@@ -48,6 +48,15 @@ class GroupsService {
 
 //* Providers
 
+final allGroupsListStreamProvider = StreamProvider.autoDispose<List<Group>>(
+  (ref) async* {
+    final user = ref.watch(authStateChangesProvider).value;
+    if (user != null) {
+      yield* ref.watch(groupsRepositoryProvider).watchAllGroupsList(user.id);
+    }
+  },
+);
+
 final groupListStreamProvider = StreamProvider.autoDispose<List<Group>>(
   (ref) async* {
     final user = ref.watch(authStateChangesProvider).value;

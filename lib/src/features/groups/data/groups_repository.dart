@@ -15,12 +15,11 @@ final groupsRepositoryProvider = Provider<GroupsRepository>(
 );
 
 abstract class GroupsRepository {
-  // Stream<List<Group>> fetchGroupList(String uid);
+  Stream<List<Group>> watchAllGroupsList(String userId);
   Stream<List<Group>> watchGroupList(String userId);
   Stream<List<Group>> watchPendingGroupList(String userId);
-  // Future<Group?> fetchGroup(String id);
   Stream<Group?> watchGroup(String id);
-  Future<void> setGroup(Group group);
+  Future<void> createGroup(Group group);
   Future<void> updateGroup(Group group);
   Future<void> deleteGroup(String id);
 }
