@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:kfazer3/src/constants/test_workspaces.dart';
+import 'package:kfazer3/src/constants/test_projects.dart';
 import 'package:kfazer3/src/features/tasks/domain/task.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 
@@ -12,7 +12,7 @@ final _kTestTasks = List.generate(
     final state = TaskState.values[Random().nextInt(TaskState.values.length)];
     return Task(
       id: i.toString(),
-      workspaceId: Random().nextInt(kTestWorkspaces.length).toString(),
+      workspaceId: Random().nextInt(kTestProjects.length).toString(),
       description: 'Description of task $i',
       state: state,
       startDate: state == TaskState.scheduled
