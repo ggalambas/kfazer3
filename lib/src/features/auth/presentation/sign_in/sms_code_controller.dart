@@ -1,10 +1,11 @@
 import 'dart:async';
 
+import 'package:flutter_animate/extensions/num_duration_extensions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 
-const kCodeTimerDuration = Duration(seconds: 30);
+final kCodeTimerDuration = 30.seconds;
 
 final smsCodeControllerProvider = StateNotifierProvider.family
     .autoDispose<SmsCodeController, AsyncValue<int>, PhoneNumber>(
@@ -28,7 +29,7 @@ class SmsCodeController extends StateNotifier<AsyncValue<int>> {
   bool get isTicking => (state.valueOrNull ?? 0) != 0;
 
   void initTimer() {
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    timer = Timer.periodic(1.seconds, (timer) {
       if (isTicking) state = AsyncValue.data(state.value! - 1);
     });
   }

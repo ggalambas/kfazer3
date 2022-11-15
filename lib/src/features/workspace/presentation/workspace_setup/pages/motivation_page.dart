@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/extensions/num_duration_extensions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/setup_layout.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
@@ -66,7 +67,7 @@ class _MotivationPageState extends ConsumerState<MotivationPage> {
       messageNodes!.add(FocusNode());
     });
     messageNodes!.last.requestFocus();
-    await Future.delayed(const Duration(milliseconds: 100));
+    await Future.delayed(100.ms);
     scrollController.jumpTo(scrollController.position.maxScrollExtent);
   }
 
