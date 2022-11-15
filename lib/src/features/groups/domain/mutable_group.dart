@@ -23,6 +23,9 @@ extension MutableGroup on Group {
   Group removeMember(String memberId) =>
       copyWith(memberRoles: memberRoles..remove(memberId));
 
+  Group updateMemberRole(String memberId, MemberRole role) =>
+      copyWith(memberRoles: memberRoles..[memberId] = role);
+
   Group copyWith({
     String? title,
     String? description,

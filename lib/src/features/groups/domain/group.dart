@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import 'group_plan.dart';
 
-enum MemberRole { owner, admin, member }
+enum MemberRole { owner, admin, member, pending }
 
 /// Class representing a group.
 class Group with EquatableMixin {

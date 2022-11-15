@@ -20,7 +20,19 @@ class FakeGroupsRepository implements GroupsRepository {
     await delay(addDelay);
     yield* _groups.stream.map(
       (groups) => groups.where((group) {
-        return group.memberRoles.keys.contains(userId);
+        final role = group.memberRoles[userId];
+        return role != null && role != MemberRole.pending;
+      }).toList(),
+    );
+  }
+
+  @override
+  Stream<List<Group>> watchPendingGroupList(String userId) async* {
+    await delay(addDelay);
+    yield* _groups.stream.map(
+      (groups) => groups.where((group) {
+        final role = group.memberRoles[userId];
+        return role != null && role == MemberRole.pending;
       }).toList(),
     );
   }
