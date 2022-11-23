@@ -11,7 +11,6 @@ import 'package:kfazer3/src/features/auth/presentation/account/account_details_c
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
-import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
 class AccountDetailsScreen extends ConsumerWidget {
@@ -57,9 +56,6 @@ class AccountDetailsScreen extends ConsumerWidget {
 
     final user = ref.watch(currentUserStateProvider);
     final state = ref.watch(accountDetailsControllerProvider);
-    final maybeEdit = state.isLoading ? null : () => edit(context);
-    final maybeDelete =
-        state.isLoading ? null : () => delete(context, ref.read);
 
     return ResponsiveScaffold(
       padding: EdgeInsets.all(kSpace * 2),
@@ -70,53 +66,44 @@ class AccountDetailsScreen extends ConsumerWidget {
         deleteText: context.loc.deleteAccount,
         onDelete: () => delete(context, ref.read),
       ),
-      rail: Rail(
+      rail: DetailsRail(
         title: context.loc.account,
-        actions: [
-          TextButton(
-            onPressed: maybeEdit,
-            child: Text(context.loc.editAccount),
-          ),
-          TextButton(
-            style: TextButton.styleFrom(
-              foregroundColor: context.colorScheme.error,
+        loading: state.isLoading,
+        editText: context.loc.editAccount,
+        onEdit: () => edit(context),
+        deleteText: context.loc.deleteAccount,
+        onDelete: () => delete(context, ref.read),
+      ),
+      builder: (railPadding) => ListView(
+        padding: railPadding,
+        children: [
+          UserAvatar(user, radius: kSpace * 10, dialogOnTap: false),
+          Space(4),
+          TextFormField(
+            enabled: false,
+            initialValue: user.name,
+            decoration: InputDecoration(
+              labelText: context.loc.displayName,
             ),
-            onPressed: maybeDelete,
-            child: Text(context.loc.deleteAccount),
+          ),
+          Space(),
+          TextFormField(
+            enabled: false,
+            initialValue: user.phoneNumber.toString(),
+            decoration: InputDecoration(
+              labelText: context.loc.phoneNumber,
+            ),
+          ),
+          Space(2),
+          Align(
+            alignment: Alignment.centerRight,
+            child: LoadingElevatedButton(
+              loading: state.isLoading,
+              onPressed: () => signOut(context, ref.read),
+              child: Text(context.loc.signOut),
+            ),
           ),
         ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            UserAvatar(user, radius: kSpace * 10, dialogOnTap: false),
-            Space(4),
-            TextFormField(
-              enabled: false,
-              initialValue: user.name,
-              decoration: InputDecoration(
-                labelText: context.loc.displayName,
-              ),
-            ),
-            Space(),
-            TextFormField(
-              enabled: false,
-              initialValue: user.phoneNumber.toString(),
-              decoration: InputDecoration(
-                labelText: context.loc.phoneNumber,
-              ),
-            ),
-            Space(2),
-            Align(
-              alignment: Alignment.centerRight,
-              child: LoadingElevatedButton(
-                loading: state.isLoading,
-                onPressed: () => signOut(context, ref.read),
-                child: Text(context.loc.signOut),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

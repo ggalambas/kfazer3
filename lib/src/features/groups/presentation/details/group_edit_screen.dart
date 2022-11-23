@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/avatar.dart';
+import 'package:kfazer3/src/common_widgets/edit_bar.dart';
 import 'package:kfazer3/src/common_widgets/image_picker_badge.dart';
-import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/common_widgets/responsive_scaffold.dart';
 import 'package:kfazer3/src/common_widgets/tap_to_unfocus.dart';
 import 'package:kfazer3/src/constants/constants.dart';
@@ -113,98 +113,85 @@ class GroupEditScreenState extends ConsumerState<GroupEditScreen> {
           if (group == null) return const NotFoundGroup();
 
           init(group);
-          final maybeSave = imageState.isLoading ? null : () => save(group);
-          final maybeCancel = state.isLoading ? null : goBack;
           return TapToUnfocus(
             child: ResponsiveScaffold(
               padding: EdgeInsets.all(kSpace * 2),
-              appBar: AppBar(
-                leading: CloseButton(onPressed: maybeCancel),
-                title: Text(context.loc.group),
-                actions: [
-                  LoadingTextButton(
-                    loading: state.isLoading,
-                    onPressed: () => save(group),
-                    child: Text(context.loc.save),
-                  ),
-                ],
-              ),
-              rail: Rail(
-                leading: CloseButton(onPressed: maybeCancel),
+              appBar: EditBar(
+                loading: state.isLoading,
                 title: context.loc.group,
-                actions: [
-                  //TODO maybe use loading text button??
-                  TextButton(
-                    onPressed: maybeSave,
-                    child: Text(context.loc.save),
-                  ),
-                ],
+                onSave: () => save(group),
+                onCancel: goBack,
               ),
-              body: SingleChildScrollView(
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    children: [
-                      ValueListenableBuilder(
-                        valueListenable: imageController,
-                        builder: (context, _, __) {
-                          return ImagePickerBadge(
-                            loading: imageState.isLoading,
-                            disabled: state.isLoading,
-                            onImagePicked: updateImage,
-                            showDeleteOption: image != null,
-                            child: ValueListenableBuilder(
-                                valueListenable: titleController,
-                                builder: (context, _, __) {
-                                  return Avatar(
-                                    icon: Icons.workspaces,
-                                    radius: kSpace * 10,
-                                    shape: BoxShape.rectangle,
-                                    foregroundImage: image,
-                                    text: title,
-                                  );
-                                }),
-                          );
-                        },
+              rail: EditRail(
+                loading: state.isLoading,
+                title: context.loc.group,
+                onSave: () => save(group),
+                onCancel: goBack,
+              ),
+              builder: (railPadding) => Form(
+                key: formKey,
+                child: ListView(
+                  padding: railPadding,
+                  children: [
+                    ValueListenableBuilder(
+                      valueListenable: imageController,
+                      builder: (context, _, __) {
+                        return ImagePickerBadge(
+                          loading: imageState.isLoading,
+                          disabled: state.isLoading,
+                          onImagePicked: updateImage,
+                          showDeleteOption: image != null,
+                          child: ValueListenableBuilder(
+                              valueListenable: titleController,
+                              builder: (context, _, __) {
+                                return Avatar(
+                                  icon: Icons.workspaces,
+                                  radius: kSpace * 10,
+                                  shape: BoxShape.rectangle,
+                                  foregroundImage: image,
+                                  text: title,
+                                );
+                              }),
+                        );
+                      },
+                    ),
+                    Space(4),
+                    TextFormField(
+                      controller: titleController,
+                      keyboardType: TextInputType.name,
+                      textInputAction: TextInputAction.next,
+                      maxLength: kTitleLength,
+                      decoration: InputDecoration(
+                        counterText: '',
+                        labelText: context.loc.title,
                       ),
-                      Space(4),
-                      TextFormField(
-                        controller: titleController,
-                        keyboardType: TextInputType.name,
-                        textInputAction: TextInputAction.next,
-                        maxLength: kTitleLength,
-                        decoration: InputDecoration(
-                          counterText: '',
-                          labelText: context.loc.title,
-                        ),
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (title) {
-                          if (!submitted) return null;
-                          return ref
-                              .read(groupEditControllerProvider.notifier)
-                              .titleErrorText(context, title ?? '');
-                        },
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (title) {
+                        if (!submitted) return null;
+                        return ref
+                            .read(groupEditControllerProvider.notifier)
+                            .titleErrorText(context, title ?? '');
+                      },
+                    ),
+                    Space(),
+                    TextFormField(
+                      maxLines: null,
+                      controller: descriptionController,
+                      keyboardType: TextInputType.multiline,
+                      textInputAction: TextInputAction.done,
+                      maxLength: kDescriptionLength,
+                      decoration: InputDecoration(
+                        labelText: context.loc.description,
                       ),
-                      Space(),
-                      TextFormField(
-                        maxLines: null,
-                        controller: descriptionController,
-                        keyboardType: TextInputType.multiline,
-                        textInputAction: TextInputAction.done,
-                        maxLength: kDescriptionLength,
-                        decoration: InputDecoration(
-                          labelText: context.loc.description,
-                        ),
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (description) {
-                          if (!submitted) return null;
-                          return ref
-                              .read(groupEditControllerProvider.notifier)
-                              .descriptionErrorText(context, description ?? '');
-                        },
-                      ),
-                    ],
-                  ),
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (description) {
+                        if (!submitted) return null;
+                        return ref
+                            .read(groupEditControllerProvider.notifier)
+                            .descriptionErrorText(context, description ?? '');
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),

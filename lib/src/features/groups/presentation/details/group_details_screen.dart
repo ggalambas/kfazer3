@@ -12,7 +12,6 @@ import 'package:kfazer3/src/features/groups/presentation/not_found_group.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
-import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
 import 'group_details_controller.dart';
@@ -26,7 +25,7 @@ class GroupDetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
-  void edit(BuildContext context) {
+  void edit() {
     context.goNamed(
       AppRoute.groupDetails.name,
       params: {'groupId': widget.groupId},
@@ -62,57 +61,52 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
       data: (group) {
         if (group == null) return const NotFoundGroup();
 
-        final maybeEdit = state.isLoading ? null : () => edit(context);
-        final maybeDelete = state.isLoading ? null : () => delete(group);
         return ResponsiveScaffold(
           padding: EdgeInsets.all(kSpace * 2),
           appBar: DetailsBar(
             loading: state.isLoading,
             title: context.loc.group,
-            onEdit: () => edit(context),
+            onEdit: edit,
             deleteText: context.loc.deleteGroup,
             //TODO only show for owner
             onDelete: () => delete(group),
           ),
-          rail: Rail(
+          rail: DetailsRail(
             title: context.loc.group,
-            actions: [
-              TextButton(
-                onPressed: maybeEdit,
-                child: Text(context.loc.editAccount),
-              ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: context.colorScheme.error,
+            loading: state.isLoading,
+            editText: context.loc.editGroup,
+            onEdit: edit,
+            deleteText: context.loc.deleteGroup,
+            onDelete: () => delete(group),
+          ),
+          builder: (railPadding) => ListView(
+            padding: railPadding,
+            children: [
+              Center(
+                child: GroupAvatar(
+                  group,
+                  radius: kSpace * 10,
+                  dialogOnTap: false,
                 ),
-                onPressed: maybeDelete,
-                child: Text(context.loc.deleteAccount),
+              ),
+              Space(4),
+              TextFormField(
+                enabled: false,
+                initialValue: group.title,
+                decoration: InputDecoration(
+                  labelText: context.loc.title,
+                ),
+              ),
+              Space(),
+              TextFormField(
+                enabled: false,
+                initialValue: group.description,
+                maxLines: null,
+                decoration: InputDecoration(
+                  labelText: context.loc.description,
+                ),
               ),
             ],
-          ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                GroupAvatar(group, radius: kSpace * 10, dialogOnTap: false),
-                Space(4),
-                TextFormField(
-                  enabled: false,
-                  initialValue: group.title,
-                  decoration: InputDecoration(
-                    labelText: context.loc.title,
-                  ),
-                ),
-                Space(),
-                TextFormField(
-                  enabled: false,
-                  initialValue: group.description,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                    labelText: context.loc.description,
-                  ),
-                ),
-              ],
-            ),
           ),
         );
       },
