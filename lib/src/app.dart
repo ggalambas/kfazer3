@@ -31,6 +31,8 @@ class MyApp extends ConsumerWidget {
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: themeMode,
+      scrollBehavior:
+          ScrollConfiguration.of(context).copyWith(scrollbars: false),
     );
   }
 }

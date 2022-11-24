@@ -83,6 +83,7 @@
   "motivationalMessages": "Motivational messages",
   "motivationalMessagesDescription": "Messages shown when completing a task",
   "group": "Group",
+  "editGroup": "Edit group",
   "deleteGroup": "Delete group",
   "title": "Title",
   "description": "Description",

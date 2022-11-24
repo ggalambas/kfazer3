@@ -5,8 +5,6 @@ import 'package:smart_space/smart_space.dart';
 
 export 'rail.dart';
 
-typedef BodyBuilder = Widget Function(bool);
-
 /// Responsive layout that shows
 /// two the appbar and the body side by side if there is enough space,
 /// or the standard scaffold if there is not enough space.
@@ -15,8 +13,7 @@ class ResponsiveScaffold extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final PreferredSizeWidget? appBar;
   final Widget? rail;
-  final Widget? body;
-  final BodyBuilder? builder;
+  final Widget Function(EdgeInsetsGeometry railPadding) builder;
   final Widget? floatingActionButton;
 
   const ResponsiveScaffold({
@@ -25,35 +22,32 @@ class ResponsiveScaffold extends StatelessWidget {
     this.padding = EdgeInsets.zero,
     this.appBar,
     this.rail,
-    required Widget this.body,
+    required this.builder,
     this.floatingActionButton,
-  }) : builder = null;
-
-  const ResponsiveScaffold.builder({
-    super.key,
-    this.maxContentWidth = Breakpoint.tablet,
-    this.padding = EdgeInsets.zero,
-    this.appBar,
-    this.rail,
-    required BodyBuilder body,
-    this.floatingActionButton,
-  })  : body = null,
-        builder = body;
+  });
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       if (constraints.maxWidth >= maxContentWidth) {
+        final railPadding = EdgeInsets.only(top: constraints.maxHeight / 10);
         return Scaffold(
           body: ResponsiveCenter(
             maxContentWidth: Breakpoint.desktop,
-            padding: EdgeInsets.all(kSpace * 2),
+            padding: padding,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (rail != null) Expanded(flex: 1, child: rail!),
-                Space(3),
-                Expanded(flex: 2, child: body ?? builder!(false)),
+                if (rail != null)
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: railPadding,
+                      child: rail!,
+                    ),
+                  ),
+                Space(4),
+                Expanded(flex: 2, child: builder(railPadding)),
               ],
             ),
           ),
@@ -64,7 +58,7 @@ class ResponsiveScaffold extends StatelessWidget {
           appBar: appBar,
           body: ResponsiveCenter(
             padding: padding,
-            child: body ?? builder!(true),
+            child: builder(EdgeInsets.zero),
           ),
           floatingActionButton: floatingActionButton,
         );

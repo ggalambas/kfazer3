@@ -4,11 +4,6 @@ import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 
 import 'fake_users_repository.dart';
 
-abstract class UsersRepository {
-  Future<List<AppUser>> fetchUserList();
-  Stream<AppUser?> watchUser(String id);
-}
-
 final usersRepositoryProvider = Provider<UsersRepository>(
   (ref) {
     final repository = FakeUsersRepository(addDelay: addRepositoryDelay);
@@ -16,6 +11,11 @@ final usersRepositoryProvider = Provider<UsersRepository>(
     return repository;
   },
 );
+
+abstract class UsersRepository {
+  Future<List<AppUser>> fetchUserList();
+  Stream<AppUser?> watchUser(String id);
+}
 
 final userListFutureProvider = FutureProvider.autoDispose<List<AppUser>>(
   (ref) {

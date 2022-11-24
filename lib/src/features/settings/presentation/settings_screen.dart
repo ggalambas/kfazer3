@@ -25,14 +25,13 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(currentUserStateProvider);
     final settings = settingsList(context, ref, user);
-    return ResponsiveScaffold.builder(
+    return ResponsiveScaffold(
       appBar: AppBar(title: Text(context.loc.settings)),
       rail: Rail(title: context.loc.settings),
-      body: (isOneColumn) => isOneColumn
-          ? ListView(children: settings)
-          : SingleChildScrollView(
-              child: Column(children: settings),
-            ),
+      builder: (railPadding) => ListView(
+        padding: railPadding,
+        children: settings,
+      ),
     );
   }
 

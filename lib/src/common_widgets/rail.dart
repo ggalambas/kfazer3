@@ -37,7 +37,7 @@ class Rail extends StatelessWidget {
           AutoSizeText(
             title!,
             style: context.textTheme.displayLarge,
-            maxLines: 1, //?
+            maxLines: 1,
           ),
         Space(3),
         ...actions,

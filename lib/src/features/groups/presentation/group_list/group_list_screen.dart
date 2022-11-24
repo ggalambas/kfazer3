@@ -18,9 +18,6 @@ import 'home_bar.dart';
 class GroupListScreen extends ConsumerWidget {
   const GroupListScreen({super.key});
 
-  List<Widget> groupCards(List<Group> groupList) =>
-      [for (final group in groupList) GroupCard(group: group)];
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen<AsyncValue>(
@@ -28,21 +25,20 @@ class GroupListScreen extends ConsumerWidget {
       (_, state) => state.showAlertDialogOnError(context),
     );
     final groupListValue = ref.watch(groupListStreamProvider);
-    return ResponsiveScaffold.builder(
-      padding: EdgeInsets.all(kSpace),
+    return ResponsiveScaffold(
+      padding: EdgeInsets.symmetric(horizontal: kSpace),
       appBar: const HomeBar(),
       rail: const HomeRail(),
-      body: (singleColumn) => AsyncValueWidget<List<Group>>(
+      builder: (railPadding) => AsyncValueWidget<List<Group>>(
         value: groupListValue,
         data: (groupList) => groupList.isEmpty
             ? const GroupEmptyList()
-            : singleColumn
-                ? ListView(children: groupCards(groupList))
-                : SingleChildScrollView(
-                    child: Column(
-                      children: groupCards(groupList),
-                    ),
-                  ),
+            : ListView(
+                padding: railPadding,
+                children: [
+                  for (final group in groupList) GroupCard(group: group),
+                ],
+              ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.goNamed(AppRoute.workspaceSetup.name),
@@ -53,6 +49,7 @@ class GroupListScreen extends ConsumerWidget {
   }
 }
 
+//TODO empty group list
 class GroupEmptyList extends StatelessWidget {
   const GroupEmptyList({super.key});
 

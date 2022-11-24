@@ -30,12 +30,13 @@ class GroupPreferencesScreen extends ConsumerWidget {
       data: (group) {
         if (group == null) return const NotFoundGroup();
         final preferences = preferenceList(context, ref, group);
-        return ResponsiveScaffold.builder(
+        return ResponsiveScaffold(
           appBar: AppBar(title: Text(context.loc.preferences)),
           rail: Rail(title: context.loc.preferences),
-          body: (isOneColumn) => isOneColumn
-              ? ListView(children: preferences)
-              : SingleChildScrollView(child: Column(children: preferences)),
+          builder: (railPadding) => ListView(
+            padding: railPadding,
+            children: preferences,
+          ),
         );
       },
     );

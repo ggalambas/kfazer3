@@ -19,7 +19,7 @@
   "displayName": "Nombre",
   
   "searchHint": "Buscar...",
-  "clear": "Limpiar",
+  "clear": "Borrar",
   "countryListLoadFailed": "Error al cargar la lista de países",
 
   "account": "Cuenta",
@@ -83,6 +83,7 @@
   "motivationalMessages": "Mensajes motivacionales",
   "motivationalMessagesDescription": "Mensajes que se muestran al completar una tarea",
   "group": "Grupo",
+  "editGroup": "Editar grupo",
   "deleteGroup": "Eliminar grupo",
   "title": "Título",
   "description": "Descripción",
@@ -112,7 +113,7 @@
   "edit": "Editar",
   "delete": "Eliminar",
   "save": "Ahorrar",
-  "clearAll": "Limpiar todo",
+  "clearAll": "Borrar todo",
   "remove": "Remover",
   "createNew": "Crear nuevo",
   "addNew": "Anãdir nuevo",

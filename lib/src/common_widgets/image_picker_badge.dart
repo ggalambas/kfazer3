@@ -74,22 +74,24 @@ class ImagePickerBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomRight,
-      children: [
-        child,
-        LoadingElevatedButton(
-          loading: loading,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: context.colorScheme.surface,
-            shape: const CircleBorder(),
-            minimumSize: const Size.square(kMinInteractiveDimension),
-            padding: EdgeInsets.zero,
+    return Center(
+      child: Stack(
+        alignment: Alignment.bottomRight,
+        children: [
+          child,
+          LoadingElevatedButton(
+            loading: loading,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: context.colorScheme.surface,
+              shape: const CircleBorder(),
+              minimumSize: const Size.square(kMinInteractiveDimension),
+              padding: EdgeInsets.zero,
+            ),
+            onPressed: disabled ? null : () => pickImage(context),
+            child: const Icon(Icons.camera_alt),
           ),
-          onPressed: disabled ? null : () => pickImage(context),
-          child: const Icon(Icons.camera_alt),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
