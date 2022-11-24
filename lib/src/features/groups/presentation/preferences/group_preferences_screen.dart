@@ -52,7 +52,7 @@ class GroupPreferencesScreen extends ConsumerWidget {
             AppRoute.groupDetails.name,
             params: {'groupId': group.id},
           ),
-          leading: GroupAvatar(group),
+          leading: GroupAvatar(group, dialogOnTap: false),
           title: Text(group.title),
         ),
         const Divider(),
