@@ -18,11 +18,11 @@ class MembersScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final groupValue = ref.watch(groupStreamProvider(groupId));
     final user = ref.watch(currentUserStateProvider);
+    //TODO loading is ugly
     return AsyncValueWidget<Group?>(
       value: groupValue,
       data: (group) {
         if (group == null) return const NotFoundGroup();
-        // final preferences = preferenceList(context, ref, group);
         return ResponsiveScaffold(
           appBar: AppBar(title: Text(context.loc.preferences)),
           rail: Rail(title: context.loc.preferences),
