@@ -31,6 +31,12 @@ class GroupListScreen extends ConsumerWidget {
       rail: const HomeRail(),
       builder: (railPadding) => AsyncValueWidget<List<Group>>(
         value: groupListValue,
+        loading: ListView.builder(
+          padding: railPadding,
+          //TODO how many?
+          itemCount: 3,
+          itemBuilder: (context, _) => const LoadingGroupCard(),
+        ),
         data: (groupList) => groupList.isEmpty
             ? GroupEmptyList(padding: railPadding)
             : ListView(

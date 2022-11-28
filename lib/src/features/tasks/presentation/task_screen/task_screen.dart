@@ -105,6 +105,7 @@ class _TaskScreenState extends ConsumerState<TaskScreen>
     final taskValue = ref.watch(taskProvider(widget.taskId));
     return AsyncValueWidget<Task?>(
       value: taskValue,
+      //TODO loading widget
       data: (task) {
         if (task == null) return const NotFoundTask();
         return Scaffold(

@@ -4,6 +4,7 @@ import 'package:kfazer3/src/common_widgets/group_avatar.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_list/group_menu_button.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
+import 'package:kfazer3/src/utils/widget_loader.dart';
 import 'package:smart_space/smart_space.dart';
 
 /// Used to show a single group inside a card.
@@ -36,5 +37,27 @@ class GroupCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+/// The loading widget for [GroupCard].
+class LoadingGroupCard extends StatelessWidget {
+  const LoadingGroupCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.all(kSpace),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: const [
+            ListTile(),
+            TextButton(onPressed: null, child: SizedBox()),
+          ],
+        ),
+      ),
+    ).loader(context);
   }
 }

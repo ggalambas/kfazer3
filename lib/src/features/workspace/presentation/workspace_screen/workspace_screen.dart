@@ -109,6 +109,7 @@ class _WorkspaceScreenState extends ConsumerState<WorkspaceScreen>
         ref.watch(workspaceStreamProvider(widget.workspaceId));
     return AsyncValueWidget<Workspace?>(
       value: workspaceValue,
+      //TODO loading widget
       data: (workspace) {
         if (workspace == null) return const NotFoundGroup();
         return Scaffold(
