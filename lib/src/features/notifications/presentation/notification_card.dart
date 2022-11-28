@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' hide Notification;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:kfazer3/src/common_widgets/user_avatar.dart';
+import 'package:kfazer3/src/common_widgets/avatar/user_avatar.dart';
 import 'package:kfazer3/src/features/notifications/data/notifications_repository.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
 import 'package:kfazer3/src/features/users/data/users_repository.dart';

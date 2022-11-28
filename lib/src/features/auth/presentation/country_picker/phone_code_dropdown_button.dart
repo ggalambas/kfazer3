@@ -6,25 +6,7 @@ import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
 import 'country_picker_dialog.dart';
-
-//TODO create a file for this
-class PhoneCodeController extends ValueNotifier<String?> {
-  PhoneCodeController({required String code}) : super(code);
-
-  String get code => value!;
-  set code(String country) => value = country;
-
-  factory PhoneCodeController.fromLocale(
-    Locale locale,
-    List<Country> countryList,
-  ) {
-    final country = countryList.firstWhere(
-      (country) => country.code == locale.countryCode,
-      orElse: () => countryList.first,
-    );
-    return PhoneCodeController(code: country.phoneCode);
-  }
-}
+import 'phone_code_controller.dart';
 
 /// Text field prefix equivalent of [PhoneCodeDropdownButton]
 class PhoneCodeDropdownPrefix extends StatelessWidget {

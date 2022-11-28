@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 
+import '../group_info_dialog.dart';
 import 'avatar.dart';
-import 'group_info_dialog.dart';
 
 /// Rounded rectangle avatar with the group image and initials.
 class GroupAvatar extends StatelessWidget {

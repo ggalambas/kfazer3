@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 
+import '../user_info_dialog.dart';
 import 'avatar.dart';
-import 'user_info_dialog.dart';
 
 /// Circle avatar with the user photo and initials.
 class UserAvatar extends StatelessWidget {

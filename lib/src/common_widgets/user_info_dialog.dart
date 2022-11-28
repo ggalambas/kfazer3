@@ -5,7 +5,7 @@ import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
-import 'user_avatar.dart';
+import 'avatar/user_avatar.dart';
 
 class UserInfoDialog extends ConsumerWidget {
   final AppUser user;
