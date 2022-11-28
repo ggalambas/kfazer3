@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:kfazer3/src/constants/test_groups.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
+import 'package:kfazer3/src/features/groups/domain/member_role.dart';
 import 'package:kfazer3/src/utils/delay.dart';
 import 'package:kfazer3/src/utils/in_memory_store.dart';
 
@@ -20,7 +21,7 @@ class FakeGroupsRepository implements GroupsRepository {
     await delay(addDelay);
     yield* _groups.stream.map(
       (groups) => groups.where((group) {
-        return group.memberRoles.containsKey(userId);
+        return group.members.containsKey(userId);
       }).toList(),
     );
   }
@@ -30,7 +31,7 @@ class FakeGroupsRepository implements GroupsRepository {
     await delay(addDelay);
     yield* _groups.stream.map(
       (groups) => groups.where((group) {
-        final role = group.memberRoles[userId];
+        final role = group.members[userId];
         return role != null && role != MemberRole.pending;
       }).toList(),
     );
@@ -41,7 +42,7 @@ class FakeGroupsRepository implements GroupsRepository {
     await delay(addDelay);
     yield* _groups.stream.map(
       (groups) => groups.where((group) {
-        final role = group.memberRoles[userId];
+        final role = group.members[userId];
         return role != null && role == MemberRole.pending;
       }).toList(),
     );

@@ -68,10 +68,18 @@
   "invites": "Convites",
 
   "about": "Sobre",
-  "members": "Membros",
   "archive": "Arquivo",
   "export": "Exportar",
   "leave": "Sair",
+
+  "members": "Membros",
+  "owner": "Dono",
+  "admin": "Administrador",
+  "member": "Membro",
+  "pending": "Pendente",
+  "turnOwner": "Transfer posse",
+  "turnAdmin": "Dar permissões de administrador",
+  "revokeAdmin": "Retirar permissões de administrador",
 
   "preferences": "Preferências",
   "plan": "Plano",

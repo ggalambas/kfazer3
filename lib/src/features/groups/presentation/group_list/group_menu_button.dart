@@ -6,6 +6,7 @@ import 'package:kfazer3/src/common_widgets/group_info_dialog.dart';
 import 'package:kfazer3/src/common_widgets/loading_dialog.dart';
 import 'package:kfazer3/src/features/groups/application/groups_service.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
+import 'package:kfazer3/src/features/groups/domain/member_role.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/localized_enum.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
@@ -46,6 +47,7 @@ enum GroupMenuOption with LocalizedEnum {
   }
 }
 
+//TODO change from to stateless when context has a mounted property (future flutter version)
 class GroupMenuButton extends ConsumerStatefulWidget {
   final Group group;
   const GroupMenuButton({super.key, required this.group});
@@ -55,12 +57,11 @@ class GroupMenuButton extends ConsumerStatefulWidget {
 }
 
 class _GroupMenuButtonState extends ConsumerState<GroupMenuButton> {
-  late final menuOptions = GroupMenuOption.allowedValues(
-    ref.read(roleProvider(widget.group)),
-  );
-
   @override
   Widget build(BuildContext context) {
+    final menuOptions = GroupMenuOption.allowedValues(
+      ref.read(roleProvider(widget.group)),
+    );
     return PopupMenuButton(
       itemBuilder: (context) => [
         for (final option in menuOptions)
@@ -87,8 +88,10 @@ class _GroupMenuButtonState extends ConsumerState<GroupMenuButton> {
               params: {'groupId': widget.group.id},
             );
           case GroupMenuOption.members:
-            //TODO go to members screen
-            return showNotImplementedAlertDialog(context: context);
+            return context.pushNamed(
+              AppRoute.groupMembers.name,
+              params: {'groupId': widget.group.id},
+            );
           case GroupMenuOption.archive:
             //TODO navigate to group archive (after project)
             return showNotImplementedAlertDialog(context: context);

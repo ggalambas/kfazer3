@@ -18,7 +18,7 @@ class GroupPreferencesScreen extends ConsumerWidget {
   const GroupPreferencesScreen({super.key, required this.groupId});
 
   void changePlan(Reader read, Group group, GroupPlan plan) {
-    final newGroup = group.updatePlan(plan);
+    final newGroup = group.setPlan(plan);
     read(groupsRepositoryProvider).updateGroup(newGroup);
   }
 

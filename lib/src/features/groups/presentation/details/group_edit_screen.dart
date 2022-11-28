@@ -67,8 +67,7 @@ class GroupEditScreenState extends ConsumerState<GroupEditScreen> {
     setState(() => submitted = true);
     if (!formKey.currentState!.validate()) return;
 
-    final updatedGroup =
-        group.updateTitle(title).updateDescription(description);
+    final updatedGroup = group.setTitle(title).setDescription(description);
 
     await ref
         .read(groupEditControllerProvider.notifier)

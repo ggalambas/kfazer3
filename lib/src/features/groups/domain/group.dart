@@ -1,9 +1,10 @@
 import 'package:equatable/equatable.dart';
+import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 
 import 'group_plan.dart';
-
-enum MemberRole { owner, admin, member, pending }
+import 'member.dart';
+import 'member_role.dart';
 
 /// Class representing a group.
 class Group with EquatableMixin {
@@ -15,7 +16,11 @@ class Group with EquatableMixin {
   final List<String> motivationalMessages;
   final GroupPlan plan;
   final List<PhoneNumber> pendingMembersPhoneNumber;
-  final Map<String, MemberRole> memberRoles;
+
+  /// All the members in the group, where:
+  /// - key: user id
+  /// - value: role
+  final Map<UserId, MemberRole> members;
 
   const Group({
     required this.id,
@@ -25,7 +30,7 @@ class Group with EquatableMixin {
     this.motivationalMessages = const [],
     required this.plan,
     this.pendingMembersPhoneNumber = const [],
-    required this.memberRoles,
+    required this.members,
   });
 
   @override
@@ -33,9 +38,7 @@ class Group with EquatableMixin {
 }
 
 extension GroupMembers on Group {
-  List<String> get memberIds => memberRoles.keys.toList();
-  MemberRole memberRole(String memberId) {
-    assert(memberRoles.containsKey(memberId));
-    return memberRoles[memberId]!;
-  }
+  List<Member> toMemberList() => members.entries
+      .map((entry) => Member(id: entry.key, role: entry.value))
+      .toList();
 }
