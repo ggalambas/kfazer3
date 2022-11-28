@@ -8,10 +8,10 @@ import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
-import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
 import 'group_card.dart';
+import 'group_empty_list.dart';
 import 'group_list_controller.dart';
 import 'home_bar.dart';
 
@@ -32,7 +32,7 @@ class GroupListScreen extends ConsumerWidget {
       builder: (railPadding) => AsyncValueWidget<List<Group>>(
         value: groupListValue,
         data: (groupList) => groupList.isEmpty
-            ? const GroupEmptyList()
+            ? GroupEmptyList(padding: railPadding)
             : ListView(
                 padding: railPadding,
                 children: [
@@ -40,40 +40,14 @@ class GroupListScreen extends ConsumerWidget {
                 ],
               ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.goNamed(AppRoute.workspaceSetup.name),
-        icon: const Icon(Icons.add),
-        label: Text(context.loc.createNew),
-      ),
-    );
-  }
-}
-
-//TODO empty group list
-class GroupEmptyList extends StatelessWidget {
-  const GroupEmptyList({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(kSpace * 3),
-      child: Column(
-        children: [
-          const Spacer(),
-          Text(
-            // context.loc.groupCreateFirst,
-            '',
-            style: context.textTheme.displaySmall,
-          ),
-          Space(),
-          Text(
-            // context.loc.groupCreateFirstDescription,
-            '',
-            style: context.textTheme.labelLarge,
-          ),
-          const Spacer(flex: 2),
-        ],
-      ),
+      //TODO test if this IF is properly done
+      floatingActionButton: groupListValue.asData?.value.isEmpty == true
+          ? null
+          : FloatingActionButton.extended(
+              onPressed: () => context.goNamed(AppRoute.workspaceSetup.name),
+              icon: const Icon(Icons.add),
+              label: Text(context.loc.createNew),
+            ),
     );
   }
 }

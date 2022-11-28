@@ -68,7 +68,7 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
     controller.saveMembers(members);
     final success = await controller.createWorkspace();
     if (success && mounted) {
-      final workspaceId = ref.read(workspaceSetupControllerProvider).value!;
+      // final workspaceId = ref.read(workspaceSetupControllerProvider).value!;
       //!
       // context.goNamed(
       //   AppRoute.group.name,

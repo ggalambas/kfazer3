@@ -63,15 +63,23 @@
   "policies": "Policies",
   "policiesDescription": "Privacy & Terms",
 
-  "details": "Details",  
+  "details": "Details",
   "motivation": "Motivation",  
   "invites": "Invites",  
 
   "about": "About",
-  "members": "Members",
   "archive": "Archive",
   "export": "Export",
   "leave": "Leave",
+
+  "members": "Members",
+  "owner": "Owner",
+  "admin": "Admin",
+  "member": "Member",
+  "pending": "Pending",
+  "turnOwner": "Transfer ownership",
+  "turnAdmin": "Give admin permissions",
+  "revokeAdmin": "Revoke admin permissions",
 
   "preferences": "Preferences",
   "plan": "Plan",

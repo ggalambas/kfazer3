@@ -18,7 +18,7 @@ class GroupPreferencesScreen extends ConsumerWidget {
   const GroupPreferencesScreen({super.key, required this.groupId});
 
   void changePlan(Reader read, Group group, GroupPlan plan) {
-    final newGroup = group.updatePlan(plan);
+    final newGroup = group.setPlan(plan);
     read(groupsRepositoryProvider).updateGroup(newGroup);
   }
 
@@ -53,7 +53,7 @@ class GroupPreferencesScreen extends ConsumerWidget {
             AppRoute.groupDetails.name,
             params: {'groupId': group.id},
           ),
-          leading: GroupAvatar(group),
+          leading: GroupAvatar(group, dialogOnTap: false),
           title: Text(group.title),
         ),
         const Divider(),

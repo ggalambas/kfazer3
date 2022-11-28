@@ -10,6 +10,7 @@ import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.da
 import 'package:kfazer3/src/features/groups/presentation/details/group_details_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/details/group_edit_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_list/group_list_screen.dart';
+import 'package:kfazer3/src/features/groups/presentation/members/members_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/preferences/group_preferences_screen.dart';
 import 'package:kfazer3/src/features/notifications/presentation/notification_list_screen.dart';
 import 'package:kfazer3/src/features/settings/presentation/settings_screen.dart';
@@ -30,12 +31,15 @@ enum AppRoute {
   signInPage,
 
   home,
+  groupPreferences, //! fullscreenDialog
+  groupDetails,
+  groupMembers, //! fullscreenDialog
+
+  //?
   workspaceSetup, //! fullscreenDialog
   workspaceSetupPage,
 
   workspaceMenu,
-  groupPreferences, //! fullscreenDialog
-  groupDetails,
   motivation,
   workspaceArchive, //! fullscreenDialog
 
@@ -203,6 +207,18 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 },
               ),
             ],
+          ),
+          GoRoute(
+            path: 'g/:groupId/members',
+            name: AppRoute.groupMembers.name,
+            pageBuilder: (_, state) {
+              final groupId = state.params['groupId']!;
+              return MaterialPage(
+                key: state.pageKey,
+                fullscreenDialog: true,
+                child: MembersScreen(groupId: groupId),
+              );
+            },
           ),
           //TODO project route
           GoRoute(path: 'p', redirect: (context, state) => '/'),

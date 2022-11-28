@@ -5,6 +5,8 @@ import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/groups/data/group_storage_repository.dart';
 import 'package:kfazer3/src/features/groups/data/groups_repository.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
+import 'package:kfazer3/src/features/groups/domain/member.dart';
+import 'package:kfazer3/src/features/groups/domain/member_role.dart';
 import 'package:kfazer3/src/features/groups/domain/mutable_group.dart';
 
 final groupsServiceProvider = Provider<GroupsService>((ref) {
@@ -23,25 +25,26 @@ class GroupsService {
   Future<void> uploadPictureAndSaveGroup(Group group, Uint8List bytes) async {
     final photoUrl =
         await accountStorageRepository.uploadGroupPicture(group.id, bytes);
-    final updatedGroup = group.updatePhotoUrl(photoUrl);
+    final updatedGroup = group.setPhotoUrl(photoUrl);
     groupsRepository.updateGroup(updatedGroup);
   }
 
   Future<void> removePictureAndSaveGroup(Group group) async {
     await accountStorageRepository.removeGroupPicture(group.id);
-    final updatedGroup = group.updatePhotoUrl(null);
+    final updatedGroup = group.setPhotoUrl(null);
     groupsRepository.updateGroup(updatedGroup);
   }
 
   Future<void> leaveGroup(Group group) async {
     final user = authRepository.currentUser!;
-    final copy = group.removeMember(user.id);
+    final copy = group.removeMemberById(user.id);
     await groupsRepository.updateGroup(copy);
   }
 
   Future<void> joinGroup(Group group) async {
     final user = authRepository.currentUser!;
-    final copy = group.updateMemberRole(user.id, MemberRole.member);
+    final member = Member(id: user.id, role: MemberRole.member);
+    final copy = group.setMember(member);
     await groupsRepository.updateGroup(copy);
   }
 }
@@ -78,5 +81,5 @@ final pendingGroupListStreamProvider = StreamProvider.autoDispose<List<Group>>(
 final roleProvider =
     Provider.family.autoDispose<MemberRole, Group>((ref, group) {
   final user = ref.watch(currentUserStateProvider);
-  return group.memberRole(user.id);
+  return group.members[user.id]!;
 });

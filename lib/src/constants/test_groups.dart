@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:kfazer3/src/constants/test_users.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/domain/group_plan.dart';
+import 'package:kfazer3/src/features/groups/domain/member_role.dart';
 
 /// Test groups to be used until a data source is implemented
 List<Group> get kTestGroups => [..._kTestGroups];
@@ -15,7 +16,7 @@ final _kTestGroups = List.generate(
         'A group made by him for the company x in the center of the world.',
     motivationalMessages: [...kMotivationalMessages],
     plan: GroupPlan.family,
-    memberRoles: Map.fromIterable(
+    members: Map.fromIterable(
       kTestUsers.where((user) {
         if (user.id == '0') return true;
         return Random().nextBool();
