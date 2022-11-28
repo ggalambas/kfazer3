@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:kfazer3/src/common_widgets/avatar.dart';
+import 'package:kfazer3/src/common_widgets/avatar_picker/avatar_picker.dart';
+import 'package:kfazer3/src/common_widgets/avatar_picker/image_controller.dart';
 import 'package:kfazer3/src/common_widgets/edit_bar.dart';
-import 'package:kfazer3/src/common_widgets/image_picker_badge.dart';
 import 'package:kfazer3/src/common_widgets/responsive_scaffold.dart';
 import 'package:kfazer3/src/common_widgets/tap_to_unfocus.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/mutable_app_user.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
-import 'package:kfazer3/src/features/auth/presentation/account/image_editing_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/auth_validators.dart';
 import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code_dropdown_button.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
-import 'package:multi_value_listenable_builder/multi_value_listenable_builder.dart';
 import 'package:smart_space/smart_space.dart';
 
 import 'account_edit_controller.dart';
@@ -44,7 +41,7 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
   String get name => nameController.text;
   String get phoneNumber => phoneNumberController.text;
   String get phoneCode => phoneCodeController.code;
-  ImageProvider? get image => imageController.image;
+  ImageProvider? get image => imageController.value;
 
   // local variable used to apply AutovalidateMode.onUserInteraction and show
   // error hints only when the form has been submitted
@@ -74,16 +71,6 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
     if (mounted) goBack();
   }
 
-  void updateImage(XFile? file) async {
-    // photo removed
-    if (file == null) return imageController.clear();
-    // new photo uploaded
-    final bytes = await ref
-        .read(imageEditingControllerProvider.notifier)
-        .readAsBytes(file);
-    if (bytes != null) imageController.bytes = bytes;
-  }
-
   void goBack() => context.goNamed(AppRoute.accountDetails.name);
 
   @override
@@ -92,13 +79,7 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
       accountEditControllerProvider,
       (_, state) => state.showAlertDialogOnError(context),
     );
-    ref.listen<AsyncValue>(
-      imageEditingControllerProvider,
-      (_, state) => state.showAlertDialogOnError(context),
-    );
-
     final state = ref.watch(accountEditControllerProvider);
-    final imageState = ref.watch(imageEditingControllerProvider);
 
     return TapToUnfocus(
       child: ResponsiveScaffold(
@@ -120,33 +101,10 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
           child: ListView(
             padding: railPadding,
             children: [
-              MultiValueListenableBuilder(
-                valueListenables: [imageController, nameController],
-                builder: (context, _, __) {
-                  //TODO avatar picker
-                  //   return AvatarPicker(
-                  //   disabled: state.isLoading,
-                  //   loading: imageState.isLoading,
-                  //   onAvatarPicked: updateImage,
-                  //   showDeleteOption: image != null,
-                  //   child: Avatar(
-                  //     radius: kSpace * 10,
-                  //     foregroundImage: image,
-                  //     text: name,
-                  //   ),
-                  // );
-                  return ImagePickerBadge(
-                    loading: imageState.isLoading,
-                    disabled: state.isLoading,
-                    onImagePicked: updateImage,
-                    showDeleteOption: image != null,
-                    child: Avatar(
-                      radius: kSpace * 10,
-                      foregroundImage: image,
-                      text: name,
-                    ),
-                  );
-                },
+              AvatarPicker(
+                imageController: imageController,
+                textController: nameController,
+                disabled: state.isLoading,
               ),
               Space(4),
               TextFormField(

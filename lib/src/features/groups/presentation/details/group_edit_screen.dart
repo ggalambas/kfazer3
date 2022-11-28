@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
-import 'package:kfazer3/src/common_widgets/avatar.dart';
+import 'package:kfazer3/src/common_widgets/avatar_picker/avatar_picker.dart';
+import 'package:kfazer3/src/common_widgets/avatar_picker/image_controller.dart';
 import 'package:kfazer3/src/common_widgets/edit_bar.dart';
-import 'package:kfazer3/src/common_widgets/image_picker_badge.dart';
 import 'package:kfazer3/src/common_widgets/responsive_scaffold.dart';
 import 'package:kfazer3/src/common_widgets/tap_to_unfocus.dart';
 import 'package:kfazer3/src/constants/constants.dart';
-import 'package:kfazer3/src/features/auth/presentation/account/account_edit_controller.dart';
-import 'package:kfazer3/src/features/auth/presentation/account/image_editing_controller.dart';
 import 'package:kfazer3/src/features/groups/data/groups_repository.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/domain/mutable_group.dart';
@@ -39,7 +36,7 @@ class GroupEditScreenState extends ConsumerState<GroupEditScreen> {
 
   String get title => titleController.text;
   String get description => descriptionController.text;
-  ImageProvider? get image => imageController.image;
+  ImageProvider? get image => imageController.value;
 
   // local variable used to apply AutovalidateMode.onUserInteraction and show
   // error hints only when the form has been submitted
@@ -77,16 +74,6 @@ class GroupEditScreenState extends ConsumerState<GroupEditScreen> {
     if (mounted) goBack();
   }
 
-  void updateImage(XFile? file) async {
-    // photo removed
-    if (file == null) return imageController.clear();
-    // new photo uploaded
-    final bytes = await ref
-        .read(imageEditingControllerProvider.notifier)
-        .readAsBytes(file);
-    if (bytes != null) imageController.bytes = bytes;
-  }
-
   void goBack() => context.goNamed(
         AppRoute.groupDetails.name,
         params: {'groupId': widget.groupId},
@@ -98,15 +85,9 @@ class GroupEditScreenState extends ConsumerState<GroupEditScreen> {
       groupEditControllerProvider,
       (_, state) => state.showAlertDialogOnError(context),
     );
-    ref.listen<AsyncValue>(
-      imageEditingControllerProvider,
-      (_, state) => state.showAlertDialogOnError(context),
-    );
 
     final state = ref.watch(groupEditControllerProvider);
-    final imageState = ref.watch(imageEditingControllerProvider);
     final groupValue = ref.watch(groupStreamProvider(widget.groupId));
-
     return AsyncValueWidget<Group?>(
         value: groupValue,
         data: (group) {
@@ -133,27 +114,9 @@ class GroupEditScreenState extends ConsumerState<GroupEditScreen> {
                 child: ListView(
                   padding: railPadding,
                   children: [
-                    ValueListenableBuilder(
-                      valueListenable: imageController,
-                      builder: (context, _, __) {
-                        return ImagePickerBadge(
-                          loading: imageState.isLoading,
-                          disabled: state.isLoading,
-                          onImagePicked: updateImage,
-                          showDeleteOption: image != null,
-                          child: ValueListenableBuilder(
-                              valueListenable: titleController,
-                              builder: (context, _, __) {
-                                return Avatar(
-                                  icon: Icons.workspaces,
-                                  radius: kSpace * 10,
-                                  shape: BoxShape.rectangle,
-                                  foregroundImage: image,
-                                  text: title,
-                                );
-                              }),
-                        );
-                      },
+                    AvatarPicker(
+                      imageController: imageController,
+                      textController: titleController,
                     ),
                     Space(4),
                     TextFormField(
