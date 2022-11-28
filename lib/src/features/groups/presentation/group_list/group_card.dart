@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
-import 'package:kfazer3/src/common_widgets/group_avatar.dart';
+import 'package:kfazer3/src/common_widgets/avatar/group_avatar.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_list/group_menu_button.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';

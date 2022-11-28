@@ -5,7 +5,7 @@ import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
-import 'group_avatar.dart';
+import 'avatar/group_avatar.dart';
 
 class GroupInfoDialog extends ConsumerWidget {
   final Group group;
