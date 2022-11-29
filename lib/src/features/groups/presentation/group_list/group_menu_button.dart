@@ -47,7 +47,7 @@ enum GroupMenuOption with LocalizedEnum {
   }
 }
 
-//TODO change from to stateless when context has a mounted property (future flutter version)
+//TODO change to stateless when context has a mounted property (future flutter version)
 class GroupMenuButton extends ConsumerStatefulWidget {
   final Group group;
   const GroupMenuButton({super.key, required this.group});

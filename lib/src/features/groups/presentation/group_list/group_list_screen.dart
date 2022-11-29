@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/responsive_scaffold.dart';
 import 'package:kfazer3/src/features/groups/application/groups_service.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
-import 'package:kfazer3/src/localization/app_localizations_context.dart';
-import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
 
+import 'create_group_button.dart';
 import 'group_card.dart';
 import 'group_empty_list.dart';
 import 'group_list_controller.dart';
@@ -33,7 +31,7 @@ class GroupListScreen extends ConsumerWidget {
         value: groupListValue,
         loading: ListView.builder(
           padding: railPadding,
-          //TODO how many?
+          //TODO save the qtt on shared prefs, if null use 3
           itemCount: 3,
           itemBuilder: (context, _) => const LoadingGroupCard(),
         ),
@@ -46,14 +44,9 @@ class GroupListScreen extends ConsumerWidget {
                 ],
               ),
       ),
-      //TODO test if this IF is properly done
-      floatingActionButton: groupListValue.asData?.value.isEmpty == true
-          ? null
-          : FloatingActionButton.extended(
-              onPressed: () => context.goNamed(AppRoute.workspaceSetup.name),
-              icon: const Icon(Icons.add),
-              label: Text(context.loc.createNew),
-            ),
+      floatingActionButton: groupListValue.valueOrNull?.isNotEmpty == true
+          ? const CreateGroupButton.fab()
+          : null,
     );
   }
 }
