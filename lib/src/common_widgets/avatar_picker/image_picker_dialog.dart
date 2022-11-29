@@ -5,9 +5,10 @@ import 'package:kfazer3/src/common_widgets/avatar_picker/image_picker_controller
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
-import 'package:smart_space/smart_space.dart';
 
-/// The dialog returns an [ImagePickerOption]
+import 'image_picker_button.dart';
+
+/// The dialog returns an [XFile] or [null] if no image chose
 class ImagePickerDialog extends ConsumerStatefulWidget {
   final VoidCallback? onDelete;
   const ImagePickerDialog({super.key, this.onDelete});
@@ -17,15 +18,12 @@ class ImagePickerDialog extends ConsumerStatefulWidget {
 }
 
 class _ImagePickerDialogState extends ConsumerState<ImagePickerDialog> {
-  Future<void> pickImageFromCamera() async {
-    final controller = ref.read(imagePickerControllerProvider.notifier);
-    final file = await controller.pickImage(source: ImageSource.camera);
-    if (mounted && file != null) Navigator.of(context).pop(file);
-  }
+  Future<void> pickImageFromCamera() => pickImage(source: ImageSource.camera);
+  Future<void> pickImageFromGallery() => pickImage(source: ImageSource.gallery);
 
-  Future<void> pickImageFromGallery() async {
+  Future<void> pickImage({required ImageSource source}) async {
     final controller = ref.read(imagePickerControllerProvider.notifier);
-    final file = await controller.pickImage(source: ImageSource.gallery);
+    final file = await controller.pickImage(source: source);
     if (mounted && file != null) Navigator.of(context).pop(file);
   }
 
@@ -61,42 +59,6 @@ class _ImagePickerDialogState extends ConsumerState<ImagePickerDialog> {
             ),
         ],
       ),
-    );
-  }
-}
-
-class ImagePickerButton extends StatelessWidget {
-  final Widget icon;
-  final Widget text;
-  final Color? color;
-  final VoidCallback? onPressed;
-
-  const ImagePickerButton({
-    super.key,
-    required this.icon,
-    required this.text,
-    this.color,
-    this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        OutlinedButton(
-          style: ElevatedButton.styleFrom(
-            shape: const CircleBorder(),
-            foregroundColor: color,
-            side: BorderSide(color: context.theme.dividerColor),
-            fixedSize: const Size.square(kMinInteractiveDimension),
-          ),
-          onPressed: onPressed,
-          child: icon,
-        ),
-        Space(),
-        text,
-      ],
     );
   }
 }
