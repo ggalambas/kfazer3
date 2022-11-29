@@ -45,15 +45,11 @@ class MemberTile extends ConsumerWidget {
                       ? const TextStyle(fontStyle: FontStyle.italic)
                       : null,
                 ),
-              //TODO change member role
-              if (editable && !role.isPending && !role.isOwner)
+              if (editable && !role.isOwner)
                 RoleMenuButton(
                   role: role,
-                  onTurnOwner: () =>
-                      showNotImplementedAlertDialog(context: context),
-                  onTurnAdmin: () =>
-                      showNotImplementedAlertDialog(context: context),
-                  onRevokeAdmin: () =>
+                  //TODO change member role
+                  onRoleChanged: (option) =>
                       showNotImplementedAlertDialog(context: context),
                 )
             ],

@@ -29,23 +29,20 @@ enum RoleMenuOption with LocalizedEnum {
 }
 
 class RoleMenuButton extends StatelessWidget {
-  final VoidCallback? onTurnOwner;
-  final VoidCallback? onTurnAdmin;
-  final VoidCallback? onRevokeAdmin;
+  final void Function(MemberRole role) onRoleChanged;
   final MemberRole role;
 
   const RoleMenuButton({
     super.key,
     required this.role,
-    required this.onTurnOwner,
-    required this.onTurnAdmin,
-    required this.onRevokeAdmin,
+    required this.onRoleChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     final menuOptions = RoleMenuOption.allowedValues(role);
     return PopupMenuButton(
+      onSelected: (option) => onRoleChanged,
       itemBuilder: (context) => [
         for (final option in menuOptions)
           PopupMenuItem(
@@ -58,16 +55,45 @@ class RoleMenuButton extends StatelessWidget {
             ),
           ),
       ],
-      onSelected: (option) {
-        switch (option) {
-          case RoleMenuOption.turnOwner:
-            return onTurnOwner?.call();
-          case RoleMenuOption.turnAdmin:
-            return onTurnAdmin?.call();
-          case RoleMenuOption.revokeAdmin:
-            return onRevokeAdmin?.call();
-        }
-      },
+    );
+  }
+}
+
+class TurnOwnerOption extends StatelessWidget {
+  const TurnOwnerOption({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuItem(
+      value: MemberRole.owner,
+      child: Text(
+        context.loc.turnOwner,
+        style: TextStyle(color: context.colorScheme.primary),
+      ),
+    );
+  }
+}
+
+class TurnAdminOption extends StatelessWidget {
+  const TurnAdminOption({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuItem(
+      value: MemberRole.admin,
+      child: Text(context.loc.turnAdmin),
+    );
+  }
+}
+
+class RevokeAdminOption extends StatelessWidget {
+  const RevokeAdminOption({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuItem(
+      value: MemberRole.member,
+      child: Text(context.loc.revokeAdmin),
     );
   }
 }
