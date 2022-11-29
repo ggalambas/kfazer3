@@ -70,6 +70,7 @@ class LoadingMemberTile extends StatelessWidget {
     final textHeight = textStyle.fontSize! * textStyle.height!;
     return ListTile(
       leading: const Card(
+        margin: EdgeInsets.zero,
         shape: CircleBorder(),
         child: SizedBox.square(dimension: 32),
       ),
