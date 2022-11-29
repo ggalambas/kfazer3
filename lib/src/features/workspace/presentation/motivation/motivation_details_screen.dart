@@ -45,6 +45,7 @@ class MotivationDetailsScreen extends ConsumerWidget {
     //TODO empty motivation screen
     return AsyncValueWidget<Workspace?>(
         value: workspaceValue,
+        //TODO loading widget
         data: (workspace) {
           if (workspace == null) return const NotFoundGroup();
           return Scaffold(

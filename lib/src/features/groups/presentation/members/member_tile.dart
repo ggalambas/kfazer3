@@ -7,6 +7,8 @@ import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 import 'package:kfazer3/src/features/groups/domain/member.dart';
 import 'package:kfazer3/src/features/groups/domain/member_role.dart';
 import 'package:kfazer3/src/features/users/data/users_repository.dart';
+import 'package:kfazer3/src/utils/context_theme.dart';
+import 'package:kfazer3/src/utils/widget_loader.dart';
 
 import 'role_menu_button.dart';
 
@@ -24,6 +26,7 @@ class MemberTile extends ConsumerWidget {
     final userValue = ref.watch(userStreamProvider(member.id));
     return AsyncValueWidget<AppUser?>(
       value: userValue,
+      loading: const LoadingMemberTile(),
       data: (user) {
         if (user == null) return const SizedBox.shrink();
         return ListTile(
@@ -58,5 +61,24 @@ class MemberTile extends ConsumerWidget {
         );
       },
     );
+  }
+}
+
+/// The loading widget for [MemberTile].
+class LoadingMemberTile extends StatelessWidget {
+  const LoadingMemberTile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final textStyle = context.textTheme.bodyMedium!;
+    final textHeight = textStyle.fontSize! * textStyle.height!;
+    return ListTile(
+      leading: const Card(
+        shape: CircleBorder(),
+        child: SizedBox.square(dimension: 32),
+      ),
+      title: Card(child: SizedBox(height: textHeight)),
+      subtitle: Card(child: SizedBox(height: textHeight)),
+    ).loader(context);
   }
 }

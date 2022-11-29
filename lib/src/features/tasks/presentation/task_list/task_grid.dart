@@ -25,6 +25,7 @@ class TaskGrid extends ConsumerWidget {
     final taskListValue = ref.watch(filteredTaskListStreamProvider(taskState));
     return AsyncValueWidget<List<Task>>(
       value: taskListValue,
+      //TODO loading widget
       data: (taskList) => taskList.isEmpty
           ? Center(
               child: Text(
