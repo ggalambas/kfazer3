@@ -77,9 +77,9 @@
   "admin": "Administrador",
   "member": "Membro",
   "pending": "Pendente",
-  "turnOwner": "Transfer posse",
-  "turnAdmin": "Dar permissões de administrador",
-  "revokeAdmin": "Retirar permissões de administrador",
+  "turnOwner": "Transferir posse",
+  "turnAdmin": "Tornar administrador",
+  "revokeAdmin": "Remover de administrador",
 
   "preferences": "Preferências",
   "plan": "Plano",

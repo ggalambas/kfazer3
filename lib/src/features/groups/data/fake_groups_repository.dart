@@ -49,6 +49,12 @@ class FakeGroupsRepository implements GroupsRepository {
   }
 
   @override
+  Future<Group?> fetchGroup(String id) async {
+    await delay(addDelay);
+    return _groups.value.firstWhereOrNull((group) => group.id == id);
+  }
+
+  @override
   Stream<Group?> watchGroup(String id) async* {
     yield* _groups.stream.map(
       (groups) => groups.firstWhereOrNull(

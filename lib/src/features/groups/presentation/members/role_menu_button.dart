@@ -15,6 +15,17 @@ enum RoleMenuOption with LocalizedEnum {
   static List<RoleMenuOption> allowedValues(MemberRole role) =>
       values.where((option) => option.allowedRoles.contains(role)).toList();
 
+  MemberRole get newRole {
+    switch (this) {
+      case turnOwner:
+        return MemberRole.owner;
+      case turnAdmin:
+        return MemberRole.admin;
+      case revokeAdmin:
+        return MemberRole.member;
+    }
+  }
+
   @override
   String locName(BuildContext context) {
     switch (this) {
@@ -42,11 +53,11 @@ class RoleMenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final menuOptions = RoleMenuOption.allowedValues(role);
     return PopupMenuButton(
-      onSelected: (option) => onRoleChanged,
+      onSelected: onRoleChanged,
       itemBuilder: (context) => [
         for (final option in menuOptions)
           PopupMenuItem(
-            value: option,
+            value: option.newRole,
             child: Text(
               option.locName(context),
               style: option == RoleMenuOption.turnOwner
@@ -55,45 +66,6 @@ class RoleMenuButton extends StatelessWidget {
             ),
           ),
       ],
-    );
-  }
-}
-
-class TurnOwnerOption extends StatelessWidget {
-  const TurnOwnerOption({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return PopupMenuItem(
-      value: MemberRole.owner,
-      child: Text(
-        context.loc.turnOwner,
-        style: TextStyle(color: context.colorScheme.primary),
-      ),
-    );
-  }
-}
-
-class TurnAdminOption extends StatelessWidget {
-  const TurnAdminOption({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return PopupMenuItem(
-      value: MemberRole.admin,
-      child: Text(context.loc.turnAdmin),
-    );
-  }
-}
-
-class RevokeAdminOption extends StatelessWidget {
-  const RevokeAdminOption({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return PopupMenuItem(
-      value: MemberRole.member,
-      child: Text(context.loc.revokeAdmin),
     );
   }
 }
