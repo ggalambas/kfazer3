@@ -5,9 +5,6 @@ import 'package:kfazer3/src/features/groups/domain/member.dart';
 import 'group.dart';
 import 'member_role.dart';
 
-// TODO comments
-// TODO tests
-
 /// Helper extension used to update a group
 extension MutableGroup on Group {
   Group setTitle(String title) => copyWith(title: title);

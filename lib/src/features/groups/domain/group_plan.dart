@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/localized_enum.dart';
 
-// TODO comments
-
 enum GroupPlan with LocalizedEnum {
   family(4),
   standard(20),

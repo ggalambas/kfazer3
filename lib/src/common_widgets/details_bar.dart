@@ -33,14 +33,15 @@ class DetailsBar extends StatelessWidget with PreferredSizeWidget {
           onPressed: loading ? null : onEdit?.call,
           icon: const Icon(Icons.edit),
         ),
-        SingleChildMenuButton(
-          enabled: !loading,
-          onSelected: onDelete,
-          child: Text(
-            deleteText ?? context.loc.delete,
-            style: TextStyle(color: context.colorScheme.error),
+        if (onDelete != null)
+          SingleChildMenuButton(
+            enabled: !loading,
+            onSelected: onDelete,
+            child: Text(
+              deleteText ?? context.loc.delete,
+              style: TextStyle(color: context.colorScheme.error),
+            ),
           ),
-        ),
       ],
     );
   }

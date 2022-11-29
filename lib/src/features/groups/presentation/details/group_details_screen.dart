@@ -6,6 +6,7 @@ import 'package:kfazer3/src/common_widgets/avatar/group_avatar.dart';
 import 'package:kfazer3/src/common_widgets/details_bar.dart';
 import 'package:kfazer3/src/common_widgets/loading_dialog.dart';
 import 'package:kfazer3/src/common_widgets/responsive_scaffold.dart';
+import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/groups/data/groups_repository.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/presentation/not_found_group.dart';
@@ -53,13 +54,15 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
       (_, state) => state.showAlertDialogOnError(context),
     );
 
-    final groupValue = ref.watch(groupStreamProvider(widget.groupId));
     final state = ref.watch(groupDetailsControllerProvider);
+    final groupValue = ref.watch(groupStreamProvider(widget.groupId));
+    final currentUser = ref.watch(currentUserStateProvider);
 
     return AsyncValueWidget<Group?>(
       value: groupValue,
       data: (group) {
         if (group == null) return const NotFoundGroup();
+        final role = group.members[currentUser.id]!;
 
         return ResponsiveScaffold(
           padding: EdgeInsets.all(kSpace * 2),
@@ -68,8 +71,7 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
             title: context.loc.group,
             onEdit: edit,
             deleteText: context.loc.deleteGroup,
-            //TODO only show for owner
-            onDelete: () => delete(group),
+            onDelete: role.isOwner ? () => delete(group) : null,
           ),
           rail: DetailsRail(
             title: context.loc.group,
@@ -77,7 +79,7 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
             editText: context.loc.editGroup,
             onEdit: edit,
             deleteText: context.loc.deleteGroup,
-            onDelete: () => delete(group),
+            onDelete: role.isOwner ? () => delete(group) : null,
           ),
           builder: (railPadding) => ListView(
             padding: railPadding,
