@@ -7,8 +7,8 @@ import 'package:kfazer3/src/common_widgets/responsive_scaffold.dart';
 import 'package:kfazer3/src/features/groups/data/groups_repository.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/domain/group_plan.dart';
-import 'package:kfazer3/src/features/groups/domain/mutable_group.dart';
 import 'package:kfazer3/src/features/groups/presentation/not_found_group.dart';
+import 'package:kfazer3/src/features/groups/presentation/preferences/group_preferences_controller.dart';
 import 'package:kfazer3/src/features/settings/presentation/selection_setting_tile.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
@@ -17,14 +17,9 @@ class GroupPreferencesScreen extends ConsumerWidget {
   final String groupId;
   const GroupPreferencesScreen({super.key, required this.groupId});
 
-  //TODO deal with update group delay
-  void changePlan(Reader read, Group group, GroupPlan plan) {
-    final newGroup = group.setPlan(plan);
-    read(groupsRepositoryProvider).updateGroup(newGroup);
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(groupPreferencesControllerProvider);
     final groupValue = ref.watch(groupStreamProvider(groupId));
     return AsyncValueWidget<Group?>(
       value: groupValue,
@@ -46,8 +41,11 @@ class GroupPreferencesScreen extends ConsumerWidget {
               ),
               const Divider(),
               SelectionSettingTile<GroupPlan>(
+                loading: state.isLoading,
                 selected: group.plan,
-                onChanged: (plan) => changePlan(ref.read, group, plan),
+                onChanged: (plan) => ref
+                    .read(groupPreferencesControllerProvider.notifier)
+                    .changePlan(group, plan),
                 options: GroupPlan.values,
                 icon: Icons.auto_awesome,
                 title: context.loc.plan,

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/localization/localized_enum.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 
 class SelectionSettingTile<T extends LocalizedEnum> extends StatelessWidget {
+  final bool loading;
   final T selected;
   final ValueChanged<T> onChanged;
   final List<T> options;
@@ -12,6 +14,7 @@ class SelectionSettingTile<T extends LocalizedEnum> extends StatelessWidget {
 
   const SelectionSettingTile({
     super.key,
+    this.loading = false,
     required this.selected,
     required this.onChanged,
     required this.options,
@@ -45,12 +48,17 @@ class SelectionSettingTile<T extends LocalizedEnum> extends StatelessWidget {
       leading: Icon(icon),
       title: Text(title),
       subtitle: description == null ? null : Text(description!),
-      trailing: Text(
-        selected.locName(context),
-        style: context.textTheme.labelMedium!.copyWith(
-          color: context.colorScheme.primary,
-        ),
-      ),
+      trailing: loading
+          ? const SizedBox.square(
+              dimension: kSmallIconSize,
+              child: CircularProgressIndicator(strokeWidth: 3),
+            )
+          : Text(
+              selected.locName(context),
+              style: context.textTheme.labelMedium!.copyWith(
+                color: context.colorScheme.primary,
+              ),
+            ),
     );
   }
 }
