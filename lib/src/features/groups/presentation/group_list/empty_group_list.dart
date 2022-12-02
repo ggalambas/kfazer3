@@ -5,26 +5,26 @@ import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
-class GroupEmptyList extends StatelessWidget {
-  final EdgeInsetsGeometry padding;
-  const GroupEmptyList({super.key, this.padding = EdgeInsets.zero});
+class EmptyGroupList extends StatelessWidget {
+  const EmptyGroupList({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: padding.add(EdgeInsets.all(kSpace * 3)),
+      padding: EdgeInsets.symmetric(
+        horizontal: kSpace * 3,
+        vertical: kSpace * 2,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             context.loc.groupCreateFirst,
-            // '',
             style: context.textTheme.displaySmall,
           ),
           Space(),
           Text(
             context.loc.groupCreateFirstDescription,
-            // '',
             style: context.textTheme.labelLarge,
           ),
           Space(3),

@@ -11,7 +11,7 @@ class Group with EquatableMixin {
   /// Unique group id
   final String id;
   final String title;
-  final String? description;
+  final String description;
   final String? photoUrl;
   final List<String> motivationalMessages;
   final GroupPlan plan;
@@ -25,7 +25,7 @@ class Group with EquatableMixin {
   const Group({
     required this.id,
     required this.title,
-    this.description,
+    this.description = '',
     this.photoUrl,
     this.motivationalMessages = const [],
     required this.plan,
