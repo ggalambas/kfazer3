@@ -8,7 +8,7 @@ import 'package:kfazer3/src/features/groups/domain/member_role.dart';
 /// Test groups to be used until a data source is implemented
 List<Group> get kTestGroups => [..._kTestGroups];
 final _kTestGroups = List.generate(
-  3,
+  6,
   (i) => Group(
     id: '$i',
     title: 'Group $i',
@@ -18,6 +18,7 @@ final _kTestGroups = List.generate(
     motivationalMessages: [...kMotivationalMessages],
     plan: GroupPlan.family,
     members: Map.fromIterable(
+      // user 0 + random users
       kTestUsers.where((user) {
         if (user.id == '0') return true;
         return Random().nextBool();
@@ -26,6 +27,7 @@ final _kTestGroups = List.generate(
         if (userId == '0') {
           if (i == 0) return MemberRole.owner;
           if (i == 1) return MemberRole.admin;
+          if (i >= 3) return MemberRole.pending;
         }
         return MemberRole.member;
       },

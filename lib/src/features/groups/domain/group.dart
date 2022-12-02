@@ -39,6 +39,6 @@ class Group with EquatableMixin {
 
 extension GroupMembers on Group {
   List<Member> toMemberList() => members.entries
-      .map((entry) => Member(id: entry.key, role: entry.value))
+      .map((entry) => Member(id: entry.key, groupId: id, role: entry.value))
       .toList();
 }

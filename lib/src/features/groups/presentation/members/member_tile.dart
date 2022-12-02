@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/avatar/user_avatar.dart';
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 import 'package:kfazer3/src/features/groups/domain/member.dart';
 import 'package:kfazer3/src/features/groups/domain/member_role.dart';
+import 'package:kfazer3/src/features/groups/presentation/members/member_tile_controller.dart';
 import 'package:kfazer3/src/features/users/data/users_repository.dart';
+import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:kfazer3/src/utils/widget_loader.dart';
 
@@ -20,9 +21,16 @@ class MemberTile extends ConsumerWidget {
   const MemberTile(this.member, {super.key, this.editable = false});
 
   MemberRole get role => member.role;
+  bool get showMenuButton => editable && !role.isOwner;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen<AsyncValue>(
+      memberTileControllerProvider(member.id),
+      (_, state) => state.showAlertDialogOnError(context),
+    );
+
+    final state = ref.watch(memberTileControllerProvider(member.id));
     final userValue = ref.watch(userStreamProvider(member.id));
     return AsyncValueWidget<AppUser?>(
       value: userValue,
@@ -33,30 +41,38 @@ class MemberTile extends ConsumerWidget {
           leading: UserAvatar(user, dialogOnTap: false),
           title: Text(user.name),
           subtitle: Text(user.phoneNumber.toString()),
-          contentPadding:
-              role.isMember ? const EdgeInsets.only(left: 16) : null,
+          contentPadding: showMenuButton && !state.isLoading
+              ? const EdgeInsets.only(left: 16)
+              : null,
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              if (!role.isMember)
-                Text(
-                  role.locName(context),
-                  style: role.isPending
-                      ? const TextStyle(fontStyle: FontStyle.italic)
-                      : null,
-                ),
-              //TODO change member role
-              if (editable && !role.isPending && !role.isOwner)
-                RoleMenuButton(
-                  role: role,
-                  onTurnOwner: () =>
-                      showNotImplementedAlertDialog(context: context),
-                  onTurnAdmin: () =>
-                      showNotImplementedAlertDialog(context: context),
-                  onRevokeAdmin: () =>
-                      showNotImplementedAlertDialog(context: context),
-                )
-            ],
+            children: state.isLoading
+                ? [
+                    const SizedBox.square(
+                      dimension: 18,
+                      child: CircularProgressIndicator(strokeWidth: 3),
+                    ),
+                  ]
+                : [
+                    if (!role.isMember)
+                      Text(
+                        role.locName(context),
+                        style: role.isPending
+                            ? const TextStyle(fontStyle: FontStyle.italic)
+                            : null,
+                      ),
+                    //TODO transfer ownership popup
+                    //TODO transfer ownership, downgrade owner to admin
+                    //TODO remove member
+                    if (showMenuButton)
+                      RoleMenuButton(
+                        role: role,
+                        onRoleChanged: (role) => ref
+                            .read(memberTileControllerProvider(member.id)
+                                .notifier)
+                            .updateRole(member, role),
+                      )
+                  ],
           ),
         );
       },

@@ -5,7 +5,12 @@ import 'member_role.dart';
 /// A user along with a role that can be added to a group
 class Member {
   final UserId id;
+  final String groupId;
   final MemberRole role;
 
-  Member({required this.id, required this.role});
+  Member({
+    required this.id,
+    required this.groupId,
+    this.role = MemberRole.member,
+  });
 }

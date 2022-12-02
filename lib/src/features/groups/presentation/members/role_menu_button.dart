@@ -15,6 +15,17 @@ enum RoleMenuOption with LocalizedEnum {
   static List<RoleMenuOption> allowedValues(MemberRole role) =>
       values.where((option) => option.allowedRoles.contains(role)).toList();
 
+  MemberRole get newRole {
+    switch (this) {
+      case turnOwner:
+        return MemberRole.owner;
+      case turnAdmin:
+        return MemberRole.admin;
+      case revokeAdmin:
+        return MemberRole.member;
+    }
+  }
+
   @override
   String locName(BuildContext context) {
     switch (this) {
@@ -29,27 +40,24 @@ enum RoleMenuOption with LocalizedEnum {
 }
 
 class RoleMenuButton extends StatelessWidget {
-  final VoidCallback? onTurnOwner;
-  final VoidCallback? onTurnAdmin;
-  final VoidCallback? onRevokeAdmin;
+  final void Function(MemberRole role) onRoleChanged;
   final MemberRole role;
 
   const RoleMenuButton({
     super.key,
     required this.role,
-    required this.onTurnOwner,
-    required this.onTurnAdmin,
-    required this.onRevokeAdmin,
+    required this.onRoleChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     final menuOptions = RoleMenuOption.allowedValues(role);
     return PopupMenuButton(
+      onSelected: onRoleChanged,
       itemBuilder: (context) => [
         for (final option in menuOptions)
           PopupMenuItem(
-            value: option,
+            value: option.newRole,
             child: Text(
               option.locName(context),
               style: option == RoleMenuOption.turnOwner
@@ -58,16 +66,6 @@ class RoleMenuButton extends StatelessWidget {
             ),
           ),
       ],
-      onSelected: (option) {
-        switch (option) {
-          case RoleMenuOption.turnOwner:
-            return onTurnOwner?.call();
-          case RoleMenuOption.turnAdmin:
-            return onTurnAdmin?.call();
-          case RoleMenuOption.revokeAdmin:
-            return onRevokeAdmin?.call();
-        }
-      },
     );
   }
 }

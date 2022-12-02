@@ -13,6 +13,7 @@ final groupsServiceProvider = Provider<GroupsService>((ref) {
   return GroupsService(ref);
 });
 
+// TODO check all services and repositorys for potantial concurrent wirte failures
 class GroupsService {
   final Ref ref;
   GroupsService(this.ref);
@@ -43,8 +44,14 @@ class GroupsService {
 
   Future<void> joinGroup(Group group) async {
     final user = authRepository.currentUser!;
-    final member = Member(id: user.id, role: MemberRole.member);
+    final member = Member(id: user.id, groupId: group.id);
     final copy = group.setMember(member);
+    await groupsRepository.updateGroup(copy);
+  }
+
+  Future<void> setMember(Member member) async {
+    final group = await groupsRepository.fetchGroup(member.groupId);
+    final copy = group!.setMember(member);
     await groupsRepository.updateGroup(copy);
   }
 }

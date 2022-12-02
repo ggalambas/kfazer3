@@ -18,6 +18,7 @@ abstract class GroupsRepository {
   Stream<List<Group>> watchAllGroupsList(String userId);
   Stream<List<Group>> watchGroupList(String userId);
   Stream<List<Group>> watchPendingGroupList(String userId);
+  Future<Group?> fetchGroup(String id);
   Stream<Group?> watchGroup(String id);
   Future<void> createGroup(Group group);
   Future<void> updateGroup(Group group);

@@ -78,8 +78,8 @@
   "member": "Member",
   "pending": "Pending",
   "turnOwner": "Transfer ownership",
-  "turnAdmin": "Give admin permissions",
-  "revokeAdmin": "Revoke admin permissions",
+  "turnAdmin": "Make admin",
+  "revokeAdmin": "Remove as admin",
 
   "preferences": "Preferences",
   "plan": "Plan",
