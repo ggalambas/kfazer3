@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -26,6 +25,8 @@ class MotivationEditScreen extends ConsumerStatefulWidget {
   ConsumerState<MotivationEditScreen> createState() =>
       _MotivationEditScreenState();
 }
+
+//TODO rethink messageControllers logic
 
 class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
   final formKey = GlobalKey<FormState>();
@@ -117,53 +118,59 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
               padding: EdgeInsets.all(kSpace * 2),
               child: Form(
                 key: formKey,
-                child: ListView(
-                    padding: EdgeInsets.only(bottom: kSpace * 8),
-                    children: [
-                      ...messageControllers!
-                          .mapIndexed(
-                            (i, messageController) => TextFormField(
-                              focusNode: i == 0 ? firstMessageNode : null,
-                              controller: messageController,
-                              keyboardType: TextInputType.text,
-                              textInputAction: TextInputAction.next,
-                              maxLength: kMotivationalMessagesLength,
-                              maxLines: null,
-                              decoration: InputDecoration(
-                                counterText: '',
-                                filled: false,
-                                isDense: true,
-                                contentPadding: EdgeInsets.all(kSpace),
-                                suffixIcon: IconButton(
-                                  tooltip: context.loc.delete,
-                                  onPressed: () => delete(messageController),
-                                  icon: const Icon(Icons.clear),
-                                ),
-                              ),
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              validator: (message) {
-                                if (!submitted) return null;
-                                return ref
-                                    .read(motivationEditScreenControllerProvider
-                                        .notifier)
-                                    .messageErrorText(context, message ?? '');
-                              },
+                child: CustomScrollView(
+                  slivers: [
+                    SliverFillRemaining(
+                      child: ListView.separated(
+                        itemCount: messageControllers!.length,
+                        separatorBuilder: (context, _) => const Divider(),
+                        //TODO move to another file?
+                        itemBuilder: (context, i) => TextFormField(
+                          focusNode: i == 0 ? firstMessageNode : null,
+                          controller: messageControllers![i],
+                          keyboardType: TextInputType.text,
+                          textInputAction: TextInputAction.next,
+                          maxLength: kMotivationalMessagesLength,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            counterText: '',
+                            filled: false,
+                            isDense: true,
+                            contentPadding: EdgeInsets.all(kSpace),
+                            suffixIcon: IconButton(
+                              tooltip: context.loc.delete,
+                              onPressed: () => delete(messageControllers![i]),
+                              icon: const Icon(Icons.clear),
                             ),
-                          )
-                          .expandIndexed((i, textField) => [
-                                textField,
-                                const Divider(),
-                              ]),
-                      if (messageControllers!.length > 1)
-                        TextButton(
-                          style: TextButton.styleFrom(
-                            foregroundColor: context.colorScheme.error,
                           ),
-                          onPressed: clear,
-                          child: const Text('Clear all'),
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (message) {
+                            if (!submitted) return null;
+                            return ref
+                                .read(motivationEditScreenControllerProvider
+                                    .notifier)
+                                .messageErrorText(context, message ?? '');
+                          },
                         ),
-                    ]),
+                      ),
+                    ),
+                    if (messageControllers!.length > 1)
+                      SliverToBoxAdapter(
+                        child: Center(
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              foregroundColor: context.colorScheme.error,
+                            ),
+                            onPressed: clear,
+                            child: const Text('Clear all'),
+                          ),
+                        ),
+                      ),
+                    const SliverToBoxAdapter(
+                      child: SizedBox(height: kFabSpace),
+                    ),
+                  ],
+                ),
               ),
             ),
             floatingActionButton: FloatingActionButton(

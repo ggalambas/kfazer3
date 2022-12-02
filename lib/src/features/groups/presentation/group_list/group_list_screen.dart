@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/responsive_scaffold.dart';
+import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/groups/application/groups_service.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_list/group_list_title.dart';
@@ -37,7 +38,9 @@ class GroupListScreen extends ConsumerWidget {
         data: (groupList) => AsyncValueWidget<List<Group>>(
             value: pendingListValue,
             data: (pendingList) => ListView(
-                  padding: railPadding,
+                  padding: railPadding.add(
+                    const EdgeInsets.only(bottom: kFabSpace),
+                  ),
                   children: [
                     if (pendingList.isNotEmpty) ...[
                       GroupListTitle(context.loc.invites),
@@ -49,8 +52,7 @@ class GroupListScreen extends ConsumerWidget {
                     if (groupList.isEmpty)
                       const EmptyGroupList()
                     else ...[
-                      for (final group in [...groupList, ...groupList])
-                        GroupCard(group: group),
+                      for (final group in groupList) GroupCard(group: group),
                     ],
                   ],
                 )),

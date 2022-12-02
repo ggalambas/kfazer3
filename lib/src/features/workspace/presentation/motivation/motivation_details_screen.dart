@@ -63,22 +63,19 @@ class MotivationDetailsScreen extends ConsumerWidget {
             body: ResponsiveCenter(
               maxContentWidth: Breakpoint.tablet,
               padding: EdgeInsets.all(kSpace * 2),
-              child: ListView(
-                children: [
-                  for (final message in workspace.motivationalMessages) ...[
-                    TextFormField(
-                      enabled: false,
-                      initialValue: message,
-                      maxLines: null,
-                      decoration: InputDecoration(
-                        filled: false,
-                        isDense: true,
-                        contentPadding: EdgeInsets.all(kSpace),
-                      ),
-                    ),
-                    const Divider(),
-                  ]
-                ],
+              child: ListView.separated(
+                itemCount: workspace.motivationalMessages.length,
+                separatorBuilder: (context, i) => const Divider(),
+                itemBuilder: (context, i) => TextFormField(
+                  enabled: false,
+                  initialValue: workspace.motivationalMessages[i],
+                  maxLines: null,
+                  decoration: InputDecoration(
+                    filled: false,
+                    isDense: true,
+                    contentPadding: EdgeInsets.all(kSpace),
+                  ),
+                ),
               ),
             ),
           );

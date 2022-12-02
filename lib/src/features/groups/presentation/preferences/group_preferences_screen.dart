@@ -17,6 +17,7 @@ class GroupPreferencesScreen extends ConsumerWidget {
   final String groupId;
   const GroupPreferencesScreen({super.key, required this.groupId});
 
+  //TODO deal with update group delay
   void changePlan(Reader read, Group group, GroupPlan plan) {
     final newGroup = group.setPlan(plan);
     read(groupsRepositoryProvider).updateGroup(newGroup);
