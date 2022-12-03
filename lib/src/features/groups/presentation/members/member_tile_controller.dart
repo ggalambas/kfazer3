@@ -29,9 +29,12 @@ class MemberTileController extends StateNotifier<AsyncValue> {
     required this.groupsRepository,
   }) : super(const AsyncValue.data(null));
 
-  Future<void> updateRole(Member member, MemberRole? role) async {
-    assert(role == null || !role.isOwner);
-    if (role == null) return removeMember(member);
+  Future<void> turnAdmin(Member member) => updateRole(member, MemberRole.admin);
+  Future<void> revokeAdmin(Member member) =>
+      updateRole(member, MemberRole.member);
+
+  Future<void> updateRole(Member member, MemberRole role) async {
+    assert(role.isAdmin && role.isMember);
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final group = await groupsRepository.fetchGroup(member.groupId);

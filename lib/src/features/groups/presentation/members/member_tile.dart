@@ -15,7 +15,7 @@ import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:kfazer3/src/utils/widget_loader.dart';
 import 'package:smart_space/smart_space.dart';
 
-import 'role_menu_button.dart';
+import 'member_menu_button.dart';
 
 /// Shows a member tile (or loading/error UI if needed)
 /// or a shrinked space if it doesn't exist
@@ -30,23 +30,28 @@ class MemberTile extends ConsumerWidget {
   AutoDisposeStateNotifierProvider<MemberTileController, AsyncValue>
       get memberProvider => memberTileControllerProvider(member.id);
 
-  Future<void> updateMemberRole(
+  Future<void> handleOption(
     BuildContext context,
     WidgetRef ref,
-    MemberRole? role,
+    MemberMenuOption option,
   ) async {
-    if (role != null && role.isOwner) {
-      //TODO transfer ownership popup text
-      final transfer = await showAlertDialog(
-        context: context,
-        cancelActionText: context.loc.cancel,
-        title: context.loc.areYouSure,
-      );
-      if (transfer == true) {
-        return ref.read(memberProvider.notifier).transferOwnership(member);
-      }
-    } else {
-      return ref.read(memberProvider.notifier).updateRole(member, role);
+    switch (option) {
+      case MemberMenuOption.turnOwner:
+        final confirmed = await showAlertDialog(
+          context: context,
+          cancelActionText: context.loc.cancel,
+          title: context.loc.areYouSure,
+        );
+        if (confirmed == true) {
+          return ref.read(memberProvider.notifier).transferOwnership(member);
+        }
+        break;
+      case MemberMenuOption.turnAdmin:
+        return ref.read(memberProvider.notifier).turnAdmin(member);
+      case MemberMenuOption.revokeAdmin:
+        return ref.read(memberProvider.notifier).revokeAdmin(member);
+      case MemberMenuOption.removeMember:
+        return ref.read(memberProvider.notifier).removeMember(member);
     }
   }
 
@@ -90,11 +95,10 @@ class MemberTile extends ConsumerWidget {
                             : null,
                       ),
                     if (showMenuButton)
-                      //TODO swap this to member menu button
-                      RoleMenuButton(
+                      MemberMenuButton(
                         role: role,
-                        onRoleChanged: (role) =>
-                            updateMemberRole(context, ref, role),
+                        onOptionSelected: (option) =>
+                            handleOption(context, ref, option),
                       )
                   ],
           ),
