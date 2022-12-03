@@ -30,7 +30,7 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
   final phoneNumberController = TextEditingController();
   PhoneCodeController? phoneCodeController;
 
-  final members = <PhoneNumber>[];
+  final members = <PhoneNumber>{};
 
   String get phoneNumber => phoneNumberController.text;
   String get phoneCode => phoneCodeController!.code;
@@ -75,7 +75,7 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
       ..nextFocus()
       ..unfocus();
     final controller = ref.read(workspaceSetupControllerProvider.notifier);
-    controller.saveMembers(members);
+    controller.saveMembers(members.toList());
     final success = await controller.createWorkspace();
     if (success && mounted) {
       //TODO create group
