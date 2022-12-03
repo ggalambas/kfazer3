@@ -15,7 +15,7 @@ class CreateGroupButton extends StatelessWidget {
 
   final icon = const Icon(Icons.add);
 
-  Widget label(BuildContext context) => Text(context.loc.createNew);
+  Widget label(BuildContext context) => Text(context.loc.newGroup);
 
   @override
   Widget build(BuildContext context) {
