@@ -4,11 +4,9 @@ import 'package:kfazer3/src/features/groups/domain/group.dart';
 
 final groupListControllerProvider =
     StateNotifierProvider.autoDispose<GroupListController, AsyncValue>(
-  (ref) {
-    return GroupListController(
-      groupsService: ref.watch(groupsServiceProvider),
-    );
-  },
+  (ref) => GroupListController(
+    groupsService: ref.watch(groupsServiceProvider),
+  ),
 );
 
 class GroupListController extends StateNotifier<AsyncValue> {

@@ -27,6 +27,9 @@ class MemberTile extends ConsumerWidget {
   MemberRole get role => member.role;
   bool get showMenuButton => editable && !role.isOwner;
 
+  AutoDisposeStateNotifierProvider<MemberTileController, AsyncValue>
+      get memberProvider => memberTileControllerProvider(member.id);
+
   Future<void> updateMemberRole(
     BuildContext context,
     WidgetRef ref,
@@ -40,25 +43,21 @@ class MemberTile extends ConsumerWidget {
         title: context.loc.areYouSure,
       );
       if (transfer == true) {
-        return ref
-            .read(memberTileControllerProvider(member.id).notifier)
-            .transferOwnership(member);
+        return ref.read(memberProvider.notifier).transferOwnership(member);
       }
     } else {
-      return ref
-          .read(memberTileControllerProvider(member.id).notifier)
-          .updateRole(member, role);
+      return ref.read(memberProvider.notifier).updateRole(member, role);
     }
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen<AsyncValue>(
-      memberTileControllerProvider(member.id),
+      memberProvider,
       (_, state) => state.showAlertDialogOnError(context),
     );
 
-    final state = ref.watch(memberTileControllerProvider(member.id));
+    final state = ref.watch(memberProvider);
     final userValue = ref.watch(userStreamProvider(member.id));
     return AsyncValueWidget<AppUser?>(
       value: userValue,
@@ -91,6 +90,7 @@ class MemberTile extends ConsumerWidget {
                             : null,
                       ),
                     if (showMenuButton)
+                      //TODO swap this to member menu button
                       RoleMenuButton(
                         role: role,
                         onRoleChanged: (role) =>

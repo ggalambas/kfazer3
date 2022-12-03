@@ -6,6 +6,12 @@ import 'package:kfazer3/src/features/groups/domain/member_role.dart';
 import 'package:kfazer3/src/features/groups/domain/mutable_group.dart';
 import 'package:kfazer3/src/features/groups/domain/mutable_member.dart';
 
+//TODO change or remove comments
+//? should this family receive a Member instead of userId
+//? and then use it instead of receiving arguments
+//? (the member should extend equatable and have id on props for it to work)
+//? if so, replicate it on pending_group_controller
+
 final memberTileControllerProvider = StateNotifierProvider.family
     .autoDispose<MemberTileController, AsyncValue, String>((ref, userId) {
   return MemberTileController(

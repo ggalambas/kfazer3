@@ -27,6 +27,7 @@ final _kTestGroups = List.generate(
         if (userId == '0') {
           if (i == 0) return MemberRole.owner;
           if (i == 1) return MemberRole.admin;
+          if (i == 2) return MemberRole.member;
           if (i >= 3) return MemberRole.pending;
         }
         return [MemberRole.member, MemberRole.pending][Random().nextInt(2)];

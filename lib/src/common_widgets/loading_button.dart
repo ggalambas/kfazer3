@@ -99,3 +99,38 @@ class LoadingTextButton extends StatelessWidget {
     );
   }
 }
+
+/// Loading button based on [IconButton].
+/// Useful for CTAs in the app.
+/// @param child - child to display on the button, usually an Icon widget.
+/// @param loading - if true, a loading indicator will be displayed instead of
+/// the text.
+/// @param onPressed - callback to be called when the button is pressed.
+class LoadingIconButton extends StatelessWidget {
+  final double? iconSize;
+  final Widget icon;
+  final bool loading;
+  final VoidCallback? onPressed;
+
+  const LoadingIconButton({
+    super.key,
+    required this.icon,
+    this.loading = false,
+    this.onPressed,
+    this.iconSize,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      iconSize: iconSize,
+      onPressed: loading ? null : onPressed,
+      icon: loading
+          ? SizedBox.square(
+              dimension: iconSize ?? IconTheme.of(context).size ?? 24.0,
+              child: const CircularProgressIndicator(strokeWidth: 3),
+            )
+          : icon,
+    );
+  }
+}
