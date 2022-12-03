@@ -66,3 +66,29 @@ const kMotivationalMessages = [
   'Juntos conseguimos! Tarefa concluída.',
   'O seu trabalho é importante! Tarefa concluída.'
 ];
+
+// const kMotivationalMessages = [
+//   'força!',
+//   'Bom esforço!',
+//   'Está num bom caminho.',
+//   'Bom foco.',
+//   'Objetivo alcançado!',
+//   'Contamos consigo.',
+//   'O seu empenho é importante.',
+//   'A nossa equipa depende de si!',
+//   'Continue!',
+//   'O seu trabalho conta!',
+//   'O seu empenho faz a diferença.',
+//   'Parabéns!',
+//   'Bom trabalho!',
+//   'Continuamos a contar consigo!',
+//   'Sucesso.',
+//   'O seu empenho e dedicação fazem esta equipa melhor!',
+//   'A nossa equipa agradece.',
+//   'Agradecemos o seu empenho!',
+//   'Somos uma equipa melhor.',
+//   'Todos contam, você também!',
+//   'O seu trabalho faz a diferença.',
+//   'Juntos conseguimos!',
+//   'O seu trabalho é importante!'
+// ];
