@@ -22,12 +22,12 @@ class AccountService {
     final photoUrl =
         await accountStorageRepository.uploadProfilePicture(user.id, bytes);
     final updatedUser = user.updatePhotoUrl(photoUrl);
-    authRepository.updateUser(updatedUser);
+    await authRepository.updateUser(updatedUser);
   }
 
   Future<void> removePictureAndSaveUser(AppUser user) async {
     await accountStorageRepository.removeProfilePicture(user.id);
     final updatedUser = user.updatePhotoUrl(null);
-    authRepository.updateUser(updatedUser);
+    await authRepository.updateUser(updatedUser);
   }
 }

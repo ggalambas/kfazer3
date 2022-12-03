@@ -1,21 +1,34 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
-import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/avatar/group_avatar.dart';
+import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:kfazer3/src/utils/widget_loader.dart';
 import 'package:smart_space/smart_space.dart';
 
-/// Used to show a single group inside a card.
-class PendingGroupCard extends StatelessWidget {
+import 'pending_group_controller.dart';
+
+/// Used to show a single pending group inside a card.
+class PendingGroupCard extends ConsumerWidget {
   final Group group;
   const PendingGroupCard({super.key, required this.group});
 
+  AutoDisposeStateNotifierProvider<PendingGroupController, AsyncValue>
+      get groupProvider => pendingGroupControllerProvider(group.id);
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen<AsyncValue>(
+      groupProvider,
+      (_, state) => state.showAlertDialogOnError(context),
+    );
+
+    final state = ref.watch(groupProvider);
     return Card(
       clipBehavior: Clip.hardEdge,
       child: Padding(
@@ -26,11 +39,13 @@ class PendingGroupCard extends StatelessWidget {
               contentPadding: EdgeInsets.zero,
               leading: GroupAvatar(group),
               title: Text(group.title),
-              trailing: IconButton(
+              trailing: LoadingIconButton(
                 iconSize: kSmallIconSize,
-                //TODO reject group invite
-                onPressed: () =>
-                    showNotImplementedAlertDialog(context: context),
+                loading: state.isLoading && state.value == false,
+                onPressed: state.isLoading
+                    ? null
+                    : () =>
+                        ref.read(groupProvider.notifier).declineInvite(group),
                 icon: const Icon(Icons.close),
               ),
             ),
@@ -52,10 +67,13 @@ class PendingGroupCard extends StatelessWidget {
                     ),
                   Align(
                     alignment: Alignment.centerRight,
-                    child: TextButton(
-                      //TODO accept group invite
-                      onPressed: () =>
-                          showNotImplementedAlertDialog(context: context),
+                    child: LoadingTextButton(
+                      loading: state.isLoading && state.value == true,
+                      onPressed: state.isLoading
+                          ? null
+                          : () => ref
+                              .read(groupProvider.notifier)
+                              .acceptInvite(group),
                       child: Text('Accept'.hardcoded),
                     ),
                   ),

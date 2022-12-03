@@ -33,6 +33,8 @@ class GroupListScreen extends ConsumerWidget {
       appBar: const HomeBar(),
       rail: const HomeRail(),
       //TODO double AsyncValueWidget, a bit ugly, should we create a widget for this cases or am I not dealing with this case properly
+      //? listen to all at the same time
+      //? and either give them fidd classes OR filter them here by pending role
       builder: (railPadding) => AsyncValueWidget<List<Group>>(
         value: groupListValue,
         data: (groupList) => AsyncValueWidget<List<Group>>(

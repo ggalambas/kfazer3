@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
+import 'package:kfazer3/src/features/notifications/application/notifications_service.dart';
 import 'package:kfazer3/src/features/notifications/data/notifications_repository.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
 import 'package:kfazer3/src/features/users/data/users_repository.dart';
@@ -8,9 +9,9 @@ import 'package:kfazer3/src/features/users/data/users_repository.dart';
 final notificationPagingControllerProvider =
     Provider.autoDispose<NotificationPagingController>(
   (ref) {
-    final repository = ref.watch(notificationsRepositoryProvider);
     final controller = NotificationPagingController(
-      notificationsRepository: repository,
+      notificationsRepository: ref.watch(notificationsRepositoryProvider),
+      notificationsService: ref.watch(notificationsServiceProvider),
       getUserFrom: (userId) => ref.read(userStreamProvider(userId).future),
     );
     ref.onDispose(controller.dispose);
@@ -20,10 +21,12 @@ final notificationPagingControllerProvider =
 
 class NotificationPagingController extends PagingController<int, Notification> {
   final NotificationsRepository notificationsRepository;
+  final NotificationsService notificationsService;
   final Future<AppUser?> Function(String userId) getUserFrom;
 
   NotificationPagingController({
     required this.notificationsRepository,
+    required this.notificationsService,
     required this.getUserFrom,
   }) : super(firstPageKey: 0) {
     addPageRequestListener(fetchItems);
@@ -40,7 +43,7 @@ class NotificationPagingController extends PagingController<int, Notification> {
           currentNotificationList.isEmpty ? null : currentNotificationList.last;
 
       // load next notifications
-      final nextNotificationList = await notificationsRepository
+      final nextNotificationList = await notificationsService
           .fetchNotificationList(lastNotification?.id);
 
       // pre load users

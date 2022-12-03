@@ -19,6 +19,7 @@ class MembersScreen extends ConsumerWidget {
     final groupValue = ref.watch(groupStreamProvider(groupId));
     final currentUser = ref.watch(currentUserStateProvider);
     //TODO loading is ugly
+    //? isnt the loading done already?
     return AsyncValueWidget<Group?>(
       value: groupValue,
       data: (group) {
@@ -31,7 +32,9 @@ class MembersScreen extends ConsumerWidget {
             return ListView(
               padding: railPadding,
               children: [
-                //TODO sort?
+                //TODO sort (rola, name)
+                //? how can we sort by name if we only get the user info later
+                //TODO on remove member animated remove?
                 for (final member in group.toMemberList())
                   MemberTile(member, editable: role.isOwner || role.isAdmin),
               ],
