@@ -13,16 +13,8 @@ final usersRepositoryProvider = Provider<UsersRepository>(
 );
 
 abstract class UsersRepository {
-  Future<List<AppUser>> fetchUserList();
   Stream<AppUser?> watchUser(String id);
 }
-
-final userListFutureProvider = FutureProvider.autoDispose<List<AppUser>>(
-  (ref) {
-    final usersRepository = ref.watch(usersRepositoryProvider);
-    return usersRepository.fetchUserList();
-  },
-);
 
 final userStreamProvider = StreamProvider.family<AppUser?, String>(
   (ref, id) {
