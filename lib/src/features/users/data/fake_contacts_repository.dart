@@ -12,11 +12,11 @@ class FakeContactsRepository implements ContactsRepository {
     List<Country> countryList,
   ) async {
     final phoneContact = await FlutterContactPicker.pickPhoneContact();
-    final phoneNumber = phoneContact.phoneNumber?.number;
+    final phoneNumber = phoneContact.phoneNumber?.number?.replaceAll(' ', '');
     if (phoneNumber == null) {
       throw Exception('Failed to import contact'.hardcoded);
     }
-    late final String? code;
+    String? code;
     if (phoneNumber.startsWith('00')) phoneNumber.replaceFirst('00', '+');
     if (phoneNumber.startsWith('+')) {
       code = countryList
@@ -28,13 +28,13 @@ class FakeContactsRepository implements ContactsRepository {
   }
 
   @override
-  Future<PhoneNumber> fetchPhoneNumbersFromCSV() {
+  Future<List<PhoneNumber>> fetchPhoneNumbersFromCSV() {
     // https://pub.dev/packages/csv
     throw UnimplementedError();
   }
 
   @override
-  Future<PhoneNumber> fetchPhoneNumbersFromVCard() {
+  Future<List<PhoneNumber>> fetchPhoneNumbersFromVCard() {
     // https://pub.dev/packages/simple_vcard_parser
     throw UnimplementedError();
   }

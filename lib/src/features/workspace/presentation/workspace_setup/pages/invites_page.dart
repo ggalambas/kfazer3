@@ -10,6 +10,7 @@ import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/auth/presentation/auth_validators.dart';
 import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code_dropdown_button.dart';
+import 'package:kfazer3/src/features/users/data/contacts_repository.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/workspace_setup_controller.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
@@ -42,6 +43,16 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
     super.dispose();
   }
 
+  Future<void> pickFromContacts(List<Country> countryList) async {
+    final phoneNumber = await ref
+        .read(contactsRepositoryProvider)
+        .fetchPhoneNumberFromContacts(countryList);
+    if (phoneNumber.code.isNotEmpty) {
+      phoneCodeController!.code = phoneNumber.code;
+    }
+    phoneNumberController.text = phoneNumber.number;
+  }
+
   //TODO import contacts
   void importContacts() {}
 
@@ -54,7 +65,6 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
 
   void add() {
     if (!formKey.currentState!.validate()) return;
-
     final phoneNumber = PhoneNumber(phoneCode, this.phoneNumber);
     setState(() => members.add(phoneNumber));
     phoneNumberController.clear();
@@ -64,11 +74,11 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
     phoneNumberNode
       ..nextFocus()
       ..unfocus();
-
     final controller = ref.read(workspaceSetupControllerProvider.notifier);
     controller.saveMembers(members);
     final success = await controller.createWorkspace();
     if (success && mounted) {
+      //TODO create group
       // final workspaceId = ref.read(workspaceSetupControllerProvider).value!;
       //!
       // context.goNamed(
@@ -81,7 +91,10 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(workspaceSetupControllerProvider);
+
     final countryListValue = ref.watch(countryListFutureProvider);
+    final locale = Localizations.localeOf(context);
+
     return SetupLayout(
       formKey: formKey,
       title: 'Add members'.hardcoded,
@@ -96,10 +109,8 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
           value: countryListValue,
           //TODO loading widget
           data: (countryList) {
-            phoneCodeController ??= PhoneCodeController.fromLocale(
-              Localizations.localeOf(context),
-              countryList,
-            );
+            phoneCodeController ??=
+                PhoneCodeController.fromLocale(locale, countryList);
             return TextFormField(
               focusNode: phoneNumberNode,
               controller: phoneNumberController,
@@ -109,16 +120,19 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
                 labelText: context.loc.phoneNumber,
                 prefix:
                     PhoneCodeDropdownPrefix(controller: phoneCodeController!),
-                suffixIcon: phoneNumberNode.hasFocus
-                    ? TextButton(
-                        onPressed: add,
-                        child: Text('Add'.hardcoded),
-                      )
-                    //TODO contact picker
-                    : IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.perm_contact_calendar),
-                      ),
+                suffixIcon: ValueListenableBuilder(
+                    valueListenable: phoneNumberController,
+                    builder: (context, _, __) {
+                      return phoneNumber.isNotEmpty
+                          ? TextButton(
+                              onPressed: add,
+                              child: Text('Add'.hardcoded),
+                            )
+                          : IconButton(
+                              onPressed: () => pickFromContacts(countryList),
+                              icon: const Icon(Icons.perm_contact_calendar),
+                            );
+                    }),
               ),
               onEditingComplete: add,
               validator: (phoneNumber) => ref
@@ -127,20 +141,24 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
             );
           },
         ),
-        if (members.isNotEmpty) Space(),
-        //TODO give size just like to the messages
-        for (final member in members)
-          ListTile(
-            visualDensity: VisualDensity.compact,
-            contentPadding: EdgeInsets.only(left: kSpace * 2),
-            title: Text(member.toString()),
-            trailing: IconButton(
-              tooltip: context.loc.delete, //!
-              iconSize: kSmallIconSize,
-              onPressed: () => remove(member),
-              icon: const Icon(Icons.clear),
+        if (members.isNotEmpty) ...[
+          Space(),
+          //TODO give size just like to the messages
+          //TODO identify app users and contacts
+          //TODO add by name
+          for (final member in members)
+            ListTile(
+              visualDensity: VisualDensity.compact,
+              contentPadding: EdgeInsets.only(left: kSpace * 2),
+              title: Text(member.toString()),
+              trailing: IconButton(
+                tooltip: context.loc.delete, //!
+                iconSize: kSmallIconSize,
+                onPressed: () => remove(member),
+                icon: const Icon(Icons.clear),
+              ),
             ),
-          ),
+        ],
       ],
       cta: countryListValue.hasValue
           ? [
