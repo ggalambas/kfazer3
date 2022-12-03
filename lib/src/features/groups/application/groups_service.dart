@@ -28,7 +28,7 @@ class GroupsService {
     final photoUrl =
         await accountStorageRepository.uploadGroupPicture(group.id, bytes);
     final updatedGroup = group.setPhotoUrl(photoUrl);
-    groupsRepository.updateGroup(updatedGroup);
+    await groupsRepository.updateGroup(updatedGroup);
   }
 
   Future<void> removePictureAndSaveGroup(Group group) async {

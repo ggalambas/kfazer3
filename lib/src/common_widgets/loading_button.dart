@@ -107,6 +107,7 @@ class LoadingTextButton extends StatelessWidget {
 /// the text.
 /// @param onPressed - callback to be called when the button is pressed.
 class LoadingIconButton extends StatelessWidget {
+  final String? tooltip;
   final double? iconSize;
   final Widget icon;
   final bool loading;
@@ -118,17 +119,20 @@ class LoadingIconButton extends StatelessWidget {
     this.loading = false,
     this.onPressed,
     this.iconSize,
+    this.tooltip,
   });
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
+      tooltip: tooltip,
       iconSize: iconSize,
       onPressed: loading ? null : onPressed,
       icon: loading
-          ? SizedBox.square(
-              dimension: iconSize ?? IconTheme.of(context).size ?? 24.0,
-              child: const CircularProgressIndicator(strokeWidth: 3),
+          //TODO hardcoded
+          ? const SizedBox.square(
+              dimension: 18,
+              child: CircularProgressIndicator(strokeWidth: 2.5),
             )
           : icon,
     );

@@ -1,7 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kfazer3/src/features/notifications/data/notifications_repository.dart';
+import 'package:kfazer3/src/features/notifications/application/notifications_service.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 

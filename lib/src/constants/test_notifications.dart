@@ -15,7 +15,7 @@ final _kTestNotifications = List.generate(
       minutes: Random().nextInt(i + 1),
     )),
     description: 'You\'ve been invited to join workspace 0',
-    path: '/w/0',
+    path: '/g/0',
     read: Random().nextBool(),
   ),
 );
