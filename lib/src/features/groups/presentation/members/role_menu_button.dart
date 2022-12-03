@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:kfazer3/src/features/groups/domain/member_role.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/localized_enum.dart';
+import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 
 enum RoleMenuOption with LocalizedEnum {
   turnOwner([MemberRole.admin, MemberRole.member]),
   turnAdmin([MemberRole.member]),
-  revokeAdmin([MemberRole.admin]);
+  revokeAdmin([MemberRole.admin]),
+  removeMember([MemberRole.admin, MemberRole.member, MemberRole.pending]);
 
   final List<MemberRole> allowedRoles;
   const RoleMenuOption(this.allowedRoles);
@@ -15,7 +17,7 @@ enum RoleMenuOption with LocalizedEnum {
   static List<RoleMenuOption> allowedValues(MemberRole role) =>
       values.where((option) => option.allowedRoles.contains(role)).toList();
 
-  MemberRole get newRole {
+  MemberRole? get newRole {
     switch (this) {
       case turnOwner:
         return MemberRole.owner;
@@ -23,6 +25,8 @@ enum RoleMenuOption with LocalizedEnum {
         return MemberRole.admin;
       case revokeAdmin:
         return MemberRole.member;
+      case removeMember:
+        return null;
     }
   }
 
@@ -35,13 +39,15 @@ enum RoleMenuOption with LocalizedEnum {
         return context.loc.turnAdmin;
       case revokeAdmin:
         return context.loc.revokeAdmin;
+      case removeMember:
+        return 'Remove from group'.hardcoded;
     }
   }
 }
 
 class RoleMenuButton extends StatelessWidget {
-  final void Function(MemberRole role) onRoleChanged;
   final MemberRole role;
+  final void Function(MemberRole? role) onRoleChanged;
 
   const RoleMenuButton({
     super.key,
@@ -52,12 +58,12 @@ class RoleMenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final menuOptions = RoleMenuOption.allowedValues(role);
-    return PopupMenuButton(
-      onSelected: onRoleChanged,
+    return PopupMenuButton<RoleMenuOption>(
+      onSelected: (option) => onRoleChanged(option.newRole),
       itemBuilder: (context) => [
         for (final option in menuOptions)
           PopupMenuItem(
-            value: option.newRole,
+            value: option,
             child: Text(
               option.locName(context),
               style: option == RoleMenuOption.turnOwner

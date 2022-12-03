@@ -28,7 +28,7 @@ final _kTestGroups = List.generate(
           if (i == 1) return MemberRole.admin;
           if (i >= 3) return MemberRole.pending;
         }
-        return MemberRole.member;
+        return [MemberRole.member, MemberRole.pending][Random().nextInt(2)];
       },
     ),
   ),

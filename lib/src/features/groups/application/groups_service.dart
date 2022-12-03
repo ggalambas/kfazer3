@@ -8,6 +8,7 @@ import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/domain/member.dart';
 import 'package:kfazer3/src/features/groups/domain/member_role.dart';
 import 'package:kfazer3/src/features/groups/domain/mutable_group.dart';
+import 'package:kfazer3/src/features/groups/domain/mutable_member.dart';
 
 final groupsServiceProvider = Provider<GroupsService>((ref) {
   return GroupsService(ref);
@@ -49,9 +50,21 @@ class GroupsService {
     await groupsRepository.updateGroup(copy);
   }
 
-  Future<void> setMember(Member member) async {
+  Future<void> transferOwnership(Member member) async {
     final group = await groupsRepository.fetchGroup(member.groupId);
-    final copy = group!.setMember(member);
+    final currentUser = authRepository.currentUser!;
+    // check if current user is owner
+    assert(group!.members[currentUser.id]!.isOwner);
+    // change owner to admin
+    final currentOwner = Member(
+      id: currentUser.id,
+      groupId: group!.id,
+      role: MemberRole.admin,
+    );
+    // change member to owner
+    final newOwner = member.setRole(MemberRole.owner);
+    // update group
+    final copy = group.setMember(currentOwner).setMember(newOwner);
     await groupsRepository.updateGroup(copy);
   }
 }

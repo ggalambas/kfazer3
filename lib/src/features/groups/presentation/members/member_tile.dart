@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/avatar/user_avatar.dart';
+import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 import 'package:kfazer3/src/features/groups/domain/member.dart';
 import 'package:kfazer3/src/features/groups/domain/member_role.dart';
 import 'package:kfazer3/src/features/groups/presentation/members/member_tile_controller.dart';
 import 'package:kfazer3/src/features/users/data/users_repository.dart';
+import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:kfazer3/src/utils/widget_loader.dart';
+import 'package:smart_space/smart_space.dart';
 
 import 'role_menu_button.dart';
 
@@ -22,6 +26,30 @@ class MemberTile extends ConsumerWidget {
 
   MemberRole get role => member.role;
   bool get showMenuButton => editable && !role.isOwner;
+
+  Future<void> updateMemberRole(
+    BuildContext context,
+    WidgetRef ref,
+    MemberRole? role,
+  ) async {
+    if (role != null && role.isOwner) {
+      //TODO transfer ownership popup text
+      final transfer = await showAlertDialog(
+        context: context,
+        cancelActionText: context.loc.cancel,
+        title: context.loc.areYouSure,
+      );
+      if (transfer == true) {
+        return ref
+            .read(memberTileControllerProvider(member.id).notifier)
+            .transferOwnership(member);
+      }
+    } else {
+      return ref
+          .read(memberTileControllerProvider(member.id).notifier)
+          .updateRole(member, role);
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -42,14 +70,15 @@ class MemberTile extends ConsumerWidget {
           title: Text(user.name),
           subtitle: Text(user.phoneNumber.toString()),
           contentPadding: showMenuButton && !state.isLoading
-              ? const EdgeInsets.only(left: 16)
+              // remove right padding when trailing is a button
+              ? EdgeInsets.only(left: kSpace * 2)
               : null,
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: state.isLoading
                 ? [
                     const SizedBox.square(
-                      dimension: 18,
+                      dimension: kSmallIconSize,
                       child: CircularProgressIndicator(strokeWidth: 3),
                     ),
                   ]
@@ -61,16 +90,11 @@ class MemberTile extends ConsumerWidget {
                             ? const TextStyle(fontStyle: FontStyle.italic)
                             : null,
                       ),
-                    //TODO transfer ownership popup
-                    //TODO transfer ownership, downgrade owner to admin
-                    //TODO remove member
                     if (showMenuButton)
                       RoleMenuButton(
                         role: role,
-                        onRoleChanged: (role) => ref
-                            .read(memberTileControllerProvider(member.id)
-                                .notifier)
-                            .updateRole(member, role),
+                        onRoleChanged: (role) =>
+                            updateMemberRole(context, ref, role),
                       )
                   ],
           ),
