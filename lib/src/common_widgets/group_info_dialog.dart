@@ -28,10 +28,10 @@ class GroupInfoDialog extends ConsumerWidget {
             group.title,
             style: context.textTheme.titleLarge,
           ),
-          if (group.description != null) ...[
+          if (group.description.isNotEmpty) ...[
             Space(0.5),
             Text(
-              group.description!,
+              group.description,
               style: context.textTheme.bodySmall,
             ),
           ],

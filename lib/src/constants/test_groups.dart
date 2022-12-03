@@ -13,7 +13,8 @@ final _kTestGroups = List.generate(
     id: '$i',
     title: 'Group $i',
     description:
-        'A group made by him for the company x in the center of the world.',
+        'A group made by him for the company x in the center of the world.' *
+            Random().nextInt(2),
     motivationalMessages: [...kMotivationalMessages],
     plan: GroupPlan.family,
     members: Map.fromIterable(

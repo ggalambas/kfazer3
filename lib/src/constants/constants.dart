@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
+
 const kSmallIconSize = 20.0;
+const kFabSpace = kMinInteractiveDimension + 20 + 8;
 
 //* Text input lengths
 const kNameLength = 30;

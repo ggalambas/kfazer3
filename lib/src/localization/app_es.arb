@@ -91,6 +91,7 @@
   "motivationalMessages": "Mensajes motivacionales",
   "motivationalMessagesDescription": "Mensajes que se muestran al completar una tarea",
   "group": "Grupo",
+  "groups": "Grupos",
   "editGroup": "Editar grupo",
   "deleteGroup": "Eliminar grupo",
   "title": "Título",
