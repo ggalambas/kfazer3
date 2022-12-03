@@ -2,26 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/tap_to_unfocus.dart';
-import 'package:kfazer3/src/localization/app_localizations_context.dart';
+import 'package:kfazer3/src/localization/localization_context.dart';
 import 'package:kfazer3/src/localization/localized_enum.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
 
+import 'group_setup_controller.dart';
+import 'pages/group_details_page.dart';
 import 'pages/invites_page.dart';
 import 'pages/motivation_page.dart';
-import 'pages/workspace_details_page.dart';
-import 'workspace_setup_controller.dart';
 
-/// The three sub-routes that are presented as part of the workspace setup flow.
-enum WorkspaceSetupPage with LocalizedEnum {
+/// The three sub-routes that are presented as part of the group setup flow.
+enum GroupSetupPage with LocalizedEnum {
   details,
   motivation,
   invites;
 
-  WorkspaceSetupPage? get previous {
+  GroupSetupPage? get previous {
     final i = index - 1;
-    return i < 0 ? null : WorkspaceSetupPage.values[i];
+    return i < 0 ? null : GroupSetupPage.values[i];
   }
 
   @override
@@ -37,23 +37,22 @@ enum WorkspaceSetupPage with LocalizedEnum {
   }
 }
 
-/// This is the root widget of the workspace setup flow, which is composed of 3 pages:
-/// 1. Workspace details page
+/// This is the root widget of the group setup flow, which is composed of 3 pages:
+/// 1. Group details page
 /// 2. Motivation page
 /// 3. Invites page
 ///
-///! The logic for the entire flow is implemented in the [WorkspaceSetupScreenController],
+///! The logic for the entire flow is implemented in the [GroupSetupScreenController],
 /// while UI updates are handled by a [PageController].
-class WorkspaceSetupScreen extends ConsumerStatefulWidget {
-  final WorkspaceSetupPage page;
-  const WorkspaceSetupScreen({super.key, required this.page});
+class GroupSetupScreen extends ConsumerStatefulWidget {
+  final GroupSetupPage page;
+  const GroupSetupScreen({super.key, required this.page});
 
   @override
-  ConsumerState<WorkspaceSetupScreen> createState() =>
-      _WorkspaceSetupScreenState();
+  ConsumerState<GroupSetupScreen> createState() => GroupSetupScreenState();
 }
 
-class _WorkspaceSetupScreenState extends ConsumerState<WorkspaceSetupScreen> {
+class GroupSetupScreenState extends ConsumerState<GroupSetupScreen> {
   late final controller = PageController(initialPage: widget.page.index);
 
   @override
@@ -63,7 +62,7 @@ class _WorkspaceSetupScreenState extends ConsumerState<WorkspaceSetupScreen> {
   }
 
   @override
-  void didUpdateWidget(WorkspaceSetupScreen oldWidget) {
+  void didUpdateWidget(GroupSetupScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
     // perform a nice scroll animation to reveal the next page
     if (controller.hasClients && controller.position.hasViewportDimension) {
@@ -78,7 +77,7 @@ class _WorkspaceSetupScreenState extends ConsumerState<WorkspaceSetupScreen> {
   @override
   Widget build(BuildContext context) {
     ref.listen<AsyncValue>(
-      workspaceSetupControllerProvider,
+      groupSetupControllerProvider,
       (_, state) => state.showAlertDialogOnError(context),
     );
     // Return a Scaffold with a PageView containing the 3 pages.
@@ -89,7 +88,7 @@ class _WorkspaceSetupScreenState extends ConsumerState<WorkspaceSetupScreen> {
         final previous = widget.page.previous;
         if (previous == null) return true;
         context.goNamed(
-          AppRoute.workspaceSetupPage.name,
+          AppRoute.groupSetupPage.name,
           params: {'page': previous.name},
         );
         return false;
@@ -113,19 +112,28 @@ class _WorkspaceSetupScreenState extends ConsumerState<WorkspaceSetupScreen> {
             physics: const NeverScrollableScrollPhysics(),
             controller: controller,
             children: [
-              WorkspaceDetailsPage(
+              GroupDetailsPage(
                 onSuccess: () => context.goNamed(
-                  AppRoute.workspaceSetupPage.name,
-                  params: {'page': WorkspaceSetupPage.motivation.name},
+                  AppRoute.groupSetupPage.name,
+                  params: {'page': GroupSetupPage.motivation.name},
                 ),
               ),
               MotivationPage(
                 onSuccess: () => context.goNamed(
-                  AppRoute.workspaceSetupPage.name,
-                  params: {'page': WorkspaceSetupPage.invites.name},
+                  AppRoute.groupSetupPage.name,
+                  params: {'page': GroupSetupPage.invites.name},
                 ),
               ),
-              const InvitesPage(),
+              InvitesPage(
+                onSuccess: () async {
+                  final groupId = await ref
+                      .read(groupSetupControllerProvider.notifier)
+                      .createGroup();
+                  if (groupId != null && mounted) {
+                    context.goNamed(AppRoute.home.name);
+                  }
+                },
+              ),
             ],
           ),
         ),

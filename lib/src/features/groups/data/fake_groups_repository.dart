@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:kfazer3/src/constants/test_groups.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/domain/member_role.dart';
+import 'package:kfazer3/src/features/groups/domain/mutable_group.dart';
 import 'package:kfazer3/src/utils/delay.dart';
 import 'package:kfazer3/src/utils/in_memory_store.dart';
 
@@ -64,14 +65,16 @@ class FakeGroupsRepository implements GroupsRepository {
   }
 
   @override
-  Future<void> createGroup(Group group) async {
+  Future<String> createGroup(Group group) async {
     await delay(addDelay);
     // First, get the group list
     final groups = _groups.value;
     // Then, add the group
-    groups.add(group);
+    final id = groups.length.toString();
+    groups.add(group.setId(id));
     // Finally, update the notification list data (will emit a new value)
     _groups.value = groups;
+    return id;
   }
 
   @override

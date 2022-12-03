@@ -10,6 +10,7 @@ import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.da
 import 'package:kfazer3/src/features/groups/presentation/details/group_details_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/details/group_edit_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_list/group_list_screen.dart';
+import 'package:kfazer3/src/features/groups/presentation/group_setup/group_setup_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/members/members_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/preferences/group_preferences_screen.dart';
 import 'package:kfazer3/src/features/notifications/presentation/notification_list_screen.dart';
@@ -21,7 +22,6 @@ import 'package:kfazer3/src/features/tasks/presentation/task_screen/task_screen.
 import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_details_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_edit_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/workspace_screen.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/workspace_setup_screen.dart';
 import 'package:kfazer3/src/routing/not_found_screen.dart';
 
 import 'refresh_stream.dart';
@@ -36,8 +36,8 @@ enum AppRoute {
   groupMembers, //! fullscreenDialog
 
   //?
-  workspaceSetup, //! fullscreenDialog
-  workspaceSetupPage,
+  groupSetup, //! fullscreenDialog
+  groupSetupPage,
 
   workspaceMenu,
   motivation,
@@ -136,35 +136,35 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           ),
           GoRoute(
             path: 'setup',
-            name: AppRoute.workspaceSetup.name,
+            name: AppRoute.groupSetup.name,
             redirect: (context, state) =>
-                '${state.location}/${WorkspaceSetupPage.values.first.name}',
+                '${state.location}/${GroupSetupPage.values.first.name}',
           ),
           GoRoute(
             path: 'setup/:page',
-            name: AppRoute.workspaceSetupPage.name,
+            name: AppRoute.groupSetupPage.name,
             redirect: (context, state) {
-              //! workspace setup auto reset
+              //! group setup auto reset
               // final pageName = state.params['page']!;
-              // final workspaceId = ref
-              //     .read(workspaceSetupControllerProvider.notifier)
-              //     .workspaceId;
+              // final groupId = ref
+              //     .read(groupSetupControllerProvider.notifier)
+              //     .groupId;
               // final resetSetupFlow =
-              //     pageName != WorkspaceSetupPage.details.name &&
-              //         workspaceId == null;
+              //     pageName != GroupSetupPage.details.name &&
+              //         groupId == null;
               // if (resetSetupFlow) return '/setup';
               return null;
             },
             pageBuilder: (_, state) {
               final pageName = state.params['page']!;
-              final page = WorkspaceSetupPage.values.firstWhere(
+              final page = GroupSetupPage.values.firstWhere(
                 (page) => page.name == pageName,
-                orElse: () => WorkspaceSetupPage.values.first,
+                orElse: () => GroupSetupPage.values.first,
               );
               return MaterialPage(
                 key: state.pageKey,
-                fullscreenDialog: page == WorkspaceSetupPage.values.first,
-                child: WorkspaceSetupScreen(page: page),
+                fullscreenDialog: page == GroupSetupPage.values.first,
+                child: GroupSetupScreen(page: page),
               );
             },
           ),

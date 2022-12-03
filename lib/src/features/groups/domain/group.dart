@@ -15,12 +15,12 @@ class Group with EquatableMixin {
   final String? photoUrl;
   final List<String> motivationalMessages;
   final GroupPlan plan;
-  final List<PhoneNumber> pendingMembersPhoneNumber;
 
   /// All the members in the group, where:
   /// - key: user id
   /// - value: role
   final Map<UserId, MemberRole> members;
+  final Set<PhoneNumber> pendingMembersPhoneNumber;
 
   const Group({
     required this.id,
@@ -29,8 +29,8 @@ class Group with EquatableMixin {
     this.photoUrl,
     this.motivationalMessages = const [],
     required this.plan,
-    this.pendingMembersPhoneNumber = const [],
     required this.members,
+    this.pendingMembersPhoneNumber = const {},
   });
 
   @override

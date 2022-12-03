@@ -6,9 +6,9 @@ import 'package:kfazer3/src/common_widgets/setup_layout.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/constants/test_workspaces.dart';
+import 'package:kfazer3/src/features/groups/presentation/group_setup/group_setup_controller.dart';
 import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_edit_screen_controller.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/workspace_setup_controller.dart';
-import 'package:kfazer3/src/localization/app_localizations_context.dart';
+import 'package:kfazer3/src/localization/localization_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
@@ -80,7 +80,7 @@ class _MotivationPageState extends ConsumerState<MotivationPage> {
     }
     if (!formKey.currentState!.validate()) return;
 
-    final controller = ref.read(workspaceSetupControllerProvider.notifier);
+    final controller = ref.read(groupSetupControllerProvider.notifier);
     controller.saveMessages(messages);
     widget.onSuccess?.call();
   }
@@ -133,7 +133,7 @@ class _MotivationPageState extends ConsumerState<MotivationPage> {
                             ),
                           ),
                           validator: (message) => ref
-                              .read(workspaceSetupControllerProvider.notifier)
+                              .read(groupSetupControllerProvider.notifier)
                               .messageErrorText(context, message ?? ''),
                         ),
                       )

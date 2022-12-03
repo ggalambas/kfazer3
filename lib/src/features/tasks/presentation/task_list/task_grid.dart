@@ -8,7 +8,7 @@ import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/features/tasks/data/tasks_repository.dart';
 import 'package:kfazer3/src/features/tasks/domain/task.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
-import 'package:kfazer3/src/localization/app_localizations_context.dart';
+import 'package:kfazer3/src/localization/localization_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 

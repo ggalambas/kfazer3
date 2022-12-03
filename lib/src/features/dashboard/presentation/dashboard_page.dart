@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kfazer3/src/localization/app_localizations_context.dart';
+import 'package:kfazer3/src/localization/localization_context.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
