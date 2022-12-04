@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/features/notifications/presentation/notifications_button.dart';
-import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_bar/workspace_menu_button.dart';
+import 'package:kfazer3/src/features/projects/domain/project.dart';
 
-/// Custom [AppBar] widget that is used by the [WorkspaceScreen].
+import 'project_menu_button.dart';
+
+/// Custom [AppBar] widget that is used by the [ProjectScreen].
 /// It shows the following actions:
 /// - Notifications button
-/// - Workspace settings button
-/// - Leave workspace button
-/// - About workspace button
+/// - Project settings button
+/// - Leave project button
+/// - About project button
 /// - Archived tasks button
 /// - General settings button
 ///
-class WorkspaceBar extends StatelessWidget with PreferredSizeWidget {
-  final Workspace workspace;
-  const WorkspaceBar({super.key, required this.workspace});
+class ProjectBar extends StatelessWidget with PreferredSizeWidget {
+  final Project project;
+  const ProjectBar({super.key, required this.project});
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +25,11 @@ class WorkspaceBar extends StatelessWidget with PreferredSizeWidget {
     // used instead.
     final screenWidth = MediaQuery.of(context).size.width;
     return AppBar(
-      title: Text(workspace.title),
+      title: Text(project.title),
       centerTitle: screenWidth >= Breakpoint.tablet,
       actions: [
         const NotificationsIconButton(),
-        WorkspaceMenuButton(workspace: workspace),
+        ProjectMenuButton(project: project),
       ],
     );
   }

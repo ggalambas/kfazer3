@@ -11,6 +11,7 @@ final _kTestProjects = [
         id: '$i',
         title: 'Project $i',
         description: 'A project made by him about world problem solving.',
+        members: group.members.keys.toList(),
         groupId: group.id,
       ),
     ),

@@ -3,15 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/loading_dialog.dart';
-import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/workspace_screen_controller.dart';
+import 'package:kfazer3/src/features/projects/domain/project.dart';
+import 'package:kfazer3/src/features/projects/presentation/project_screen_controller.dart';
 import 'package:kfazer3/src/localization/localization_context.dart';
 import 'package:kfazer3/src/localization/localized_enum.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 
-enum WorkspaceMenuOption with LocalizedEnum {
+enum ProjectMenuOption with LocalizedEnum {
   about,
   preferences,
   members,
@@ -38,26 +38,25 @@ enum WorkspaceMenuOption with LocalizedEnum {
   }
 }
 
-class WorkspaceMenuButton extends ConsumerStatefulWidget {
-  final Workspace workspace;
-  const WorkspaceMenuButton({super.key, required this.workspace});
+class ProjectMenuButton extends ConsumerStatefulWidget {
+  final Project project;
+  const ProjectMenuButton({super.key, required this.project});
 
   @override
-  ConsumerState<WorkspaceMenuButton> createState() =>
-      _WorkspaceMenuButtonState();
+  ConsumerState<ProjectMenuButton> createState() => ProjectMenuButtonState();
 }
 
-class _WorkspaceMenuButtonState extends ConsumerState<WorkspaceMenuButton> {
+class ProjectMenuButtonState extends ConsumerState<ProjectMenuButton> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
       itemBuilder: (context) => [
-        for (final option in WorkspaceMenuOption.values)
+        for (final option in ProjectMenuOption.values)
           PopupMenuItem(
             value: option,
             child: Text(
               option.locName(context),
-              style: option == WorkspaceMenuOption.leave
+              style: option == ProjectMenuOption.leave
                   ? TextStyle(color: context.colorScheme.error)
                   : null,
             ),
@@ -65,35 +64,35 @@ class _WorkspaceMenuButtonState extends ConsumerState<WorkspaceMenuButton> {
       ],
       onSelected: (option) {
         switch (option) {
-          case WorkspaceMenuOption.about:
+          case ProjectMenuOption.about:
             showAlertDialog(
               context: context,
-              title: widget.workspace.title,
-              content: widget.workspace.description,
+              title: widget.project.title,
+              content: widget.project.description,
             );
             break;
           //TODO only show for admins
-          // case WorkspaceMenuOption.preferences:
+          // case ProjectMenuOption.preferences:
           //   context.pushNamed(
-          //     AppRoute.workspacePreferences.name,
-          //     params: {'groupId': widget.workspace.id},
+          //     AppRoute.projectPreferences.name,
+          //     params: {'groupId': widget.project.id},
           //   );
           //   break;
-          case WorkspaceMenuOption.members:
+          case ProjectMenuOption.members:
             //TODO go to members screen
             showNotImplementedAlertDialog(context: context);
             break;
-          case WorkspaceMenuOption.archive:
+          case ProjectMenuOption.archive:
             context.pushNamed(
-              AppRoute.workspaceArchive.name,
-              params: {'groupId': widget.workspace.id},
+              AppRoute.projectArchive.name,
+              params: {'groupId': widget.project.id},
             );
             break;
-          case WorkspaceMenuOption.export:
-            //TODO export workspace
+          case ProjectMenuOption.export:
+            //TODO export project
             showNotImplementedAlertDialog(context: context);
             break;
-          case WorkspaceMenuOption.leave:
+          case ProjectMenuOption.leave:
             //TODO don't show for creator
             showLoadingDialog(
               context: context,
@@ -102,8 +101,8 @@ class _WorkspaceMenuButtonState extends ConsumerState<WorkspaceMenuButton> {
               defaultActionText: 'Leave'.hardcoded,
               onDefaultAction: () async {
                 final success = await ref
-                    .read(workspaceScreenControllerProvider.notifier)
-                    .leave(widget.workspace.id);
+                    .read(projectScreenControllerProvider.notifier)
+                    .leaveProject(widget.project);
                 if (mounted && success) context.goNamed(AppRoute.home.name);
               },
             );

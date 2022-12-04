@@ -14,6 +14,7 @@ import 'package:kfazer3/src/features/groups/presentation/group_setup/group_setup
 import 'package:kfazer3/src/features/groups/presentation/members/members_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/preferences/group_preferences_screen.dart';
 import 'package:kfazer3/src/features/notifications/presentation/notification_list_screen.dart';
+import 'package:kfazer3/src/features/projects/presentation/project_screen.dart';
 import 'package:kfazer3/src/features/settings/presentation/settings_screen.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_list/archived_tasks_screen.dart';
@@ -21,7 +22,6 @@ import 'package:kfazer3/src/features/tasks/presentation/task_screen/task_activit
 import 'package:kfazer3/src/features/tasks/presentation/task_screen/task_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_details_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_edit_screen.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/workspace_screen.dart';
 import 'package:kfazer3/src/routing/not_found_screen.dart';
 
 import 'refresh_stream.dart';
@@ -39,9 +39,9 @@ enum AppRoute {
   groupSetup, //! fullscreenDialog
   groupSetupPage,
 
-  workspaceMenu,
+  projectMenu,
   motivation,
-  workspaceArchive, //! fullscreenDialog
+  projectArchive, //! fullscreenDialog
 
   task,
   taskActivity, //! fullscreenDialog
@@ -228,15 +228,15 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             builder: (_, state) {
               final projectId = state.params['projectId']!;
               final menuName = state.queryParams['menu'];
-              final menu = WorkspaceMenu.values.firstWhereOrNull(
+              final menu = ProjectMenu.values.firstWhereOrNull(
                 (menu) => menu.name == menuName,
               );
               final taskStateName = state.queryParams['state'];
               final taskState = TaskState.tabs.firstWhereOrNull(
                 (taskState) => taskState.name == taskStateName,
               );
-              return WorkspaceScreen(
-                workspaceId: projectId,
+              return ProjectScreen(
+                projectId: projectId,
                 menu: menu,
                 taskState: taskState,
               );
@@ -278,7 +278,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
               ),
               GoRoute(
                 path: 'archive',
-                name: AppRoute.workspaceArchive.name,
+                name: AppRoute.projectArchive.name,
                 pageBuilder: (_, state) {
                   return MaterialPage(
                     key: state.pageKey,
