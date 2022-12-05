@@ -10,7 +10,7 @@ import 'package:kfazer3/src/features/groups/domain/group_plan.dart';
 import 'package:kfazer3/src/features/groups/presentation/not_found_group.dart';
 import 'package:kfazer3/src/features/groups/presentation/preferences/group_preferences_controller.dart';
 import 'package:kfazer3/src/features/settings/presentation/selection_setting_tile.dart';
-import 'package:kfazer3/src/localization/app_localizations_context.dart';
+import 'package:kfazer3/src/localization/localization_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 
 class GroupPreferencesScreen extends ConsumerWidget {

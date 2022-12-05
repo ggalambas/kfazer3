@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/not_found_widget.dart';
-import 'package:kfazer3/src/localization/app_localizations_context.dart';
+import 'package:kfazer3/src/localization/localization_context.dart';
 
 class NotFoundGroup extends ConsumerWidget {
   const NotFoundGroup({super.key});

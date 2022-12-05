@@ -18,9 +18,9 @@ import 'package:smart_space/smart_space.dart';
 ///! [TaskListPageController],
 /// while UI updates are handled by a [PageController].
 class TaskListPage extends StatefulWidget {
-  final String workspaceId;
+  final String projectId;
   final TaskState? taskState;
-  const TaskListPage({super.key, required this.workspaceId, this.taskState});
+  const TaskListPage({super.key, required this.projectId, this.taskState});
 
   @override
   State<TaskListPage> createState() => _TaskListPageState();
@@ -67,10 +67,10 @@ class _TaskListPageState extends State<TaskListPage>
       // context.goNamed(
       //   AppRoute.group.name,
       //   params: {
-      //     'groupId': widget.workspaceId,
+      //     'groupId': widget.projectId,
       //   },
       //   queryParams: {
-      //     'menu': WorkspaceMenu.tasks.name,
+      //     'menu': ProjectMenu.tasks.name,
       //     'state': TaskState.tabs[i].name,
       //   },
       // );

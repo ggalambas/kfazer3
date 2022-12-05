@@ -13,7 +13,7 @@ final projectsRepositoryProvider = Provider<ProjectsRepository>(
 );
 
 abstract class ProjectsRepository {
-  Stream<List<Project>> watchProjectList(String groupId);
+  Stream<List<Project>> watchProjectList(String userId, String groupId);
   Stream<Project?> watchProject(String id);
   Future<void> createProject(Project project);
   Future<void> updateProject(Project project);

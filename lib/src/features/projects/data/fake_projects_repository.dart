@@ -16,11 +16,11 @@ class FakeProjectsRepository implements ProjectsRepository {
   FakeProjectsRepository({this.addDelay = true});
 
   @override
-  Stream<List<Project>> watchProjectList(String groupId) async* {
+  Stream<List<Project>> watchProjectList(String userId, String groupId) async* {
     await delay(addDelay);
     yield* _projects.stream.map(
       (projects) => projects.where((project) {
-        return project.groupId == groupId;
+        return project.groupId == groupId && project.members.contains(userId);
       }).toList(),
     );
   }

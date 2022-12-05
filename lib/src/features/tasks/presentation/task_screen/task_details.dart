@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
-import 'package:kfazer3/src/common_widgets/avatar/avatar.dart';
+import 'package:kfazer3/src/common_widgets/avatar/group_avatar.dart';
 import 'package:kfazer3/src/common_widgets/avatar/user_avatar.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
+import 'package:kfazer3/src/features/groups/data/groups_repository.dart';
 import 'package:kfazer3/src/features/tasks/domain/task.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
-import 'package:kfazer3/src/features/workspace/data/workspace_repository.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:smart_space/smart_space.dart';
 
@@ -58,8 +58,7 @@ class TaskDetails extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //TODO get participanting users
     final user = ref.watch(currentUserStateProvider);
-    final workspace =
-        ref.watch(workspaceStreamProvider(task.workspaceId)).valueOrNull;
+    final group = ref.watch(groupStreamProvider(task.groupId)).valueOrNull;
     return Scaffold(
       body: ListView(
         padding: EdgeInsets.symmetric(vertical: kSpace),
@@ -89,15 +88,15 @@ class TaskDetails extends ConsumerWidget {
             leading: const Icon(Icons.segment),
             title: Text('Subtasks'.hardcoded),
           ),
-          if (workspace != null)
+          if (group != null)
             ListTile(
               //!
               // onTap: () => context.goNamed(
               //   AppRoute.group.name,
-              //   params: {'groupId': workspace.id},
+              //   params: {'groupId': group.id},
               // ),
-              leading: Avatar.fromWorkspace(workspace, radius: 16),
-              title: Text(workspace.title),
+              leading: GroupAvatar(group, radius: 16),
+              title: Text(group.title),
             ),
         ],
       ),

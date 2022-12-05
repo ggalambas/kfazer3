@@ -10,18 +10,17 @@ import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.da
 import 'package:kfazer3/src/features/groups/presentation/details/group_details_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/details/group_edit_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_list/group_list_screen.dart';
+import 'package:kfazer3/src/features/groups/presentation/group_setup/group_setup_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/members/members_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/preferences/group_preferences_screen.dart';
-import 'package:kfazer3/src/features/motivation/presentation/motivation_edit_screen.dart';
 import 'package:kfazer3/src/features/motivation/presentation/motivation_screen.dart';
 import 'package:kfazer3/src/features/notifications/presentation/notification_list_screen.dart';
+import 'package:kfazer3/src/features/projects/presentation/project_screen.dart';
 import 'package:kfazer3/src/features/settings/presentation/settings_screen.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_list/archived_tasks_screen.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_screen/task_activity_screen.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_screen/task_screen.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/workspace_screen.dart';
-import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/workspace_setup_screen.dart';
 import 'package:kfazer3/src/routing/not_found_screen.dart';
 
 import 'refresh_stream.dart';
@@ -37,11 +36,11 @@ enum AppRoute {
   members, //! fullscreenDialog
 
   //?
-  workspaceSetup, //! fullscreenDialog
-  workspaceSetupPage,
+  groupSetup, //! fullscreenDialog
+  groupSetupPage,
 
-  workspaceMenu,
-  workspaceArchive, //! fullscreenDialog
+  projectMenu,
+  projectArchive, //! fullscreenDialog
 
   task,
   taskActivity, //! fullscreenDialog
@@ -136,35 +135,35 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           ),
           GoRoute(
             path: 'setup',
-            name: AppRoute.workspaceSetup.name,
+            name: AppRoute.groupSetup.name,
             redirect: (context, state) =>
-                '${state.location}/${WorkspaceSetupPage.values.first.name}',
+                '${state.location}/${GroupSetupPage.values.first.name}',
           ),
           GoRoute(
             path: 'setup/:page',
-            name: AppRoute.workspaceSetupPage.name,
+            name: AppRoute.groupSetupPage.name,
             redirect: (context, state) {
-              //! workspace setup auto reset
+              //! group setup auto reset
               // final pageName = state.params['page']!;
-              // final workspaceId = ref
-              //     .read(workspaceSetupControllerProvider.notifier)
-              //     .workspaceId;
+              // final groupId = ref
+              //     .read(groupSetupControllerProvider.notifier)
+              //     .groupId;
               // final resetSetupFlow =
-              //     pageName != WorkspaceSetupPage.details.name &&
-              //         workspaceId == null;
+              //     pageName != GroupSetupPage.details.name &&
+              //         groupId == null;
               // if (resetSetupFlow) return '/setup';
               return null;
             },
             pageBuilder: (_, state) {
               final pageName = state.params['page']!;
-              final page = WorkspaceSetupPage.values.firstWhere(
+              final page = GroupSetupPage.values.firstWhere(
                 (page) => page.name == pageName,
-                orElse: () => WorkspaceSetupPage.values.first,
+                orElse: () => GroupSetupPage.values.first,
               );
               return MaterialPage(
                 key: state.pageKey,
-                fullscreenDialog: page == WorkspaceSetupPage.values.first,
-                child: WorkspaceSetupScreen(page: page),
+                fullscreenDialog: page == GroupSetupPage.values.first,
+                child: GroupSetupScreen(page: page),
               );
             },
           ),
@@ -201,9 +200,12 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                   final groupId = state.params['groupId']!;
                   final editingParam = state.queryParams['editing'];
                   final editing = editingParam == 'true';
-                  return editing
-                      ? MotivationEditScreen(groupId: groupId)
-                      : MotivationScreen(groupId: groupId);
+                  return
+                      //TODO uncomment
+                      // editing
+                      //     ? MotivationEditScreen(groupId: groupId)
+                      //     :
+                      MotivationScreen(groupId: groupId);
                 },
               ),
             ],
@@ -228,15 +230,15 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             builder: (_, state) {
               final projectId = state.params['projectId']!;
               final menuName = state.queryParams['menu'];
-              final menu = WorkspaceMenu.values.firstWhereOrNull(
+              final menu = ProjectMenu.values.firstWhereOrNull(
                 (menu) => menu.name == menuName,
               );
               final taskStateName = state.queryParams['state'];
               final taskState = TaskState.tabs.firstWhereOrNull(
                 (taskState) => taskState.name == taskStateName,
               );
-              return WorkspaceScreen(
-                workspaceId: projectId,
+              return ProjectScreen(
+                projectId: projectId,
                 menu: menu,
                 taskState: taskState,
               );
@@ -278,7 +280,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
               ),
               GoRoute(
                 path: 'archive',
-                name: AppRoute.workspaceArchive.name,
+                name: AppRoute.projectArchive.name,
                 pageBuilder: (_, state) {
                   return MaterialPage(
                     key: state.pageKey,

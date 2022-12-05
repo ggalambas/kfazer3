@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kfazer3/src/localization/app_localizations_context.dart';
+import 'package:kfazer3/src/localization/localization_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 
 enum ButtonType { fab, elevated }
@@ -11,7 +11,7 @@ class CreateGroupButton extends StatelessWidget {
   const CreateGroupButton.elevated({super.key}) : type = ButtonType.elevated;
 
   void onPressed(BuildContext context) =>
-      context.goNamed(AppRoute.workspaceSetup.name);
+      context.goNamed(AppRoute.groupSetup.name);
 
   final icon = const Icon(Icons.add);
 

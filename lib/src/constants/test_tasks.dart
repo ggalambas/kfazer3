@@ -12,7 +12,7 @@ final _kTestTasks = List.generate(
     final state = TaskState.values[Random().nextInt(TaskState.values.length)];
     return Task(
       id: i.toString(),
-      workspaceId: Random().nextInt(kTestProjects.length).toString(),
+      groupId: Random().nextInt(kTestProjects.length).toString(),
       description: 'Description of task $i',
       state: state,
       startDate: state == TaskState.scheduled

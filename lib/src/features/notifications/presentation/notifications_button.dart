@@ -2,7 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/features/notifications/presentation/notifications_count_badge.dart';
-import 'package:kfazer3/src/localization/app_localizations_context.dart';
+import 'package:kfazer3/src/localization/localization_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 
 /// Notification icon button with notifications count badge

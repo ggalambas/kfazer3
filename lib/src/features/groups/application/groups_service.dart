@@ -24,6 +24,17 @@ class GroupsService {
   GroupStorageRepository get accountStorageRepository =>
       ref.read(groupStorageRepositoryProvider);
 
+  Future<void> createGroup(Group group) async {
+    final user = authRepository.currentUser!;
+    final member = Member(
+      id: user.id,
+      groupId: group.id,
+      role: MemberRole.owner,
+    );
+    final copy = group.setMember(member);
+    await groupsRepository.createGroup(copy);
+  }
+
   Future<void> uploadPictureAndSaveGroup(Group group, Uint8List bytes) async {
     final photoUrl =
         await accountStorageRepository.uploadGroupPicture(group.id, bytes);

@@ -1,10 +1,8 @@
-import 'package:collection/collection.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/groups/data/groups_repository.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
-import 'package:kfazer3/src/localization/app_localizations_context.dart';
-import 'package:kfazer3/src/utils/string_validator.dart';
+
+import 'motivation_validators.dart';
 
 final motivationEditControllerProvider =
     StateNotifierProvider.autoDispose<MotivationEditController, AsyncValue>(
@@ -26,17 +24,4 @@ class MotivationEditController extends StateNotifier<AsyncValue>
       () => groupsRepository.updateGroup(group),
     );
   }
-}
-
-mixin MotivationValidators {
-  List<StringValidator> messageSubmitValidators(BuildContext context) => [
-        NonEmptyStringValidator(context.loc.invalidMessageEmpty),
-      ];
-}
-
-extension MotivationValidatorsText on MotivationValidators {
-  String? messageErrorText(BuildContext context, String name) =>
-      messageSubmitValidators(context)
-          .firstWhereOrNull((validator) => !validator.isValid(name))
-          ?.errorText;
 }

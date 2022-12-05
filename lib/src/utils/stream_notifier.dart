@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-//TODO remove this
 class StreamNotifier<T> extends StateNotifier<T> {
   StreamNotifier({
     required T initial,

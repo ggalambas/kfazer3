@@ -10,6 +10,6 @@ final contactsRepositoryProvider = Provider.autoDispose<ContactsRepository>(
 
 abstract class ContactsRepository {
   Future<PhoneNumber> fetchPhoneNumberFromContacts(List<Country> countryList);
-  Future<PhoneNumber> fetchPhoneNumbersFromCSV();
-  Future<PhoneNumber> fetchPhoneNumbersFromVCard();
+  Future<List<PhoneNumber>> fetchPhoneNumbersFromCSV();
+  Future<List<PhoneNumber>> fetchPhoneNumbersFromVCard();
 }

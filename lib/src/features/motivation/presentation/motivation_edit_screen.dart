@@ -11,7 +11,7 @@ import 'package:kfazer3/src/features/groups/domain/mutable_group.dart';
 import 'package:kfazer3/src/features/groups/presentation/not_found_group.dart';
 import 'package:kfazer3/src/features/motivation/presentation/motivation_edit_controller.dart';
 import 'package:kfazer3/src/features/motivation/presentation/motivational_message_field.dart';
-import 'package:kfazer3/src/localization/app_localizations_context.dart';
+import 'package:kfazer3/src/localization/localization_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';

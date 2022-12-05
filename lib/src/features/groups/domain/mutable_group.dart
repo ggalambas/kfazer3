@@ -7,6 +7,7 @@ import 'member_role.dart';
 
 /// Helper extension used to update a group
 extension MutableGroup on Group {
+  Group setId(String id) => copyWith(id: id);
   Group setTitle(String title) => copyWith(title: title);
 
   Group setDescription(String description) =>
@@ -44,6 +45,7 @@ extension MutableGroup on Group {
   }
 
   Group copyWith({
+    String? id,
     String? title,
     String? description,
     String? photoUrl,
@@ -53,7 +55,7 @@ extension MutableGroup on Group {
     Map<UserId, MemberRole>? members,
   }) =>
       Group(
-        id: id,
+        id: id ?? this.id,
         title: title ?? this.title,
         description: description ?? this.description,
         photoUrl: nullablePhotoUrl ? photoUrl : (photoUrl ?? this.photoUrl),

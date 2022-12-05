@@ -6,7 +6,7 @@ import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/groups/data/groups_repository.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/presentation/not_found_group.dart';
-import 'package:kfazer3/src/localization/app_localizations_context.dart';
+import 'package:kfazer3/src/localization/localization_context.dart';
 
 import 'member_tile.dart';
 
