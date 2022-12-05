@@ -12,6 +12,7 @@ class DetailsBar extends StatelessWidget with PreferredSizeWidget {
   final String? title;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
+  final String? editText;
   final String? deleteText;
 
   const DetailsBar({
@@ -19,7 +20,8 @@ class DetailsBar extends StatelessWidget with PreferredSizeWidget {
     this.loading = false,
     this.title,
     required this.onEdit,
-    required this.onDelete,
+    this.onDelete,
+    this.editText,
     this.deleteText,
   });
 
@@ -29,7 +31,7 @@ class DetailsBar extends StatelessWidget with PreferredSizeWidget {
       title: title == null ? null : Text(title!),
       actions: [
         IconButton(
-          tooltip: context.loc.edit,
+          tooltip: editText ?? context.loc.edit,
           onPressed: loading ? null : onEdit?.call,
           icon: const Icon(Icons.edit),
         ),
@@ -66,7 +68,7 @@ class DetailsRail extends StatelessWidget {
     this.loading = false,
     this.title,
     required this.onEdit,
-    required this.onDelete,
+    this.onDelete,
     this.editText,
     this.deleteText,
   });
@@ -80,13 +82,14 @@ class DetailsRail extends StatelessWidget {
           onPressed: loading ? null : onEdit?.call,
           child: Text(editText ?? context.loc.edit),
         ),
-        TextButton(
-          style: TextButton.styleFrom(
-            foregroundColor: context.colorScheme.error,
+        if (onDelete != null)
+          TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: context.colorScheme.error,
+            ),
+            onPressed: loading ? null : onDelete?.call,
+            child: Text(deleteText ?? context.loc.delete),
           ),
-          onPressed: loading ? null : onDelete?.call,
-          child: Text(deleteText ?? context.loc.delete),
-        ),
       ],
     );
   }

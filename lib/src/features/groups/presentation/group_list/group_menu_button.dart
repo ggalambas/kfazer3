@@ -89,7 +89,7 @@ class _GroupMenuButtonState extends ConsumerState<GroupMenuButton> {
             );
           case GroupMenuOption.members:
             return context.pushNamed(
-              AppRoute.groupMembers.name,
+              AppRoute.members.name,
               params: {'groupId': widget.group.id},
             );
           case GroupMenuOption.archive:

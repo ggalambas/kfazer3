@@ -6,7 +6,7 @@ import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/data/country_repository.dart';
-import 'package:kfazer3/src/features/auth/presentation/account/account_details_screen.dart';
+import 'package:kfazer3/src/features/auth/presentation/account/account_screen.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/pages/account_setup_page.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/pages/phone_sign_in_page.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/pages/phone_verification_page.dart';
@@ -179,7 +179,7 @@ class AuthRobot {
         child: const MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          home: AccountDetailsScreen(),
+          home: AccountScreen(),
         ),
       ),
     );

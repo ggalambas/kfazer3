@@ -6,7 +6,7 @@ import 'package:kfazer3/src/common_widgets/setup_layout.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/constants/test_workspaces.dart';
-import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_edit_screen_controller.dart';
+import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_edit_controller.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/workspace_setup_controller.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';

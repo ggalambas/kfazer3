@@ -7,18 +7,18 @@ import 'package:kfazer3/src/common_widgets/details_bar.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/common_widgets/responsive_scaffold.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
-import 'package:kfazer3/src/features/auth/presentation/account/account_details_controller.dart';
+import 'package:kfazer3/src/features/auth/presentation/account/account_controller.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
 
-class AccountDetailsScreen extends ConsumerWidget {
-  const AccountDetailsScreen({super.key});
+class AccountScreen extends ConsumerWidget {
+  const AccountScreen({super.key});
 
   void edit(BuildContext context) {
     context.goNamed(
-      AppRoute.accountDetails.name,
+      AppRoute.account.name,
       queryParams: {'editing': 'true'},
     );
   }
@@ -31,7 +31,7 @@ class AccountDetailsScreen extends ConsumerWidget {
       defaultActionText: context.loc.delete,
     );
     if (delete == true) {
-      read(accountDetailsControllerProvider.notifier).deleteUser();
+      read(accountControllerProvider.notifier).deleteUser();
     }
   }
 
@@ -43,19 +43,19 @@ class AccountDetailsScreen extends ConsumerWidget {
       defaultActionText: context.loc.signOut,
     );
     if (logout == true) {
-      read(accountDetailsControllerProvider.notifier).signOut();
+      read(accountControllerProvider.notifier).signOut();
     }
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen<AsyncValue>(
-      accountDetailsControllerProvider,
+      accountControllerProvider,
       (_, state) => state.showAlertDialogOnError(context),
     );
 
     final user = ref.watch(currentUserStateProvider);
-    final state = ref.watch(accountDetailsControllerProvider);
+    final state = ref.watch(accountControllerProvider);
 
     return ResponsiveScaffold(
       padding: EdgeInsets.all(kSpace * 2),

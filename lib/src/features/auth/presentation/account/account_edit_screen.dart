@@ -72,7 +72,7 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
     if (mounted) goBack();
   }
 
-  void goBack() => context.goNamed(AppRoute.accountDetails.name);
+  void goBack() => context.goNamed(AppRoute.account.name);
 
   @override
   Widget build(BuildContext context) {

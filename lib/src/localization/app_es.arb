@@ -64,7 +64,10 @@
   "policiesDescription": "Privacidad & Términos",
 
   "details": "Detalles",
+
   "motivation": "Motivación",
+  "editMotivationalMessages": "Editar mensajes motivacionales",
+
   "invites": "Invitaciones",
 
   "about": "Sobre",

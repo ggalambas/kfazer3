@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
-import 'package:kfazer3/src/features/auth/presentation/account/account_details_screen.dart';
 import 'package:kfazer3/src/features/auth/presentation/account/account_edit_screen.dart';
+import 'package:kfazer3/src/features/auth/presentation/account/account_screen.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/details/group_details_screen.dart';
@@ -12,14 +12,14 @@ import 'package:kfazer3/src/features/groups/presentation/details/group_edit_scre
 import 'package:kfazer3/src/features/groups/presentation/group_list/group_list_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/members/members_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/preferences/group_preferences_screen.dart';
+import 'package:kfazer3/src/features/motivation/presentation/motivation_edit_screen.dart';
+import 'package:kfazer3/src/features/motivation/presentation/motivation_screen.dart';
 import 'package:kfazer3/src/features/notifications/presentation/notification_list_screen.dart';
 import 'package:kfazer3/src/features/settings/presentation/settings_screen.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_list/archived_tasks_screen.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_screen/task_activity_screen.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_screen/task_screen.dart';
-import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_details_screen.dart';
-import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_edit_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_screen/workspace_screen.dart';
 import 'package:kfazer3/src/features/workspace/presentation/workspace_setup/workspace_setup_screen.dart';
 import 'package:kfazer3/src/routing/not_found_screen.dart';
@@ -33,14 +33,14 @@ enum AppRoute {
   home,
   groupPreferences, //! fullscreenDialog
   groupDetails,
-  groupMembers, //! fullscreenDialog
+  motivation,
+  members, //! fullscreenDialog
 
   //?
   workspaceSetup, //! fullscreenDialog
   workspaceSetupPage,
 
   workspaceMenu,
-  motivation,
   workspaceArchive, //! fullscreenDialog
 
   task,
@@ -48,7 +48,7 @@ enum AppRoute {
 
   notifications, //! fullscreenDialog
   settings, //! fullscreenDialog
-  accountDetails,
+  account,
 }
 
 final goRouterProvider = Provider<GoRouter>((ref) {
@@ -123,13 +123,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: 'account',
-                name: AppRoute.accountDetails.name,
+                name: AppRoute.account.name,
                 builder: (_, state) {
                   final editingParam = state.queryParams['editing'];
                   final editing = editingParam == 'true';
                   return editing
                       ? const AccountEditScreen()
-                      : const AccountDetailsScreen();
+                      : const AccountScreen();
                 },
               ),
             ],
@@ -195,22 +195,22 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 },
               ),
               GoRoute(
-                path: 'motivational-messages',
+                path: 'motivation',
                 name: AppRoute.motivation.name,
                 builder: (_, state) {
-                  final workspaceId = state.params['groupId']!;
+                  final groupId = state.params['groupId']!;
                   final editingParam = state.queryParams['editing'];
                   final editing = editingParam == 'true';
                   return editing
-                      ? MotivationEditScreen(workspaceId: workspaceId)
-                      : MotivationDetailsScreen(workspaceId: workspaceId);
+                      ? MotivationEditScreen(groupId: groupId)
+                      : MotivationScreen(groupId: groupId);
                 },
               ),
             ],
           ),
           GoRoute(
             path: 'g/:groupId/members',
-            name: AppRoute.groupMembers.name,
+            name: AppRoute.members.name,
             pageBuilder: (_, state) {
               final groupId = state.params['groupId']!;
               return MaterialPage(

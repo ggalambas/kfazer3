@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kfazer3/src/features/workspace/domain/preferences.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
-import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_edit_screen_controller.dart';
+import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_edit_controller.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../mocks.dart';
@@ -17,14 +17,14 @@ void main() {
     plan: WorkspacePlan.family,
   );
   late MockWorkspaceRepository workspaceRepository;
-  late MotivationEditScreenController controller;
+  late MotivationEditController controller;
   setUp(() {
     workspaceRepository = MockWorkspaceRepository();
-    controller = MotivationEditScreenController(
+    controller = MotivationEditController(
       workspaceRepository: workspaceRepository,
     );
   });
-  group('MotivationEditScreenController', () {
+  group('MotivationEditController', () {
     test('initial state is AsyncValue.data', () {
       verifyNever(() => workspaceRepository.updateWorkspace(testWorkspace));
       expect(controller.debugState, const AsyncData<dynamic>(null));

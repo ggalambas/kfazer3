@@ -6,19 +6,19 @@ import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/utils/string_validator.dart';
 
-final motivationEditScreenControllerProvider = StateNotifierProvider
-    .autoDispose<MotivationEditScreenController, AsyncValue>(
+final motivationEditControllerProvider =
+    StateNotifierProvider.autoDispose<MotivationEditController, AsyncValue>(
   (ref) {
     final repository = ref.read(workspaceRepositoryProvider);
-    return MotivationEditScreenController(workspaceRepository: repository);
+    return MotivationEditController(workspaceRepository: repository);
   },
 );
 
-class MotivationEditScreenController extends StateNotifier<AsyncValue>
+class MotivationEditController extends StateNotifier<AsyncValue>
     with MotivationValidators {
   final WorkspaceRepository workspaceRepository;
 
-  MotivationEditScreenController({required this.workspaceRepository})
+  MotivationEditController({required this.workspaceRepository})
       : super(const AsyncValue.data(null));
 
   Future<void> save(Workspace workspace) async {

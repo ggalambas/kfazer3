@@ -10,7 +10,7 @@ import 'package:kfazer3/src/features/groups/presentation/not_found_group.dart';
 import 'package:kfazer3/src/features/workspace/data/workspace_repository.dart';
 import 'package:kfazer3/src/features/workspace/domain/updatable_workspace.dart';
 import 'package:kfazer3/src/features/workspace/domain/workspace.dart';
-import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_edit_screen_controller.dart';
+import 'package:kfazer3/src/features/workspace/presentation/motivation/motivation_edit_controller.dart';
 import 'package:kfazer3/src/localization/app_localizations_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
@@ -75,7 +75,7 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
     if (!formKey.currentState!.validate()) return;
     final updatedWorkspace = workspace.updateMotivationalMessages(messages);
     await ref
-        .read(motivationEditScreenControllerProvider.notifier)
+        .read(motivationEditControllerProvider.notifier)
         .save(updatedWorkspace);
     if (mounted) goBack();
   }
@@ -88,11 +88,11 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
   @override
   Widget build(BuildContext context) {
     ref.listen<AsyncValue>(
-      motivationEditScreenControllerProvider,
+      motivationEditControllerProvider,
       (_, state) => state.showAlertDialogOnError(context),
     );
 
-    final state = ref.watch(motivationEditScreenControllerProvider);
+    final state = ref.watch(motivationEditControllerProvider);
     final workspaceValue =
         ref.watch(workspaceStreamProvider(widget.workspaceId));
     return AsyncValueWidget<Workspace?>(
@@ -147,8 +147,7 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
                           validator: (message) {
                             if (!submitted) return null;
                             return ref
-                                .read(motivationEditScreenControllerProvider
-                                    .notifier)
+                                .read(motivationEditControllerProvider.notifier)
                                 .messageErrorText(context, message ?? '');
                           },
                         ),
