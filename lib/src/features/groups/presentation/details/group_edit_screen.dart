@@ -13,7 +13,7 @@ import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/domain/mutable_group.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_validators.dart';
 import 'package:kfazer3/src/features/groups/presentation/not_found_group.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
@@ -108,10 +108,10 @@ class GroupEditScreenState extends ConsumerState<GroupEditScreen> {
                 onSave: () => save(group),
                 onCancel: goBack,
               ),
-              builder: (railPadding) => Form(
+              builder: (topPadding) => Form(
                 key: formKey,
                 child: ListView(
-                  padding: railPadding,
+                  padding: EdgeInsets.only(top: topPadding),
                   children: [
                     AvatarPicker(
                       imageController: imageController,

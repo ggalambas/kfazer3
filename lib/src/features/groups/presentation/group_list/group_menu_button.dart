@@ -7,7 +7,7 @@ import 'package:kfazer3/src/common_widgets/loading_dialog.dart';
 import 'package:kfazer3/src/features/groups/application/groups_service.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/domain/member_role.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/localization/localized_enum.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';

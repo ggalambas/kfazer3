@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kfazer3/src/common_widgets/rail.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 
 import 'loading_button.dart';
 
@@ -11,6 +11,7 @@ class EditBar extends StatelessWidget with PreferredSizeWidget {
   final String? title;
   final VoidCallback? onSave;
   final VoidCallback? onCancel;
+  final Widget? menuButton;
 
   const EditBar({
     super.key,
@@ -18,6 +19,7 @@ class EditBar extends StatelessWidget with PreferredSizeWidget {
     this.title,
     required this.onSave,
     required this.onCancel,
+    this.menuButton,
   });
 
   @override
@@ -31,6 +33,7 @@ class EditBar extends StatelessWidget with PreferredSizeWidget {
           onPressed: onSave,
           child: Text(context.loc.save),
         ),
+        if (menuButton != null) menuButton!,
       ],
     );
   }
@@ -46,6 +49,7 @@ class EditRail extends StatelessWidget {
   final String? title;
   final VoidCallback? onSave;
   final VoidCallback? onCancel;
+  final List<Widget> actions;
 
   const EditRail({
     super.key,
@@ -53,6 +57,7 @@ class EditRail extends StatelessWidget {
     this.title,
     required this.onSave,
     required this.onCancel,
+    this.actions = const [],
   });
 
   @override
@@ -66,6 +71,7 @@ class EditRail extends StatelessWidget {
           onPressed: onSave,
           child: Text(context.loc.save),
         ),
+        ...actions,
       ],
     );
   }

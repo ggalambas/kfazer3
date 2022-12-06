@@ -13,7 +13,7 @@ import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/auth/presentation/auth_validators.dart';
 import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code_dropdown_button.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
@@ -97,10 +97,10 @@ class _AccountEditScreenState extends ConsumerState<AccountEditScreen> {
           onSave: save,
           onCancel: goBack,
         ),
-        builder: (railPadding) => Form(
+        builder: (topPadding) => Form(
           key: formKey,
           child: ListView(
-            padding: railPadding,
+            padding: EdgeInsets.only(top: topPadding),
             children: [
               AvatarPicker(
                 imageController: imageController,

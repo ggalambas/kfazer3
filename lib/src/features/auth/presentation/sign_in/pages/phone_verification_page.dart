@@ -8,7 +8,7 @@ import 'package:kfazer3/src/features/auth/presentation/auth_validators.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sms_code_controller.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 
 class PhoneVerificationPage extends ConsumerStatefulWidget {

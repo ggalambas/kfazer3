@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 
 // * keys for testing using find.byKey()
 const kDialogDefaultKey = Key('dialog-default-key');

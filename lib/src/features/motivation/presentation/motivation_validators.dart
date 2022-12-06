@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/utils/string_validator.dart';
 
 mixin MotivationValidators {

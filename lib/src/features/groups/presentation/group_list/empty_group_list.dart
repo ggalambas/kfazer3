@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 

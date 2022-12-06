@@ -1,3 +1,4 @@
+import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 
 /// * The task identifier is an important concept and can have its own type.
@@ -7,8 +8,7 @@ typedef TaskId = String;
 class Task with TaskStateMixin {
   /// Unique product id
   final TaskId id;
-  //TODO create a typedef GroupId = String ??
-  final String groupId;
+  final GroupId groupId;
   final String description;
 
   final DateTime startDate;

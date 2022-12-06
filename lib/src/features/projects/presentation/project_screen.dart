@@ -8,7 +8,7 @@ import 'package:kfazer3/src/features/projects/domain/project.dart';
 import 'package:kfazer3/src/features/tasks/domain/task_state.dart';
 import 'package:kfazer3/src/features/tasks/presentation/task_list/task_list_page.dart';
 import 'package:kfazer3/src/features/team/presentation/team_page.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 
 import 'project_bar/project_bar.dart';

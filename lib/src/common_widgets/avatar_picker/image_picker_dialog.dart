@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kfazer3/src/common_widgets/avatar_picker/image_picker_controller.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 

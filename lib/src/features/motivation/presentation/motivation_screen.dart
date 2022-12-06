@@ -8,8 +8,9 @@ import 'package:kfazer3/src/features/groups/data/groups_repository.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/presentation/not_found_group.dart';
 import 'package:kfazer3/src/features/motivation/presentation/motivational_message_field.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
+import 'package:smart_space/smart_space.dart';
 
 class MotivationScreen extends ConsumerWidget {
   final String groupId;
@@ -18,6 +19,7 @@ class MotivationScreen extends ConsumerWidget {
   void edit(BuildContext context) {
     context.goNamed(
       AppRoute.motivation.name,
+      params: {'groupId': groupId},
       queryParams: {'editing': 'true'},
     );
   }
@@ -39,8 +41,10 @@ class MotivationScreen extends ConsumerWidget {
             onEdit: () => edit(context),
             editText: context.loc.editMotivationalMessages,
           ),
-          builder: (railPadding) => ListView.separated(
-            padding: railPadding,
+          builder: (topPadding) => ListView.separated(
+            padding: EdgeInsets.all(kSpace).add(
+              EdgeInsets.only(top: topPadding),
+            ),
             itemCount: group.motivationalMessages.length,
             separatorBuilder: (context, _) => const Divider(),
             itemBuilder: (context, i) => MotivationalMessageDisplayField(

@@ -4,17 +4,18 @@ import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/edit_bar.dart';
 import 'package:kfazer3/src/common_widgets/responsive_scaffold.dart';
+import 'package:kfazer3/src/common_widgets/single_child_menu_button.dart';
 import 'package:kfazer3/src/constants/constants.dart';
-import 'package:kfazer3/src/features/groups/data/groups_repository.dart';
-import 'package:kfazer3/src/features/groups/domain/group.dart';
-import 'package:kfazer3/src/features/groups/domain/mutable_group.dart';
 import 'package:kfazer3/src/features/groups/presentation/not_found_group.dart';
 import 'package:kfazer3/src/features/motivation/presentation/motivation_edit_controller.dart';
 import 'package:kfazer3/src/features/motivation/presentation/motivational_message_field.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/features/motivation/presentation/motivational_messages_controller.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
+import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
+import 'package:smart_space/smart_space.dart';
 
 class MotivationEditScreen extends ConsumerStatefulWidget {
   final String groupId;
@@ -26,12 +27,15 @@ class MotivationEditScreen extends ConsumerStatefulWidget {
 }
 
 class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
-  final formKey = GlobalKey<FormState>();
-  final firstNode = FocusNode();
-  final List<TextEditingController> controllers = [];
+  /// motivationalMessagesControllerProvider of [widget.groupId]
+  AutoDisposeStateNotifierProvider<MotivationalMessagesController,
+          AsyncValue<List<TextEditingController>?>>
+      get messagesControllerProvider =>
+          motivationalMessagesControllerProvider(widget.groupId);
 
-  List<String> get messages =>
-      controllers.map((controller) => controller.text).toList();
+  final formKey = GlobalKey<FormState>();
+  final scrollController = ScrollController();
+  final firstNode = FocusNode();
 
   // local variable used to apply AutovalidateMode.onUserInteraction and show
   // error hints only when the form has been submitted
@@ -39,31 +43,13 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
   // https://codewithandrea.com/articles/flutter-text-field-form-validation/
   var submitted = false;
 
-  var controllersInitialized = false;
-  void initControllers(List<String> messages) {
-    if (controllersInitialized) return;
-    for (final message in messages) {
-      controllers.add(TextEditingController(text: message));
-    }
-    controllersInitialized = true;
-  }
-
-  @override
-  void dispose() {
-    for (final controller in controllers) {
-      controller.dispose();
-    }
-    super.dispose();
-  }
-
-  void save(Group group) async {
+  void save(List<String> messages) async {
     setState(() => submitted = true);
     if (!formKey.currentState!.validate()) return;
-    final updatedWorkspace = group.setMotivationalMessages(messages);
-    await ref
+    final success = await ref
         .read(motivationEditControllerProvider.notifier)
-        .save(updatedWorkspace);
-    if (mounted) back();
+        .save(widget.groupId, messages);
+    if (mounted && success) back();
   }
 
   void back() => context.goNamed(
@@ -71,14 +57,10 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
         params: {'groupId': widget.groupId},
       );
 
-  void clear() => setState(controllers.clear);
-
-  void removeMessage(TextEditingController controller) =>
-      setState(() => controllers.remove(controller));
-
-  void addMessage() {
-    setState(() => controllers.insert(0, TextEditingController()));
-    firstNode.requestFocus();
+  @override
+  void dispose() {
+    firstNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -89,59 +71,69 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
     );
 
     final state = ref.watch(motivationEditControllerProvider);
-    final groupValue = ref.watch(groupStreamProvider(widget.groupId));
-    return AsyncValueWidget<Group?>(
-      value: groupValue,
-      data: (group) {
-        if (group == null) return const NotFoundGroup();
-        initControllers(group.motivationalMessages);
+    final controller = ref.watch(messagesControllerProvider.notifier);
+    final messagesValue = ref.watch(messagesControllerProvider);
+    return AsyncValueWidget<MessageControllers?>(
+      value: messagesValue,
+      data: (messageControllers) {
+        if (messageControllers == null) return const NotFoundGroup();
+        final showClearAllButton = messageControllers.length <= 1;
         return ResponsiveScaffold(
           appBar: EditBar(
             loading: state.isLoading,
             title: context.loc.motivation,
-            onSave: () => save(group),
+            onSave: () => save(controller.messages),
             onCancel: back,
+            menuButton: showClearAllButton
+                ? null
+                : SingleChildMenuButton(
+                    enabled: !state.isLoading,
+                    onSelected: controller.clearAllMessages,
+                    child: Text(
+                      'Clear all'.hardcoded,
+                      style: TextStyle(color: context.colorScheme.error),
+                    ),
+                  ),
           ),
           rail: EditRail(
             loading: state.isLoading,
             title: context.loc.motivation,
-            onSave: () => save(group),
+            onSave: () => save(controller.messages),
             onCancel: back,
-          ),
-          builder: (railPadding) => CustomScrollView(
-            slivers: [
-              if (messages.length > 1)
-                SliverToBoxAdapter(
-                  child: Center(
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        foregroundColor: context.colorScheme.error,
-                      ),
-                      onPressed: clear,
-                      child: const Text('Clear all'),
-                    ),
+            actions: [
+              if (showClearAllButton)
+                TextButton(
+                  style: TextButton.styleFrom(
+                    foregroundColor: context.colorScheme.error,
                   ),
+                  onPressed:
+                      state.isLoading ? null : controller.clearAllMessages,
+                  child: const Text('Clear all'),
                 ),
-              SliverFillRemaining(
-                child: ListView.separated(
-                  padding: railPadding,
-                  itemCount: group.motivationalMessages.length,
-                  separatorBuilder: (context, _) => const Divider(),
-                  itemBuilder: (context, i) => MotivationalMessageField(
-                    submitted: submitted,
-                    controller: controllers[i],
-                    focusNode: i == 0 ? firstNode : null,
-                    onDelete: () => removeMessage(controllers[i]),
-                  ),
-                ),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(height: kFabSpace),
-              ),
             ],
           ),
+          builder: (topPadding) {
+            return ListView.separated(
+              padding: EdgeInsets.all(kSpace).add(
+                EdgeInsets.only(top: topPadding, bottom: kFabSpace - kSpace),
+              ),
+              itemCount: messageControllers.length,
+              separatorBuilder: (context, _) => const Divider(),
+              itemBuilder: (context, i) => MotivationalMessageField(
+                enabled: !state.isLoading,
+                submitted: submitted,
+                controller: messageControllers[i],
+                focusNode: i == 0 ? firstNode : null,
+                onDelete: () => controller.removeMessage(i),
+              ),
+            );
+          },
           floatingActionButton: FloatingActionButton(
-            onPressed: addMessage,
+            onPressed: () {
+              controller.addMessage();
+              scrollController.jumpTo(0);
+              firstNode.requestFocus();
+            },
             child: const Icon(Icons.add),
           ),
         );

@@ -13,7 +13,7 @@ class ResponsiveScaffold extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final PreferredSizeWidget? appBar;
   final Widget? rail;
-  final Widget Function(EdgeInsetsGeometry railPadding) builder;
+  final Widget Function(double topPadding) builder;
   final Widget? floatingActionButton;
 
   const ResponsiveScaffold({
@@ -30,7 +30,7 @@ class ResponsiveScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       if (constraints.maxWidth >= maxContentWidth) {
-        final railPadding = EdgeInsets.only(top: constraints.maxHeight / 10);
+        final topPadding = constraints.maxHeight / 10;
         return Scaffold(
           body: ResponsiveCenter(
             maxContentWidth: Breakpoint.desktop,
@@ -42,12 +42,12 @@ class ResponsiveScaffold extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: Padding(
-                      padding: railPadding,
+                      padding: EdgeInsets.only(top: topPadding),
                       child: rail!,
                     ),
                   ),
                 Space(4),
-                Expanded(flex: 2, child: builder(railPadding)),
+                Expanded(flex: 2, child: builder(topPadding)),
               ],
             ),
           ),
@@ -58,7 +58,7 @@ class ResponsiveScaffold extends StatelessWidget {
           appBar: appBar,
           body: ResponsiveCenter(
             padding: padding,
-            child: builder(EdgeInsets.zero),
+            child: builder(0),
           ),
           floatingActionButton: floatingActionButton,
         );

@@ -4,7 +4,7 @@ import 'package:kfazer3/src/common_widgets/setup_layout.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_setup/group_setup_controller.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_validators.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 
 class GroupDetailsPage extends ConsumerStatefulWidget {

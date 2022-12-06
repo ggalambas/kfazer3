@@ -18,10 +18,11 @@ class MotivationEditController extends StateNotifier<AsyncValue>
   MotivationEditController({required this.groupsRepository})
       : super(const AsyncValue.data(null));
 
-  Future<void> save(Group group) async {
+  Future<bool> save(GroupId groupId, List<String> messages) async {
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(
-      () => groupsRepository.updateGroup(group),
-    );
+    state = await AsyncValue.guard(() {
+      return groupsRepository.updateMotivationalMessages(groupId, messages);
+    });
+    return !state.hasError;
   }
 }

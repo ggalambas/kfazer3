@@ -6,10 +6,13 @@ import 'group_plan.dart';
 import 'member.dart';
 import 'member_role.dart';
 
+/// * The group identifier is an important concept and can have its own type.
+typedef GroupId = String;
+
 /// Class representing a group.
 class Group with EquatableMixin {
   /// Unique group id
-  final String id;
+  final GroupId id;
   final String title;
   final String description;
   final String? photoUrl;

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
+import 'package:kfazer3/src/features/groups/domain/group.dart';
 
 /// Class representing a project.
 class Project with EquatableMixin {
@@ -11,7 +12,7 @@ class Project with EquatableMixin {
   //! while not discussed i'll leave it like this
   final List<UserId> members;
 
-  final String groupId;
+  final GroupId groupId;
 
   const Project({
     required this.id,

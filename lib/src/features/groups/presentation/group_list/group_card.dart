@@ -3,7 +3,7 @@ import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/avatar/group_avatar.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_list/group_menu_button.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/utils/widget_loader.dart';
 import 'package:smart_space/smart_space.dart';
 

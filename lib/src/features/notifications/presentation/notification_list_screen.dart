@@ -11,7 +11,7 @@ import 'package:kfazer3/src/common_widgets/single_child_menu_button.dart';
 import 'package:kfazer3/src/features/notifications/application/notifications_service.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
 import 'package:kfazer3/src/features/notifications/presentation/notification_divider.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:kfazer3/src/utils/date_timeless.dart';
 import 'package:smart_space/smart_space.dart';

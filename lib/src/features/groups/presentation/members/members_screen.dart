@@ -6,7 +6,7 @@ import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/groups/data/groups_repository.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/presentation/not_found_group.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 
 import 'member_tile.dart';
 
@@ -28,9 +28,9 @@ class MembersScreen extends ConsumerWidget {
         return ResponsiveScaffold(
           appBar: AppBar(title: Text(context.loc.preferences)),
           rail: Rail(title: context.loc.preferences),
-          builder: (railPadding) {
+          builder: (topPadding) {
             return ListView(
-              padding: railPadding,
+              padding: EdgeInsets.only(top: topPadding),
               children: [
                 //TODO sort (rola, name)
                 //? how can we sort by name if we only get the user info later

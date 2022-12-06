@@ -10,7 +10,7 @@ import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/groups/data/groups_repository.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/presentation/not_found_group.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
@@ -81,8 +81,8 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
             deleteText: context.loc.deleteGroup,
             onDelete: role.isOwner ? () => delete(group) : null,
           ),
-          builder: (railPadding) => ListView(
-            padding: railPadding,
+          builder: (topPadding) => ListView(
+            padding: EdgeInsets.only(top: topPadding),
             children: [
               Center(
                 child: GroupAvatar(

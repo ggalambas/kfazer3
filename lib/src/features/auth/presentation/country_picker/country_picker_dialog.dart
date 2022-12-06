@@ -5,7 +5,7 @@ import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/auth/data/country_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/country.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:smart_space/smart_space.dart';
 
 import 'country_tile.dart';

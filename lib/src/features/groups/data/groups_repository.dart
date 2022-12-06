@@ -18,16 +18,17 @@ abstract class GroupsRepository {
   Stream<List<Group>> watchAllGroupsList(String userId);
   Stream<List<Group>> watchGroupList(String userId);
   Stream<List<Group>> watchPendingGroupList(String userId);
-  Future<Group?> fetchGroup(String id);
-  Stream<Group?> watchGroup(String id);
-  Future<String> createGroup(Group group);
+  Future<Group?> fetchGroup(GroupId id);
+  Stream<Group?> watchGroup(GroupId id);
+  Future<GroupId> createGroup(Group group);
   Future<void> updateGroup(Group group);
-  Future<void> deleteGroup(String id);
+  Future<void> updateMotivationalMessages(GroupId id, List<String> messages);
+  Future<void> deleteGroup(GroupId id);
 }
 
 //* Providers
 
-final groupStreamProvider = StreamProvider.autoDispose.family<Group?, String>(
+final groupStreamProvider = StreamProvider.autoDispose.family<Group?, GroupId>(
   (ref, id) {
     final repository = ref.watch(groupsRepositoryProvider);
     return repository.watchGroup(id);

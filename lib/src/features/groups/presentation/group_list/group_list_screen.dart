@@ -7,7 +7,7 @@ import 'package:kfazer3/src/features/groups/application/groups_service.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_list/group_list_title.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_list/horizontal_pending_view.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
 
@@ -35,14 +35,12 @@ class GroupListScreen extends ConsumerWidget {
       //TODO double AsyncValueWidget, a bit ugly, should we create a widget for this cases or am I not dealing with this case properly
       //? listen to all at the same time
       //? and either give them fidd classes OR filter them here by pending role
-      builder: (railPadding) => AsyncValueWidget<List<Group>>(
+      builder: (topPadding) => AsyncValueWidget<List<Group>>(
         value: groupListValue,
         data: (groupList) => AsyncValueWidget<List<Group>>(
             value: pendingListValue,
             data: (pendingList) => ListView(
-                  padding: railPadding.add(
-                    const EdgeInsets.only(bottom: kFabSpace),
-                  ),
+                  padding: EdgeInsets.only(top: topPadding, bottom: kFabSpace),
                   children: [
                     if (pendingList.isNotEmpty) ...[
                       GroupListTitle(context.loc.invites),

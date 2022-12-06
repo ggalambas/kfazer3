@@ -9,7 +9,7 @@ import 'package:kfazer3/src/features/groups/domain/member.dart';
 import 'package:kfazer3/src/features/groups/domain/member_role.dart';
 import 'package:kfazer3/src/features/groups/presentation/members/member_tile_controller.dart';
 import 'package:kfazer3/src/features/users/data/users_repository.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:kfazer3/src/utils/widget_loader.dart';

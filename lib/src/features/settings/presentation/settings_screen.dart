@@ -8,7 +8,7 @@ import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/settings/data/settings_repository.dart';
 import 'package:kfazer3/src/features/settings/presentation/selection_setting_tile.dart';
 import 'package:kfazer3/src/localization/language.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/routing/website.dart';
 import 'package:kfazer3/src/theme/app_theme_mode.dart';
@@ -26,8 +26,8 @@ class SettingsScreen extends ConsumerWidget {
     return ResponsiveScaffold(
       appBar: AppBar(title: Text(context.loc.settings)),
       rail: Rail(title: context.loc.settings),
-      builder: (railPadding) => ListView(
-        padding: railPadding,
+      builder: (topPadding) => ListView(
+        padding: EdgeInsets.only(top: topPadding),
         children: [
           ListTile(
             key: accountDetailsKey,

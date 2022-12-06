@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/motivation/presentation/motivation_edit_controller.dart';
 import 'package:kfazer3/src/features/motivation/presentation/motivation_validators.dart';
-import 'package:kfazer3/src/localization/localization_context.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:smart_space/smart_space.dart';
 
 class MotivationalMessageDisplayField extends StatelessWidget {
@@ -26,6 +26,7 @@ class MotivationalMessageDisplayField extends StatelessWidget {
 }
 
 class MotivationalMessageField extends ConsumerWidget {
+  final bool enabled;
   final bool submitted;
   final TextEditingController controller;
   final FocusNode? focusNode;
@@ -33,6 +34,7 @@ class MotivationalMessageField extends ConsumerWidget {
 
   const MotivationalMessageField({
     super.key,
+    this.enabled = true,
     required this.submitted,
     required this.controller,
     this.focusNode,
@@ -42,6 +44,7 @@ class MotivationalMessageField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextFormField(
+      enabled: enabled,
       controller: controller,
       focusNode: focusNode,
       keyboardType: TextInputType.text,
@@ -54,10 +57,8 @@ class MotivationalMessageField extends ConsumerWidget {
         isDense: true,
         contentPadding: EdgeInsets.all(kSpace),
         suffixIcon: IconButton(
-          visualDensity: VisualDensity.compact,
           tooltip: context.loc.delete,
-          // iconSize: kSmallIconSize, //!
-          onPressed: onDelete,
+          onPressed: enabled ? onDelete : null,
           icon: const Icon(Icons.clear),
         ),
       ),

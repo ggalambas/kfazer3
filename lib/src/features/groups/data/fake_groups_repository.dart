@@ -50,13 +50,13 @@ class FakeGroupsRepository implements GroupsRepository {
   }
 
   @override
-  Future<Group?> fetchGroup(String id) async {
+  Future<Group?> fetchGroup(GroupId id) async {
     await delay(addDelay);
     return _groups.value.firstWhereOrNull((group) => group.id == id);
   }
 
   @override
-  Stream<Group?> watchGroup(String id) async* {
+  Stream<Group?> watchGroup(GroupId id) async* {
     yield* _groups.stream.map(
       (groups) => groups.firstWhereOrNull(
         (group) => group.id == id,
@@ -65,7 +65,7 @@ class FakeGroupsRepository implements GroupsRepository {
   }
 
   @override
-  Future<String> createGroup(Group group) async {
+  Future<GroupId> createGroup(Group group) async {
     await delay(addDelay);
     // First, get the group list
     final groups = _groups.value;
@@ -90,7 +90,22 @@ class FakeGroupsRepository implements GroupsRepository {
   }
 
   @override
-  Future<void> deleteGroup(String id) async {
+  Future<void> updateMotivationalMessages(
+    GroupId id,
+    List<String> messages,
+  ) async {
+    await delay(addDelay);
+    // First, get the group list
+    final groups = _groups.value;
+    // Then, change the group
+    final i = groups.indexWhere((g) => id == g.id);
+    groups[i] = groups[i].setMotivationalMessages(messages);
+    // Finally, update the group list data (will emit a new value)
+    _groups.value = groups;
+  }
+
+  @override
+  Future<void> deleteGroup(GroupId id) async {
     await delay(addDelay);
     // First, get the group list
     final groups = _groups.value;

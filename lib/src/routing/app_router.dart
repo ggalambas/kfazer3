@@ -13,6 +13,7 @@ import 'package:kfazer3/src/features/groups/presentation/group_list/group_list_s
 import 'package:kfazer3/src/features/groups/presentation/group_setup/group_setup_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/members/members_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/preferences/group_preferences_screen.dart';
+import 'package:kfazer3/src/features/motivation/presentation/motivation_edit_screen.dart';
 import 'package:kfazer3/src/features/motivation/presentation/motivation_screen.dart';
 import 'package:kfazer3/src/features/notifications/presentation/notification_list_screen.dart';
 import 'package:kfazer3/src/features/projects/presentation/project_screen.dart';
@@ -200,12 +201,9 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                   final groupId = state.params['groupId']!;
                   final editingParam = state.queryParams['editing'];
                   final editing = editingParam == 'true';
-                  return
-                      //TODO uncomment
-                      // editing
-                      //     ? MotivationEditScreen(groupId: groupId)
-                      //     :
-                      MotivationScreen(groupId: groupId);
+                  return editing
+                      ? MotivationEditScreen(groupId: groupId)
+                      : MotivationScreen(groupId: groupId);
                 },
               ),
             ],
