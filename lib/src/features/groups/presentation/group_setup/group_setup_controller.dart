@@ -5,7 +5,7 @@ import 'package:kfazer3/src/features/groups/data/groups_repository.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/domain/group_plan.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_validators.dart';
-import 'package:kfazer3/src/features/motivation/presentation/motivation_validators.dart';
+import 'package:kfazer3/src/features/groups/presentation/motivation/motivation_validators.dart';
 
 final groupSetupControllerProvider = StateNotifierProvider.autoDispose<
     GroupSetupController, AsyncValue<String?>>(
