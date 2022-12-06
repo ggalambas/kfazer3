@@ -7,7 +7,6 @@ import 'package:kfazer3/src/features/projects/domain/project.dart';
 import 'package:kfazer3/src/features/projects/presentation/project_screen_controller.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/localization/localized_enum.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 
@@ -96,9 +95,9 @@ class ProjectMenuButtonState extends ConsumerState<ProjectMenuButton> {
             //TODO don't show for creator
             showLoadingDialog(
               context: context,
-              title: 'Are you sure'.hardcoded,
-              cancelActionText: 'Cancel'.hardcoded,
-              defaultActionText: 'Leave'.hardcoded,
+              title: context.loc.areYouSure,
+              cancelActionText: context.loc.cancel,
+              defaultActionText: context.loc.leave,
               onDefaultAction: () async {
                 final success = await ref
                     .read(projectScreenControllerProvider.notifier)

@@ -69,6 +69,8 @@
   "editMotivationalMessages": "Editar mensajes motivacionales",
 
   "invites": "Invitaciones",
+  "showMore": "mostrar más",
+  "showLess": "mostrar menos",
 
   "about": "Sobre",
   "archive": "Archivo",
@@ -83,6 +85,7 @@
   "turnOwner": "Transferir propriedad",
   "turnAdmin": "Hacer administrador",
   "revokeAdmin": "Retirar de administrador",
+  "removeFromGroup": "Sacar del grupo",
 
   "preferences": "Preferencias",
   "plan": "Plan",
@@ -131,5 +134,6 @@
   "createNew": "Crear nuevo",
   "addNew": "Anãdir nuevo",
   "areYouSure": "¿Estás seguro?",
-  "cancel": "Cancelar"
+  "cancel": "Cancelar",
+  "accept": "Aceptar"
 }

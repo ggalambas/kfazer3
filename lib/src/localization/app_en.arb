@@ -68,7 +68,9 @@
   "motivation": "Motivation",
   "editMotivationalMessages": "Edit motivational messages",
 
-  "invites": "Invites",  
+  "invites": "Invites",
+  "showMore": "show more",
+  "showLess": "show less",
 
   "about": "About",
   "archive": "Archive",
@@ -83,6 +85,7 @@
   "turnOwner": "Transfer ownership",
   "turnAdmin": "Make admin",
   "revokeAdmin": "Remove as admin",
+  "removeFromGroup": "Remove from group",
 
   "preferences": "Preferences",
   "plan": "Plan",
@@ -131,5 +134,6 @@
   "createNew": "Create new",
   "addNew": "Add New",
   "areYouSure": "Are you sure?",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "accept": "Accept"
 }
