@@ -18,9 +18,6 @@ extension MutableGroup on Group {
 
   Group setPlan(GroupPlan plan) => copyWith(plan: plan);
 
-  Group setMotivationalMessages(List<String> motivationalMessages) =>
-      copyWith(motivationalMessages: motivationalMessages);
-
   /// If a member with the given userId is found, remove it
   Group removeMemberById(UserId memberId) {
     final copy = Map<UserId, MemberRole>.from(members);
@@ -50,7 +47,6 @@ extension MutableGroup on Group {
     String? description,
     String? photoUrl,
     bool nullablePhotoUrl = false,
-    List<String>? motivationalMessages,
     GroupPlan? plan,
     Map<UserId, MemberRole>? members,
   }) =>
@@ -59,7 +55,6 @@ extension MutableGroup on Group {
         name: name ?? this.name,
         description: description ?? this.description,
         photoUrl: nullablePhotoUrl ? photoUrl : (photoUrl ?? this.photoUrl),
-        motivationalMessages: motivationalMessages ?? this.motivationalMessages,
         plan: plan ?? this.plan,
         members: members ?? this.members,
       );

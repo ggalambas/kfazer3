@@ -90,21 +90,6 @@ class FakeGroupsRepository implements GroupsRepository {
   }
 
   @override
-  Future<void> updateMotivationalMessages(
-    GroupId id,
-    List<String> messages,
-  ) async {
-    await delay(addDelay);
-    // First, get the group list
-    final groups = _groups.value;
-    // Then, change the group
-    final i = groups.indexWhere((g) => id == g.id);
-    groups[i] = groups[i].setMotivationalMessages(messages);
-    // Finally, update the group list data (will emit a new value)
-    _groups.value = groups;
-  }
-
-  @override
   Future<void> deleteGroup(GroupId id) async {
     await delay(addDelay);
     // First, get the group list

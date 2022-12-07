@@ -16,7 +16,6 @@ class Group with EquatableMixin {
   final String name;
   final String description;
   final String? photoUrl;
-  final List<String> motivationalMessages;
   final GroupPlan plan;
 
   /// All the members in the group, where:
@@ -30,7 +29,6 @@ class Group with EquatableMixin {
     required this.name,
     this.description = '',
     this.photoUrl,
-    this.motivationalMessages = const [],
     required this.plan,
     required this.members,
     this.pendingMembersPhoneNumber = const {},

@@ -5,9 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/setup_layout.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
 import 'package:kfazer3/src/constants/constants.dart';
-import 'package:kfazer3/src/constants/test_groups.dart';
+import 'package:kfazer3/src/constants/test_motivations.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_setup/group_setup_controller.dart';
-import 'package:kfazer3/src/features/groups/presentation/motivation/motivation_validators.dart';
+import 'package:kfazer3/src/features/motivation/presentation/motivation_validators.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
@@ -36,7 +36,7 @@ class _MotivationPageState extends ConsumerState<MotivationPage> {
 
     messageControllers = [];
     messageNodes = [];
-    for (final message in kMotivationalMessages) {
+    for (final message in kMotivation) {
       messageControllers!.add(TextEditingController(text: message));
       messageNodes!.add(FocusNode());
     }

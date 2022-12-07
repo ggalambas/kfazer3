@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/constants/constants.dart';
-import 'package:kfazer3/src/features/groups/presentation/motivation/motivation_edit_controller.dart';
-import 'package:kfazer3/src/features/groups/presentation/motivation/motivation_validators.dart';
+import 'package:kfazer3/src/features/motivation/presentation/motivation_edit_controller.dart';
+import 'package:kfazer3/src/features/motivation/presentation/motivation_validators.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:smart_space/smart_space.dart';
 
