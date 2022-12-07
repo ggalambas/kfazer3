@@ -19,7 +19,6 @@ class MembersScreen extends ConsumerWidget {
     final groupValue = ref.watch(groupStreamProvider(groupId));
     final currentUser = ref.watch(currentUserStateProvider);
     //TODO loading is ugly
-    //? isnt the loading done already?
     return AsyncValueWidget<Group?>(
       value: groupValue,
       data: (group) {
