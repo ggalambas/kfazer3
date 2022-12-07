@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/responsive_scaffold.dart';
-import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
+import 'package:kfazer3/src/features/groups/application/groups_service.dart';
 import 'package:kfazer3/src/features/groups/data/groups_repository.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/presentation/not_found_group.dart';
@@ -28,14 +28,13 @@ class MembersScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentUser = ref.watch(currentUserStateProvider);
     final groupValue = ref.watch(groupStreamProvider(groupId));
     final usersValue = ref.watch(groupUsersStreamProvider(groupId));
     return AsyncValueWidget<Group?>(
         value: groupValue,
         data: (group) {
           if (group == null) return const NotFoundGroup();
-          final currentUserRole = group.members[currentUser.id]!;
+          final role = ref.watch(roleProvider(group));
           return ResponsiveScaffold(
             appBar: AppBar(title: Text(context.loc.members)),
             rail: Rail(title: context.loc.members),
@@ -61,8 +60,7 @@ class MembersScreen extends ConsumerWidget {
                           group
                               .toMemberList()
                               .firstWhere((member) => member.id == user.id),
-                          editable: currentUserRole.isOwner ||
-                              currentUserRole.isAdmin,
+                          editable: role.isOwner || role.isAdmin,
                         ),
                     ],
                   );
