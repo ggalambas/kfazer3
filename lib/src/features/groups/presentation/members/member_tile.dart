@@ -50,6 +50,7 @@ class MemberTile extends ConsumerWidget {
       case MemberMenuOption.removeAdmin:
         return ref.read(memberProvider.notifier).revokeAdmin(member);
       case MemberMenuOption.removeMember:
+      case MemberMenuOption.removeInvite:
         final confirmed = await showAlertDialog(
           context: context,
           title: context.loc.areYouSure,
