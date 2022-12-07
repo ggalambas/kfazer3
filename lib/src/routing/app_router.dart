@@ -254,10 +254,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 path: 't/:taskId',
                 name: AppRoute.task.name,
                 builder: (_, state) {
-                  final workspaceId = state.params['groupId']!;
+                  //TODO change this route to projectId
+                  final projectId = state.params['groupId']!;
                   final taskId = state.params['taskId']!;
                   return TaskScreen(
-                    workspaceId: workspaceId,
+                    projectId: projectId,
                     taskId: taskId,
                   );
                 },

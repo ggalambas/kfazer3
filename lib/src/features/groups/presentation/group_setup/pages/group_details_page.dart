@@ -48,10 +48,10 @@ class GroupDetailsPageState extends ConsumerState<GroupDetailsPage> {
   Widget build(BuildContext context) {
     return SetupLayout(
       formKey: formKey,
-      title: 'Name your workspace'.hardcoded,
+      title: 'Name your group'.hardcoded,
       description: TextSpan(
         text:
-            'A workspace is where you can structure a team and manage your tasks. You will later be able to add a photo and a description.'
+            'A group is where you can structure a team and manage your tasks. You will later be able to add a photo and a description.'
                 .hardcoded,
       ),
       content: [

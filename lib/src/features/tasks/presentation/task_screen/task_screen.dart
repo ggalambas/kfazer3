@@ -31,13 +31,13 @@ import 'header/sliver_task_tab_bar.dart';
 ///! [TaskScreenController],
 /// while UI updates are handled by a [PageController].
 class TaskScreen extends ConsumerStatefulWidget {
-  final String workspaceId;
+  final String projectId;
   final String taskId;
   final TaskScreenTab? tab;
 
   const TaskScreen({
     super.key,
-    required this.workspaceId,
+    required this.projectId,
     required this.taskId,
     this.tab,
   });
@@ -87,7 +87,7 @@ class _TaskScreenState extends ConsumerState<TaskScreen>
       context.replaceNamed(
         AppRoute.task.name,
         params: {
-          'groupId': widget.workspaceId,
+          'groupId': widget.projectId,
           'taskId': widget.taskId,
         },
         queryParams: {

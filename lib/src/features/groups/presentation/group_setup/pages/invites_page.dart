@@ -84,7 +84,7 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
       title: 'Add members'.hardcoded,
       description: TextSpan(
         text:
-            'You can invite your workspace members through their phone number or by sending them an invite link. You can also do this later.\n\n'
+            'You can invite your group members through their phone number or by sending them an invite link. You can also do this later.\n\n'
                     'Have a CSV or vCard file? Import contacts instead.'
                 .hardcoded,
       ),
@@ -128,7 +128,7 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
               LoadingElevatedButton(
                 loading: state.isLoading,
                 onPressed: submit,
-                child: Text('Create workspace'.hardcoded),
+                child: Text('Create group'.hardcoded),
               ),
             ]
           : [],

@@ -16,7 +16,6 @@ class SharedPreferencesSettingsRepository implements SettingsRepository {
   final openOnStartKey = 'openOnStart';
   final themeModeKey = 'themeMode';
   final languageKey = 'language';
-  final lastWorkspaceKey = 'lastWorkspaceKey';
 
   @override
   AppThemeMode getThemeMode() {
