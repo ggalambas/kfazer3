@@ -5,7 +5,7 @@ import 'package:kfazer3/src/common_widgets/avatar/group_avatar.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:kfazer3/src/utils/widget_loader.dart';
@@ -58,8 +58,8 @@ class PendingGroupCard extends ConsumerWidget {
                     ExpandableText(
                       group.description,
                       style: context.textTheme.bodySmall,
-                      expandText: 'show more',
-                      collapseText: 'show less',
+                      expandText: context.loc.showMore,
+                      collapseText: context.loc.showLess,
                       expandOnTextTap: true,
                       collapseOnTextTap: true,
                       animation: true,
@@ -74,7 +74,7 @@ class PendingGroupCard extends ConsumerWidget {
                           : () => ref
                               .read(groupProvider.notifier)
                               .acceptInvite(group),
-                      child: Text('Accept'.hardcoded),
+                      child: Text(context.loc.accept),
                     ),
                   ),
                 ],

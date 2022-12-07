@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kfazer3/src/features/groups/domain/member_role.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/localization/localized_enum.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 
 enum MemberMenuOption with LocalizedEnum {
@@ -27,7 +26,7 @@ enum MemberMenuOption with LocalizedEnum {
       case revokeAdmin:
         return context.loc.revokeAdmin;
       case removeMember:
-        return 'Remove from group'.hardcoded;
+        return context.loc.removeFromGroup;
     }
   }
 }

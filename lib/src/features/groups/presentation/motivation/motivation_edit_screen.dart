@@ -11,7 +11,6 @@ import 'package:kfazer3/src/features/groups/presentation/motivation/motivational
 import 'package:kfazer3/src/features/groups/presentation/motivation/motivational_messages_controller.dart';
 import 'package:kfazer3/src/features/groups/presentation/not_found_group.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
@@ -90,7 +89,7 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
                     enabled: !state.isLoading,
                     onSelected: controller.clearAllMessages,
                     child: Text(
-                      'Clear all'.hardcoded,
+                      context.loc.clearAll,
                       style: TextStyle(color: context.colorScheme.error),
                     ),
                   ),
@@ -108,7 +107,7 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
                   ),
                   onPressed:
                       state.isLoading ? null : controller.clearAllMessages,
-                  child: const Text('Clear all'),
+                  child: Text(context.loc.clearAll),
                 ),
             ],
           ),

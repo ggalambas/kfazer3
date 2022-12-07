@@ -4,7 +4,6 @@ import 'package:fluttercontactpicker/fluttercontactpicker.dart'
 import 'package:kfazer3/src/features/auth/domain/country.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/users/data/contacts_repository.dart';
-import 'package:kfazer3/src/localization/string_hardcoded.dart';
 
 class FakeContactsRepository implements ContactsRepository {
   @override
@@ -14,7 +13,7 @@ class FakeContactsRepository implements ContactsRepository {
     final phoneContact = await FlutterContactPicker.pickPhoneContact();
     final phoneNumber = phoneContact.phoneNumber?.number?.replaceAll(' ', '');
     if (phoneNumber == null) {
-      throw Exception('Failed to import contact'.hardcoded);
+      throw Exception('Failed to import contact');
     }
     String? code;
     if (phoneNumber.startsWith('00')) phoneNumber.replaceFirst('00', '+');
