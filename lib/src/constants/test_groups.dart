@@ -11,7 +11,7 @@ final _kTestGroups = List.generate(
   6,
   (i) => Group(
     id: '$i',
-    title: 'Group $i',
+    name: 'Group $i',
     description:
         'A group made by him for the company x in the center of the world.' * i,
     motivationalMessages: [...kMotivationalMessages],

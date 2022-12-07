@@ -27,7 +27,7 @@ class GroupAvatar extends StatelessWidget {
               )
           : null,
       child: Avatar(
-        text: group.title,
+        text: group.name,
         icon: Icons.workspaces,
         radius: radius,
         shape: BoxShape.rectangle,

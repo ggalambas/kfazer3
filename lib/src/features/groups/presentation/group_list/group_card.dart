@@ -23,7 +23,7 @@ class GroupCard extends StatelessWidget {
             ListTile(
               contentPadding: EdgeInsets.zero,
               leading: GroupAvatar(group),
-              title: Text(group.title),
+              title: Text(group.name),
               trailing: GroupMenuButton(group: group),
             ),
             //TODO projects list

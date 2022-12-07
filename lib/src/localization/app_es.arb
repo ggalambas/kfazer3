@@ -36,7 +36,6 @@
   "invalidNameEmpty": "Se requiere el nombre",
   "invalidCodeLength": "El código debe tener {codeLength} caracteres",
   "@invalidCodeLength": {"placeholders": {"codeLength": {}}},
-  "invalidTitleEmpty": "Se requiere título",
   "invalidMessageEmpty": "El mensaje no puede estar vacia",
 
   "notifications": "Notificaciones",
@@ -102,7 +101,7 @@
   "newGroup": "Nuevo group",
   "editGroup": "Editar grupo",
   "deleteGroup": "Eliminar grupo",
-  "title": "Título",
+  "name": "Nombre",
   "description": "Descripción",
   "groupCreateFirst": "¡Crea tu primer grupo!",
   "groupCreateFirstDescription": "Un grupo es donde puedes estructurar un equipo y administrar sus tareas.",
