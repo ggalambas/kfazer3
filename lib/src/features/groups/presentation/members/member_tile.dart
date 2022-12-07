@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/avatar/user_avatar.dart';
-import 'package:kfazer3/src/constants/constants.dart';
+import 'package:kfazer3/src/common_widgets/circular_progress_icon.dart';
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 import 'package:kfazer3/src/features/groups/domain/member.dart';
 import 'package:kfazer3/src/features/groups/domain/member_role.dart';
@@ -80,12 +80,7 @@ class MemberTile extends ConsumerWidget {
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: state.isLoading
-                ? [
-                    const SizedBox.square(
-                      dimension: kSmallIconSize,
-                      child: CircularProgressIndicator(strokeWidth: 3),
-                    ),
-                  ]
+                ? [const CircularProgressIcon()]
                 : [
                     if (!role.isMember)
                       Text(
@@ -114,16 +109,37 @@ class LoadingMemberTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = context.textTheme.bodyMedium!;
-    final textHeight = textStyle.fontSize! * textStyle.height!;
+    final textHeight = context.textTheme.bodyMedium!.fontSize!;
     return ListTile(
-      leading: const Card(
-        margin: EdgeInsets.zero,
-        shape: CircleBorder(),
-        child: SizedBox.square(dimension: 32),
+      leading: Container(
+        height: 32,
+        width: 32,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: context.colorScheme.surfaceVariant,
+        ),
       ),
-      title: Card(child: SizedBox(height: textHeight)),
-      subtitle: Card(child: SizedBox(height: textHeight)),
+      title: Container(
+        height: textHeight,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(textHeight / 2),
+          color: context.colorScheme.surfaceVariant,
+        ),
+      ),
+      subtitle: LayoutBuilder(builder: (context, constraints) {
+        return Align(
+          alignment: Alignment.centerLeft,
+          child: Container(
+            height: textHeight,
+            width: constraints.maxWidth / 3,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(textHeight / 2),
+              color: context.colorScheme.surfaceVariant,
+            ),
+          ),
+        );
+      }),
+      trailing: const SizedBox.shrink(),
     ).loader(context);
   }
 }

@@ -7,7 +7,7 @@ extension WidgetLoader on Widget {
   Animate loader(BuildContext context) {
     return animate(onPlay: (controller) => controller.repeat()).shimmer(
       duration: 1.seconds,
-      color: context.colorScheme.primary.withOpacity(0.1),
+      color: context.colorScheme.primary.withOpacity(0.15),
     );
   }
 }

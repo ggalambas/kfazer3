@@ -99,7 +99,6 @@ class CountryListView extends ConsumerWidget {
     final countryListValue = ref.watch(countryListFutureProvider);
     return AsyncValueWidget<List<Country>>(
       value: countryListValue,
-      //TODO check if we prefer with or without the shimmer
       loading: ListView.builder(
         padding: EdgeInsets.only(top: kSpace),
         itemBuilder: (context, i) => const LoadingCountryTile(),
@@ -109,7 +108,8 @@ class CountryListView extends ConsumerWidget {
         return ListView.builder(
           padding: EdgeInsets.only(top: kSpace),
           itemCount: countries.length,
-          itemBuilder: (context, i) => CountryTile(countries[i]),
+          itemBuilder: (context, i) => const LoadingCountryTile(),
+          // CountryTile(countries[i]),
         );
       },
     );

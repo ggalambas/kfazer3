@@ -8,7 +8,6 @@ import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
-import 'package:kfazer3/src/utils/widget_loader.dart';
 import 'package:smart_space/smart_space.dart';
 
 import 'pending_group_controller.dart';
@@ -84,27 +83,5 @@ class PendingGroupCard extends ConsumerWidget {
         ),
       ),
     );
-  }
-}
-
-/// The loading widget for [PendingGroupCard].
-class LoadingPendingGroupCard extends StatelessWidget {
-  const LoadingPendingGroupCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: EdgeInsets.all(kSpace),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: const [
-            ListTile(),
-            TextButton(onPressed: null, child: SizedBox()),
-          ],
-        ),
-      ),
-    ).loader(context);
   }
 }

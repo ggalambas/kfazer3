@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kfazer3/src/constants/constants.dart';
+import 'package:kfazer3/src/common_widgets/circular_progress_icon.dart';
 import 'package:kfazer3/src/localization/localized_enum.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 
@@ -49,10 +49,7 @@ class SelectionSettingTile<T extends LocalizedEnum> extends StatelessWidget {
       title: Text(title),
       subtitle: description == null ? null : Text(description!),
       trailing: loading
-          ? const SizedBox.square(
-              dimension: kSmallIconSize,
-              child: CircularProgressIndicator(strokeWidth: 3),
-            )
+          ? const CircularProgressIcon()
           : Text(
               selected.locName(context),
               style: context.textTheme.labelMedium!.copyWith(
