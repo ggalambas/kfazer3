@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kfazer3/src/constants/constants.dart';
+import 'package:kfazer3/src/common_widgets/circular_progress_icon.dart';
 
 /// Loading button based on [ElevatedButton].
 /// Useful for CTAs in the app.
@@ -26,12 +26,7 @@ class LoadingElevatedButton extends StatelessWidget {
     return ElevatedButton(
       style: style,
       onPressed: loading ? null : onPressed,
-      child: loading
-          ? const SizedBox.square(
-              dimension: kSmallIconSize,
-              child: CircularProgressIndicator(strokeWidth: 3),
-            )
-          : child,
+      child: loading ? const CircularProgressIcon() : child,
     );
   }
 }
@@ -58,12 +53,7 @@ class LoadingOutlinedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlinedButton(
       onPressed: loading ? null : onPressed,
-      child: loading
-          ? const SizedBox.square(
-              dimension: kSmallIconSize,
-              child: CircularProgressIndicator(strokeWidth: 3),
-            )
-          : child,
+      child: loading ? const CircularProgressIcon() : child,
     );
   }
 }
@@ -90,12 +80,7 @@ class LoadingTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: loading ? null : onPressed,
-      child: loading
-          ? const SizedBox.square(
-              dimension: kSmallIconSize,
-              child: CircularProgressIndicator(strokeWidth: 3),
-            )
-          : child,
+      child: loading ? const CircularProgressIcon() : child,
     );
   }
 }
@@ -128,13 +113,7 @@ class LoadingIconButton extends StatelessWidget {
       tooltip: tooltip,
       iconSize: iconSize,
       onPressed: loading ? null : onPressed,
-      icon: loading
-          //TODO hardcoded
-          ? const SizedBox.square(
-              dimension: 18,
-              child: CircularProgressIndicator(strokeWidth: 2.5),
-            )
-          : icon,
+      icon: loading ? const CircularProgressIcon() : icon,
     );
   }
 }

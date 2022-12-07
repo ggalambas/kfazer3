@@ -31,22 +31,31 @@ class LoadingCountryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = context.textTheme.bodyMedium!;
-    final textHeight = textStyle.fontSize! * textStyle.height!;
+    final textHeight = context.textTheme.bodyMedium!.fontSize!;
     return ListTile(
       dense: true,
-      leading: const Card(
-        margin: EdgeInsets.zero,
-        shape: CircleBorder(),
-        child: SizedBox.square(dimension: 24),
+      leading: Container(
+        height: 24,
+        width: 24,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: context.colorScheme.surfaceVariant,
+        ),
       ),
-      title: Card(
-        margin: EdgeInsets.zero,
-        child: SizedBox(height: textHeight),
+      title: Container(
+        height: textHeight,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(textHeight / 2),
+          color: context.colorScheme.surfaceVariant,
+        ),
       ),
-      trailing: Card(
-        margin: EdgeInsets.zero,
-        child: SizedBox(height: textHeight, width: 40),
+      trailing: Container(
+        height: textHeight,
+        width: 32, //! hardcoded
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(textHeight / 2),
+          color: context.colorScheme.surfaceVariant,
+        ),
       ),
     ).loader(context);
   }

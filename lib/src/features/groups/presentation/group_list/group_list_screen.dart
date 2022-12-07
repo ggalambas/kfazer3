@@ -38,24 +38,24 @@ class GroupListScreen extends ConsumerWidget {
       builder: (topPadding) => AsyncValueWidget<List<Group>>(
         value: groupListValue,
         data: (groupList) => AsyncValueWidget<List<Group>>(
-            value: pendingListValue,
-            data: (pendingList) => ListView(
-                  padding: EdgeInsets.only(top: topPadding, bottom: kFabSpace),
-                  children: [
-                    if (pendingList.isNotEmpty) ...[
-                      GroupListTitle(context.loc.invites),
-                      //TODO this widget shouldn't have padding applied, think about how we wanna solve this (padding comes from ResponsiveScaffold)
-                      HorizontalPendingView(groups: pendingList),
-                      if (groupList.isNotEmpty)
-                        GroupListTitle(context.loc.groups),
-                    ],
-                    if (groupList.isEmpty)
-                      const EmptyGroupList()
-                    else ...[
-                      for (final group in groupList) GroupCard(group: group),
-                    ],
-                  ],
-                )),
+          value: pendingListValue,
+          data: (pendingList) => ListView(
+            padding: EdgeInsets.only(top: topPadding, bottom: kFabSpace),
+            children: [
+              if (pendingList.isNotEmpty) ...[
+                GroupListTitle(context.loc.invites),
+                //TODO this widget shouldn't have padding applied, think about how we wanna solve this (padding comes from ResponsiveScaffold)
+                HorizontalPendingView(groups: pendingList),
+                if (groupList.isNotEmpty) GroupListTitle(context.loc.groups),
+              ],
+              if (groupList.isEmpty)
+                const EmptyGroupList()
+              else ...[
+                for (final group in groupList) GroupCard(group: group),
+              ],
+            ],
+          ),
+        ),
       ),
       floatingActionButton: groupListValue.valueOrNull?.isNotEmpty == true
           ? const CreateGroupButton.fab()
