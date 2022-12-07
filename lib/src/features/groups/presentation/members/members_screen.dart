@@ -30,9 +30,7 @@ class MembersScreen extends ConsumerWidget {
             return ListView(
               padding: EdgeInsets.only(top: topPadding),
               children: [
-                //TODO sort (rola, name)
-                //? how can we sort by name if we only get the user info later
-                //TODO on remove member animated remove?
+                //TODO sort (role, name)
                 for (final member in group.toMemberList())
                   MemberTile(member, editable: role.isOwner || role.isAdmin),
               ],

@@ -6,7 +6,7 @@ import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/groups/application/groups_service.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_list/group_list_title.dart';
-import 'package:kfazer3/src/features/groups/presentation/group_list/horizontal_pending_view.dart';
+import 'package:kfazer3/src/features/groups/presentation/group_list/pending_list/horizontal_pending_view.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/avatar/group_avatar.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
-import 'package:kfazer3/src/features/groups/presentation/group_list/pending_group_controller.dart';
+import 'package:kfazer3/src/features/groups/presentation/group_list/pending_list/pending_group_controller.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';

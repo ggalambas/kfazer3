@@ -7,9 +7,6 @@ import 'package:kfazer3/src/theme/app_theme.dart';
 
 import 'routing/app_router.dart';
 
-//TODO check this link for translation management
-// https://localizely.com/blog/flutter-localization-step-by-step/?tab=using-gen-l10n
-
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
