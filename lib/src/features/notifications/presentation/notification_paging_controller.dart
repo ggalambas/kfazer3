@@ -56,7 +56,14 @@ class NotificationPagingController extends PagingController<int, Notification> {
           ? appendLastPage(nextNotificationList)
           : appendPage(nextNotificationList, ++pageKey);
     } catch (e) {
-      error = e;
+      if (!disposed) error = e;
     }
+  }
+
+  bool disposed = false;
+  @override
+  void dispose() async {
+    disposed = true;
+    super.dispose();
   }
 }
