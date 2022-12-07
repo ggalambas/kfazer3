@@ -8,7 +8,8 @@ enum MemberMenuOption with LocalizedEnum {
   transferOwnership([MemberRole.admin, MemberRole.member]),
   makeAdmin([MemberRole.member]),
   removeAdmin([MemberRole.admin]),
-  removeMember([MemberRole.admin, MemberRole.member, MemberRole.pending]);
+  removeMember([MemberRole.admin, MemberRole.member]),
+  removeInvite([MemberRole.pending]);
 
   final List<MemberRole> allowedRoles;
   const MemberMenuOption(this.allowedRoles);
@@ -27,6 +28,8 @@ enum MemberMenuOption with LocalizedEnum {
         return context.loc.removeAsAdmin;
       case removeMember:
         return context.loc.removeFromGroup;
+      case removeInvite:
+        return context.loc.removeInvite;
     }
   }
 }
@@ -44,6 +47,7 @@ class MemberMenuButton extends StatelessWidget {
   TextStyle? style(BuildContext context, MemberMenuOption option) {
     switch (option) {
       case MemberMenuOption.removeMember:
+      case MemberMenuOption.removeInvite:
         return TextStyle(color: context.colorScheme.error);
       default:
         return null;
