@@ -41,6 +41,15 @@ class MemberMenuButton extends StatelessWidget {
     required this.onOptionSelected,
   });
 
+  TextStyle? style(BuildContext context, MemberMenuOption option) {
+    switch (option) {
+      case MemberMenuOption.removeMember:
+        return TextStyle(color: context.colorScheme.error);
+      default:
+        return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final menuOptions = MemberMenuOption.allowedValues(role);
@@ -52,9 +61,7 @@ class MemberMenuButton extends StatelessWidget {
             value: option,
             child: Text(
               option.locName(context),
-              style: option == MemberMenuOption.turnOwner
-                  ? TextStyle(color: context.colorScheme.primary)
-                  : null,
+              style: style(context, option),
             ),
           ),
       ],

@@ -11,6 +11,7 @@ import 'package:kfazer3/src/features/auth/presentation/account/account_controlle
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
+import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
 class AccountScreen extends ConsumerWidget {
@@ -100,6 +101,9 @@ class AccountScreen extends ConsumerWidget {
             child: LoadingElevatedButton(
               loading: state.isLoading,
               onPressed: () => signOut(context, ref),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: context.colorScheme.error,
+              ),
               child: Text(context.loc.signOut),
             ),
           ),
