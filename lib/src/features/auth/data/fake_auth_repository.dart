@@ -12,7 +12,8 @@ class FakeAuthRepository implements AuthRepository {
   final bool addDelay;
 
   FakeAuthRepository({this.addDelay = true, bool startSignedIn = true})
-      : _authState = InMemoryStore(startSignedIn ? kTestUsers.first : null);
+      : _authState =
+            InMemoryStore(startSignedIn ? kTestUsers.keys.first : null);
 
   void dispose() => _authState.close();
 
@@ -29,10 +30,10 @@ class FakeAuthRepository implements AuthRepository {
   @override
   Future<void> verifySmsCode(PhoneNumber phoneNumber, String smsCode) async {
     await delay(addDelay);
-    final user = kTestUsers.firstWhereOrNull(
+    final user = kTestUsers.keys.firstWhereOrNull(
       (user) => user.phoneNumber == phoneNumber,
     );
-    if (user != null) _authState.value = user;
+    _authState.value = user;
   }
 
   @override
