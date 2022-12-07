@@ -61,6 +61,8 @@ class PendingGroupCard extends ConsumerWidget {
                       collapseOnTextTap: true,
                       animation: true,
                       maxLines: 2,
+                      linkEllipsis: false,
+                      linkColor: context.colorScheme.primary,
                     ),
                   Align(
                     alignment: Alignment.centerRight,

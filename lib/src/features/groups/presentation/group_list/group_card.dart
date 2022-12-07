@@ -13,26 +13,30 @@ class GroupCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.hardEdge,
-      child: Padding(
-        padding: EdgeInsets.all(kSpace),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: GroupAvatar(group),
-              title: Text(group.name),
-              trailing: GroupMenuButton(group: group),
-            ),
-            //TODO projects list
-            TextButton.icon(
-              onPressed: () => showNotImplementedAlertDialog(context: context),
-              icon: const Icon(Icons.add),
-              label: Text(context.loc.newProject),
-            ),
-          ],
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: kSpace),
+      child: Card(
+        clipBehavior: Clip.hardEdge,
+        child: Padding(
+          padding: EdgeInsets.all(kSpace),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: GroupAvatar(group),
+                title: Text(group.name),
+                trailing: GroupMenuButton(group: group),
+              ),
+              //TODO projects list
+              TextButton.icon(
+                onPressed: () =>
+                    showNotImplementedAlertDialog(context: context),
+                icon: const Icon(Icons.add),
+                label: Text(context.loc.newProject),
+              ),
+            ],
+          ),
         ),
       ),
     );

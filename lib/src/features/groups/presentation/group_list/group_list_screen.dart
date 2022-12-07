@@ -6,10 +6,9 @@ import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/groups/application/groups_service.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_list/group_list_title.dart';
-import 'package:kfazer3/src/features/groups/presentation/group_list/pending_list/horizontal_pending_view.dart';
+import 'package:kfazer3/src/features/groups/presentation/group_list/pending_list/horiz_pending_scroll_view.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
-import 'package:smart_space/smart_space.dart';
 
 import 'create_group_button.dart';
 import 'empty_group_list.dart';
@@ -29,7 +28,6 @@ class GroupListScreen extends ConsumerWidget {
     final groupListValue = ref.watch(groupListStreamProvider);
     final pendingListValue = ref.watch(pendingGroupListStreamProvider);
     return ResponsiveScaffold(
-      padding: EdgeInsets.symmetric(horizontal: kSpace),
       appBar: const HomeBar(),
       rail: const HomeRail(),
       //TODO double AsyncValueWidget, a bit ugly, should we create a widget for this cases or am I not dealing with this case properly
@@ -44,13 +42,12 @@ class GroupListScreen extends ConsumerWidget {
             children: [
               if (pendingList.isNotEmpty) ...[
                 GroupListTitle(context.loc.invites),
-                //TODO this widget shouldn't have padding applied, think about how we wanna solve this (padding comes from ResponsiveScaffold)
-                HorizontalPendingView(groups: pendingList),
-                if (groupList.isNotEmpty) GroupListTitle(context.loc.groups),
+                HorizPendingScrollView(groups: pendingList),
               ],
               if (groupList.isEmpty)
                 const EmptyGroupList()
               else ...[
+                if (pendingList.isNotEmpty) GroupListTitle(context.loc.groups),
                 for (final group in groupList) GroupCard(group),
               ],
             ],
