@@ -36,7 +36,6 @@ class _MotivationPageState extends ConsumerState<MotivationPage> {
 
     messageControllers = [];
     messageNodes = [];
-    //TODO get workpsace default messages
     for (final message in kMotivationalMessages) {
       messageControllers!.add(TextEditingController(text: message));
       messageNodes!.add(FocusNode());
