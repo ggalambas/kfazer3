@@ -32,7 +32,7 @@ class GroupPreferencesScreen extends ConsumerWidget {
             padding: EdgeInsets.only(top: topPadding),
             children: [
               ListTile(
-                onTap: () => context.goNamed(
+                onTap: () => context.pushNamed(
                   AppRoute.groupDetails.name,
                   params: {'groupId': group.id},
                 ),
@@ -52,7 +52,7 @@ class GroupPreferencesScreen extends ConsumerWidget {
                 description: context.loc.planDescription,
               ),
               ListTile(
-                onTap: () => context.goNamed(
+                onTap: () => context.pushNamed(
                   AppRoute.motivation.name,
                   params: {'groupId': group.id},
                 ),

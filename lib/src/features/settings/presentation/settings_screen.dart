@@ -31,7 +31,7 @@ class SettingsScreen extends ConsumerWidget {
         children: [
           ListTile(
             key: accountDetailsKey,
-            onTap: () => context.goNamed(AppRoute.account.name),
+            onTap: () => context.pushNamed(AppRoute.account.name),
             leading: UserAvatar(user, dialogOnTap: false),
             title: Text(user.name),
             subtitle: Text(user.phoneNumber.number),
