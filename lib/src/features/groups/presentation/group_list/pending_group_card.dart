@@ -15,7 +15,7 @@ import 'pending_group_controller.dart';
 /// Used to show a single pending group inside a card.
 class PendingGroupCard extends ConsumerWidget {
   final Group group;
-  const PendingGroupCard({super.key, required this.group});
+  const PendingGroupCard(this.group, {super.key});
 
   AutoDisposeStateNotifierProvider<PendingGroupController, AsyncValue>
       get groupProvider => pendingGroupControllerProvider(group.id);
@@ -41,10 +41,8 @@ class PendingGroupCard extends ConsumerWidget {
               trailing: LoadingIconButton(
                 iconSize: kSmallIconSize,
                 loading: state.isLoading && state.value == false,
-                onPressed: state.isLoading
-                    ? null
-                    : () =>
-                        ref.read(groupProvider.notifier).declineInvite(group),
+                onPressed: () =>
+                    ref.read(groupProvider.notifier).declineInvite(group),
                 icon: const Icon(Icons.close),
               ),
             ),
@@ -68,11 +66,8 @@ class PendingGroupCard extends ConsumerWidget {
                     alignment: Alignment.centerRight,
                     child: LoadingTextButton(
                       loading: state.isLoading && state.value == true,
-                      onPressed: state.isLoading
-                          ? null
-                          : () => ref
-                              .read(groupProvider.notifier)
-                              .acceptInvite(group),
+                      onPressed: () =>
+                          ref.read(groupProvider.notifier).acceptInvite(group),
                       child: Text(context.loc.accept),
                     ),
                   ),

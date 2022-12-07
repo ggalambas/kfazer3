@@ -9,7 +9,7 @@ import 'package:smart_space/smart_space.dart';
 /// Used to show a single group inside a card.
 class GroupCard extends StatelessWidget {
   final Group group;
-  const GroupCard({super.key, required this.group});
+  const GroupCard(this.group, {super.key});
 
   @override
   Widget build(BuildContext context) {

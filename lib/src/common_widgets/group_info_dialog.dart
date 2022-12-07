@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
@@ -16,12 +15,12 @@ Future<void> showGroupInfoDialog(
       builder: (_) => GroupInfoDialog(group),
     );
 
-class GroupInfoDialog extends ConsumerWidget {
+class GroupInfoDialog extends StatelessWidget {
   final Group group;
   const GroupInfoDialog(this.group, {super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return AlertDialog(
       content: Column(
         mainAxisSize: MainAxisSize.min,

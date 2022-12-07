@@ -19,7 +19,7 @@ class HorizontalPendingView extends StatelessWidget {
             for (final group in groups)
               SizedBox(
                 width: constraints.maxWidth * 4 / 5,
-                child: PendingGroupCard(group: group),
+                child: PendingGroupCard(group),
               ),
           ],
         ),
