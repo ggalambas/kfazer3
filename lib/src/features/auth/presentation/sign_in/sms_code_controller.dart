@@ -5,24 +5,26 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 
-final kCodeTimerDuration = 30.seconds;
-
 final smsCodeControllerProvider = StateNotifierProvider.family
     .autoDispose<SmsCodeController, AsyncValue<int>, PhoneNumber>(
-  (ref, phoneNumber) {
-    final authRepository = ref.watch(authRepositoryProvider);
-    return SmsCodeController(phoneNumber, authRepository: authRepository);
-  },
-  disposeDelay: kCodeTimerDuration,
+  (ref, phoneNumber) => SmsCodeController(
+    ref.keepAlive(),
+    phoneNumber: phoneNumber,
+    authRepository: ref.watch(authRepositoryProvider),
+  ),
 );
 
 class SmsCodeController extends StateNotifier<AsyncValue<int>> {
+  final KeepAliveLink link;
   final AuthRepository authRepository;
   final PhoneNumber phoneNumber;
   late final Timer timer;
 
-  SmsCodeController(this.phoneNumber, {required this.authRepository})
-      : super(const AsyncValue.data(0)) {
+  SmsCodeController(
+    this.link, {
+    required this.phoneNumber,
+    required this.authRepository,
+  }) : super(const AsyncValue.data(0)) {
     initTimer();
   }
 
@@ -39,7 +41,7 @@ class SmsCodeController extends StateNotifier<AsyncValue<int>> {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await authRepository.sendSmsCode(phoneNumber);
-      return kCodeTimerDuration.inSeconds;
+      return 30;
     });
     if (throwError && state.hasError) throw state.error!;
   }

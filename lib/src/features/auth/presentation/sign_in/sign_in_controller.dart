@@ -33,6 +33,8 @@ class SignInController extends StateNotifier<AsyncValue> with AuthValidators {
   final AuthRepository authRepository;
   final SmsCodeController Function(PhoneNumber phoneNumber) smsCodeController;
 
+  final smsCodeControllers = <SmsCodeController>[];
+
   SignInController({
     required this.payload,
     required this.authRepository,
@@ -45,7 +47,9 @@ class SignInController extends StateNotifier<AsyncValue> with AuthValidators {
       switch (page) {
         case SignInPage.phone:
           assert(value is PhoneNumber);
-          await smsCodeController(value).sendSmsCode(throwError: true);
+          final controller = smsCodeController(value);
+          smsCodeControllers.add(controller);
+          await controller.sendSmsCode(throwError: true);
           payload.phoneNumber = value;
           break;
         case SignInPage.verification:
@@ -60,5 +64,13 @@ class SignInController extends StateNotifier<AsyncValue> with AuthValidators {
       }
     });
     return !state.hasError;
+  }
+
+  @override
+  void dispose() {
+    for (final controller in smsCodeControllers) {
+      controller.link.close();
+    }
+    super.dispose();
   }
 }

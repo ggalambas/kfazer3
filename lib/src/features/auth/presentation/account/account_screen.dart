@@ -23,7 +23,7 @@ class AccountScreen extends ConsumerWidget {
     );
   }
 
-  void delete(BuildContext context, Reader read) async {
+  void delete(BuildContext context, WidgetRef ref) async {
     final delete = await showAlertDialog(
       context: context,
       title: context.loc.areYouSure,
@@ -31,11 +31,11 @@ class AccountScreen extends ConsumerWidget {
       defaultActionText: context.loc.delete,
     );
     if (delete == true) {
-      read(accountControllerProvider.notifier).deleteUser();
+      ref.read(accountControllerProvider.notifier).deleteUser();
     }
   }
 
-  void signOut(BuildContext context, Reader read) async {
+  void signOut(BuildContext context, WidgetRef ref) async {
     final logout = await showAlertDialog(
       context: context,
       title: context.loc.areYouSure,
@@ -43,7 +43,7 @@ class AccountScreen extends ConsumerWidget {
       defaultActionText: context.loc.signOut,
     );
     if (logout == true) {
-      read(accountControllerProvider.notifier).signOut();
+      ref.read(accountControllerProvider.notifier).signOut();
     }
   }
 
@@ -64,7 +64,7 @@ class AccountScreen extends ConsumerWidget {
         title: context.loc.account,
         onEdit: () => edit(context),
         deleteText: context.loc.deleteAccount,
-        onDelete: () => delete(context, ref.read),
+        onDelete: () => delete(context, ref),
       ),
       rail: DetailsRail(
         title: context.loc.account,
@@ -72,7 +72,7 @@ class AccountScreen extends ConsumerWidget {
         editText: context.loc.editAccount,
         onEdit: () => edit(context),
         deleteText: context.loc.deleteAccount,
-        onDelete: () => delete(context, ref.read),
+        onDelete: () => delete(context, ref),
       ),
       builder: (topPadding) => ListView(
         padding: EdgeInsets.only(top: topPadding),
@@ -99,7 +99,7 @@ class AccountScreen extends ConsumerWidget {
             alignment: Alignment.centerRight,
             child: LoadingElevatedButton(
               loading: state.isLoading,
-              onPressed: () => signOut(context, ref.read),
+              onPressed: () => signOut(context, ref),
               child: Text(context.loc.signOut),
             ),
           ),
