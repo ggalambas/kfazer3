@@ -12,8 +12,7 @@ final _kTestGroups = List.generate(
   (i) => Group(
     id: '$i',
     name: 'Group $i',
-    description:
-        'A group made by him for the company x in the center of the world.' * i,
+    description: 'A group made by him for the company.' * (i % 3),
     motivationalMessages: [...kMotivationalMessages],
     plan: GroupPlan.family,
     members: Map.fromIterable(
