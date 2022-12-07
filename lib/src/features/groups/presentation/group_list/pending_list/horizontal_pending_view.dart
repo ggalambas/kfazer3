@@ -6,7 +6,6 @@ class HorizontalPendingView extends StatelessWidget {
   final List<Group> groups;
   const HorizontalPendingView({super.key, required this.groups});
 
-  //TODO make each card heigh follow the biggest
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
