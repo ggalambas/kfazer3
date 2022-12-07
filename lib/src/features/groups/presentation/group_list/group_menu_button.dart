@@ -78,10 +78,7 @@ class _GroupMenuButtonState extends ConsumerState<GroupMenuButton> {
       onSelected: (option) async {
         switch (option) {
           case GroupMenuOption.about:
-            return showDialog(
-              context: context,
-              builder: (_) => GroupInfoDialog(widget.group),
-            );
+            return showGroupInfoDialog(context, group: widget.group);
           case GroupMenuOption.preferences:
             return context.pushNamed(
               AppRoute.groupPreferences.name,

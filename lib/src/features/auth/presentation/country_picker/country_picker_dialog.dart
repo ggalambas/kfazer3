@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:kfazer3/src/constants/breakpoints.dart';
+import 'package:kfazer3/src/features/auth/domain/country.dart';
 import 'package:smart_space/smart_space.dart';
 
 import 'country_list_view.dart';
 import 'country_search_field.dart';
+
+Future<Country?> showCountryPickerDialog(
+  BuildContext context,
+) =>
+    showDialog<Country>(
+      context: context,
+      builder: (_) => const CountryPickerDialog(),
+    );
 
 class CountryPickerDialog extends StatefulWidget {
   const CountryPickerDialog({super.key});

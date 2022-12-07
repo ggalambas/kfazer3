@@ -7,6 +7,15 @@ import 'package:smart_space/smart_space.dart';
 
 import 'avatar/group_avatar.dart';
 
+Future<void> showGroupInfoDialog(
+  BuildContext context, {
+  required Group group,
+}) =>
+    showDialog(
+      context: context,
+      builder: (_) => GroupInfoDialog(group),
+    );
+
 class GroupInfoDialog extends ConsumerWidget {
   final Group group;
   const GroupInfoDialog(this.group, {super.key});

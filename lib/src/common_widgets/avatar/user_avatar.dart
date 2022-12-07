@@ -21,10 +21,7 @@ class UserAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: dialogOnTap && user != null
-          ? () => showDialog(
-                context: context,
-                builder: (_) => UserInfoDialog(user!),
-              )
+          ? () => showUserInfoDialog(context, user: user!)
           : null,
       child: Avatar(
         text: user?.name,

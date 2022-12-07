@@ -7,6 +7,15 @@ import 'package:smart_space/smart_space.dart';
 
 import 'avatar/user_avatar.dart';
 
+Future<void> showUserInfoDialog(
+  BuildContext context, {
+  required AppUser user,
+}) =>
+    showDialog(
+      context: context,
+      builder: (_) => UserInfoDialog(user),
+    );
+
 class UserInfoDialog extends ConsumerWidget {
   final AppUser user;
   const UserInfoDialog(this.user, {super.key});
