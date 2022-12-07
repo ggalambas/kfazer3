@@ -22,11 +22,9 @@ class ImagePickerBadge extends ConsumerWidget {
   });
 
   void openImagePickerDialog(BuildContext context, WidgetRef ref) async {
-    final file = await showDialog(
-      context: context,
-      builder: (context) => ImagePickerDialog(
-        onDelete: showDeleteOption ? null : () => onImagePicked!(null),
-      ),
+    final file = await showImagePickerDialog(
+      context,
+      onDelete: showDeleteOption ? null : () => onImagePicked!(null),
     );
     if (file != null) {
       final bytes = await ref

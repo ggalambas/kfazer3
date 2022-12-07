@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/constants/constants.dart';
-import 'package:kfazer3/src/features/auth/domain/country.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
@@ -25,13 +24,6 @@ class PhoneCodeDropdownPrefix extends StatelessWidget {
 class PhoneCodeDropdownButton extends ConsumerWidget {
   final PhoneCodeController controller;
   const PhoneCodeDropdownButton({super.key, required this.controller});
-
-  Future<Country?> showCountryPicker(BuildContext context) =>
-      showDialog<Country>(
-        context: context,
-        builder: (context) => const CountryPickerDialog(),
-      );
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ValueListenableBuilder(
@@ -40,7 +32,7 @@ class PhoneCodeDropdownButton extends ConsumerWidget {
           return InkWell(
             customBorder: const StadiumBorder(),
             onTap: () async {
-              final country = await showCountryPicker(context);
+              final country = await showCountryPickerDialog(context);
               if (country != null) controller.code = country.phoneCode;
             },
             child: Padding(

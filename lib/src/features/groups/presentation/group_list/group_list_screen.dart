@@ -51,7 +51,7 @@ class GroupListScreen extends ConsumerWidget {
               if (groupList.isEmpty)
                 const EmptyGroupList()
               else ...[
-                for (final group in groupList) GroupCard(group: group),
+                for (final group in groupList) GroupCard(group),
               ],
             ],
           ),

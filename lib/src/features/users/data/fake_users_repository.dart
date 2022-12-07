@@ -15,14 +15,9 @@ class FakeUsersRepository implements UsersRepository {
   FakeUsersRepository({this.addDelay = true});
 
   @override
-  Future<List<AppUser>> fetchUserList() async {
-    delay(addDelay);
-    return _users.value;
-  }
-
-  @override
   Stream<AppUser?> watchUser(String id) async* {
-    final userList = await fetchUserList();
+    await delay(addDelay);
+    final userList = _users.value;
     yield userList.firstWhereOrNull((user) => user.id == id);
   }
 }

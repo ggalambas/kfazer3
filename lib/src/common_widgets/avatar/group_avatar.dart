@@ -21,9 +21,9 @@ class GroupAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: dialogOnTap
-          ? () => showDialog(
-                context: context,
-                builder: (_) => GroupInfoDialog(group),
+          ? () => showGroupInfoDialog(
+                context,
+                group: group,
               )
           : null,
       child: Avatar(

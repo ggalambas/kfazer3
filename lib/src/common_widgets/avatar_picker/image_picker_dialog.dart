@@ -8,6 +8,15 @@ import 'package:kfazer3/src/utils/context_theme.dart';
 
 import 'image_picker_button.dart';
 
+Future<XFile?> showImagePickerDialog(
+  BuildContext context, {
+  VoidCallback? onDelete,
+}) =>
+    showDialog<XFile>(
+      context: context,
+      builder: (_) => ImagePickerDialog(onDelete: onDelete),
+    );
+
 /// The dialog returns an [XFile] or [null] if no image chose
 class ImagePickerDialog extends ConsumerStatefulWidget {
   final VoidCallback? onDelete;
