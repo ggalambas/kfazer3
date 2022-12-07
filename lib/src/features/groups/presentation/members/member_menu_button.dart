@@ -5,9 +5,9 @@ import 'package:kfazer3/src/localization/localized_enum.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 
 enum MemberMenuOption with LocalizedEnum {
-  turnOwner([MemberRole.admin, MemberRole.member]),
-  turnAdmin([MemberRole.member]),
-  revokeAdmin([MemberRole.admin]),
+  transferOwnership([MemberRole.admin, MemberRole.member]),
+  makeAdmin([MemberRole.member]),
+  removeAdmin([MemberRole.admin]),
   removeMember([MemberRole.admin, MemberRole.member, MemberRole.pending]);
 
   final List<MemberRole> allowedRoles;
@@ -19,12 +19,12 @@ enum MemberMenuOption with LocalizedEnum {
   @override
   String locName(BuildContext context) {
     switch (this) {
-      case turnOwner:
-        return context.loc.turnOwner;
-      case turnAdmin:
-        return context.loc.turnAdmin;
-      case revokeAdmin:
-        return context.loc.revokeAdmin;
+      case transferOwnership:
+        return context.loc.transferOwnership;
+      case makeAdmin:
+        return context.loc.makeAdmin;
+      case removeAdmin:
+        return context.loc.removeAsAdmin;
       case removeMember:
         return context.loc.removeFromGroup;
     }

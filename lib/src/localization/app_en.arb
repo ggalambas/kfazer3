@@ -83,9 +83,10 @@
   "admin": "Admin",
   "member": "Member",
   "pending": "Pending",
-  "turnOwner": "Transfer ownership",
-  "turnAdmin": "Make admin",
-  "revokeAdmin": "Remove as admin",
+  "transferOwnership": "Transfer ownership",
+  "transfer": "Transfer",
+  "makeAdmin": "Make admin",
+  "removeAsAdmin": "Remove as admin",
   "removeFromGroup": "Remove from group",
 
   "preferences": "Preferences",

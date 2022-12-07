@@ -83,9 +83,10 @@
   "admin": "Administrador",
   "member": "Membro",
   "pending": "Pendente",
-  "turnOwner": "Transferir posse",
-  "turnAdmin": "Tornar administrador",
-  "revokeAdmin": "Remover de administrador",
+  "transferOwnership": "Transferir posse",
+  "transfer": "Transferir",
+  "makeAdmin": "Tornar administrador",
+  "removeAsAdmin": "Remover de administrador",
   "removeFromGroup": "Remover do grupo",
 
   "preferences": "Preferências",

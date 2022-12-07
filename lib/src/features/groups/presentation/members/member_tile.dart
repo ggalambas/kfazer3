@@ -36,21 +36,27 @@ class MemberTile extends ConsumerWidget {
     MemberMenuOption option,
   ) async {
     switch (option) {
-      case MemberMenuOption.turnOwner:
+      case MemberMenuOption.transferOwnership:
         final confirmed = await showAlertDialog(
           context: context,
-          cancelActionText: context.loc.cancel,
           title: context.loc.areYouSure,
+          cancelActionText: context.loc.cancel,
+          defaultActionText: context.loc.transfer,
         );
-        if (confirmed == true) {
-          return ref.read(memberProvider.notifier).transferOwnership(member);
-        }
-        break;
-      case MemberMenuOption.turnAdmin:
+        if (confirmed != true) break;
+        return ref.read(memberProvider.notifier).transferOwnership(member);
+      case MemberMenuOption.makeAdmin:
         return ref.read(memberProvider.notifier).turnAdmin(member);
-      case MemberMenuOption.revokeAdmin:
+      case MemberMenuOption.removeAdmin:
         return ref.read(memberProvider.notifier).revokeAdmin(member);
       case MemberMenuOption.removeMember:
+        final confirmed = await showAlertDialog(
+          context: context,
+          title: context.loc.areYouSure,
+          cancelActionText: context.loc.cancel,
+          defaultActionText: context.loc.remove,
+        );
+        if (confirmed != true) break;
         return ref.read(memberProvider.notifier).removeMember(member);
     }
   }
@@ -73,8 +79,8 @@ class MemberTile extends ConsumerWidget {
           leading: UserAvatar(user, dialogOnTap: false),
           title: Text(user.name),
           subtitle: Text(user.phoneNumber.toString()),
+          // remove right padding when trailing is a button
           contentPadding: showMenuButton && !state.isLoading
-              // remove right padding when trailing is a button
               ? EdgeInsets.only(left: kSpace * 2)
               : null,
           trailing: Row(
