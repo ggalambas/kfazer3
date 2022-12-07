@@ -12,7 +12,7 @@ class EmptyGroupList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: kSpace * 3,
+        horizontal: kSpace * 4,
         vertical: kSpace * 2,
       ),
       child: Column(
