@@ -4,16 +4,16 @@ import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/utils/string_validator.dart';
 
 mixin GroupValidators {
-  List<StringValidator> titleSubmitValidators(BuildContext context) => [
-        NonEmptyStringValidator(context.loc.invalidTitleEmpty),
+  List<StringValidator> nameSubmitValidators(BuildContext context) => [
+        NonEmptyStringValidator(context.loc.invalidNameEmpty),
       ];
 
   List<StringValidator> descriptionSubmitValidators(BuildContext context) => [];
 }
 
 extension GroupValidatorsText on GroupValidators {
-  String? titleErrorText(BuildContext context, String name) =>
-      titleSubmitValidators(context)
+  String? nameErrorText(BuildContext context, String name) =>
+      nameSubmitValidators(context)
           .firstWhereOrNull((validator) => !validator.isValid(name))
           ?.errorText;
 

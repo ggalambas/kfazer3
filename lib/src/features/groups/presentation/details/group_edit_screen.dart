@@ -30,11 +30,11 @@ class GroupEditScreen extends ConsumerStatefulWidget {
 
 class GroupEditScreenState extends ConsumerState<GroupEditScreen> {
   final formKey = GlobalKey<FormState>();
-  late final TextEditingController titleController;
+  late final TextEditingController nameController;
   late final TextEditingController descriptionController;
   late final ImageController imageController;
 
-  String get title => titleController.text;
+  String get name => nameController.text;
   String get description => descriptionController.text;
   ImageProvider? get image => imageController.value;
 
@@ -48,14 +48,14 @@ class GroupEditScreenState extends ConsumerState<GroupEditScreen> {
   void init(Group group) {
     if (initCalled) return;
     initCalled = true;
-    titleController = TextEditingController(text: group.title);
+    nameController = TextEditingController(text: group.name);
     descriptionController = TextEditingController(text: group.description);
     imageController = ImageController(url: group.photoUrl);
   }
 
   @override
   void dispose() {
-    titleController.dispose();
+    nameController.dispose();
     descriptionController.dispose();
     super.dispose();
   }
@@ -64,7 +64,7 @@ class GroupEditScreenState extends ConsumerState<GroupEditScreen> {
     setState(() => submitted = true);
     if (!formKey.currentState!.validate()) return;
 
-    final updatedGroup = group.setTitle(title).setDescription(description);
+    final updatedGroup = group.setName(name).setDescription(description);
 
     await ref
         .read(groupEditControllerProvider.notifier)
@@ -115,24 +115,24 @@ class GroupEditScreenState extends ConsumerState<GroupEditScreen> {
                   children: [
                     AvatarPicker(
                       imageController: imageController,
-                      textController: titleController,
+                      textController: nameController,
                     ),
                     Space(4),
                     TextFormField(
-                      controller: titleController,
+                      controller: nameController,
                       keyboardType: TextInputType.name,
                       textInputAction: TextInputAction.next,
-                      maxLength: kTitleLength,
+                      maxLength: kNameLength,
                       decoration: InputDecoration(
                         counterText: '',
-                        labelText: context.loc.title,
+                        labelText: context.loc.name,
                       ),
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (title) {
+                      validator: (name) {
                         if (!submitted) return null;
                         return ref
                             .read(groupEditControllerProvider.notifier)
-                            .titleErrorText(context, title ?? '');
+                            .nameErrorText(context, name ?? '');
                       },
                     ),
                     Space(),

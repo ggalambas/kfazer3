@@ -37,7 +37,7 @@ class GroupPreferencesScreen extends ConsumerWidget {
                   params: {'groupId': group.id},
                 ),
                 leading: GroupAvatar(group, dialogOnTap: false),
-                title: Text(group.title),
+                title: Text(group.name),
               ),
               const Divider(),
               SelectionSettingTile<GroupPlan>(

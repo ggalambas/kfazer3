@@ -37,7 +37,7 @@ class PendingGroupCard extends ConsumerWidget {
             ListTile(
               contentPadding: EdgeInsets.zero,
               leading: GroupAvatar(group),
-              title: Text(group.title),
+              title: Text(group.name),
               trailing: LoadingIconButton(
                 iconSize: kSmallIconSize,
                 loading: state.isLoading && state.value == false,

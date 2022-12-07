@@ -96,7 +96,7 @@ class TaskDetails extends ConsumerWidget {
               //   params: {'groupId': group.id},
               // ),
               leading: GroupAvatar(group, radius: 16),
-              title: Text(group.title),
+              title: Text(group.name),
             ),
         ],
       ),

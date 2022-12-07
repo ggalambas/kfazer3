@@ -8,10 +8,10 @@ import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:smart_space/smart_space.dart';
 
+import 'details/group_details_page.dart';
 import 'group_setup_controller.dart';
-import 'pages/group_details_page.dart';
-import 'pages/invites_page.dart';
-import 'pages/motivation_page.dart';
+import 'invites/invites_page.dart';
+import 'motivation/motivation_page.dart';
 
 /// The three sub-routes that are presented as part of the group setup flow.
 enum GroupSetupPage with LocalizedEnum {

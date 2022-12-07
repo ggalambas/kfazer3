@@ -19,6 +19,7 @@ final notificationPagingControllerProvider =
   },
 );
 
+//TODO deal with new incoming notifications
 class NotificationPagingController extends PagingController<int, Notification> {
   final NotificationsRepository notificationsRepository;
   final NotificationsService notificationsService;

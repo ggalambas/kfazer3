@@ -94,9 +94,9 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
               Space(4),
               TextFormField(
                 enabled: false,
-                initialValue: group.title,
+                initialValue: group.name,
                 decoration: InputDecoration(
-                  labelText: context.loc.title,
+                  labelText: context.loc.name,
                 ),
               ),
               Space(),

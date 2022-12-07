@@ -33,7 +33,7 @@ class GroupInfoDialog extends StatelessWidget {
           ),
           Space(2),
           Text(
-            group.title,
+            group.name,
             style: context.textTheme.titleLarge,
           ),
           if (group.description.isNotEmpty) ...[
