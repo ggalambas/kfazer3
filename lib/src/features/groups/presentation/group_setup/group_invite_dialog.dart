@@ -45,7 +45,7 @@ class GroupInviteDialog extends ConsumerWidget {
           ),
           Space(2),
           Text(
-            '${context.loc.invitedToJoin} ${group.title}',
+            '${context.loc.invitedToJoin} ${group.name}',
             style: context.textTheme.titleLarge,
           ),
           if (group.description.isNotEmpty) ...[
