@@ -67,6 +67,7 @@
 
   "motivation": "Motivación",
   "editMotivationalMessages": "Editar mensajes motivacionales",
+  "newMessage": "Nueva mensaje",
 
   "invites": "Invitaciones",
 
@@ -95,8 +96,8 @@
   "motivationalMessagesDescription": "Mensajes que se muestran al completar una tarea",
   "group": "Grupo",
   "groups": "Grupos",
-  "newGroup": "New group",
-  "editGroup": "Nuevo grupo",
+  "newGroup": "Nuevo group",
+  "editGroup": "Editar grupo",
   "deleteGroup": "Eliminar grupo",
   "title": "Título",
   "description": "Descripción",

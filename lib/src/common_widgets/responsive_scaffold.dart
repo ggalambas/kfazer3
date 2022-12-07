@@ -43,7 +43,16 @@ class ResponsiveScaffold extends StatelessWidget {
                     flex: 1,
                     child: Padding(
                       padding: EdgeInsets.only(top: topPadding),
-                      child: rail!,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          rail!,
+                          if (floatingActionButton != null) ...[
+                            Space(2),
+                            floatingActionButton!,
+                          ],
+                        ],
+                      ),
                     ),
                   ),
                 Space(4),
@@ -51,7 +60,6 @@ class ResponsiveScaffold extends StatelessWidget {
               ],
             ),
           ),
-          floatingActionButton: floatingActionButton,
         );
       } else {
         return Scaffold(

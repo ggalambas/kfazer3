@@ -128,13 +128,14 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
               ),
             );
           },
-          floatingActionButton: FloatingActionButton(
+          floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
               controller.addMessage();
               scrollController.jumpTo(0);
               firstNode.requestFocus();
             },
-            child: const Icon(Icons.add),
+            icon: const Icon(Icons.add),
+            label: Text(context.loc.newMessage),
           ),
         );
       },
