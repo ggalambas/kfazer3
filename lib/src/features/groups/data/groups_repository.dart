@@ -18,11 +18,12 @@ abstract class GroupsRepository {
   Stream<List<Group>> watchAllGroupsList(String userId);
   Stream<List<Group>> watchGroupList(String userId);
   Stream<List<Group>> watchPendingGroupList(String userId);
+  //
   Future<Group?> fetchGroup(GroupId id);
   Stream<Group?> watchGroup(GroupId id);
+  //
   Future<GroupId> createGroup(Group group);
   Future<void> updateGroup(Group group);
-  Future<void> updateMotivationalMessages(GroupId id, List<String> messages);
   Future<void> deleteGroup(GroupId id);
 }
 

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/responsive_setup.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_setup/group_setup_controller.dart';
-import 'package:kfazer3/src/features/groups/presentation/motivation/motivational_message_field.dart';
+import 'package:kfazer3/src/features/motivation/presentation/motivational_message_field.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
@@ -80,14 +80,18 @@ class _MotivationPageState extends ConsumerState<MotivationPage> {
         ),
       ),
       actions: [
-        OutlinedButton.icon(
+        if (showClearAllButton)
+          OutlinedButton(
+            onPressed: controller.clearAllMessages,
+            child: Text(context.loc.clearAll),
+          ),
+        OutlinedButton(
           onPressed: () {
             controller.addMessage();
             scrollController.jumpTo(0);
             firstNode.requestFocus();
           },
-          icon: const Icon(Icons.add),
-          label: Text(context.loc.newMessage),
+          child: Text(context.loc.addNew),
         ),
         ElevatedButton(
           onPressed: () => submit(controller.messages),

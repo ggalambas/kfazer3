@@ -6,10 +6,9 @@ import 'package:kfazer3/src/common_widgets/edit_bar.dart';
 import 'package:kfazer3/src/common_widgets/responsive_scaffold.dart';
 import 'package:kfazer3/src/common_widgets/single_child_menu_button.dart';
 import 'package:kfazer3/src/constants/constants.dart';
-import 'package:kfazer3/src/features/groups/presentation/motivation/motivation_edit_controller.dart';
-import 'package:kfazer3/src/features/groups/presentation/motivation/motivational_message_field.dart';
-import 'package:kfazer3/src/features/groups/presentation/motivation/motivational_messages_controller.dart';
-import 'package:kfazer3/src/features/groups/presentation/not_found_group.dart';
+import 'package:kfazer3/src/features/motivation/presentation/motivation_edit_controller.dart';
+import 'package:kfazer3/src/features/motivation/presentation/motivation_form_controller.dart';
+import 'package:kfazer3/src/features/motivation/presentation/motivational_message_field.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
@@ -27,10 +26,10 @@ class MotivationEditScreen extends ConsumerStatefulWidget {
 
 class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
   /// motivationalMessagesControllerProvider of [widget.groupId]
-  AutoDisposeStateNotifierProvider<MotivationalMessagesController,
-          AsyncValue<List<TextEditingController>?>>
-      get messagesControllerProvider =>
-          motivationalMessagesControllerProvider(widget.groupId);
+  AutoDisposeStateNotifierProvider<MotivationFormController,
+          AsyncValue<List<TextEditingController>>>
+      get motivationFormProvider =>
+          motivationFormControllerProvider(widget.groupId);
 
   final formKey = GlobalKey<FormState>();
   final scrollController = ScrollController();
@@ -42,12 +41,13 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
   // https://codewithandrea.com/articles/flutter-text-field-form-validation/
   var submitted = false;
 
-  void save(List<String> messages) async {
+  void save() async {
     setState(() => submitted = true);
     if (!formKey.currentState!.validate()) return;
+    final motivation = ref.read(motivationFormProvider.notifier).motivation;
     final success = await ref
         .read(motivationEditControllerProvider.notifier)
-        .save(widget.groupId, messages);
+        .save(widget.groupId, motivation);
     if (mounted && success) back();
   }
 
@@ -70,18 +70,19 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
     );
 
     final state = ref.watch(motivationEditControllerProvider);
-    final controller = ref.watch(messagesControllerProvider.notifier);
-    final messageControllersValue = ref.watch(messagesControllerProvider);
-    return AsyncValueWidget<MessageControllers?>(
-      value: messageControllersValue,
-      data: (messageControllers) {
-        if (messageControllers == null) return const NotFoundGroup();
-        final showClearAllButton = messageControllers.length <= 1;
+    final controller = ref.watch(motivationFormProvider.notifier);
+    final motivationFormValue = ref.watch(motivationFormProvider);
+    return AsyncValueWidget<MessageControllers>(
+      value: motivationFormValue,
+      data: (motivationForm) {
+        //TODO not found group on motivation edit screen
+        // if (messageControllers == null) return const NotFoundGroup();
+        final showClearAllButton = motivationForm.length <= 1;
         return ResponsiveScaffold(
           appBar: EditBar(
             loading: state.isLoading,
             title: context.loc.motivation,
-            onSave: () => save(controller.messages),
+            onSave: save,
             onCancel: back,
             menuButton: showClearAllButton
                 ? null
@@ -97,7 +98,7 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
           rail: EditRail(
             loading: state.isLoading,
             title: context.loc.motivation,
-            onSave: () => save(controller.messages),
+            onSave: save,
             onCancel: back,
             actions: [
               if (showClearAllButton)
@@ -116,12 +117,12 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
               padding: EdgeInsets.all(kSpace).add(
                 EdgeInsets.only(top: topPadding, bottom: kFabSpace - kSpace),
               ),
-              itemCount: messageControllers.length,
+              itemCount: motivationForm.length,
               separatorBuilder: (context, _) => const Divider(),
               itemBuilder: (context, i) => MotivationalMessageField(
                 enabled: !state.isLoading,
                 submitted: submitted,
-                controller: messageControllers[i],
+                controller: motivationForm[i],
                 focusNode: i == 0 ? firstNode : null,
                 onDelete: () => controller.removeMessage(i),
               ),

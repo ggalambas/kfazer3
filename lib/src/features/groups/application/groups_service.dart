@@ -9,22 +9,25 @@ import 'package:kfazer3/src/features/groups/domain/member.dart';
 import 'package:kfazer3/src/features/groups/domain/member_role.dart';
 import 'package:kfazer3/src/features/groups/domain/mutable_group.dart';
 import 'package:kfazer3/src/features/groups/domain/mutable_member.dart';
+import 'package:kfazer3/src/features/motivation/data/motivation_repository.dart';
+import 'package:kfazer3/src/features/motivation/domain/motivation.dart';
 
 final groupsServiceProvider = Provider<GroupsService>((ref) {
   return GroupsService(ref);
 });
 
-// TODO check all services and repositorys for potantial concurrent wirte failures
 class GroupsService {
   final Ref ref;
   GroupsService(this.ref);
 
   AuthRepository get authRepository => ref.read(authRepositoryProvider);
   GroupsRepository get groupsRepository => ref.read(groupsRepositoryProvider);
+  MotivationRepository get motivationRepository =>
+      ref.read(motivationRepositoryProvider);
   GroupStorageRepository get accountStorageRepository =>
       ref.read(groupStorageRepositoryProvider);
 
-  Future<void> createGroup(Group group) async {
+  Future<String> createGroup(Group group, Motivation motivation) async {
     final user = authRepository.currentUser!;
     final member = Member(
       id: user.id,
@@ -32,7 +35,9 @@ class GroupsService {
       role: MemberRole.owner,
     );
     final copy = group.setMember(member);
-    await groupsRepository.createGroup(copy);
+    final groupId = await groupsRepository.createGroup(copy);
+    await motivationRepository.setMotivation(groupId, motivation);
+    return groupId;
   }
 
   Future<void> uploadPictureAndSaveGroup(Group group, Uint8List bytes) async {

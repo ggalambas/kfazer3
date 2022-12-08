@@ -2,18 +2,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/features/auth/domain/country.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/auth/presentation/auth_validators.dart';
-import 'package:kfazer3/src/features/groups/data/groups_repository.dart';
+import 'package:kfazer3/src/features/groups/application/groups_service.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/domain/group_plan.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_validators.dart';
-import 'package:kfazer3/src/features/groups/presentation/motivation/motivation_validators.dart';
+import 'package:kfazer3/src/features/motivation/presentation/motivation_validators.dart';
 import 'package:kfazer3/src/features/users/data/contacts_repository.dart';
 import 'package:share_plus/share_plus.dart';
 
 final groupSetupControllerProvider = StateNotifierProvider.autoDispose<
     GroupSetupController, AsyncValue<String?>>(
   (ref) => GroupSetupController(
-    groupsRepository: ref.watch(groupsRepositoryProvider),
+    groupsService: ref.watch(groupsServiceProvider),
     contactsRepository: ref.watch(contactsRepositoryProvider),
   ),
 );
@@ -24,11 +24,11 @@ final groupSetupControllerProvider = StateNotifierProvider.autoDispose<
 //TODO setup plan page
 class GroupSetupController extends StateNotifier<AsyncValue<String?>>
     with GroupValidators, MotivationValidators, AuthValidators {
-  final GroupsRepository groupsRepository;
+  final GroupsService groupsService;
   final ContactsRepository contactsRepository;
 
   GroupSetupController({
-    required this.groupsRepository,
+    required this.groupsService,
     required this.contactsRepository,
   }) : super(const AsyncValue.data(null));
 
@@ -39,11 +39,10 @@ class GroupSetupController extends StateNotifier<AsyncValue<String?>>
         id: '',
         name: _name,
         plan: _plan,
-        motivationalMessages: _messages,
         members: {},
         pendingMembersPhoneNumber: _invites,
       );
-      return groupsRepository.createGroup(group);
+      return groupsService.createGroup(group, _messages);
     });
     return state.valueOrNull;
   }
