@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kfazer3/src/constants/test_groups.dart';
-import 'package:kfazer3/src/features/groups/presentation/motivation/motivation_validators.dart';
+import 'package:kfazer3/src/constants/test_motivations.dart';
+import 'package:kfazer3/src/features/motivation/presentation/motivation_validators.dart';
 
 //TODO this is duplicated
 //* delete and import the other
@@ -9,9 +9,9 @@ import 'package:kfazer3/src/features/groups/presentation/motivation/motivation_v
 //* move it to another file
 typedef MessageControllers = List<TextEditingController>;
 
-//TODO delete the group extension and use this one
+//TODO delete the group extension and use this one? Think about a better one?
 extension ControllersList on List<String> {
-  MessageControllers get controllers =>
+  MessageControllers get asControllers =>
       map((message) => TextEditingController(text: message)).toList();
 }
 
@@ -24,7 +24,7 @@ class InitialMessagesController extends StateNotifier<MessageControllers>
     with MotivationValidators {
   //
   //TODO change how we get the initial messages
-  InitialMessagesController() : super(kMotivationalMessages.controllers);
+  InitialMessagesController() : super(kMotivation.asControllers);
 
   List<String> get messages => state.map((c) => c.text).toList();
 
