@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
-import 'package:kfazer3/src/common_widgets/setup_layout.dart';
+import 'package:kfazer3/src/common_widgets/responsive_setup.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/auth/presentation/auth_validators.dart';
@@ -64,34 +64,30 @@ class _PhoneVerificationPageState extends ConsumerState<PhoneVerificationPage> {
     );
     final state = ref.watch(signInControllerProvider);
     final phoneNumber = ref.watch(signInPayloadProvider).phoneNumber!;
-    return SetupLayout(
+    return ResponsiveSetup(
       formKey: formKey,
       title: context.loc.phoneNumberVerification,
-      description: TextSpan(
-        text: context.loc.phoneNumberVerificationDescription(phoneNumber),
-      ),
-      content: [
-        TextFormField(
-          focusNode: codeNode,
-          controller: codeController,
-          keyboardType: TextInputType.number,
-          textInputAction: TextInputAction.done,
-          maxLength: kCodeLength,
-          decoration: InputDecoration(
-            counterText: '',
-            labelText: context.loc.code,
-          ),
-          onEditingComplete: submit,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (code) {
-            if (!submitted) return null;
-            return ref
-                .read(signInControllerProvider.notifier)
-                .codeErrorText(context, code ?? '');
-          },
+      description: context.loc.phoneNumberVerificationDescription(phoneNumber),
+      content: TextFormField(
+        focusNode: codeNode,
+        controller: codeController,
+        keyboardType: TextInputType.number,
+        textInputAction: TextInputAction.done,
+        maxLength: kCodeLength,
+        decoration: InputDecoration(
+          counterText: '',
+          labelText: context.loc.code,
         ),
-      ],
-      cta: [
+        onEditingComplete: submit,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (code) {
+          if (!submitted) return null;
+          return ref
+              .read(signInControllerProvider.notifier)
+              .codeErrorText(context, code ?? '');
+        },
+      ),
+      actions: [
         Consumer(
           builder: (context, ref, _) {
             final smsCodeController =

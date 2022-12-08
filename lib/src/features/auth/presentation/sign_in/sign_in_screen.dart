@@ -27,7 +27,6 @@ class SignInScreen extends ConsumerStatefulWidget {
   ConsumerState<SignInScreen> createState() => _SignInScreenState();
 }
 
-/// Use the [AutomaticKeepAliveClientMixin] to keep the state.
 class _SignInScreenState extends ConsumerState<SignInScreen> {
   late final controller = PageController(initialPage: widget.page.index);
 
@@ -67,31 +66,29 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         }
       },
       child: TapToUnfocus(
-        child: Scaffold(
-          body: PageView(
-            // disable swiping between pages
-            physics: const NeverScrollableScrollPhysics(),
-            controller: controller,
-            children: [
-              PhoneSignInPage(
-                onSuccess: () => context.goNamed(
-                  AppRoute.signInPage.name,
-                  params: {'page': SignInPage.verification.name},
-                ),
+        child: PageView(
+          // disable swiping between pages
+          physics: const NeverScrollableScrollPhysics(),
+          controller: controller,
+          children: [
+            PhoneSignInPage(
+              onSuccess: () => context.goNamed(
+                AppRoute.signInPage.name,
+                params: {'page': SignInPage.verification.name},
               ),
-              PhoneVerificationPage(
-                onSuccess: () {
-                  if (ref.read(authRepositoryProvider).currentUser == null) {
-                    context.goNamed(
-                      AppRoute.signInPage.name,
-                      params: {'page': SignInPage.account.name},
-                    );
-                  }
-                },
-              ),
-              const AccountSetupPage(),
-            ],
-          ),
+            ),
+            PhoneVerificationPage(
+              onSuccess: () {
+                if (ref.read(authRepositoryProvider).currentUser == null) {
+                  context.goNamed(
+                    AppRoute.signInPage.name,
+                    params: {'page': SignInPage.account.name},
+                  );
+                }
+              },
+            ),
+            const AccountSetupPage(),
+          ],
         ),
       ),
     );

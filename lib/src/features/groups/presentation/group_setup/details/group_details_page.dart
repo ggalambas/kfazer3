@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kfazer3/src/common_widgets/setup_layout.dart';
+import 'package:go_router/go_router.dart';
+import 'package:kfazer3/src/common_widgets/responsive_setup.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_setup/group_setup_controller.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/routing/app_router.dart';
 
 import 'group_name_field.dart';
 
@@ -15,7 +17,9 @@ class GroupDetailsPage extends ConsumerStatefulWidget {
   ConsumerState<GroupDetailsPage> createState() => GroupDetailsPageState();
 }
 
-class GroupDetailsPageState extends ConsumerState<GroupDetailsPage> {
+/// Use the [AutomaticKeepAliveClientMixin] to keep the state.
+class GroupDetailsPageState extends ConsumerState<GroupDetailsPage>
+    with AutomaticKeepAliveClientMixin {
   final formKey = GlobalKey<FormState>();
   final nameNode = FocusNode();
   final nameController = TextEditingController();
@@ -27,6 +31,11 @@ class GroupDetailsPageState extends ConsumerState<GroupDetailsPage> {
   // For more details on how this is implemented, see:
   // https://codewithandrea.com/articles/flutter-text-field-form-validation/
   var submitted = false;
+
+  // override `wantKeepAlive` when using `AutomaticKeepAliveClientMixin`
+  @override
+  bool get wantKeepAlive => true;
+
   void submit() async {
     nameNode
       ..nextFocus()
@@ -46,23 +55,23 @@ class GroupDetailsPageState extends ConsumerState<GroupDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SetupLayout(
+    // call `super.build` when using `AutomaticKeepAliveClientMixin`
+    super.build(context);
+
+    return ResponsiveSetup(
       formKey: formKey,
+      onCancel: () => context.goNamed(AppRoute.home.name),
       title: 'Let\'s create a Group'.hardcoded,
-      description: TextSpan(
-        text:
-            'This is the name of your company, team or organization. You will later be able to add a photo and a description.'
-                .hardcoded,
+      description:
+          'This is the name of your company, team or organization. You will later be able to add a photo and a description.'
+              .hardcoded,
+      content: GroupNameField(
+        focusNode: nameNode,
+        controller: nameController,
+        onSubmit: submit,
+        submitted: submitted,
       ),
-      content: [
-        GroupNameField(
-          focusNode: nameNode,
-          controller: nameController,
-          onSubmit: submit,
-          submitted: submitted,
-        ),
-      ],
-      cta: [
+      actions: [
         ElevatedButton(
           onPressed: submit,
           child: Text(context.loc.next),

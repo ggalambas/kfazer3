@@ -6,10 +6,9 @@ import 'package:smart_space/smart_space.dart';
 export 'rail.dart';
 
 /// Responsive layout that shows
-/// two the appbar and the body side by side if there is enough space,
+/// a rail and the body side by side if there is enough space,
 /// or the standard scaffold if there is not enough space.
 class ResponsiveScaffold extends StatelessWidget {
-  final double maxContentWidth;
   final EdgeInsetsGeometry padding;
   final PreferredSizeWidget? appBar;
   final Widget? rail;
@@ -18,7 +17,6 @@ class ResponsiveScaffold extends StatelessWidget {
 
   const ResponsiveScaffold({
     super.key,
-    this.maxContentWidth = Breakpoint.tablet,
     this.padding = EdgeInsets.zero,
     this.appBar,
     this.rail,
@@ -29,30 +27,30 @@ class ResponsiveScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth >= maxContentWidth) {
+      if (constraints.maxWidth >= Breakpoint.tablet) {
+        //* HORIZONTAL VIEW
         final topPadding = constraints.maxHeight / 10;
         return Scaffold(
           body: ResponsiveCenter(
             maxContentWidth: Breakpoint.desktop,
             padding: padding,
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (rail != null)
                   Expanded(
                     flex: 1,
-                    child: Padding(
+                    child: ListView(
                       padding: EdgeInsets.only(top: topPadding),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          rail!,
-                          if (floatingActionButton != null) ...[
-                            Space(2),
-                            floatingActionButton!,
-                          ],
+                      children: [
+                        rail!,
+                        if (floatingActionButton != null) ...[
+                          Space(2),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: floatingActionButton!,
+                          ),
                         ],
-                      ),
+                      ],
                     ),
                   ),
                 Space(4),
@@ -62,6 +60,7 @@ class ResponsiveScaffold extends StatelessWidget {
           ),
         );
       } else {
+        //* VERTICAL VIEW
         return Scaffold(
           appBar: appBar,
           body: ResponsiveCenter(

@@ -6,7 +6,6 @@ import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/localization/localized_enum.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
-import 'package:smart_space/smart_space.dart';
 
 import 'details/group_details_page.dart';
 import 'group_setup_controller.dart';
@@ -17,6 +16,7 @@ import 'motivation/motivation_page.dart';
 enum GroupSetupPage with LocalizedEnum {
   details,
   motivation,
+  plan,
   invites;
 
   GroupSetupPage? get previous {
@@ -31,16 +31,19 @@ enum GroupSetupPage with LocalizedEnum {
         return context.loc.details;
       case motivation:
         return context.loc.motivation;
+      case plan:
+        return context.loc.plan;
       case invites:
         return context.loc.invites;
     }
   }
 }
 
-/// This is the root widget of the group setup flow, which is composed of 3 pages:
+/// This is the root widget of the group setup flow, which is composed of 4 pages:
 /// 1. Group details page
 /// 2. Motivation page
-/// 3. Invites page
+/// 3. Plan page
+/// 4. Invites page
 ///
 ///! The logic for the entire flow is implemented in the [GroupSetupScreenController],
 /// while UI updates are handled by a [PageController].
@@ -80,7 +83,7 @@ class GroupSetupScreenState extends ConsumerState<GroupSetupScreen> {
       groupSetupControllerProvider,
       (_, state) => state.showAlertDialogOnError(context),
     );
-    // Return a Scaffold with a PageView containing the 3 pages.
+    // Return a Scaffold with a PageView containing the pages.
     // This allows for a nice scroll animation when switching between pages.
     // Note: only the currently active page will be visible.
     return WillPopScope(
@@ -94,48 +97,43 @@ class GroupSetupScreenState extends ConsumerState<GroupSetupScreen> {
         return false;
       },
       child: TapToUnfocus(
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(widget.page.locName(context)),
-            actions: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: kSpace * 2),
-                child: TextButton(
-                  onPressed: () => context.goNamed(AppRoute.home.name),
-                  child: Text(context.loc.cancel),
-                ),
+        child: PageView(
+          // disable swiping between pages
+          physics: const NeverScrollableScrollPhysics(),
+          controller: controller,
+          children: [
+            GroupDetailsPage(
+              onSuccess: () => context.goNamed(
+                AppRoute.groupSetupPage.name,
+                params: {'page': GroupSetupPage.motivation.name},
               ),
-            ],
-          ),
-          body: PageView(
-            // disable swiping between pages
-            physics: const NeverScrollableScrollPhysics(),
-            controller: controller,
-            children: [
-              GroupDetailsPage(
-                onSuccess: () => context.goNamed(
-                  AppRoute.groupSetupPage.name,
-                  params: {'page': GroupSetupPage.motivation.name},
-                ),
+            ),
+            MotivationPage(
+              onSuccess: () => context.goNamed(
+                AppRoute.groupSetupPage.name,
+                params: {'page': GroupSetupPage.plan.name},
               ),
-              MotivationPage(
-                onSuccess: () => context.goNamed(
+            ),
+            Center(
+              child: TextButton(
+                onPressed: () => context.goNamed(
                   AppRoute.groupSetupPage.name,
                   params: {'page': GroupSetupPage.invites.name},
                 ),
+                child: const Text('Skip'),
               ),
-              InvitesPage(
-                onSuccess: () async {
-                  final groupId = await ref
-                      .read(groupSetupControllerProvider.notifier)
-                      .createGroup();
-                  if (groupId != null && mounted) {
-                    context.goNamed(AppRoute.home.name);
-                  }
-                },
-              ),
-            ],
-          ),
+            ),
+            InvitesPage(
+              onSuccess: () async {
+                final groupId = await ref
+                    .read(groupSetupControllerProvider.notifier)
+                    .createGroup();
+                if (groupId != null && mounted) {
+                  context.goNamed(AppRoute.home.name);
+                }
+              },
+            ),
+          ],
         ),
       ),
     );

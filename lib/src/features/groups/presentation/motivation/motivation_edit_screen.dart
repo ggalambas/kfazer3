@@ -71,9 +71,9 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
 
     final state = ref.watch(motivationEditControllerProvider);
     final controller = ref.watch(messagesControllerProvider.notifier);
-    final messagesValue = ref.watch(messagesControllerProvider);
+    final messageControllersValue = ref.watch(messagesControllerProvider);
     return AsyncValueWidget<MessageControllers?>(
-      value: messagesValue,
+      value: messageControllersValue,
       data: (messageControllers) {
         if (messageControllers == null) return const NotFoundGroup();
         final showClearAllButton = messageControllers.length <= 1;
