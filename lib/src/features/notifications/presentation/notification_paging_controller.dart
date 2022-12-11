@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
+import 'package:kfazer3/src/features/members/data/users_repository.dart';
 import 'package:kfazer3/src/features/notifications/application/notifications_service.dart';
 import 'package:kfazer3/src/features/notifications/data/notifications_repository.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
-import 'package:kfazer3/src/features/users/data/users_repository.dart';
 
 final notificationPagingControllerProvider =
     Provider.autoDispose<NotificationPagingController>(

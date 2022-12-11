@@ -2,9 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 
+import '../../members/domain/member_role.dart';
 import 'group_plan.dart';
-import 'member.dart';
-import 'member_role.dart';
 
 /// * The group identifier is an important concept and can have its own type.
 typedef GroupId = String;
@@ -36,10 +35,4 @@ class Group with EquatableMixin {
 
   @override
   List<Object?> get props => [id];
-}
-
-extension GroupMembers on Group {
-  List<Member> toMemberList() => members.entries
-      .map((entry) => Member(id: entry.key, groupId: id, role: entry.value))
-      .toList();
 }

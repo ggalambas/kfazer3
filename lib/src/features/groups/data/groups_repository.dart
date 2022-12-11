@@ -7,11 +7,10 @@ import 'fake_groups_repository.dart';
 //TODO course 8.10
 
 final groupsRepositoryProvider = Provider<GroupsRepository>(
-  (ref) {
-    final repository = FakeGroupsRepository(addDelay: addRepositoryDelay);
-    ref.onDispose(() => repository.dispose());
-    return repository;
-  },
+  (ref) => FakeGroupsRepository(
+    groups: ref.watch(fakeGroupsProvider),
+    addDelay: addRepositoryDelay,
+  ),
 );
 
 abstract class GroupsRepository {
@@ -25,6 +24,8 @@ abstract class GroupsRepository {
   Future<GroupId> createGroup(Group group);
   Future<void> updateGroup(Group group);
   Future<void> deleteGroup(GroupId id);
+  //
+
 }
 
 //* Providers

@@ -1,21 +1,31 @@
 import 'package:collection/collection.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/constants/test_groups.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
-import 'package:kfazer3/src/features/groups/domain/member_role.dart';
 import 'package:kfazer3/src/features/groups/domain/mutable_group.dart';
+import 'package:kfazer3/src/features/members/domain/member_role.dart';
 import 'package:kfazer3/src/utils/delay.dart';
 import 'package:kfazer3/src/utils/in_memory_store.dart';
 
 import 'groups_repository.dart';
 
-class FakeGroupsRepository implements GroupsRepository {
-  // An InMemoryStore containing all the groups.
-  // final _groups = InMemoryStore<List<Group>>([]);
-  final _groups = InMemoryStore<List<Group>>(kTestGroups);
-  void dispose() => _groups.close();
+typedef InMemoryGroups = InMemoryStore<List<Group>>;
 
+final fakeGroupsProvider = Provider<InMemoryGroups>((ref) {
+  final groups = InMemoryGroups(kTestGroups);
+  ref.onDispose(() => groups.close());
+  return groups;
+});
+
+class FakeGroupsRepository implements GroupsRepository {
+  /// An InMemoryStore containing all the groups.
+  final InMemoryGroups _groups;
   final bool addDelay;
-  FakeGroupsRepository({this.addDelay = true});
+
+  FakeGroupsRepository({
+    required InMemoryGroups groups,
+    this.addDelay = true,
+  }) : _groups = groups;
 
   @override
   Stream<List<Group>> watchAllGroupsList(String userId) async* {

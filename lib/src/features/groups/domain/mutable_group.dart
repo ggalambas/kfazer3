@@ -1,9 +1,9 @@
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 import 'package:kfazer3/src/features/groups/domain/group_plan.dart';
-import 'package:kfazer3/src/features/groups/domain/member.dart';
+import 'package:kfazer3/src/features/members/domain/member.dart';
 
+import '../../members/domain/member_role.dart';
 import 'group.dart';
-import 'member_role.dart';
 
 /// Helper extension used to update a group
 extension MutableGroup on Group {

@@ -8,7 +8,7 @@ import 'package:kfazer3/src/features/auth/domain/country.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code_controller.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_setup/group_setup_controller.dart';
-import 'package:kfazer3/src/features/users/data/contacts_repository.dart';
+import 'package:kfazer3/src/features/members/data/contacts_repository.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:smart_space/smart_space.dart';

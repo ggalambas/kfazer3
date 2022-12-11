@@ -11,8 +11,8 @@ import 'package:kfazer3/src/features/groups/presentation/details/group_details_s
 import 'package:kfazer3/src/features/groups/presentation/details/group_edit_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_list/group_list_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_setup/group_setup_screen.dart';
-import 'package:kfazer3/src/features/groups/presentation/members/members_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/preferences/group_preferences_screen.dart';
+import 'package:kfazer3/src/features/members/presentation/members_screen.dart';
 import 'package:kfazer3/src/features/motivation/presentation/motivation_edit_screen.dart';
 import 'package:kfazer3/src/features/motivation/presentation/motivation_screen.dart';
 import 'package:kfazer3/src/features/notifications/presentation/notification_list_screen.dart';

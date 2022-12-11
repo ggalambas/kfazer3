@@ -5,10 +5,9 @@ import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/groups/data/group_storage_repository.dart';
 import 'package:kfazer3/src/features/groups/data/groups_repository.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
-import 'package:kfazer3/src/features/groups/domain/member.dart';
-import 'package:kfazer3/src/features/groups/domain/member_role.dart';
 import 'package:kfazer3/src/features/groups/domain/mutable_group.dart';
-import 'package:kfazer3/src/features/groups/domain/mutable_member.dart';
+import 'package:kfazer3/src/features/members/domain/member.dart';
+import 'package:kfazer3/src/features/members/domain/member_role.dart';
 import 'package:kfazer3/src/features/motivation/data/motivation_repository.dart';
 import 'package:kfazer3/src/features/motivation/domain/motivation.dart';
 
@@ -29,8 +28,8 @@ class GroupsService {
 
   Future<String> createGroup(Group group, Motivation motivation) async {
     final user = authRepository.currentUser!;
-    final member = Member(
-      id: user.id,
+    final member = Member.fromAppUser(
+      user,
       groupId: group.id,
       role: MemberRole.owner,
     );
@@ -61,26 +60,12 @@ class GroupsService {
 
   Future<void> joinGroup(Group group) async {
     final user = authRepository.currentUser!;
-    final member = Member(id: user.id, groupId: group.id);
-    final copy = group.setMember(member);
-    await groupsRepository.updateGroup(copy);
-  }
-
-  Future<void> transferOwnership(Member member) async {
-    final group = await groupsRepository.fetchGroup(member.groupId);
-    final currentUser = authRepository.currentUser!;
-    // check if current user is owner
-    assert(group!.members[currentUser.id]!.isOwner);
-    // change owner to admin
-    final currentOwner = Member(
-      id: currentUser.id,
-      groupId: group!.id,
-      role: MemberRole.admin,
+    final member = Member.fromAppUser(
+      user,
+      groupId: group.id,
+      role: MemberRole.member,
     );
-    // change member to owner
-    final newOwner = member.setRole(MemberRole.owner);
-    // update group
-    final copy = group.setMember(currentOwner).setMember(newOwner);
+    final copy = group.setMember(member);
     await groupsRepository.updateGroup(copy);
   }
 }
@@ -114,8 +99,9 @@ final pendingGroupListStreamProvider = StreamProvider.autoDispose<List<Group>>(
   },
 );
 
-final roleProvider =
-    Provider.family.autoDispose<MemberRole, Group>((ref, group) {
-  final user = ref.watch(currentUserStateProvider);
-  return group.members[user.id]!;
-});
+final roleFromGroupProvider = Provider.family.autoDispose<MemberRole, Group>(
+  (ref, group) {
+    final user = ref.watch(currentUserStateProvider);
+    return group.members[user.id]!;
+  },
+);
