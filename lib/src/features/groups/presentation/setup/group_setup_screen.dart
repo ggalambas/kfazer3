@@ -16,7 +16,7 @@ import 'motivation/motivation_page.dart';
 enum GroupSetupPage with LocalizedEnum {
   details,
   motivation,
-  plan,
+  // plan,
   invites;
 
   GroupSetupPage? get previous {
@@ -31,8 +31,8 @@ enum GroupSetupPage with LocalizedEnum {
         return context.loc.details;
       case motivation:
         return context.loc.motivation;
-      case plan:
-        return context.loc.plan;
+      // case plan:
+      //   return context.loc.plan;
       case invites:
         return context.loc.invites;
     }
@@ -111,18 +111,18 @@ class GroupSetupScreenState extends ConsumerState<GroupSetupScreen> {
             MotivationPage(
               onSuccess: () => context.goNamed(
                 AppRoute.groupSetupPage.name,
-                params: {'page': GroupSetupPage.plan.name},
+                params: {'page': GroupSetupPage.invites.name},
               ),
             ),
-            Center(
-              child: TextButton(
-                onPressed: () => context.goNamed(
-                  AppRoute.groupSetupPage.name,
-                  params: {'page': GroupSetupPage.invites.name},
-                ),
-                child: const Text('Skip'),
-              ),
-            ),
+            // Center(
+            //   child: TextButton(
+            //     onPressed: () => context.goNamed(
+            //       AppRoute.groupSetupPage.name,
+            //       params: {'page': GroupSetupPage.invites.name},
+            //     ),
+            //     child: const Text('Skip'),
+            //   ),
+            // ),
             InvitesPage(
               onSuccess: () async {
                 final groupId = await ref

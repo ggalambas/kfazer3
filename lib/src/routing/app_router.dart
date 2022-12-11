@@ -10,9 +10,9 @@ import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_screen.da
 import 'package:kfazer3/src/features/groups/presentation/details/group_details_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/details/group_edit_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_list/group_list_screen.dart';
-import 'package:kfazer3/src/features/groups/presentation/group_setup/group_setup_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/members/members_screen.dart';
 import 'package:kfazer3/src/features/groups/presentation/preferences/group_preferences_screen.dart';
+import 'package:kfazer3/src/features/groups/presentation/setup/group_setup_screen.dart';
 import 'package:kfazer3/src/features/motivation/presentation/motivation_edit_screen.dart';
 import 'package:kfazer3/src/features/motivation/presentation/motivation_screen.dart';
 import 'package:kfazer3/src/features/notifications/presentation/notification_list_screen.dart';
@@ -55,7 +55,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
   final authRepository = ref.watch(authRepositoryProvider);
   return GoRouter(
     initialLocation: '/',
-    debugLogDiagnostics: true,
+    // debugLogDiagnostics: true,
     redirect: (context, state) {
       final isLoggedIn = authRepository.currentUser != null;
       if (isLoggedIn) {

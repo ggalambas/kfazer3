@@ -77,7 +77,7 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
       data: (motivationForm) {
         //TODO not found group on motivation edit screen
         // if (messageControllers == null) return const NotFoundGroup();
-        final showClearAllButton = motivationForm.length <= 1;
+        final showClearAllButton = motivationForm.length > 1;
         return ResponsiveScaffold(
           appBar: EditBar(
             loading: state.isLoading,
@@ -85,15 +85,15 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
             onSave: save,
             onCancel: back,
             menuButton: showClearAllButton
-                ? null
-                : SingleChildMenuButton(
+                ? SingleChildMenuButton(
                     enabled: !state.isLoading,
                     onSelected: controller.clearAllMessages,
                     child: Text(
                       context.loc.clearAll,
                       style: TextStyle(color: context.colorScheme.error),
                     ),
-                  ),
+                  )
+                : null,
           ),
           rail: EditRail(
             loading: state.isLoading,

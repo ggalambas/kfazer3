@@ -8,7 +8,7 @@ import 'package:kfazer3/src/features/auth/data/country_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/country.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code_controller.dart';
-import 'package:kfazer3/src/features/groups/presentation/group_setup/group_setup_controller.dart';
+import 'package:kfazer3/src/features/groups/presentation/setup/group_setup_controller.dart';
 import 'package:kfazer3/src/features/users/data/contacts_repository.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
@@ -85,7 +85,7 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
     return ResponsiveSetup(
       formKey: formKey,
       onCancel: () => context.goNamed(AppRoute.home.name),
-      title: 'Add members'.hardcoded,
+      title: 'Add some people'.hardcoded,
       description:
           'You can invite your group members through their phone number or by sending them an invite link. You can also do this later.\n\n'
                   'Have a CSV or vCard file? Import contacts instead.'
