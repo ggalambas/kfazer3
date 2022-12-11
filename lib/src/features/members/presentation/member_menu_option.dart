@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kfazer3/src/features/members/domain/member.dart';
 import 'package:kfazer3/src/features/members/domain/member_role.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/localization/localized_enum.dart';
@@ -29,15 +30,14 @@ enum MemberMenuOption with LocalizedEnum {
   final List<MemberRole> targets;
   const MemberMenuOption({required this.editors, required this.targets});
 
-  static List<MemberMenuOption> allowedValues(
-    MemberRole editor,
-    MemberRole target,
-  ) =>
-      values
-          .where((option) =>
-              option.editors.contains(editor) &&
-              option.targets.contains(target))
-          .toList();
+  static List<MemberMenuOption> allowedValues(Member target, Member editor) {
+    if (editor == target && target.role.isAdmin) return [removeAdmin];
+    return values
+        .where((option) =>
+            option.editors.contains(editor.role) &&
+            option.targets.contains(target.role))
+        .toList();
+  }
 
   @override
   String locName(BuildContext context) {

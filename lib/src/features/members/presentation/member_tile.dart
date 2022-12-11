@@ -18,11 +18,8 @@ import 'member_menu_option.dart';
 /// Shows a member tile
 class MemberTile extends ConsumerWidget {
   final Member member;
-  final MemberRole editorRole;
-  const MemberTile(this.member, {super.key, required this.editorRole});
-
-  bool get showMenuButton =>
-      (editorRole.isAdmin || editorRole.isOwner) && !member.role.isOwner;
+  final Member editor;
+  const MemberTile(this.member, {super.key, required this.editor});
 
   AutoDisposeStateNotifierProvider<MemberTileController, AsyncValue>
       get controllerProvider => memberTileControllerProvider(member.id);
@@ -68,6 +65,9 @@ class MemberTile extends ConsumerWidget {
     }
   }
 
+  bool get editable =>
+      (editor.role.isAdmin || editor.role.isOwner) && !member.role.isOwner;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen<AsyncValue>(
@@ -80,8 +80,8 @@ class MemberTile extends ConsumerWidget {
       leading: UserAvatar(member, dialogOnTap: false),
       title: Text(member.name),
       subtitle: Text(member.phoneNumber.toString()),
-      // remove right padding when trailing is a button
-      contentPadding: showMenuButton && !state.isLoading
+      // removing right padding when trailing is a button
+      contentPadding: editable && !state.isLoading
           ? EdgeInsets.only(left: kSpace * 2)
           : null,
       trailing: state.isLoading
@@ -91,10 +91,9 @@ class MemberTile extends ConsumerWidget {
               children: [
                 if (!member.role.isMember)
                   Text(member.role.locName(context), style: roleStyle()),
-                if (showMenuButton)
+                if (editable)
                   MemberMenuButton(
-                    editorRole: editorRole,
-                    targetRole: member.role,
+                    options: MemberMenuOption.allowedValues(member, editor),
                     onOptionSelected: (option) =>
                         handleOption(context, ref, option),
                   )

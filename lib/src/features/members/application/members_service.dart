@@ -26,14 +26,3 @@ class MembersService {
     await membersRepository.transferOwnership(owner, member);
   }
 }
-
-//* Providers
-
-final roleFromMembersProvider =
-    Provider.family.autoDispose<MemberRole, List<Member>>(
-  (ref, members) {
-    final user = ref.watch(currentUserStateProvider);
-    final member = members.firstWhere((member) => member.id == user.id);
-    return member.role;
-  },
-);

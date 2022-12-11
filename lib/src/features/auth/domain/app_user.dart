@@ -22,8 +22,3 @@ class AppUser with EquatableMixin {
   @override
   List<Object?> get props => [id];
 }
-
-
-
-//TODO
-// class AuthUser extends AppUser {}
