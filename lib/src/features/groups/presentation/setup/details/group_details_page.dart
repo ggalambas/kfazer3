@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/responsive_setup.dart';
-import 'package:kfazer3/src/features/groups/presentation/group_setup/group_setup_controller.dart';
+import 'package:kfazer3/src/features/groups/presentation/group_validators.dart';
+import 'package:kfazer3/src/features/groups/presentation/setup/group_setup_controller.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
@@ -69,7 +70,12 @@ class GroupDetailsPageState extends ConsumerState<GroupDetailsPage>
         focusNode: nameNode,
         controller: nameController,
         onSubmit: submit,
-        submitted: submitted,
+        validator: (name) {
+          if (!submitted) return null;
+          return ref
+              .read(groupSetupControllerProvider.notifier)
+              .nameErrorText(context, name ?? '');
+        },
       ),
       actions: [
         ElevatedButton(

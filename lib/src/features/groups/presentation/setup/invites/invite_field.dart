@@ -4,7 +4,7 @@ import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
 import 'package:kfazer3/src/features/auth/presentation/auth_validators.dart';
 import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code_controller.dart';
 import 'package:kfazer3/src/features/auth/presentation/country_picker/phone_code_dropdown_button.dart';
-import 'package:kfazer3/src/features/groups/presentation/group_setup/group_setup_controller.dart';
+import 'package:kfazer3/src/features/groups/presentation/setup/group_setup_controller.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 
