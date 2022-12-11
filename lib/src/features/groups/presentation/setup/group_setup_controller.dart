@@ -6,8 +6,8 @@ import 'package:kfazer3/src/features/groups/application/groups_service.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/domain/group_plan.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_validators.dart';
+import 'package:kfazer3/src/features/members/data/contacts_repository.dart';
 import 'package:kfazer3/src/features/motivation/presentation/motivation_validators.dart';
-import 'package:kfazer3/src/features/users/data/contacts_repository.dart';
 import 'package:share_plus/share_plus.dart';
 
 final groupSetupControllerProvider = StateNotifierProvider.autoDispose<

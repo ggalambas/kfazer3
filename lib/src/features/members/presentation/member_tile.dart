@@ -3,10 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/avatar/user_avatar.dart';
 import 'package:kfazer3/src/common_widgets/circular_progress_icon.dart';
-import 'package:kfazer3/src/features/auth/domain/app_user.dart';
-import 'package:kfazer3/src/features/groups/domain/member.dart';
-import 'package:kfazer3/src/features/groups/domain/member_role.dart';
-import 'package:kfazer3/src/features/groups/presentation/members/member_tile_controller.dart';
+import 'package:kfazer3/src/features/members/domain/member.dart';
+import 'package:kfazer3/src/features/members/domain/member_role.dart';
+import 'package:kfazer3/src/features/members/presentation/member_tile_controller.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
@@ -14,21 +13,19 @@ import 'package:kfazer3/src/utils/widget_loader.dart';
 import 'package:smart_space/smart_space.dart';
 
 import 'member_menu_button.dart';
+import 'member_menu_option.dart';
 
-//TODO refact arguments
-//? should a member now have a userId or an AppUser or extend id
 /// Shows a member tile
 class MemberTile extends ConsumerWidget {
-  final AppUser user;
   final Member member;
-  final bool editable;
-  const MemberTile(this.user, this.member, {super.key, this.editable = false});
+  final MemberRole editorRole;
+  const MemberTile(this.member, {super.key, required this.editorRole});
 
-  MemberRole get role => member.role;
-  bool get showMenuButton => editable && !role.isOwner;
+  bool get showMenuButton =>
+      (editorRole.isAdmin || editorRole.isOwner) && !member.role.isOwner;
 
   AutoDisposeStateNotifierProvider<MemberTileController, AsyncValue>
-      get memberProvider => memberTileControllerProvider(member.id);
+      get controllerProvider => memberTileControllerProvider(member.id);
 
   Future<void> handleOption(
     BuildContext context,
@@ -44,11 +41,11 @@ class MemberTile extends ConsumerWidget {
           defaultActionText: context.loc.transfer,
         );
         if (confirmed != true) break;
-        return ref.read(memberProvider.notifier).transferOwnership(member);
+        return ref.read(controllerProvider.notifier).transferOwnership(member);
       case MemberMenuOption.makeAdmin:
-        return ref.read(memberProvider.notifier).turnAdmin(member);
+        return ref.read(controllerProvider.notifier).turnAdmin(member);
       case MemberMenuOption.removeAdmin:
-        return ref.read(memberProvider.notifier).revokeAdmin(member);
+        return ref.read(controllerProvider.notifier).revokeAdmin(member);
       case MemberMenuOption.removeMember:
       case MemberMenuOption.removeInvite:
         final confirmed = await showAlertDialog(
@@ -58,46 +55,51 @@ class MemberTile extends ConsumerWidget {
           defaultActionText: context.loc.remove,
         );
         if (confirmed != true) break;
-        return ref.read(memberProvider.notifier).removeMember(member);
+        return ref.read(controllerProvider.notifier).removeMember(member);
+    }
+  }
+
+  TextStyle? roleStyle() {
+    switch (member.role) {
+      case MemberRole.pending:
+        return const TextStyle(fontStyle: FontStyle.italic);
+      default:
+        return null;
     }
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen<AsyncValue>(
-      memberProvider,
+      controllerProvider,
       (_, state) => state.showAlertDialogOnError(context),
     );
 
-    final state = ref.watch(memberProvider);
+    final state = ref.watch(controllerProvider);
     return ListTile(
-      leading: UserAvatar(user, dialogOnTap: false),
-      title: Text(user.name),
-      subtitle: Text(user.phoneNumber.toString()),
+      leading: UserAvatar(member, dialogOnTap: false),
+      title: Text(member.name),
+      subtitle: Text(member.phoneNumber.toString()),
       // remove right padding when trailing is a button
       contentPadding: showMenuButton && !state.isLoading
           ? EdgeInsets.only(left: kSpace * 2)
           : null,
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: state.isLoading
-            ? [const CircularProgressIcon()]
-            : [
-                if (!role.isMember)
-                  Text(
-                    role.locName(context),
-                    style: role.isPending
-                        ? const TextStyle(fontStyle: FontStyle.italic)
-                        : null,
-                  ),
+      trailing: state.isLoading
+          ? const CircularProgressIcon()
+          : Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (!member.role.isMember)
+                  Text(member.role.locName(context), style: roleStyle()),
                 if (showMenuButton)
                   MemberMenuButton(
-                    role: role,
+                    editorRole: editorRole,
+                    targetRole: member.role,
                     onOptionSelected: (option) =>
                         handleOption(context, ref, option),
                   )
               ],
-      ),
+            ),
     );
   }
 }

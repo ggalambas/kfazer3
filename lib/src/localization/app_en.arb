@@ -107,7 +107,7 @@
   "description": "Description",
   "groupCreateFirst": "Create your first group!",
   "groupCreateFirstDescription": "A group is where you can structure a team and manage your tasks.",
-  "groupNoAccess": "You do not have access to this group. Please contact a member to add you",
+  "groupNoAccess": "You do not have access to this group",
   "invitedToJoin": "You've been invited to join",
 
   "newProject": "New project",

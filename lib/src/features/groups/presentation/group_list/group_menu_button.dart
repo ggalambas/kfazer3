@@ -6,7 +6,7 @@ import 'package:kfazer3/src/common_widgets/group_info_dialog.dart';
 import 'package:kfazer3/src/common_widgets/loading_dialog.dart';
 import 'package:kfazer3/src/features/groups/application/groups_service.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
-import 'package:kfazer3/src/features/groups/domain/member_role.dart';
+import 'package:kfazer3/src/features/members/domain/member_role.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/localization/localized_enum.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
@@ -59,7 +59,7 @@ class _GroupMenuButtonState extends ConsumerState<GroupMenuButton> {
   @override
   Widget build(BuildContext context) {
     final menuOptions = GroupMenuOption.allowedValues(
-      ref.read(roleProvider(widget.group)),
+      ref.read(roleFromGroupProvider(widget.group)),
     );
     return PopupMenuButton(
       itemBuilder: (context) => [
