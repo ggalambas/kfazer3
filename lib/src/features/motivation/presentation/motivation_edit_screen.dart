@@ -75,6 +75,8 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen> {
     return AsyncValueWidget<MessageControllers>(
       value: motivationFormValue,
       data: (motivationForm) {
+        //TODO not found group on motivation edit screen
+        // if (messageControllers == null) return const NotFoundGroup();
         final showClearAllButton = motivationForm.length <= 1;
         return ResponsiveScaffold(
           appBar: EditBar(

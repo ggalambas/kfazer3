@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:kfazer3/src/common_widgets/back_or_close_button.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
 import 'package:smart_space/smart_space.dart';
 
@@ -19,20 +20,15 @@ class Rail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // For deciding the use of the BackButton, CloseButton or neither
-    final parentRoute = ModalRoute.of(context);
-    final canPop = parentRoute?.canPop ?? false;
-    final impliesDismissal = parentRoute?.impliesAppBarDismissal ?? false;
-    final useCloseButton =
-        parentRoute is PageRoute<dynamic> && parentRoute.fullscreenDialog;
+    final backButton = backOrCloseButton(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (leading != null)
           leading!
-        else if (automaticallyImplyLeading && (canPop || impliesDismissal))
-          useCloseButton ? const CloseButton() : const BackButton(),
+        else if (automaticallyImplyLeading && backButton != null)
+          backButton,
         if (title != null)
           AutoSizeText(
             title!,

@@ -29,6 +29,8 @@ class MotivationScreen extends ConsumerWidget {
     return AsyncValueWidget<Motivation>(
       value: motivationValue,
       data: (motivation) {
+        //TODO not found group on motivation edit screen
+        // if (messageControllers == null) return const NotFoundGroup();
         return ResponsiveScaffold(
           appBar: DetailsBar(
             title: context.loc.motivation,

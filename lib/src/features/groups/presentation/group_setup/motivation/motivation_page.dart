@@ -1,17 +1,14 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/extensions/num_duration_extensions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kfazer3/src/common_widgets/setup_layout.dart';
-import 'package:kfazer3/src/constants/breakpoints.dart';
-import 'package:kfazer3/src/constants/constants.dart';
-import 'package:kfazer3/src/constants/test_motivations.dart';
+import 'package:go_router/go_router.dart';
+import 'package:kfazer3/src/common_widgets/responsive_setup.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_setup/group_setup_controller.dart';
-import 'package:kfazer3/src/features/motivation/presentation/motivation_validators.dart';
+import 'package:kfazer3/src/features/motivation/presentation/motivational_message_field.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
-import 'package:kfazer3/src/utils/context_theme.dart';
-import 'package:smart_space/smart_space.dart';
+import 'package:kfazer3/src/routing/app_router.dart';
+
+import 'initial_messages_controller.dart';
 
 class MotivationPage extends ConsumerStatefulWidget {
   final VoidCallback? onSuccess;
@@ -23,147 +20,84 @@ class MotivationPage extends ConsumerStatefulWidget {
 
 class _MotivationPageState extends ConsumerState<MotivationPage> {
   final formKey = GlobalKey<FormState>();
-  List<FocusNode>? messageNodes;
-  List<TextEditingController>? messageControllers;
-
   final scrollController = ScrollController();
+  final firstNode = FocusNode();
+  final lastNode = FocusNode();
 
-  List<String> get messages =>
-      messageControllers!.map((controller) => controller.text).toList();
+  // local variable used to apply AutovalidateMode.onUserInteraction and show
+  // error hints only when the form has been submitted
+  // For more details on how this is implemented, see:
+  // https://codewithandrea.com/articles/flutter-text-field-form-validation/
+  var submitted = false;
 
-  void init() {
-    if (messageControllers != null) return;
-
-    messageControllers = [];
-    messageNodes = [];
-    for (final message in kMotivation) {
-      messageControllers!.add(TextEditingController(text: message));
-      messageNodes!.add(FocusNode());
-    }
-  }
-
-  @override
-  void dispose() {
-    messageControllers?.forEach((controller) => controller.dispose());
-    messageNodes?.forEach((controller) => controller.dispose());
-    super.dispose();
-  }
-
-  void delete(TextEditingController controller) => setState(() {
-        final i = messageControllers!.indexOf(controller);
-        messageControllers!.removeAt(i);
-        messageNodes!.removeAt(i);
-      });
-
-  void clear() => setState(() {
-        messageControllers!.clear();
-        messageNodes!.clear();
-      });
-
-  void add() async {
-    setState(() {
-      messageControllers!.add(TextEditingController());
-      messageNodes!.add(FocusNode());
-    });
-    messageNodes!.last.requestFocus();
-    await Future.delayed(100.ms);
-    scrollController.jumpTo(scrollController.position.maxScrollExtent);
-  }
-
-  void submit() async {
-    if (messageNodes!.isNotEmpty) {
-      messageNodes!.last
-        ..requestFocus()
-        ..nextFocus()
-        ..unfocus();
-    }
+  void submit(List<String> messages) async {
+    lastNode
+      ..requestFocus()
+      ..nextFocus()
+      ..unfocus();
+    setState(() => submitted = true);
     if (!formKey.currentState!.validate()) return;
-
     final controller = ref.read(groupSetupControllerProvider.notifier);
     controller.saveMessages(messages);
     widget.onSuccess?.call();
   }
 
   @override
+  void dispose() {
+    firstNode.dispose();
+    lastNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    init();
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final isSingleColumn = constraints.maxWidth < Breakpoint.tablet;
-        return SetupLayout(
-          formKey: formKey,
-          title: 'Motivate your employees'.hardcoded,
-          description: TextSpan(
-            text:
-                'Motivational messages are shown when completing a task, so you can keep everyone motivated at all times. You can manage your messages later in the settings.\n\n'
-                        'We\'ve added some messages to get you started!'
-                    .hardcoded,
+    final controller = ref.watch(initialMessagesControllerProvider.notifier);
+    final messageControllers = ref.watch(initialMessagesControllerProvider);
+    final showClearAllButton = messageControllers.length <= 1;
+    return ResponsiveSetup(
+      formKey: formKey,
+      onCancel: () => context.goNamed(AppRoute.home.name),
+      controller: scrollController,
+      title: 'Keep everyone motivated'.hardcoded,
+      description: 'Motivational messages are shown when completing a task, '
+              'so you can keep the motivation flying high.\n\n'
+              'We\'ve added some messages to get you started!'
+          .hardcoded,
+      content: ListView.separated(
+        shrinkWrap: true,
+        controller: scrollController,
+        itemCount: messageControllers.length,
+        separatorBuilder: (context, _) => const Divider(),
+        itemBuilder: (context, i) => MotivationalMessageField(
+          submitted: submitted,
+          controller: messageControllers[i],
+          focusNode: i == 0
+              ? firstNode
+              : i == messageControllers.length - 1
+                  ? lastNode
+                  : null,
+          onDelete: () => controller.removeMessage(i),
+        ),
+      ),
+      actions: [
+        if (showClearAllButton)
+          OutlinedButton(
+            onPressed: controller.clearAllMessages,
+            child: Text(context.loc.clearAll),
           ),
-          content: [
-            SizedBox(
-              height: isSingleColumn
-                  ? null
-                  : MediaQuery.of(context).size.height * 0.5,
-              child: ListView(
-                shrinkWrap: isSingleColumn,
-                controller: scrollController,
-                physics: isSingleColumn
-                    ? const NeverScrollableScrollPhysics()
-                    : null,
-                children: [
-                  ...messageControllers!
-                      .mapIndexed(
-                        (i, messageController) => TextFormField(
-                          focusNode: messageNodes![i],
-                          controller: messageController,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.next,
-                          maxLength: kMotivationalMessagesLength,
-                          maxLines: null,
-                          decoration: InputDecoration(
-                            counterText: '',
-                            filled: false,
-                            isDense: true,
-                            contentPadding: EdgeInsets.all(kSpace),
-                            suffixIcon: IconButton(
-                              tooltip: context.loc.delete,
-                              onPressed: () => delete(messageController),
-                              icon: const Icon(Icons.clear),
-                            ),
-                          ),
-                          validator: (message) => ref
-                              .read(groupSetupControllerProvider.notifier)
-                              .messageErrorText(context, message ?? ''),
-                        ),
-                      )
-                      .expandIndexed((i, textField) => [
-                            textField,
-                            const Divider(),
-                          ]),
-                  if (messageControllers!.length > 1)
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        foregroundColor: context.colorScheme.error,
-                      ),
-                      onPressed: clear,
-                      child: const Text('Clear all'),
-                    ),
-                ],
-              ),
-            ),
-          ],
-          cta: [
-            OutlinedButton(
-              onPressed: add,
-              child: Text('Add new message'.hardcoded),
-            ),
-            ElevatedButton(
-              onPressed: submit,
-              child: Text(context.loc.next),
-            ),
-          ],
-        );
-      },
+        OutlinedButton(
+          onPressed: () {
+            controller.addMessage();
+            scrollController.jumpTo(0);
+            firstNode.requestFocus();
+          },
+          child: Text(context.loc.addNew),
+        ),
+        ElevatedButton(
+          onPressed: () => submit(controller.messages),
+          child: Text(context.loc.next),
+        ),
+      ],
     );
   }
 }

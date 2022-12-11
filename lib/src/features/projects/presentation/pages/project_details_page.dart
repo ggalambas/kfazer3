@@ -46,7 +46,7 @@
 
 //   @override
 //   Widget build(BuildContext context) {
-//     return SetupLayout(
+//     return ResponsiveSetup(
 //       formKey: formKey,
 //       title: 'Name your group'.hardcoded,
 //       description: TextSpan(

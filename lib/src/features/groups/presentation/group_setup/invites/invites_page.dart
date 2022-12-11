@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
-import 'package:kfazer3/src/common_widgets/setup_layout.dart';
+import 'package:kfazer3/src/common_widgets/responsive_setup.dart';
 import 'package:kfazer3/src/features/auth/data/country_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/country.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
@@ -11,6 +12,7 @@ import 'package:kfazer3/src/features/groups/presentation/group_setup/group_setup
 import 'package:kfazer3/src/features/members/data/contacts_repository.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
+import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:smart_space/smart_space.dart';
 
 import 'invite_field.dart';
@@ -80,41 +82,42 @@ class _InvitesPageState extends ConsumerState<InvitesPage> {
     final state = ref.watch(groupSetupControllerProvider);
     final controller = ref.watch(groupSetupControllerProvider.notifier);
     final countryListValue = ref.watch(countryListFutureProvider);
-    return SetupLayout(
+    return ResponsiveSetup(
       formKey: formKey,
+      onCancel: () => context.goNamed(AppRoute.home.name),
       title: 'Add members'.hardcoded,
-      description: TextSpan(
-        text:
-            'You can invite your group members through their phone number or by sending them an invite link. You can also do this later.\n\n'
-                    'Have a CSV or vCard file? Import contacts instead.'
-                .hardcoded,
-      ),
-      content: [
-        //TODO im not liking the country list pattern
-        //? im not liking the fact that it is a future basically, and so we have to pass it to wierd places, idk
-        //? lets just ignore it because it works or?
-        AsyncValueWidget<List<Country>>(
-          value: countryListValue,
-          //TODO loading widget
-          data: (countryList) {
-            initPhoneCodeController(countryList);
-            return InviteField(
-              focusNode: phoneNumberNode,
-              phoneNumberController: phoneNumberController,
-              phoneCodeController: phoneCodeController,
-              pickFromContacts: () => pickFromContacts(countryList),
-              onSubmit: addInvite,
-            );
-          },
-        ),
-        if (controller.invites.isNotEmpty) ...[
-          Space(),
-          //TODO give size just like to the messages
-          for (final invite in controller.invites)
-            InviteTile(invite, onRemove: removeInvite),
+      description:
+          'You can invite your group members through their phone number or by sending them an invite link. You can also do this later.\n\n'
+                  'Have a CSV or vCard file? Import contacts instead.'
+              .hardcoded,
+      content: Column(
+        children: [
+          //TODO im not liking the country list pattern
+          //? im not liking the fact that it is a future basically, and so we have to pass it to wierd places, idk
+          //? lets just ignore it because it works or?
+          AsyncValueWidget<List<Country>>(
+            value: countryListValue,
+            //TODO loading widget
+            data: (countryList) {
+              initPhoneCodeController(countryList);
+              return InviteField(
+                focusNode: phoneNumberNode,
+                phoneNumberController: phoneNumberController,
+                phoneCodeController: phoneCodeController,
+                pickFromContacts: () => pickFromContacts(countryList),
+                onSubmit: addInvite,
+              );
+            },
+          ),
+          if (controller.invites.isNotEmpty) ...[
+            Space(),
+            //TODO give size just like to the messages
+            for (final invite in controller.invites)
+              InviteTile(invite, onRemove: removeInvite),
+          ],
         ],
-      ],
-      cta: countryListValue.hasValue
+      ),
+      actions: countryListValue.hasValue
           ? [
               OutlinedButton.icon(
                 onPressed: state.isLoading ? null : importContacts,

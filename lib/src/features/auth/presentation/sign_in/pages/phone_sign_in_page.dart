@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/async_value_widget.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
-import 'package:kfazer3/src/common_widgets/setup_layout.dart';
+import 'package:kfazer3/src/common_widgets/responsive_setup.dart';
 import 'package:kfazer3/src/features/auth/data/country_repository.dart';
 import 'package:kfazer3/src/features/auth/domain/country.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
@@ -26,6 +26,7 @@ class PhoneSignInPage extends ConsumerStatefulWidget {
   ConsumerState<PhoneSignInPage> createState() => _PhoneSignInPageState();
 }
 
+/// Use the [AutomaticKeepAliveClientMixin] to keep the state.
 class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage>
     with AutomaticKeepAliveClientMixin {
   final formKey = GlobalKey<FormState>();
@@ -79,10 +80,10 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage>
 
     final state = ref.watch(signInControllerProvider);
     final countryListValue = ref.watch(countryListFutureProvider);
-    return SetupLayout(
+    return ResponsiveSetup(
       formKey: formKey,
       title: context.loc.welcome,
-      description: TextSpan(
+      descriptionSpan: TextSpan(
         text: context.loc.welcomeDescription,
         children: [
           TextSpan(
@@ -100,37 +101,34 @@ class _PhoneSignInPageState extends ConsumerState<PhoneSignInPage>
           ),
         ],
       ),
-      content: [
-        AsyncValueWidget<List<Country>>(
-          value: countryListValue,
-          data: (countryList) {
-            phoneCodeController ??= PhoneCodeController.fromLocale(
-              context.locale,
-              countryList,
-            );
-            return TextFormField(
-              focusNode: phoneNumberNode,
-              controller: phoneNumberController,
-              keyboardType: TextInputType.phone,
-              textInputAction: TextInputAction.done,
-              decoration: InputDecoration(
-                labelText: context.loc.phoneNumber,
-                prefix:
-                    PhoneCodeDropdownPrefix(controller: phoneCodeController!),
-              ),
-              onEditingComplete: submit,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (phoneNumber) {
-                if (!submitted) return null;
-                return ref
-                    .read(signInControllerProvider.notifier)
-                    .phoneNumberErrorText(context, phoneNumber ?? '');
-              },
-            );
-          },
-        ),
-      ],
-      cta: [
+      content: AsyncValueWidget<List<Country>>(
+        value: countryListValue,
+        data: (countryList) {
+          phoneCodeController ??= PhoneCodeController.fromLocale(
+            context.locale,
+            countryList,
+          );
+          return TextFormField(
+            focusNode: phoneNumberNode,
+            controller: phoneNumberController,
+            keyboardType: TextInputType.phone,
+            textInputAction: TextInputAction.done,
+            decoration: InputDecoration(
+              labelText: context.loc.phoneNumber,
+              prefix: PhoneCodeDropdownPrefix(controller: phoneCodeController!),
+            ),
+            onEditingComplete: submit,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (phoneNumber) {
+              if (!submitted) return null;
+              return ref
+                  .read(signInControllerProvider.notifier)
+                  .phoneNumberErrorText(context, phoneNumber ?? '');
+            },
+          );
+        },
+      ),
+      actions: [
         if (countryListValue.hasValue)
           LoadingElevatedButton(
             loading: state.isLoading,

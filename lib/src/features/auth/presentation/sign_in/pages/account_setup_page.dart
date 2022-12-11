@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
-import 'package:kfazer3/src/common_widgets/setup_layout.dart';
+import 'package:kfazer3/src/common_widgets/responsive_setup.dart';
 import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/auth/presentation/auth_validators.dart';
 import 'package:kfazer3/src/features/auth/presentation/sign_in/sign_in_controller.dart';
@@ -54,34 +54,30 @@ class _AccountSetupPageState extends ConsumerState<AccountSetupPage> {
       (_, state) => state.showAlertDialogOnError(context),
     );
     final state = ref.watch(signInControllerProvider);
-    return SetupLayout(
+    return ResponsiveSetup(
       formKey: formKey,
       title: context.loc.profileSetUp,
-      description: TextSpan(
-        text: context.loc.profileSetUpDescription,
-      ),
-      content: [
-        TextFormField(
-          focusNode: nameNode,
-          controller: nameController,
-          keyboardType: TextInputType.name,
-          textInputAction: TextInputAction.done,
-          maxLength: kNameLength,
-          decoration: InputDecoration(
-            counterText: '',
-            labelText: context.loc.displayName,
-          ),
-          onEditingComplete: submit,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (name) {
-            if (!submitted) return null;
-            return ref
-                .read(signInControllerProvider.notifier)
-                .nameErrorText(context, name ?? '');
-          },
+      description: context.loc.profileSetUpDescription,
+      content: TextFormField(
+        focusNode: nameNode,
+        controller: nameController,
+        keyboardType: TextInputType.name,
+        textInputAction: TextInputAction.done,
+        maxLength: kNameLength,
+        decoration: InputDecoration(
+          counterText: '',
+          labelText: context.loc.displayName,
         ),
-      ],
-      cta: [
+        onEditingComplete: submit,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (name) {
+          if (!submitted) return null;
+          return ref
+              .read(signInControllerProvider.notifier)
+              .nameErrorText(context, name ?? '');
+        },
+      ),
+      actions: [
         LoadingElevatedButton(
           loading: state.isLoading,
           onPressed: submit,
