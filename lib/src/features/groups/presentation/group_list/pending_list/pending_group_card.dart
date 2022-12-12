@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/avatar/group_avatar.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
-import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
@@ -35,15 +34,17 @@ class PendingGroupCard extends ConsumerWidget {
         child: Column(
           children: [
             ListTile(
-              contentPadding: EdgeInsets.zero,
+              contentPadding: EdgeInsets.only(right: kSpace),
               leading: GroupAvatar(group),
-              title: Text(group.name),
-              trailing: LoadingIconButton(
-                iconSize: kSmallIconSize,
-                loading: state.isLoading && state.value == false,
-                onPressed: () =>
-                    ref.read(groupProvider.notifier).declineInvite(group),
-                icon: const Icon(Icons.close),
+              title: Text(
+                group.name,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(height: 1.1),
+              ),
+              trailing: Text(
+                'Thu, sep 19', //TODO group.inviteDate
+                style: context.textTheme.bodySmall,
               ),
             ),
             Padding(
@@ -64,14 +65,24 @@ class PendingGroupCard extends ConsumerWidget {
                       linkEllipsis: false,
                       linkColor: context.colorScheme.primary,
                     ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: LoadingTextButton(
-                      loading: state.isLoading && state.value == true,
-                      onPressed: () =>
-                          ref.read(groupProvider.notifier).acceptInvite(group),
-                      child: Text(context.loc.accept),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      LoadingTextButton(
+                        loading: state.isLoading && state.value == true,
+                        onPressed: () => ref
+                            .read(groupProvider.notifier)
+                            .declineInvite(group),
+                        child: Text(context.loc.refuse),
+                      ),
+                      LoadingTextButton(
+                        loading: state.isLoading && state.value == true,
+                        onPressed: () => ref
+                            .read(groupProvider.notifier)
+                            .acceptInvite(group),
+                        child: Text(context.loc.accept),
+                      ),
+                    ],
                   ),
                 ],
               ),
