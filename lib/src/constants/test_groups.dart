@@ -6,7 +6,7 @@ import 'package:kfazer3/src/features/groups/domain/group_plan.dart';
 List<Group> get kTestGroups => [..._kTestGroups];
 
 final _kTestGroups = List.generate(
-  kTestMembers.length,
+  kTestGroupsLength,
   (i) => Group(
     id: '$i',
     name: 'Group $i',

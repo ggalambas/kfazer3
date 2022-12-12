@@ -4,7 +4,7 @@ import 'package:kfazer3/src/features/members/domain/user.dart';
 
 /// Test users to be used until a data source is implemented
 final kTestUsers = List.generate(
-  kTestMembers[0]!.length,
+  kTestUsersLength,
   (i) => User(
     id: i.toString(),
     name: 'User $i',

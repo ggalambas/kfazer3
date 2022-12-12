@@ -5,30 +5,50 @@ import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/members/domain/member_role.dart';
 
 final kTestMembers = _members();
-Map<int, Map<int, MemberRole>> _members() {
-  final members = {
-    0: {0: MemberRole.owner},
-    1: {0: MemberRole.admin},
-    2: {0: MemberRole.member},
-    3: {0: MemberRole.pending},
-    4: {0: MemberRole.pending},
-    5: {0: MemberRole.pending},
-  };
-  for (final groupId in members.keys) {
-    members[groupId] = {1: groupId == 0 ? MemberRole.admin : MemberRole.owner};
-    for (var userId = 1; userId < 20; userId++) {
-      final roleIndex = Random().nextInt(MemberRole.values.length - 1) + 1;
-      members[groupId]![userId] = MemberRole.values[roleIndex];
+
+const kTestGroupsLength = 6;
+const kTestUsersLength = 20;
+
+List<Map<String, int>> _members() {
+  final members = <Map<String, int>>[];
+  for (var groupId = 0; groupId < kTestGroupsLength; groupId++) {
+    for (var userId = 0; userId < kTestUsersLength; userId++) {
+      members.add({
+        'group': groupId,
+        'user': userId,
+        'role': role(groupId, userId),
+      });
     }
   }
   return members;
 }
 
-Map<GroupId, MemberRole> roles(int userId) => {
-      for (var groupId in kTestMembers.keys)
-        groupId.toString(): kTestMembers[groupId]![userId]!
-    };
-Map<UserId, MemberRole> members(int groupId) => {
-      for (var userId in kTestMembers[groupId]!.keys)
-        userId.toString(): kTestMembers[groupId]![userId]!
-    };
+int role(int groupId, int userId) {
+  if (userId == 0) {
+    if (groupId == 0) return MemberRole.owner.index;
+    if (groupId == 1) return MemberRole.admin.index;
+    if (groupId == 2) return MemberRole.member.index;
+    return MemberRole.pending.index;
+  }
+  if (userId == 1) {
+    if (groupId == 0) return MemberRole.admin.index;
+    return MemberRole.owner.index;
+  }
+  return Random().nextInt(MemberRole.values.length - 1) + 1;
+}
+
+Map<GroupId, MemberRole> roles(int userId) {
+  final members = kTestMembers.where((member) => member['user'] == userId);
+  return {
+    for (var member in members)
+      member['group']!.toString(): MemberRole.values[member['role']!]
+  };
+}
+
+Map<UserId, MemberRole> members(int groupId) {
+  final members = kTestMembers.where((member) => member['group'] == groupId);
+  return {
+    for (var member in members)
+      member['user']!.toString(): MemberRole.values[member['role']!]
+  };
+}

@@ -109,23 +109,27 @@ class _MotivationEditScreenState extends ConsumerState<MotivationEditScreen>
             ],
           ),
           builder: (topPadding) {
-            return ListView.separated(
-              padding: EdgeInsets.all(kSpace).add(
-                EdgeInsets.only(top: topPadding, bottom: kFabSpace - kSpace),
-              ),
-              itemCount: quoteControllers.length,
-              separatorBuilder: (context, _) => const Divider(),
-              itemBuilder: (context, i) => QuoteField(
-                enabled: !state.isLoading,
-                controller: quoteControllers[i],
-                focusNode: i == 0 ? firstNode : null,
-                onDelete: () => removeQuote(i),
-                validator: (message) {
-                  if (!submitted) return null;
-                  return ref
-                      .read(motivationEditControllerProvider.notifier)
-                      .quoteErrorText(context, message ?? '');
-                },
+            return Form(
+              key: formKey,
+              child: ListView.separated(
+                controller: scrollController,
+                padding: EdgeInsets.all(kSpace).add(
+                  EdgeInsets.only(top: topPadding, bottom: kFabSpace - kSpace),
+                ),
+                itemCount: quoteControllers.length,
+                separatorBuilder: (context, _) => const Divider(),
+                itemBuilder: (context, i) => QuoteField(
+                  enabled: !state.isLoading,
+                  controller: quoteControllers[i],
+                  focusNode: i == 0 ? firstNode : null,
+                  onDelete: () => removeQuote(i),
+                  validator: (message) {
+                    if (!submitted) return null;
+                    return ref
+                        .read(motivationEditControllerProvider.notifier)
+                        .quoteErrorText(context, message ?? '');
+                  },
+                ),
               ),
             );
           },
