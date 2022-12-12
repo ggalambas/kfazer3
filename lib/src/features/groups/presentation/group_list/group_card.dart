@@ -25,7 +25,12 @@ class GroupCard extends StatelessWidget {
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 leading: GroupAvatar(group),
-                title: Text(group.name),
+                title: Text(
+                  group.name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(height: 1.1),
+                ),
                 trailing: GroupMenuButton(group: group),
               ),
               //TODO projects list

@@ -70,6 +70,9 @@ class PendingGroupCard extends ConsumerWidget {
                     children: [
                       LoadingTextButton(
                         loading: state.isLoading && state.value == true,
+                        style: TextButton.styleFrom(
+                          foregroundColor: context.colorScheme.secondary,
+                        ),
                         onPressed: () => ref
                             .read(groupProvider.notifier)
                             .declineInvite(group),

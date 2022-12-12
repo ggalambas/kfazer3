@@ -60,6 +60,9 @@ class GroupInviteDialog extends ConsumerWidget {
       actions: [
         LoadingTextButton(
           loading: state.isLoading && state.value == true,
+          style: TextButton.styleFrom(
+            foregroundColor: context.colorScheme.secondary,
+          ),
           onPressed: () =>
               ref.read(groupProvider.notifier).declineInvite(group),
           child: Text(context.loc.refuse),
