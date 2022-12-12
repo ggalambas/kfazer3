@@ -8,8 +8,7 @@ import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/domain/mutable_group.dart';
 import 'package:kfazer3/src/features/members/domain/member.dart';
 import 'package:kfazer3/src/features/members/domain/member_role.dart';
-import 'package:kfazer3/src/features/motivation/data/motivation_repository.dart';
-import 'package:kfazer3/src/features/motivation/domain/motivation.dart';
+import 'package:kfazer3/src/features/motivation/data/quotes_repository.dart';
 
 final groupsServiceProvider = Provider<GroupsService>((ref) {
   return GroupsService(ref);
@@ -21,12 +20,11 @@ class GroupsService {
 
   AuthRepository get authRepository => ref.read(authRepositoryProvider);
   GroupsRepository get groupsRepository => ref.read(groupsRepositoryProvider);
-  MotivationRepository get motivationRepository =>
-      ref.read(motivationRepositoryProvider);
+  QuotesRepository get quotesRepository => ref.read(quotesRepositoryProvider);
   GroupStorageRepository get accountStorageRepository =>
       ref.read(groupStorageRepositoryProvider);
 
-  Future<String> createGroup(Group group, Motivation motivation) async {
+  Future<String> createGroup(Group group, List<String> quotes) async {
     final user = authRepository.currentUser!;
     final member = Member.fromAppUser(
       user,
@@ -35,7 +33,7 @@ class GroupsService {
     );
     final copy = group.setMember(member);
     final groupId = await groupsRepository.createGroup(copy);
-    await motivationRepository.setMotivation(groupId, motivation);
+    await quotesRepository.setQuotes(groupId, quotes);
     return groupId;
   }
 

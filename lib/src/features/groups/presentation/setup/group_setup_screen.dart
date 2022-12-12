@@ -7,10 +7,10 @@ import 'package:kfazer3/src/localization/localized_enum.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 
+import '../../../motivation/presentation/group_setup/motivation_page.dart';
 import 'details/group_details_page.dart';
 import 'group_setup_controller.dart';
 import 'invites/invites_page.dart';
-import 'motivation/motivation_page.dart';
 
 /// The three sub-routes that are presented as part of the group setup flow.
 enum GroupSetupPage with LocalizedEnum {

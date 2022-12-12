@@ -7,7 +7,7 @@ import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/groups/domain/group_plan.dart';
 import 'package:kfazer3/src/features/groups/presentation/group_validators.dart';
 import 'package:kfazer3/src/features/members/data/contacts_repository.dart';
-import 'package:kfazer3/src/features/motivation/presentation/motivation_validators.dart';
+import 'package:kfazer3/src/features/motivation/presentation/quote_validators.dart';
 import 'package:share_plus/share_plus.dart';
 
 final groupSetupControllerProvider = StateNotifierProvider.autoDispose<
@@ -23,7 +23,7 @@ final groupSetupControllerProvider = StateNotifierProvider.autoDispose<
 //then trim name on account setup page as well
 //TODO setup plan page
 class GroupSetupController extends StateNotifier<AsyncValue<String?>>
-    with GroupValidators, MotivationValidators, AuthValidators {
+    with GroupValidators, QuoteValidators, AuthValidators {
   final GroupsService groupsService;
   final ContactsRepository contactsRepository;
 
@@ -42,7 +42,7 @@ class GroupSetupController extends StateNotifier<AsyncValue<String?>>
         members: {},
         pendingMembersPhoneNumber: _invites,
       );
-      return groupsService.createGroup(group, _messages);
+      return groupsService.createGroup(group, _quotes);
     });
     return state.valueOrNull;
   }
@@ -54,8 +54,8 @@ class GroupSetupController extends StateNotifier<AsyncValue<String?>>
 
   // Motivation
 
-  List<String> _messages = [];
-  void saveMessages(List<String> messages) => _messages = messages;
+  List<String> _quotes = [];
+  void saveQuotes(List<String> quotes) => _quotes = quotes;
 
   // Invites
 

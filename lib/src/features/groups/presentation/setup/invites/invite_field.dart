@@ -9,19 +9,19 @@ import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 
 class InviteField extends ConsumerWidget {
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
   final TextEditingController phoneNumberController;
   final PhoneCodeController phoneCodeController;
   final Future<PhoneNumber> Function() pickFromContacts;
-  final VoidCallback onSubmit;
+  final VoidCallback? onSubmit;
 
   const InviteField({
     super.key,
-    required this.focusNode,
+    this.focusNode,
     required this.phoneNumberController,
     required this.phoneCodeController,
     required this.pickFromContacts,
-    required this.onSubmit,
+    this.onSubmit,
   });
 
   Future<void> _pickFromContacts() async {

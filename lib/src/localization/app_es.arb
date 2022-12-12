@@ -36,7 +36,7 @@
   "invalidNameEmpty": "Se requiere el nombre",
   "invalidCodeLength": "El código debe tener {codeLength} caracteres",
   "@invalidCodeLength": {"placeholders": {"codeLength": {}}},
-  "invalidMessageEmpty": "El mensaje no puede estar vacia",
+  "invalidQuoteEmpty": "El mensaje no puede estar vacia",
 
   "notifications": "Notificaciones",
   "markAllAsRead": "Marcar todo como leido",
@@ -67,6 +67,17 @@
   "motivation": "Motivación",
   "editMotivationalMessages": "Editar mensajes motivacionales",
   "newMessage": "Nueva mensaje",
+
+  "motivationalMessage1": "¡Excelente trabajo! Talento y dedicación dieron resultados impresionantes.",
+  "motivationalMessage2": "¡Buen trabajo! Apreciamos tu esfuerzo y los resultados logrados.",
+  "motivationalMessage3": "¡Felicidades por tu excelente trabajo! Has superado nuestras expectativas.",
+  "motivationalMessage4": "¡Inspiradora dedicación! ¡Sigue así!",
+  "motivationalMessage5": "Agradecemos tu dedicación y arduo trabajo. ¡Resultados impresionantes!",
+  "motivationalMessage6": "¡Sigue dando todo de ti y supera tus propias expectativas!",
+  "motivationalMessage7": "Has elevado la barra. ¡Sigue en busca de la excelencia!",
+  "motivationalMessage8": "¡Impresionante desempeño! Talento y dedicación en acción.",
+  "motivationalMessage9": "¡Estamos orgullosos de ti!",
+  "motivationalMessage10": "¡Excelente trabajo! ¡Sigue siendo una fuerza imparable!",
 
   "invites": "Invitaciones",
   "showMore": "mostrar más",

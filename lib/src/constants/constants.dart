@@ -7,4 +7,4 @@ const kFabSpace = kMinInteractiveDimension + 20 + 8;
 const kNameLength = 30;
 const kCodeLength = 6;
 const kDescriptionLength = 120;
-const kMotivationalMessagesLength = 80;
+const kQuoteLength = 80;

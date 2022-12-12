@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/constants/constants.dart';
-import 'package:kfazer3/src/features/motivation/presentation/motivation_edit_controller.dart';
-import 'package:kfazer3/src/features/motivation/presentation/motivation_validators.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:smart_space/smart_space.dart';
 
-class MotivationalMessageDisplayField extends StatelessWidget {
-  final String message;
-  const MotivationalMessageDisplayField(this.message, {super.key});
+class QuoteDisplayField extends StatelessWidget {
+  final String quote;
+  const QuoteDisplayField(this.quote, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       enabled: false,
-      initialValue: message,
+      initialValue: quote,
       maxLines: null,
       decoration: InputDecoration(
         filled: false,
@@ -25,20 +23,20 @@ class MotivationalMessageDisplayField extends StatelessWidget {
   }
 }
 
-class MotivationalMessageField extends ConsumerWidget {
+class QuoteField extends ConsumerWidget {
   final bool enabled;
-  final bool submitted;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final FocusNode? focusNode;
   final VoidCallback? onDelete;
+  final FormFieldValidator<String>? validator;
 
-  const MotivationalMessageField({
+  const QuoteField({
     super.key,
     this.enabled = true,
-    required this.submitted,
-    required this.controller,
+    this.controller,
     this.focusNode,
     this.onDelete,
+    this.validator,
   });
 
   @override
@@ -49,7 +47,7 @@ class MotivationalMessageField extends ConsumerWidget {
       focusNode: focusNode,
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.next,
-      maxLength: kMotivationalMessagesLength,
+      maxLength: kQuoteLength,
       maxLines: null,
       decoration: InputDecoration(
         counterText: '',
@@ -63,12 +61,7 @@ class MotivationalMessageField extends ConsumerWidget {
         ),
       ),
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: (message) {
-        if (!submitted) return null;
-        return ref
-            .read(motivationEditControllerProvider.notifier)
-            .messageErrorText(context, message ?? '');
-      },
+      validator: validator,
     );
   }
 }

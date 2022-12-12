@@ -36,7 +36,7 @@
   "invalidNameEmpty": "Name is required",
   "invalidCodeLength": "Code must have {codeLength} characters",
   "@invalidCodeLength": {"placeholders": {"codeLength": {}}},
-  "invalidMessageEmpty": "Message can't be empty",
+  "invalidQuoteEmpty": "Message can't be empty",
 
   "notifications": "Notifications",
   "markAllAsRead": "Mark all as read",
@@ -67,6 +67,17 @@
   "motivation": "Motivation",
   "editMotivationalMessages": "Edit motivational messages",
   "newMessage": "New message",
+  
+  "motivationalMessage1": "Great job! You knocked it out of the park.",
+  "motivationalMessage2": "Well done! Your hard work paid off.",
+  "motivationalMessage3": "Good work. Your efforts are appreciated.",
+  "motivationalMessage4": "Congratulations on a job well done.",
+  "motivationalMessage5": "Your dedication is inspiring. Keep up the good work.",
+  "motivationalMessage6": "Thank you for your hard work and determination.",
+  "motivationalMessage7": "Your hard work paid off. Keep pushing yourself.",
+  "motivationalMessage8": "You exceeded expectations. Keep up the fantastic work.",
+  "motivationalMessage9": "Your performance is a testament to your talent and dedication.",
+  "motivationalMessage10": "You have set a high bar. Keep striving for excellence.",
 
   "invites": "Invites",
   "showMore": "show more",

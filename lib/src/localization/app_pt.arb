@@ -36,7 +36,7 @@
   "invalidNameEmpty": "O nome é obrigatório",
   "invalidCodeLength": "O código tem de ter {codeLength} caracteres",
   "@invalidCodeLength": {"placeholders": {"codeLength": {}}},
-  "invalidMessageEmpty": "A mensagem não pode ser vazia",
+  "invalidQuoteEmpty": "A mensagem não pode ser vazia",
 
   "notifications": "Notificações",
   "markAllAsRead": "Marcar todas como lidas",
@@ -67,7 +67,18 @@
   "motivation": "Motivação",
   "editMotivationalMessages": "Editar mensagens motivacionais",
   "newMessage": "Nova mensagem",
-
+  
+  "motivationalMessage1": "Parabéns pelo excelente trabalho!",
+  "motivationalMessage2": "Fantástico! A tua dedicação e esforço deram resultados.",
+  "motivationalMessage3": "Bravo! Estamos muito satisfeitos com o teu trabalho.",
+  "motivationalMessage4": "Parabéns pelo teu talento e dedicação.",
+  "motivationalMessage5": "Continua o trabalho árduo e inspirando-nos com a tua dedicação.",
+  "motivationalMessage6": "O teu esforço e determinação são admiráveis.",
+  "motivationalMessage7": "Mantém o teu espírito de excelência e continua a dar o teu melhor.",
+  "motivationalMessage8": "Continua a ultrapassar as tuas próprias expectativas.",
+  "motivationalMessage9": "Estamos muito orgulhosos do teu talento e dedicação.",
+  "motivationalMessage10": "Elevaste a fasquia. Continua a brilhar.",
+  
   "invites": "Convites",
   "showMore": "mostrar mais",
   "showLess": "mostrar menos",

@@ -3,13 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kfazer3/src/common_widgets/responsive_setup.dart';
 import 'package:kfazer3/src/features/groups/presentation/setup/group_setup_controller.dart';
-import 'package:kfazer3/src/features/motivation/presentation/motivational_message_field.dart';
+import 'package:kfazer3/src/features/motivation/presentation/quote_field.dart';
+import 'package:kfazer3/src/features/motivation/presentation/quote_validators.dart';
+import 'package:kfazer3/src/features/motivation/presentation/quotes_form.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/localization/string_hardcoded.dart';
 import 'package:kfazer3/src/routing/app_router.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
-
-import 'initial_messages_controller.dart';
 
 class MotivationPage extends ConsumerStatefulWidget {
   final VoidCallback? onSuccess;
@@ -21,7 +21,7 @@ class MotivationPage extends ConsumerStatefulWidget {
 
 /// Use the [AutomaticKeepAliveClientMixin] to keep the state.
 class _MotivationPageState extends ConsumerState<MotivationPage>
-    with AutomaticKeepAliveClientMixin {
+    with QuoteForm, AutomaticKeepAliveClientMixin {
   final formKey = GlobalKey<FormState>();
   final scrollController = ScrollController();
   final firstNode = FocusNode();
@@ -36,8 +36,8 @@ class _MotivationPageState extends ConsumerState<MotivationPage>
   @override
   bool get wantKeepAlive => true;
 
-  void submit(List<String> messages) async {
-    if (messages.isNotEmpty) {
+  void submit() async {
+    if (quotes.isNotEmpty) {
       firstNode
         ..requestFocus()
         ..nextFocus()
@@ -46,9 +46,11 @@ class _MotivationPageState extends ConsumerState<MotivationPage>
     setState(() => submitted = true);
     if (!formKey.currentState!.validate()) return;
     final controller = ref.read(groupSetupControllerProvider.notifier);
-    controller.saveMessages(messages);
+    controller.saveQuotes(quotes);
     widget.onSuccess?.call();
   }
+
+  bool get showClearAllButton => quoteControllers.length > 1;
 
   @override
   void dispose() {
@@ -61,9 +63,6 @@ class _MotivationPageState extends ConsumerState<MotivationPage>
     // call `super.build` when using `AutomaticKeepAliveClientMixin`
     super.build(context);
 
-    final controller = ref.watch(initialMessagesControllerProvider.notifier);
-    final messageControllers = ref.watch(initialMessagesControllerProvider);
-    final showClearAllButton = messageControllers.length > 1;
     return ResponsiveSetup(
       formKey: formKey,
       onCancel: () => context.goNamed(AppRoute.home.name),
@@ -76,13 +75,18 @@ class _MotivationPageState extends ConsumerState<MotivationPage>
       content: ListView.separated(
         shrinkWrap: true,
         controller: scrollController,
-        itemCount: messageControllers.length,
+        itemCount: quoteControllers.length,
         separatorBuilder: (context, _) => const Divider(),
-        itemBuilder: (context, i) => MotivationalMessageField(
-          submitted: submitted,
-          controller: messageControllers[i],
+        itemBuilder: (context, i) => QuoteField(
+          controller: quoteControllers[i],
           focusNode: i == 0 ? firstNode : null,
-          onDelete: () => controller.removeMessage(i),
+          onDelete: () => removeQuote(i),
+          validator: (message) {
+            if (!submitted) return null;
+            return ref
+                .read(groupSetupControllerProvider.notifier)
+                .quoteErrorText(context, message ?? '');
+          },
         ),
       ),
       actions: [
@@ -91,19 +95,19 @@ class _MotivationPageState extends ConsumerState<MotivationPage>
             style: OutlinedButton.styleFrom(
               foregroundColor: context.colorScheme.error,
             ),
-            onPressed: controller.clearAllMessages,
+            onPressed: clearAllQuotes,
             child: Text(context.loc.clearAll),
           ),
         OutlinedButton(
           onPressed: () {
-            controller.addMessage();
+            addQuote();
             scrollController.jumpTo(0);
             firstNode.requestFocus();
           },
           child: Text(context.loc.newMessage),
         ),
         ElevatedButton(
-          onPressed: () => submit(controller.messages),
+          onPressed: submit,
           child: Text(context.loc.next),
         ),
       ],

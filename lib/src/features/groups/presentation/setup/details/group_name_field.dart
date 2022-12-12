@@ -4,17 +4,17 @@ import 'package:kfazer3/src/constants/constants.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 
 class GroupNameField extends ConsumerWidget {
-  final FocusNode focusNode;
-  final TextEditingController controller;
-  final VoidCallback onSubmit;
+  final FocusNode? focusNode;
+  final TextEditingController? controller;
+  final VoidCallback? onSubmit;
   final FormFieldValidator<String>? validator;
 
   const GroupNameField({
     super.key,
-    required this.focusNode,
-    required this.controller,
-    required this.onSubmit,
-    required this.validator,
+    this.focusNode,
+    this.controller,
+    this.onSubmit,
+    this.validator,
   });
 
   @override
