@@ -62,7 +62,7 @@ class _GroupDetailsScreenState extends ConsumerState<GroupDetailsScreen> {
       value: groupValue,
       data: (group) {
         if (group == null) return const NotFoundGroup();
-        final role = group.members[currentUser.id]!;
+        final role = group.members[currentUser.id]!.role;
 
         return ResponsiveScaffold(
           padding: EdgeInsets.all(kSpace * 2),

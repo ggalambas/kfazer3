@@ -1,4 +1,5 @@
 import 'package:kfazer3/src/constants/test_groups.dart';
+import 'package:kfazer3/src/features/groups/domain/group.dart';
 import 'package:kfazer3/src/features/projects/domain/project.dart';
 
 /// Test projects to be used until a data source is implemented
@@ -11,7 +12,7 @@ final _kTestProjects = [
         id: '$i',
         title: 'Project $i',
         description: 'A project made by him about world problem solving.',
-        members: group.members.keys.toList(),
+        members: group.userIds,
         groupId: group.id,
       ),
     ),

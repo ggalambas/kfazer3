@@ -3,9 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kfazer3/src/common_widgets/alert_dialogs.dart';
 import 'package:kfazer3/src/common_widgets/avatar/user_avatar.dart';
 import 'package:kfazer3/src/common_widgets/circular_progress_icon.dart';
-import 'package:kfazer3/src/features/members/domain/member.dart';
-import 'package:kfazer3/src/features/members/domain/member_role.dart';
-import 'package:kfazer3/src/features/members/presentation/member_tile_controller.dart';
+import 'package:kfazer3/src/features/auth/domain/app_user.dart';
+import 'package:kfazer3/src/features/groups/domain/member.dart';
+import 'package:kfazer3/src/features/groups/domain/member_role.dart';
+import 'package:kfazer3/src/features/groups/presentation/members/member_tile_controller.dart';
 import 'package:kfazer3/src/localization/localized_context.dart';
 import 'package:kfazer3/src/utils/async_value_ui.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
@@ -17,12 +18,19 @@ import 'member_menu_option.dart';
 
 /// Shows a member tile
 class MemberTile extends ConsumerWidget {
-  final Member member;
+  final AppUser targetUser;
+  final Member target;
   final Member editor;
-  const MemberTile(this.member, {super.key, required this.editor});
+
+  const MemberTile({
+    super.key,
+    required this.targetUser,
+    required this.target,
+    required this.editor,
+  });
 
   AutoDisposeStateNotifierProvider<MemberTileController, AsyncValue>
-      get controllerProvider => memberTileControllerProvider(member.id);
+      get controllerProvider => memberTileControllerProvider(targetUser.id);
 
   Future<void> handleOption(
     BuildContext context,
@@ -38,11 +46,11 @@ class MemberTile extends ConsumerWidget {
           defaultActionText: context.loc.transfer,
         );
         if (confirmed != true) break;
-        return ref.read(controllerProvider.notifier).transferOwnership(member);
+        return ref.read(controllerProvider.notifier).transferOwnership(target);
       case MemberMenuOption.makeAdmin:
-        return ref.read(controllerProvider.notifier).turnAdmin(member);
+        return ref.read(controllerProvider.notifier).turnAdmin(target);
       case MemberMenuOption.removeAdmin:
-        return ref.read(controllerProvider.notifier).revokeAdmin(member);
+        return ref.read(controllerProvider.notifier).revokeAdmin(target);
       case MemberMenuOption.removeMember:
       case MemberMenuOption.removeInvite:
         final confirmed = await showAlertDialog(
@@ -52,12 +60,12 @@ class MemberTile extends ConsumerWidget {
           defaultActionText: context.loc.remove,
         );
         if (confirmed != true) break;
-        return ref.read(controllerProvider.notifier).removeMember(member);
+        return ref.read(controllerProvider.notifier).removeMember(target);
     }
   }
 
   TextStyle? roleStyle() {
-    switch (member.role) {
+    switch (target.role) {
       case MemberRole.pending:
         return const TextStyle(fontStyle: FontStyle.italic);
       default:
@@ -66,7 +74,7 @@ class MemberTile extends ConsumerWidget {
   }
 
   bool get editable =>
-      (editor.role.isAdmin || editor.role.isOwner) && !member.role.isOwner;
+      (editor.role.isAdmin || editor.role.isOwner) && !target.role.isOwner;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -77,9 +85,9 @@ class MemberTile extends ConsumerWidget {
 
     final state = ref.watch(controllerProvider);
     return ListTile(
-      leading: UserAvatar(member, dialogOnTap: false),
-      title: Text(member.name),
-      subtitle: Text(member.phoneNumber.toString()),
+      leading: UserAvatar(targetUser, dialogOnTap: false),
+      title: Text(targetUser.name),
+      subtitle: Text(targetUser.phoneNumber.toString()),
       // removing right padding when trailing is a button
       contentPadding: editable && !state.isLoading
           ? EdgeInsets.only(left: kSpace * 2)
@@ -89,11 +97,11 @@ class MemberTile extends ConsumerWidget {
           : Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (!member.role.isMember)
-                  Text(member.role.locName(context), style: roleStyle()),
+                if (!target.role.isMember)
+                  Text(target.role.locName(context), style: roleStyle()),
                 if (editable)
                   MemberMenuButton(
-                    options: MemberMenuOption.allowedValues(member, editor),
+                    options: MemberMenuOption.allowedValues(editor, target),
                     onOptionSelected: (option) =>
                         handleOption(context, ref, option),
                   )

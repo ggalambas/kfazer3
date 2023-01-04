@@ -17,7 +17,7 @@ class GroupListController extends StateNotifier<AsyncValue> {
 
   Future<bool> leaveGroup(Group group) async {
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() => groupsService.leaveGroup(group));
+    state = await AsyncValue.guard(() => groupsService.leaveGroup(group.id));
     return !state.hasError;
   }
 }

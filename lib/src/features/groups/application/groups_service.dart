@@ -5,9 +5,9 @@ import 'package:kfazer3/src/features/auth/data/auth_repository.dart';
 import 'package:kfazer3/src/features/groups/data/group_storage_repository.dart';
 import 'package:kfazer3/src/features/groups/data/groups_repository.dart';
 import 'package:kfazer3/src/features/groups/domain/group.dart';
+import 'package:kfazer3/src/features/groups/domain/member.dart';
+import 'package:kfazer3/src/features/groups/domain/member_role.dart';
 import 'package:kfazer3/src/features/groups/domain/mutable_group.dart';
-import 'package:kfazer3/src/features/members/domain/member.dart';
-import 'package:kfazer3/src/features/members/domain/member_role.dart';
 import 'package:kfazer3/src/features/motivation/data/quotes_repository.dart';
 
 final groupsServiceProvider = Provider<GroupsService>((ref) {
@@ -26,10 +26,12 @@ class GroupsService {
 
   Future<String> createGroup(Group group, List<String> quotes) async {
     final user = authRepository.currentUser!;
-    final member = Member.fromAppUser(
-      user,
+    final member = Member(
+      userId: user.id,
       groupId: group.id,
       role: MemberRole.owner,
+      inviteDate: DateTime.now(), //TODO dates
+      joiningDate: DateTime.now(),
     );
     final copy = group.setMember(member);
     final groupId = await groupsRepository.createGroup(copy);
@@ -50,34 +52,32 @@ class GroupsService {
     groupsRepository.updateGroup(updatedGroup);
   }
 
-  Future<void> leaveGroup(Group group) async {
+  //
+
+  Future<void> leaveGroup(GroupId groupId) async {
     final user = authRepository.currentUser!;
-    final copy = group.removeMemberById(user.id);
-    await groupsRepository.updateGroup(copy);
+    await groupsRepository.removeMember(groupId, user.id);
   }
 
   Future<void> joinGroup(Group group) async {
     final user = authRepository.currentUser!;
-    final member = Member.fromAppUser(
-      user,
+    final member = Member(
+      userId: user.id,
       groupId: group.id,
       role: MemberRole.member,
+      inviteDate: DateTime.now(), //TODO dates
+      joiningDate: DateTime.now(),
     );
-    final copy = group.setMember(member);
-    await groupsRepository.updateGroup(copy);
+    await groupsRepository.setMember(member);
+  }
+
+  Future<void> transferOwnership(Member member) async {
+    final user = authRepository.currentUser!;
+    await groupsRepository.transferOwnership(user.id, member);
   }
 }
 
 //* Providers
-
-final allGroupsListStreamProvider = StreamProvider.autoDispose<List<Group>>(
-  (ref) async* {
-    final user = ref.watch(authStateChangesProvider).value;
-    if (user != null) {
-      yield* ref.watch(groupsRepositoryProvider).watchAllGroupsList(user.id);
-    }
-  },
-);
 
 final groupListStreamProvider = StreamProvider.autoDispose<List<Group>>(
   (ref) async* {
@@ -100,6 +100,6 @@ final pendingGroupListStreamProvider = StreamProvider.autoDispose<List<Group>>(
 final roleFromGroupProvider = Provider.family.autoDispose<MemberRole, Group>(
   (ref, group) {
     final user = ref.watch(currentUserStateProvider);
-    return group.members[user.id]!;
+    return group.member(user.id).role;
   },
 );

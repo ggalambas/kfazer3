@@ -29,7 +29,7 @@ class PendingGroupController extends StateNotifier<AsyncValue<bool?>> {
     state = const AsyncValue.data(false);
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      await groupsService.leaveGroup(group);
+      await groupsService.leaveGroup(group.id);
       return null;
     });
     return !state.hasError;

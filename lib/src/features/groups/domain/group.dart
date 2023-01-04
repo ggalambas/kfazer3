@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
+import 'package:kfazer3/src/features/groups/domain/member.dart';
 
-import '../../members/domain/member_role.dart';
 import 'group_plan.dart';
 
 /// * The group identifier is an important concept and can have its own type.
@@ -16,11 +16,13 @@ class Group with EquatableMixin {
   final String description;
   final String? photoUrl;
   final GroupPlan plan;
+  //TODO creation date?
+  // final DateTime creationDate;
 
   /// All the members in the group, where:
   /// - key: user id
-  /// - value: role
-  final Map<UserId, MemberRole> members;
+  /// - value: member
+  final Map<UserId, Member> members;
   final Set<PhoneNumber> pendingMembersPhoneNumber;
 
   const Group({
@@ -35,4 +37,9 @@ class Group with EquatableMixin {
 
   @override
   List<Object?> get props => [id];
+}
+
+extension GroupMembers on Group {
+  List<UserId> get userIds => members.keys.toList();
+  Member member(UserId userId) => members[userId]!;
 }

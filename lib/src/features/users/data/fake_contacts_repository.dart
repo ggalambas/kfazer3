@@ -3,7 +3,8 @@ import 'package:fluttercontactpicker/fluttercontactpicker.dart'
     hide PhoneNumber;
 import 'package:kfazer3/src/features/auth/domain/country.dart';
 import 'package:kfazer3/src/features/auth/domain/phone_number.dart';
-import 'package:kfazer3/src/features/members/data/contacts_repository.dart';
+
+import 'contacts_repository.dart';
 
 class FakeContactsRepository implements ContactsRepository {
   @override

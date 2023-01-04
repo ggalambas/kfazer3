@@ -1,13 +1,11 @@
 import 'package:kfazer3/src/features/auth/domain/app_user.dart';
 import 'package:kfazer3/src/features/groups/domain/group_plan.dart';
-import 'package:kfazer3/src/features/members/domain/member.dart';
 
-import '../../members/domain/member_role.dart';
 import 'group.dart';
+import 'member.dart';
 
 /// Helper extension used to update a group
 extension MutableGroup on Group {
-  Group setId(String id) => copyWith(id: id);
   Group setName(String name) => copyWith(name: name);
 
   Group setDescription(String description) =>
@@ -20,23 +18,23 @@ extension MutableGroup on Group {
 
   /// If a member with the given userId is found, remove it
   Group removeMemberById(UserId memberId) {
-    final copy = Map<UserId, MemberRole>.from(members);
+    final copy = Map<UserId, Member>.from(members);
     copy.remove(memberId);
     return copyWith(members: copy);
   }
 
   /// Add a member to the group by *overriding* the role if it already exists
   Group setMember(Member member) {
-    final copy = Map<UserId, MemberRole>.from(members);
-    copy[member.id] = member.role;
+    final copy = Map<UserId, Member>.from(members);
+    copy[member.userId] = member;
     return copyWith(members: copy);
   }
 
   /// Add a list of members to the group by *overriding* the roles of members that already exists
   Group setMembers(List<Member> membersToSet) {
-    final copy = Map<UserId, MemberRole>.from(members);
+    final copy = Map<UserId, Member>.from(members);
     for (final member in membersToSet) {
-      copy[member.id] = member.role;
+      copy[member.userId] = member;
     }
     return copyWith(members: copy);
   }
@@ -48,7 +46,7 @@ extension MutableGroup on Group {
     String? photoUrl,
     bool nullablePhotoUrl = false,
     GroupPlan? plan,
-    Map<UserId, MemberRole>? members,
+    Map<UserId, Member>? members,
   }) =>
       Group(
         id: id ?? this.id,
