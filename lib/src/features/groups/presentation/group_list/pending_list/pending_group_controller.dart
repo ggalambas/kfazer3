@@ -17,7 +17,6 @@ class PendingGroupController extends StateNotifier<AsyncValue<bool?>> {
 
   Future<bool> acceptInvite(Group group) async {
     state = const AsyncValue.data(true);
-    state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await groupsService.joinGroup(group);
       return null;
@@ -27,7 +26,6 @@ class PendingGroupController extends StateNotifier<AsyncValue<bool?>> {
 
   Future<bool> declineInvite(Group group) async {
     state = const AsyncValue.data(false);
-    state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await groupsService.leaveGroup(group.id);
       return null;

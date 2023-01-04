@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart' hide Notification;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:kfazer3/src/common_widgets/avatar/user_avatar.dart';
 import 'package:kfazer3/src/features/notifications/application/notifications_service.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
 import 'package:kfazer3/src/features/users/data/users_repository.dart';
 import 'package:kfazer3/src/utils/context_theme.dart';
+import 'package:kfazer3/src/utils/date_formatter.dart';
 import 'package:smart_space/smart_space.dart';
 
 /// Used to show a single notification inside a card.
@@ -18,8 +18,6 @@ class NotificationCard extends ConsumerWidget {
     required this.notification,
     required this.onPressed,
   });
-
-  String formatTime(DateTime timestamp) => DateFormat.Hm().format(timestamp);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

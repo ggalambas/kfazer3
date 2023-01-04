@@ -41,17 +41,20 @@ class LoadingOutlinedButton extends StatelessWidget {
   final Widget child;
   final bool loading;
   final VoidCallback? onPressed;
+  final ButtonStyle? style;
 
   const LoadingOutlinedButton({
     super.key,
     required this.child,
     this.loading = false,
     this.onPressed,
+    this.style,
   });
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
+      style: style,
       onPressed: loading ? null : onPressed,
       child: loading ? const CircularProgressIcon() : child,
     );
@@ -68,17 +71,20 @@ class LoadingTextButton extends StatelessWidget {
   final Widget child;
   final bool loading;
   final VoidCallback? onPressed;
+  final ButtonStyle? style;
 
   const LoadingTextButton({
     super.key,
     required this.child,
     this.loading = false,
     this.onPressed,
+    this.style,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
+      style: style,
       onPressed: loading ? null : onPressed,
       child: loading ? const CircularProgressIcon() : child,
     );

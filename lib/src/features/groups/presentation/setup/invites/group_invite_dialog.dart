@@ -59,14 +59,22 @@ class GroupInviteDialog extends ConsumerWidget {
       ),
       actions: [
         LoadingTextButton(
-          loading: state.isLoading && state.value == true,
-          onPressed: () =>
-              ref.read(groupProvider.notifier).declineInvite(group),
+          loading: state.value == false,
+          style: TextButton.styleFrom(
+            foregroundColor: context.colorScheme.secondary,
+          ),
+          //TODO and then pop?
+          onPressed: state.value == true
+              ? null
+              : () => ref.read(groupProvider.notifier).declineInvite(group),
           child: Text(context.loc.refuse),
         ),
         LoadingTextButton(
-          loading: state.isLoading && state.value == true,
-          onPressed: () => ref.read(groupProvider.notifier).acceptInvite(group),
+          loading: state.value == true,
+          //TODO and then pop?
+          onPressed: state.value == false
+              ? null
+              : () => ref.read(groupProvider.notifier).acceptInvite(group),
           child: Text(context.loc.accept),
         ),
       ],
