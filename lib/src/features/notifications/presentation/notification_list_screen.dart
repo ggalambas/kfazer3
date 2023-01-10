@@ -7,6 +7,7 @@ import 'package:kfazer3/src/common_widgets/empty_placeholder.dart';
 import 'package:kfazer3/src/common_widgets/error_message_widget.dart';
 import 'package:kfazer3/src/common_widgets/loading_button.dart';
 import 'package:kfazer3/src/common_widgets/responsive_center.dart';
+import 'package:kfazer3/src/common_widgets/responsive_scaffold.dart';
 import 'package:kfazer3/src/common_widgets/single_child_menu_button.dart';
 import 'package:kfazer3/src/features/notifications/application/notifications_service.dart';
 import 'package:kfazer3/src/features/notifications/domain/notification.dart';
@@ -23,6 +24,8 @@ import 'notification_paging_controller.dart';
 class NotificationsListScreen extends ConsumerWidget {
   const NotificationsListScreen({super.key});
 
+  void openNotificationSettings() => AppSettings.openNotificationSettings();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen<AsyncValue>(
@@ -33,7 +36,8 @@ class NotificationsListScreen extends ConsumerWidget {
     final state = ref.watch(notificationListControllerProvider);
     final pagingController = ref.watch(notificationPagingControllerProvider);
     DateTime? lastNotificationDate;
-    return Scaffold(
+
+    return ResponsiveScaffold(
       appBar: AppBar(
         title: Text(context.loc.notifications),
         actions: [
@@ -51,16 +55,38 @@ class NotificationsListScreen extends ConsumerWidget {
             ),
           ),
           SingleChildMenuButton(
-            onSelected: () => AppSettings.openNotificationSettings(),
+            onSelected: openNotificationSettings,
             child: Text(context.loc.settings),
           ),
         ],
       ),
-      body: RefreshIndicator(
+      rail: Rail(
+        title: context.loc.notifications,
+        actions: [
+          ValueListenableBuilder(
+            valueListenable: pagingController,
+            builder: (context, _, __) => LoadingTextButton(
+              loading: state.isLoading,
+              onPressed: pagingController.itemList == null
+                  ? null
+                  : () => ref
+                      .read(notificationListControllerProvider.notifier)
+                      .markAllAsRead(),
+              child: Text(context.loc.markAllAsRead),
+            ),
+          ),
+          TextButton(
+            onPressed: openNotificationSettings,
+            child: Text(context.loc.settings),
+          ),
+        ],
+      ),
+      builder: (topPadding) => RefreshIndicator(
         onRefresh: () async => pagingController.refresh(),
         child: ResponsiveCenter(
           padding: EdgeInsets.symmetric(vertical: kSpace),
           child: PagedListView<int, Notification>(
+            padding: EdgeInsets.only(top: topPadding),
             pagingController: pagingController,
             builderDelegate: PagedChildBuilderDelegate(
               firstPageProgressIndicatorBuilder: (context) {
