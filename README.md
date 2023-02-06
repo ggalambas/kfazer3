@@ -1,30 +1,5 @@
-# kfazer3 <a href="https://github.com/ggalambas/kfazer3/actions"><img src="https://github.com/ggalambas/kfazer3/workflows/Run Tests/badge.svg" alt="Build Status"></a>
+# ꓘFazer
 
-A new Flutter project.
+Mobile and web flutter application that helps get things done, focused on a hierarchical working structure. Create your group, build your team and assign tasks to a project.
 
-## Getting Started
-
-This project is a starting point for a Flutter application that follows the
-[simple app state management
-tutorial](https://flutter.dev/docs/development/data-and-backend/state-mgmt/simple).
-
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-## Assets
-
-The `assets` directory houses images, fonts, and any other files you want to
-include with your application.
-
-The `assets/images` directory contains [resolution-aware
-images](https://flutter.dev/docs/development/ui/assets-and-images#resolution-aware).
-
-## Localization
-
-This project generates localized messages based on arb files found in
-the `lib/src/localization` directory.
-
-To support additional languages, please visit the tutorial on
-[Internationalizing Flutter
-apps](https://flutter.dev/docs/development/accessibility-and-localization/internationalization)
+![UI](https://user-images.githubusercontent.com/23039656/216971576-b8cc9543-b37d-4ca3-9bb2-ead05734888b.png)
